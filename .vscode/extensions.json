@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "firsttris.vscode-jest-runner",
+    "nrwl.angular-console",
+    "styled-components.vscode-styled-components",
+    "stylelint.vscode-stylelint"
+  ]
+}

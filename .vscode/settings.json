@@ -1,0 +1,74 @@
+{
+  "gitmoji.onlyUseCustomEmoji": true,
+  "gitmoji.addCustomEmoji": [
+    {
+      "emoji": "✨ feat:",
+      "code": ":feat:",
+      "description": "Introduce new features"
+    },
+    {
+      "emoji": "🐛 fix:",
+      "code": ":fix:",
+      "description": "Fixes a bug for the user (not build/CI related)"
+    },
+    {
+      "emoji": "💬 content:",
+      "code": ":content:",
+      "description": "Add or update content"
+    },
+    {
+      "emoji": "🧹 chore:",
+      "code": ":chore:",
+      "description": "Update build system or external dependencies (e.g. gulp tasks)"
+    },
+    {
+      "emoji": "🏗 ci:",
+      "code": ":ci:",
+      "description": "Add or update CI configuration or scripts"
+    },
+    {
+      "emoji": "📖 docs:",
+      "code": ":docs:",
+      "description": "Add or update the documentation"
+    },
+    {
+      "emoji": "♻️ refactor:",
+      "code": ":refactor:",
+      "description": "Refactor code"
+    },
+    {
+      "emoji": "🧪 test:",
+      "code": ":test:",
+      "description": "Add or update tests"
+    },
+    {
+      "emoji": "🏷 release:",
+      "code": ":release:",
+      "description": "Publish a release"
+    }
+  ],
+  "stylelint.snippet": ["css", "less", "postcss", "scss", "typescript"],
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss",
+    "typescript"
+  ],
+  "editor.formatOnSave": true,
+  "i18n-ally.displayLanguage": "en-US",
+  "i18n-ally.enabledFrameworks": ["react", "i18next"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.usage.derivedKeyRules": [
+    "{key}_one",
+    "{key}_other"
+  ],
+  "i18n-ally.localesPaths": ["libs/shared/src/i18n"],
+  "i18n-ally.namespace": true,
+  "i18n-ally.pathMatcher": "{locale}/{namespace}.json",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.sourceLanguage": "en-US",
+  // Hot fix for https://github.com/prettier/prettier-vscode/issues/3020 - can be removed when the issue is fixed
+  "prettier.prettierPath": "./node_modules/prettier",
+  "typescript.tsdk": "node_modules/typescript/lib",
+}
