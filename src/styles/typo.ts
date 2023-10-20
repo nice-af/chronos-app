@@ -3,7 +3,8 @@ import { TextStyle } from 'react-native';
 const headline: TextStyle = {
   fontSize: 14,
   lineHeight: 16,
-  fontWeight: '700',
+  fontWeight: '600',
+  letterSpacing: 0.35,
 };
 
 const headlineEmphasized: TextStyle = {

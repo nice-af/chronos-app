@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
-import { TrackingEntry } from '../types';
+import { TrackingEntry } from '../utils/types';
 import { IssueTag } from './IssueTag';
 import { typo } from '../styles/typo';
+import { PlayPauseButton } from './PlayPauseButton';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   trackingEntry: TrackingEntry;
@@ -18,7 +19,7 @@ export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, t
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
-      <View>
+      <View style={styles.infoContainer}>
         <View style={styles.header}>
           <IssueTag label={trackingEntry.tag} project={trackingEntry.project} />
           <Text numberOfLines={1} style={styles.title}>
@@ -26,8 +27,8 @@ export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, t
           </Text>
         </View>
         <Text style={styles.description}>{trackingEntry.description}</Text>
-        <Text>{trackingEntry.duration}</Text>
       </View>
+      <PlayPauseButton duration={trackingEntry.duration} isRunning={false} onPress={() => {}} />
     </Pressable>
   );
 };
@@ -35,11 +36,17 @@ export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, t
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
     backgroundColor: 'transparent',
     ...getPadding(12, 16),
   },
   containerIsSelected: {
     backgroundColor: transparentize(0.96, colors.contrast),
+  },
+  infoContainer: {
+    flex: 1,
   },
   header: {
     display: 'flex',
