@@ -23,28 +23,25 @@ export const DayPicker: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   return (
-    <>
-      <View style={styles.container}>
-        <DayPickerArrowButton
-          direction='left'
-          onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
+    <View style={styles.container}>
+      <DayPickerArrowButton
+        direction='left'
+        onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
+      />
+      {days.map(day => (
+        <DayPickerButton
+          key={day.id}
+          day={day.abbreviation}
+          duration={day.time}
+          isSelected={selectedDay === day.id}
+          onPress={() => setSelectedDay(day.id)}
         />
-        {days.map(day => (
-          <DayPickerButton
-            key={day.id}
-            day={day.abbreviation}
-            duration={day.time}
-            isSelected={selectedDay === day.id}
-            onPress={() => setSelectedDay(day.id)}
-          />
-        ))}
-        <DayPickerArrowButton
-          direction='right'
-          onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
-        />
-      </View>
-      <PrimaryButton onPress={() => setSelectedDay(null)} label='Clear selection' />
-    </>
+      ))}
+      <DayPickerArrowButton
+        direction='right'
+        onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
+      />
+    </View>
   );
 };
 

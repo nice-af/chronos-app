@@ -12,6 +12,17 @@ const headlineEmphasized: TextStyle = {
   fontWeight: '800',
 };
 
+const body: TextStyle = {
+  fontSize: 13,
+  lineHeight: 16,
+  fontWeight: '400',
+};
+
+const bodyEmphasized: TextStyle = {
+  ...body,
+  fontWeight: '600',
+};
+
 const callout: TextStyle = {
   fontSize: 12,
   lineHeight: 15,
@@ -48,6 +59,8 @@ const footnoteEmphasized: TextStyle = {
 export const typo = {
   headline,
   headlineEmphasized,
+  body,
+  bodyEmphasized,
   callout,
   calloutEmphasized,
   subheadline,

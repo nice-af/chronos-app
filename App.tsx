@@ -5,6 +5,7 @@ import { DayPicker } from './src/components/DayPicker';
 import { IssueTag } from './src/components/IssueTag';
 import { TrackingListEntry } from './src/components/TrackingListEntry';
 import { fakeTrackingEntries } from './src/utils/fake-data';
+import { Footer } from './src/components/Footer';
 
 function App(): JSX.Element {
   return (
@@ -14,6 +15,7 @@ function App(): JSX.Element {
       {fakeTrackingEntries.map(trackingEntry => (
         <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
       ))}
+      <Footer />
     </View>
   );
 }
