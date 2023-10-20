@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getPadding } from '../styles/utils';
+import BackgroundView from './BackgroundView.macos';
 import { DayPickerArrowButton } from './DayPickerArrowButton';
 import { DayLabel, DayPickerButton } from './DayPickerButton';
-import { PrimaryButton } from './PrimaryButton';
+
+export const dayPickerHeight = 60;
 
 const days: {
   id: number;
@@ -24,34 +26,54 @@ export const DayPicker: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <DayPickerArrowButton
-        direction='left'
-        onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
-      />
-      {days.map(day => (
-        <DayPickerButton
-          key={day.id}
-          day={day.abbreviation}
-          duration={day.time}
-          isSelected={selectedDay === day.id}
-          onPress={() => setSelectedDay(day.id)}
+      <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
+      <View style={styles.wrapper}>
+        <DayPickerArrowButton
+          direction='left'
+          onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
         />
-      ))}
-      <DayPickerArrowButton
-        direction='right'
-        onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
-      />
+        {days.map(day => (
+          <DayPickerButton
+            key={day.id}
+            day={day.abbreviation}
+            duration={day.time}
+            isSelected={selectedDay === day.id}
+            onPress={() => setSelectedDay(day.id)}
+          />
+        ))}
+        <DayPickerArrowButton
+          direction='right'
+          onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    minHeight: dayPickerHeight,
+    backgroundColor: 'transparent',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  wrapper: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#545250',
     ...getPadding(8, 16),
+  },
+  backgroundView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
 });

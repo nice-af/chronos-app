@@ -1,32 +1,52 @@
 import React from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import BackgroundView from './src/components/BackgroundView.macos';
-import { DayPicker } from './src/components/DayPicker';
-import { IssueTag } from './src/components/IssueTag';
+import { DayPicker, dayPickerHeight } from './src/components/DayPicker';
+import { Footer, footerHeight } from './src/components/Footer';
 import { TrackingListEntry } from './src/components/TrackingListEntry';
 import { fakeTrackingEntries } from './src/utils/fake-data';
-import { Footer } from './src/components/Footer';
 
 function App(): JSX.Element {
   return (
     <View>
-      <BackgroundView style={styles.backgroundView} />
-      <DayPicker />
-      {fakeTrackingEntries.map(trackingEntry => (
-        <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
-      ))}
-      <Footer />
+      <BackgroundView blendingMode={0} style={styles.backgroundView} />
+      <View style={styles.container}>
+        <ScrollView style={styles.entriesContainer}>
+          <View style={styles.spacerTop} />
+          {fakeTrackingEntries.map(trackingEntry => (
+            <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
+          ))}
+          <View style={styles.spacerBottom} />
+        </ScrollView>
+        <DayPicker />
+        <Footer />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height: '100%',
+  },
   backgroundView: {
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
     height: '100%',
+  },
+  entriesContainer: {
+    flexGrow: 1,
+  },
+  spacerTop: {
+    height: dayPickerHeight,
+  },
+  spacerBottom: {
+    height: footerHeight,
   },
 });
 

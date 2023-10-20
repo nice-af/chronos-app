@@ -5,6 +5,8 @@
 @implementation BackgroundViewManager
 
 RCT_EXPORT_MODULE();
+RCT_EXPORT_VIEW_PROPERTY(blendingMode, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(material, int)
 
 @synthesize bridge = _bridge;
 
