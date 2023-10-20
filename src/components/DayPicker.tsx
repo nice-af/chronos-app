@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import { DayLabel, DayPickerButton } from './DayPickerButton';
-import { PrimaryButton } from './PrimaryButton';
+import { StyleSheet, View } from 'react-native';
 import { getPadding } from '../styles/utils';
 import { DayPickerArrowButton } from './DayPickerArrowButton';
+import { DayLabel, DayPickerButton } from './DayPickerButton';
+import { PrimaryButton } from './PrimaryButton';
 
 const days: {
   id: number;

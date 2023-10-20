@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
-import { colors } from '../styles/colors';
-import { getPadding } from '../styles/utils';
-import { typo } from '../styles/typo';
+import { Image, Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
 
 export type DayLabel = 'M' | 'T' | 'W' | 'F' | 'S';
 
