@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { DayLabel, DayPickerButton } from './DayPickerButton';
 import { PrimaryButton } from './PrimaryButton';
 import { getPadding } from '../styles/utils';
+import { DayPickerArrowButton } from './DayPickerArrowButton';
 
 const days: {
   id: number;
@@ -24,6 +25,10 @@ export function DayPicker(): JSX.Element {
   return (
     <>
       <View style={styles.container}>
+        <DayPickerArrowButton
+          direction='left'
+          onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
+        />
         {days.map(day => (
           <DayPickerButton
             key={day.id}
@@ -33,6 +38,10 @@ export function DayPicker(): JSX.Element {
             onPress={() => setSelectedDay(day.id)}
           />
         ))}
+        <DayPickerArrowButton
+          direction='right'
+          onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
+        />
       </View>
       <PrimaryButton onPress={() => setSelectedDay(null)} label='Clear selection' />
     </>
