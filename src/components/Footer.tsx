@@ -27,14 +27,11 @@ export const Footer: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
     width: '100%',
     minHeight: footerHeight,
     backgroundColor: 'transparent',
     shadowColor: '#000',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: -1 },
   },
   wrapper: {

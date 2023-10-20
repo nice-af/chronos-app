@@ -11,14 +11,12 @@ function App(): JSX.Element {
     <View>
       <BackgroundView blendingMode={0} style={styles.backgroundView} />
       <View style={styles.container}>
+        <DayPicker />
         <ScrollView style={styles.entriesContainer}>
-          <View style={styles.spacerTop} />
           {fakeTrackingEntries.map(trackingEntry => (
             <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
           ))}
-          <View style={styles.spacerBottom} />
         </ScrollView>
-        <DayPicker />
         <Footer />
       </View>
     </View>
@@ -41,12 +39,6 @@ const styles = StyleSheet.create({
   },
   entriesContainer: {
     flexGrow: 1,
-  },
-  spacerTop: {
-    height: dayPickerHeight,
-  },
-  spacerBottom: {
-    height: footerHeight,
   },
 });
 

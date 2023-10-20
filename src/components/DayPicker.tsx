@@ -52,14 +52,11 @@ export const DayPicker: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
     width: '100%',
     minHeight: dayPickerHeight,
     backgroundColor: 'transparent',
     shadowColor: '#000',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 1 },
   },
   wrapper: {
