@@ -4,8 +4,7 @@ import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
 import { typo } from '../styles/typo';
 import transparentize from 'polished/lib/color/transparentize';
-
-export type Project = 'tmh' | 'orcaya' | 'solid';
+import { Project } from '../types';
 
 const themes: Record<string, { text: TextStyle; bg: ViewStyle }> = {
   red: {
@@ -75,7 +74,7 @@ function hashStr(str: string) {
 interface IssueTagProps extends Omit<PressableProps, 'style'> {
   label: string;
   project: Project;
-  onPress: () => void;
+  onPress?: () => void;
   style?: ViewStyle;
 }
 
@@ -112,12 +111,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-start',
     height: 20,
-    borderRadius: 5,
     backgroundColor: 'transparent',
     textAlign: 'center',
   },
   isHovered: {
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    // backgroundColor: 'rgba(0,0,0,0.1)',
   },
   isSelected: {
     opacity: 0.75,
@@ -126,16 +124,19 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginRight: 2,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
   },
   labelContainer: {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    ...getPadding(3.5, 5),
+    ...getPadding(3, 5),
     height: 20,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
   },
   label: {
     ...typo.subheadlineEmphasized,
-    color: colors.textSecondary,
   },
 });

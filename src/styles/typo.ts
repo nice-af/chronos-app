@@ -1,4 +1,4 @@
-import { StyleSheet, TextStyle } from 'react-native';
+import { TextStyle } from 'react-native';
 
 const headline: TextStyle = {
   fontSize: 14,
@@ -9,6 +9,17 @@ const headline: TextStyle = {
 const headlineEmphasized: TextStyle = {
   ...headline,
   fontWeight: '800',
+};
+
+const callout: TextStyle = {
+  fontSize: 12,
+  lineHeight: 15,
+  fontWeight: '400',
+};
+
+const calloutEmphasized: TextStyle = {
+  ...callout,
+  fontWeight: '600',
 };
 
 const subheadline: TextStyle = {
@@ -33,4 +44,13 @@ const footnoteEmphasized: TextStyle = {
   fontWeight: '600',
 };
 
-export const typo = { headline, headlineEmphasized, subheadline, subheadlineEmphasized, footnote, footnoteEmphasized };
+export const typo = {
+  headline,
+  headlineEmphasized,
+  callout,
+  calloutEmphasized,
+  subheadline,
+  subheadlineEmphasized,
+  footnote,
+  footnoteEmphasized,
+};

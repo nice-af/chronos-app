@@ -8,13 +8,13 @@ export type DayLabel = 'M' | 'T' | 'W' | 'F' | 'S';
 
 interface DayPickerButtonProps extends Omit<PressableProps, 'style'> {
   day: DayLabel;
-  time?: string;
+  duration?: string;
   onPress: () => void;
   style?: ViewStyle;
   isSelected?: boolean;
 }
 
-export const DayPickerButton: React.FC<DayPickerButtonProps> = ({ onPress, day, time, isSelected, ...props }) => {
+export const DayPickerButton: React.FC<DayPickerButtonProps> = ({ onPress, day, duration, isSelected, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -30,7 +30,7 @@ export const DayPickerButton: React.FC<DayPickerButtonProps> = ({ onPress, day, 
         props.style,
       ]}>
       <Text style={isSelected ? styles.textDaySelected : styles.textDay}>{day}</Text>
-      <Text style={styles.textTime}>{time ?? '-'}</Text>
+      <Text style={styles.textTime}>{duration ?? '-'}</Text>
     </Pressable>
   );
 };

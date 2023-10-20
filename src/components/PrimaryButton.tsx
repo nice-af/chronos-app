@@ -31,7 +31,6 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({ onPress, label, ..
 const styles = StyleSheet.create({
   pressable: {
     alignSelf: 'flex-start',
-    color: 'red',
     backgroundColor: colors.buttonBase,
     borderRadius: 5,
     ...getPadding(6, 12),

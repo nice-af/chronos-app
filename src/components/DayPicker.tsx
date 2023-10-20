@@ -19,7 +19,7 @@ const days: {
   { id: 6, abbreviation: 'S', time: undefined },
 ];
 
-export function DayPicker(): JSX.Element {
+export const DayPicker: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
 
   return (
@@ -33,7 +33,7 @@ export function DayPicker(): JSX.Element {
           <DayPickerButton
             key={day.id}
             day={day.abbreviation}
-            time={day.time}
+            duration={day.time}
             isSelected={selectedDay === day.id}
             onPress={() => setSelectedDay(day.id)}
           />
@@ -46,7 +46,7 @@ export function DayPicker(): JSX.Element {
       <PrimaryButton onPress={() => setSelectedDay(null)} label='Clear selection' />
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
