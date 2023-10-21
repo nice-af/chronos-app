@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 5,
     ...getPadding(6, 12),
+    overflow: 'visible',
   },
   isHovered: {
     opacity: 0.8,
