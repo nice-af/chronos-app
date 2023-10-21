@@ -52,6 +52,10 @@ export const DayPicker: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 99,
     width: '100%',
     minHeight: dayPickerHeight,
     backgroundColor: 'transparent',
