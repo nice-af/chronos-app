@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   entriesContainer: {
     flexGrow: 1,
     overflow: 'visible',
+    backgroundColor: 'rgba(0,0,0,0.1)',
   },
   spacerTop: {
     height: dayPickerHeight,
