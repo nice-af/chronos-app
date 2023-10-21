@@ -10,10 +10,9 @@
 		18658D7E9EE61B93DB9D931B /* libPods-JiraTimeTracker-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 645767C7112EB7841D142E29 /* libPods-JiraTimeTracker-macOS.a */; };
 		3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */; };
 		3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */; };
-		5142014D2437B4B30078DB4F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5142014C2437B4B30078DB4F /* AppDelegate.mm */; };
+		3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */; };
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
-		514201582437B4B40078DB4F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 514201572437B4B40078DB4F /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,13 +22,12 @@
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
 		3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundViewManager.h; sourceTree = "<group>"; };
 		3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundViewManager.m; sourceTree = "<group>"; };
+		3AD966452AE3F686003C5B78 /* JiraTimeTracker-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JiraTimeTracker-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		514201492437B4B30078DB4F /* JiraTimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiraTimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5142014B2437B4B30078DB4F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		5142014C2437B4B30078DB4F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		514201512437B4B40078DB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514201542437B4B40078DB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		514201572437B4B40078DB4F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		514201592437B4B40078DB4F /* JiraTimeTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JiraTimeTracker.entitlements; sourceTree = "<group>"; };
 		645767C7112EB7841D142E29 /* libPods-JiraTimeTracker-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B4B2B4A7ED61DE6844639B3 /* Pods-JiraTimeTracker-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -67,17 +65,16 @@
 		5142014A2437B4B30078DB4F /* JiraTimeTracker-macOS */ = {
 			isa = PBXGroup;
 			children = (
-				5142014B2437B4B30078DB4F /* AppDelegate.h */,
-				5142014C2437B4B30078DB4F /* AppDelegate.mm */,
 				514201512437B4B40078DB4F /* Assets.xcassets */,
 				514201532437B4B40078DB4F /* Main.storyboard */,
 				514201562437B4B40078DB4F /* Info.plist */,
-				514201572437B4B40078DB4F /* main.m */,
 				514201592437B4B40078DB4F /* JiraTimeTracker.entitlements */,
 				3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */,
 				3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */,
 				3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */,
 				3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */,
+				3AD966452AE3F686003C5B78 /* JiraTimeTracker-macOS-Bridging-Header.h */,
+				3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */,
 			);
 			path = "JiraTimeTracker-macOS";
 			sourceTree = "<group>";
@@ -177,6 +174,7 @@
 					};
 					514201482437B4B30078DB4F = {
 						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1500;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -343,9 +341,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */,
 				3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */,
-				514201582437B4B40078DB4F /* main.m in Sources */,
-				5142014D2437B4B30078DB4F /* AppDelegate.mm in Sources */,
 				3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,9 +407,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1BE2A568170CEBD170CE2740 /* Pods-JiraTimeTracker-macOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
@@ -421,9 +420,13 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/RCTTypeSafety/RCTTypeSafety.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React/React-Core.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/ReactCommon/ReactCommon.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React_Codegen/React-Codegen.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/folly/RCT-Folly.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/yoga/Yoga.modulemap\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = JiraTimeTracker;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -431,8 +434,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6B4B2B4A7ED61DE6844639B3 /* Pods-JiraTimeTracker-macOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
@@ -444,6 +450,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = JiraTimeTracker;
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
