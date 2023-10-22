@@ -1,3 +1,4 @@
+import { useAppState } from '@react-native-community/hooks';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
@@ -7,9 +8,10 @@ import { getPadding } from '../styles/utils';
 export const titleBarHeight = 28;
 
 export const TitleBar: React.FC = () => {
+  const currentAppState = useAppState();
   return (
     <View style={styles.container}>
-      <Text style={styles.today}>Today, 21 Oct</Text>
+      <Text style={[styles.today, currentAppState === 'inactive' && { opacity: 0.4 }]}>Today, 21 Oct</Text>
     </View>
   );
 };

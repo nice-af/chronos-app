@@ -17,6 +17,7 @@
     "no-prototype-builtins": "off",
     "no-throw-literal": "off",
     "react-hooks/exhaustive-deps": "off",
-    "react/jsx-no-useless-fragment": "off"
+    "react/jsx-no-useless-fragment": "off",
+    "react-native/no-inline-styles": "off"
   }
 }

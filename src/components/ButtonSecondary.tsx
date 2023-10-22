@@ -3,6 +3,7 @@ import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-na
 import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
 import { typo } from '../styles/typo';
+import { useAppState } from '@react-native-community/hooks';
 
 interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
   label: string;
@@ -13,6 +14,7 @@ interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
 
 export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const currentAppState = useAppState();
 
   return (
     <Pressable
@@ -24,6 +26,7 @@ export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label
         isHovered && styles.isHovered,
         pressed && styles.isActive,
         props.style,
+        currentAppState === 'inactive' && { opacity: 0.4 },
       ]}>
       <Text style={styles.label}>{label}</Text>
       {iconRight}
