@@ -28,9 +28,8 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingTop: 0,
     backgroundColor: 'transparent',
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 1 },
+    borderBottomColor: 'rgba(0,0,0,0.25)',
+    borderBottomWidth: 1,
   },
   backgroundView: {
     position: 'absolute',

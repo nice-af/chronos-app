@@ -42,9 +42,8 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: footerHeight,
     backgroundColor: 'transparent',
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: -1 },
+    borderTopColor: 'rgba(0,0,0,0.25)',
+    borderTopWidth: 1,
   },
   wrapper: {
     display: 'flex',
