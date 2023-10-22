@@ -54,5 +54,6 @@ const styles = StyleSheet.create({
   label: {
     ...typo.bodyEmphasized,
     color: colors.textPrimary,
+    lineHeight: 16,
   },
 });
