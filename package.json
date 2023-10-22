@@ -13,9 +13,12 @@
   "dependencies": {
     "@react-native-community/hooks": "^3.0.0",
     "polished": "^4.2.2",
+    "qs": "^6.11.2",
     "react": "18.2.0",
     "react-native": "0.71.14",
-    "react-native-macos": "^0.71.34"
+    "react-native-dotenv": "^3.4.9",
+    "react-native-macos": "^0.71.34",
+    "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -24,6 +27,7 @@
     "@react-native-community/eslint-config": "^3.2.0",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",
+    "@types/qs": "^6.9.9",
     "@types/react": "^18.0.24",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
