@@ -1,31 +1,15 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import BackgroundView from './src/components/BackgroundView.macos';
-import { DayPicker, dayPickerHeight } from './src/components/DayPicker';
-import { Footer, footerHeight } from './src/components/Footer';
-import { TrackingListEntry } from './src/components/TrackingListEntry';
-import { fakeTrackingEntries } from './src/utils/fake-data';
-import { Header } from './src/components/Header';
+import { StyleSheet, View } from 'react-native';
+import { dayPickerHeight } from './src/components/DayPicker';
+import { footerHeight } from './src/components/Footer';
 import { titleBarHeight } from './src/components/TitleBar';
+import { DayView } from './src/screens/DayView';
+import { Login } from './src/screens/Login';
 
 function App(): JSX.Element {
   return (
-    <View style={styles.globalContainer}>
-      <BackgroundView blendingMode={0} style={styles.backgroundView} />
-      <View style={styles.container}>
-        <Header />
-        <ScrollView
-          style={styles.entriesContainer}
-          removeClippedSubviews={false}
-          contentInset={{ top: titleBarHeight + dayPickerHeight, bottom: footerHeight }}>
-          <View style={styles.spacerTop} />
-          {fakeTrackingEntries.map(trackingEntry => (
-            <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
-          ))}
-          <View style={styles.spacerBottom} />
-        </ScrollView>
-        <Footer />
-      </View>
+    <View>
+      <DayView />
     </View>
   );
 }

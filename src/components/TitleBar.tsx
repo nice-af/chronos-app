@@ -7,11 +7,15 @@ import { getPadding } from '../styles/utils';
 
 export const titleBarHeight = 28;
 
-export const TitleBar: React.FC = () => {
+interface TitleBarProps {
+  title: string;
+}
+
+export const TitleBar: React.FC<TitleBarProps> = ({ title }) => {
   const currentAppState = useAppState();
   return (
     <View style={styles.container}>
-      <Text style={[styles.today, currentAppState === 'inactive' && { opacity: 0.4 }]}>Today, 21 Oct</Text>
+      <Text style={[styles.today, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>
     </View>
   );
 };
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: titleBarHeight,
-    ...getPadding(6, 16),
+    ...getPadding(5, 16),
   },
   today: {
     ...typo.bodyEmphasized,

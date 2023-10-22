@@ -4,12 +4,17 @@ import BackgroundView from './BackgroundView.macos';
 import { DayPicker, dayPickerHeight } from './DayPicker';
 import { TitleBar, titleBarHeight } from './TitleBar';
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  title: string;
+  showDayPicker?: boolean;
+}
+
+export const Header: React.FC<HeaderProps> = ({ title, showDayPicker }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { minHeight: titleBarHeight + (showDayPicker ? dayPickerHeight : 0) }]}>
       <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
-      <TitleBar />
-      <DayPicker />
+      <TitleBar title={title} />
+      {showDayPicker && <DayPicker />}
     </View>
   );
 };
@@ -21,7 +26,6 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 99,
     width: '100%',
-    minHeight: titleBarHeight + dayPickerHeight,
     paddingTop: 0,
     backgroundColor: 'transparent',
     shadowColor: '#000',

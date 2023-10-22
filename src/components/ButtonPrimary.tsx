@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: 8,
-    alignSelf: 'flex-start',
     backgroundColor: colors.buttonBase,
     borderRadius: 5,
     ...getPadding(6, 12),
@@ -50,6 +49,6 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typo.bodyEmphasized,
-    color: colors.contrast,
+    color: colors.textPrimary,
   },
 });

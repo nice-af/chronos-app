@@ -14,13 +14,13 @@ const headlineEmphasized: TextStyle = {
 
 const body: TextStyle = {
   fontSize: 13,
-  lineHeight: 16,
+  lineHeight: 18,
   fontWeight: '400',
 };
 
 const bodyEmphasized: TextStyle = {
   ...body,
-  fontWeight: '600',
+  fontWeight: '500',
 };
 
 const callout: TextStyle = {
