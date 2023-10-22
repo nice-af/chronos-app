@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		1BE2A568170CEBD170CE2740 /* Pods-JiraTimeTracker-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon.png"; path = "../../../../Downloads/Icon-App-Name.iconset/app-icon.png"; sourceTree = "<group>"; };
+		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
 		3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundViewManager.h; sourceTree = "<group>"; };
