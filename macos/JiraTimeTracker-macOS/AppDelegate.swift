@@ -19,17 +19,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let rootViewController = NSViewController()
     rootViewController.view = rootView
 
-    popover = NSPopover()
-
-    popover.contentSize = NSSize(width: 700, height: 800)
-    popover.animates = true
-    popover.behavior = .transient
-    popover.contentViewController = rootViewController
-
     statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(60))
 
     if let button = self.statusBarItem.button {
-      button.action = #selector(togglePopover(_:))
+      button.action = #selector(toggleWindow(_:))
       button.title = "JTA"
     }
 
@@ -40,6 +33,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       backing: .buffered,
       defer: false)
 
+    window.isOpaque = false
+    window.titlebarAppearsTransparent = true
+    window.makeKeyAndOrderFront(nil)
+    window.isMovableByWindowBackground = true
+    window.titlebarAppearsTransparent = true
+    window.titleVisibility = .hidden
+    
     window.contentViewController = rootViewController
     window.center()
     window.setFrameAutosaveName("Tempomat Main Window")
@@ -55,14 +55,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     #endif
   }
 
-  @objc func togglePopover(_ sender: AnyObject?) {
+  @objc func toggleWindow(_ sender: AnyObject?) {
     if let button = self.statusBarItem.button {
-      if self.popover.isShown {
-        self.popover.performClose(sender)
+      if self.window.isMiniaturized {
+        self.window.close()
       } else {
-        self.popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
+        self.window.display();
+        self.window.becomeKey();
+        // self.window.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
 
-        self.popover.contentViewController?.view.window?.becomeKey()
+        // self.popover.contentViewController?.view.window?.becomeKey()
       }
     }
   }

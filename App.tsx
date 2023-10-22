@@ -5,13 +5,14 @@ import { DayPicker, dayPickerHeight } from './src/components/DayPicker';
 import { Footer, footerHeight } from './src/components/Footer';
 import { TrackingListEntry } from './src/components/TrackingListEntry';
 import { fakeTrackingEntries } from './src/utils/fake-data';
+import { Header } from './src/components/Header';
 
 function App(): JSX.Element {
   return (
-    <View>
+    <View style={styles.globalContainer}>
       <BackgroundView blendingMode={0} style={styles.backgroundView} />
       <View style={styles.container}>
-        <DayPicker />
+        <Header />
         <ScrollView
           style={styles.entriesContainer}
           removeClippedSubviews={false}
@@ -29,6 +30,9 @@ function App(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  globalContainer: {
+    marginTop: -28,
+  },
   container: {
     display: 'flex',
     justifyContent: 'center',

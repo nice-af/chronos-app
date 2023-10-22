@@ -24,6 +24,9 @@ const buttonColors = {
   buttonBase: baseColors.blue,
   buttonHover: '#0872dd',
   buttonActive: '#0b6ac9',
+  secondaryButtonBase: 'rgba(255,255,255,0.1)',
+  secondaryButtonHover: 'rgba(255,255,255,0.2)',
+  secondaryButtonActive: 'rgba(255,255,255,0.1)',
 };
 
 export const colors = {

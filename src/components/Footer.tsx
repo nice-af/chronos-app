@@ -2,8 +2,9 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { getPadding } from '../styles/utils';
 import BackgroundView from './BackgroundView.macos';
-import { PlusButton } from './PlusButton';
-import { PrimaryButton } from './PrimaryButton';
+import { FooterButton } from './FooterButton';
+import { ButtonPrimary } from './ButtonPrimary';
+import { ButtonSecondary } from './ButtonSecondary';
 
 export const footerHeight = 44;
 
@@ -13,12 +14,17 @@ export const Footer: React.FC = () => {
       <View style={styles.container}>
         <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
         <View style={styles.wrapper}>
-          <PlusButton onPress={() => {}} />
-          <PrimaryButton
+          <FooterButton onPress={() => {}}>
+            <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
+          </FooterButton>
+          <ButtonSecondary
             onPress={() => null}
             label='Submit timesheet'
             iconRight={<Image style={styles.paperplane} source={require('../assets/icon-paperplane.png')} />}
           />
+          <FooterButton onPress={() => {}}>
+            <Image style={styles.icon} source={require('../assets/icon-calendar-jump.png')} />
+          </FooterButton>
         </View>
       </View>
     </>
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    ...getPadding(8, 16),
+    ...getPadding(8, 12),
   },
   backgroundView: {
     position: 'absolute',
@@ -55,5 +61,9 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     margin: -1,
+  },
+  icon: {
+    width: 16,
+    height: 16,
   },
 });
