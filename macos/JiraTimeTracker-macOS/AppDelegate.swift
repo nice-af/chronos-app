@@ -6,10 +6,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var popover: NSPopover!
   var window: NSWindow!
   var statusBarItem: NSStatusItem!
+  
+  // The new event handler for deep links
+  @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
+    return RCTLinkingManager.getUrlEventHandler(event, withReplyEvent: reply)
+  }
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    let jsCodeLocation: URL
+    // Assign the new handler for deep links
+    var em = NSAppleEventManager.shared()
+    em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
 
+    let jsCodeLocation: URL
     #if DEBUG
       jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
     #else
@@ -26,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       button.title = "JTA"
     }
 
-    #if DEBUG
+    // Create the application window
     window = NSWindow(
       contentRect: NSRect(x: 0, y: 0, width: 1, height: 1),
       styleMask: [.titled, .closable, .miniaturizable, .resizable],
@@ -39,7 +47,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.isMovableByWindowBackground = true
     window.titlebarAppearsTransparent = true
     window.titleVisibility = .hidden
-    
     window.contentViewController = rootViewController
     window.center()
     window.setFrameAutosaveName("Tempomat Main Window")
@@ -52,13 +59,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let size = CGSize(width: 700, height: 800)
     let frame = NSRect(origin: origin, size: size)
     window.setFrame(frame, display: true)
-    #endif
   }
   
-  public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-      return RCTLinkingManager.application(app, open: url, options: options)
-  }
-
   @objc func toggleWindow(_ sender: AnyObject?) {
     if let button = self.statusBarItem.button {
       if self.window.isMiniaturized {

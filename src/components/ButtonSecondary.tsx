@@ -1,9 +1,9 @@
+import { useAppState } from '@react-native-community/hooks';
 import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
 import { colors } from '../styles/colors';
-import { getPadding } from '../styles/utils';
 import { typo } from '../styles/typo';
-import { useAppState } from '@react-native-community/hooks';
+import { getPadding } from '../styles/utils';
 
 interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
   label: string;

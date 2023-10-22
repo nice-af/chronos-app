@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, EmitterSubscription, Image, Linking, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { Alert, Image, Linking, StyleSheet, Text, View } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
+import { useInitialURL } from '../services/deep-linking.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { useInitialURL } from '../services/deep-linking.service';
 
 interface LoginProps {
   onLoginPress: () => void;
 }
 
 const YOUR_USER_BOUND_VALUE = 'test123';
-const oAuthUrl = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=DBH6YrvUgT6iprVkMaqlS31IGzxBkLh1&scope=read%3Ajira-work&redirect_uri=http%3A%2F%2Flocalhost%3A3420&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent`;
+const oAuthUrl = `https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=DBH6YrvUgT6iprVkMaqlS31IGzxBkLh1&scope=read%3Ajira-work&redirect_uri=de.adrianfahrbach.jiratimetracker%3A%2F%2Fauth&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent`;
 
 export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
   const handlePress = useCallback(async () => {
