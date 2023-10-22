@@ -54,6 +54,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.setFrame(frame, display: true)
     #endif
   }
+  
+  public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+      return RCTLinkingManager.application(app, open: url, options: options)
+  }
 
   @objc func toggleWindow(_ sender: AnyObject?) {
     if let button = self.statusBarItem.button {
