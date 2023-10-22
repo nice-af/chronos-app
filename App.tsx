@@ -6,6 +6,7 @@ import { Footer, footerHeight } from './src/components/Footer';
 import { TrackingListEntry } from './src/components/TrackingListEntry';
 import { fakeTrackingEntries } from './src/utils/fake-data';
 import { Header } from './src/components/Header';
+import { titleBarHeight } from './src/components/TitleBar';
 
 function App(): JSX.Element {
   return (
@@ -16,7 +17,7 @@ function App(): JSX.Element {
         <ScrollView
           style={styles.entriesContainer}
           removeClippedSubviews={false}
-          contentInset={{ top: dayPickerHeight, bottom: footerHeight }}>
+          contentInset={{ top: titleBarHeight + dayPickerHeight, bottom: footerHeight }}>
           <View style={styles.spacerTop} />
           {fakeTrackingEntries.map(trackingEntry => (
             <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
   spacerTop: {
-    height: dayPickerHeight,
+    height: titleBarHeight + dayPickerHeight,
   },
   spacerBottom: {
     height: footerHeight,
