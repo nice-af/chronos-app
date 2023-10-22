@@ -2,14 +2,18 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { dayPickerHeight } from '../components/DayPicker';
 import { Footer, footerHeight } from '../components/Footer';
-import { GlobalContainer } from '../components/GlobalContainer';
+import { Layout } from '../components/Layout';
 import { titleBarHeight } from '../components/TitleBar';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { fakeTrackingEntries } from '../utils/fake-data';
 
-export const DayView: React.FC = () => {
+interface DayViewProps {
+  onSubmitPress: () => void;
+}
+
+export const DayView: React.FC<DayViewProps> = ({ onSubmitPress }) => {
   return (
-    <GlobalContainer header={{ title: 'Today, 21 Oct', showDayPicker: true }}>
+    <Layout header={{ title: 'Today, 21 Oct', showDayPicker: true }}>
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}
@@ -20,8 +24,8 @@ export const DayView: React.FC = () => {
         ))}
         <View style={styles.spacerBottom} />
       </ScrollView>
-      <Footer />
-    </GlobalContainer>
+      <Footer onSubmitPress={onSubmitPress} />
+    </Layout>
   );
 };
 

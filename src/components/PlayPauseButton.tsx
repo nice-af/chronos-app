@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Image, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { colors } from '../styles/colors';
-import { getPadding } from '../styles/utils';
 import transparentize from 'polished/lib/color/transparentize';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
+import { getPadding } from '../styles/utils';
 import { durationToString } from '../utils/duration';
 
 interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {

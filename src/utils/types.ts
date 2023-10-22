@@ -1,3 +1,5 @@
+export type Screen = 'login' | 'dayView';
+
 export type Project = 'tmh' | 'orcaya' | 'solid';
 
 export interface TrackingEntry {

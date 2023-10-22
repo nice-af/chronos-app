@@ -2,13 +2,16 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { getPadding } from '../styles/utils';
 import BackgroundView from './BackgroundView.macos';
-import { FooterButton } from './FooterButton';
-import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
+import { FooterButton } from './FooterButton';
 
 export const footerHeight = 44;
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onSubmitPress: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onSubmitPress }) => {
   return (
     <>
       <View style={styles.container}>
@@ -18,7 +21,7 @@ export const Footer: React.FC = () => {
             <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
           </FooterButton>
           <ButtonSecondary
-            onPress={() => null}
+            onPress={onSubmitPress}
             label='Submit timesheet'
             iconRight={<Image style={styles.paperplane} source={require('../assets/icon-paperplane.png')} />}
           />

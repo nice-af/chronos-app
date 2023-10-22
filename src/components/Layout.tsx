@@ -1,17 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BackgroundView from '../components/BackgroundView.macos';
-import { dayPickerHeight } from '../components/DayPicker';
-import { footerHeight } from '../components/Footer';
-import { Header, HeaderProps } from '../components/Header';
-import { titleBarHeight } from '../components/TitleBar';
+import BackgroundView from './BackgroundView.macos';
+import { Header, HeaderProps } from './Header';
 
-interface GlobalContainerProps {
+interface LayoutProps {
   header: HeaderProps;
   children: React.ReactNode;
 }
 
-export const GlobalContainer: React.FC<GlobalContainerProps> = ({ header, children }) => {
+export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
   return (
     <View style={styles.globalContainer}>
       <BackgroundView blendingMode={0} style={styles.backgroundView} />
