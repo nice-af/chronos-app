@@ -4,6 +4,7 @@ import { ApiSettings, GlobalContext } from './src/contexts/global.context';
 import { DayView } from './src/screens/DayView';
 import { Login } from './src/screens/Login';
 import { Screen } from './src/types/global.types';
+import { DebugTools } from './src/components/DebugTools';
 
 function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
@@ -56,6 +57,7 @@ function App(): JSX.Element {
         ]}>
         <DayView onSubmitPress={() => setCurrentScreen('login')} />
       </Animated.View>
+      <DebugTools />
     </GlobalContext.Provider>
   );
 }
