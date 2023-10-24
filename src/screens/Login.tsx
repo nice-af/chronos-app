@@ -2,17 +2,17 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
+import { useAuthRequest } from '../services/auth.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { useAuthRequest } from '../services/auth.service';
 
 interface LoginProps {
   onLoginPress: () => void;
 }
 
 export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
-  const { requestOAuth, isLoading, token } = useAuthRequest();
+  const { requestOAuth, isLoading } = useAuthRequest();
 
   return (
     <Layout header={{ title: 'Login', showDayPicker: false }}>
@@ -20,9 +20,6 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
         <Image style={styles.appIcon} source={require('../assets/app-icon.png')} />
         <Text style={styles.text}>Click the button below to login to your Jira account.</Text>
         <Text>isLoading: {isLoading ? 'true' : 'false'}</Text>
-        <Text>
-          token: <Text style={{ fontSize: 8 }}>{token}</Text>
-        </Text>
         <ButtonPrimary label='Login to Jira' onPress={requestOAuth} />
         <Text>-</Text>
         <ButtonPrimary label='To next page' onPress={onLoginPress} />

@@ -1,4 +1,4 @@
-import { TrackingEntry } from './types';
+import { TrackingEntry } from '../types/global.types';
 
 export const fakeTrackingEntries: TrackingEntry[] = [
   {

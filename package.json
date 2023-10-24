@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-community/hooks": "^3.0.0",
+    "jira.js": "^3.0.0",
     "polished": "^4.2.2",
     "qs": "^6.11.2",
     "react": "18.2.0",

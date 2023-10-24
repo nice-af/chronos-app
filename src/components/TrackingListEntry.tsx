@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
-import { TrackingEntry } from '../utils/types';
+import { TrackingEntry } from '../types/global.types';
 import { IssueTag } from './IssueTag';
 import { typo } from '../styles/typo';
 import { PlayPauseButton } from './PlayPauseButton';

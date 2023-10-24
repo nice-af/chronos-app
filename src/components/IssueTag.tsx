@@ -4,7 +4,7 @@ import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
 import { typo } from '../styles/typo';
 import transparentize from 'polished/lib/color/transparentize';
-import { Project } from '../utils/types';
+import { Project } from '../types/global.types';
 
 const themes: Record<string, { text: TextStyle; bg: ViewStyle }> = {
   red: {
