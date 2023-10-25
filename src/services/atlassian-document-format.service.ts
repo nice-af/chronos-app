@@ -26,5 +26,9 @@ export function extractTextFromJSON(json: Omit<Document, 'version'>) {
     }
   });
 
+  if (text.startsWith('\n')) {
+    text = text.slice(1);
+  }
+
   return text;
 }
