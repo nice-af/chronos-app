@@ -17,7 +17,7 @@ export const DayView: React.FC<DayViewProps> = ({ onSubmitPress }) => {
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}
-        contentInset={{ top: titleBarHeight + dayPickerHeight, bottom: footerHeight }}>
+        contentInset={{ top: titleBarHeight + dayPickerHeight + 6, bottom: footerHeight + 6 }}>
         <View style={styles.spacerTop} />
         {fakeTrackingEntries.map(trackingEntry => (
           <TrackingListEntry key={trackingEntry.id} trackingEntry={trackingEntry} />

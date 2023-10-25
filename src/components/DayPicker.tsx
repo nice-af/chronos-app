@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
@@ -24,6 +24,10 @@ const days: {
 
 export const DayPicker: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+
+  useEffect(() => {
+    setSelectedDay(new Date().getDay());
+  }, []);
 
   return (
     <View style={styles.container}>
