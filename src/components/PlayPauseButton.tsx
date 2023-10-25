@@ -1,7 +1,7 @@
 import transparentize from 'polished/lib/color/transparentize';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { formatUnixTimestampToHHMM } from '../services/date.service';
+import { formatUnixTimestampToHMM } from '../services/date.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
@@ -78,7 +78,7 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
         <Animated.View style={[styles.buttonFill, { transform: [{ scale: animBounce }] }]} />
       </Pressable>
       <Text style={[styles.duration, { color: isRunning ? colors.green : colors.textSecondary }]}>
-        {formatUnixTimestampToHHMM(duration)}
+        {formatUnixTimestampToHMM(duration)}
       </Text>
     </View>
   );

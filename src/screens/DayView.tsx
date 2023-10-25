@@ -6,7 +6,7 @@ import { Layout } from '../components/Layout';
 import { titleBarHeight } from '../components/TitleBar';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
-import { formatDateToYYYYMMDD, getWeekday } from '../services/date.service';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
 
 interface DayViewProps {

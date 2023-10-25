@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import ms from 'ms';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { GlobalContext } from '../contexts/global.context';
+import {
+  formatDateToYYYYMMDD,
+  formatUnixTimestampToHMM,
+  getWeekday,
+  setDateToThisWeekday,
+} from '../services/date.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { DayPickerArrowButton } from './DayPickerArrowButton';
 import { DayLabel, DayPickerButton } from './DayPickerButton';
-import { GlobalContext } from '../contexts/global.context';
-import ms from 'ms';
-import {
-  formatUnixTimestampToHHMM,
-  formatDateToYYYYMMDD,
-  getWeekday,
-  setDateToThisWeekday,
-} from '../services/date.service';
 
 export const dayPickerHeight = 56;
 
@@ -42,7 +42,7 @@ export const DayPicker: React.FC = () => {
         <DayPickerButton
           key={day.id}
           day={day.abbreviation}
-          duration={formatUnixTimestampToHHMM(
+          duration={formatUnixTimestampToHMM(
             worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
           )}
           isSelected={getWeekday(selectedDate) === day.id}

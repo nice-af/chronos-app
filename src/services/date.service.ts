@@ -26,9 +26,13 @@ export const formatDateToYYYYMMDD = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-export function formatUnixTimestampToHHMM(timestamp: number): string {
+export function formatUnixTimestampToHMM(timestamp: number): string {
+  if (timestamp === 0) {
+    // We need this otherwise a timestamp of 0 will be converted to 01:00
+    return '0:00';
+  }
   const date = new Date(timestamp);
-  const hours = `${date.getHours()}`.padStart(2, '0');
+  const hours = date.getHours();
   const minutes = `${date.getMinutes()}`.padStart(2, '0');
   return `${hours}:${minutes}`;
 }

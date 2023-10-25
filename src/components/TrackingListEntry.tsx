@@ -7,7 +7,6 @@ import { getPadding } from '../styles/utils';
 import { WorklogCompact } from '../types/global.types';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
-import { formatDateToYYYYMMDD, formatUnixTimestampToHHMM } from '../services/date.service';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklogCompact: WorklogCompact;

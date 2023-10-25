@@ -1,10 +1,10 @@
 import { useAppState } from '@react-native-community/hooks';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { GlobalContext } from '../contexts/global.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { GlobalContext } from '../contexts/global.context';
 
 export const titleBarHeight = 28;
 

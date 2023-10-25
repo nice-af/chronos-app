@@ -46,9 +46,12 @@ function convertWorklogs(worklogs: Worklog[], accountId: string, issue: Issue): 
       issueKey: issue.key,
       issueSummary: issue.fields.summary,
       started: worklog.started ?? '',
-      timeSpent: (worklog.timeSpent ?? '')
-        .split(' ')
-        .reduce((acc: number, curr: string) => acc + ms(curr.replace('m', 'min')), 0),
+      timeSpent: (worklog.timeSpent ?? '').split(' ').reduce(
+        (acc: number, curr: string) =>
+          // TODO: This is a hacky way to convert the Jira time format to ms
+          acc + ms(curr.replace('m', 'min').replace('1d', '8h').replace('2d', '16h').replace('3d', '24h')),
+        0
+      ),
       comment: worklog.comment ? extractTextFromJSON(worklog.comment) : undefined,
     }));
 }
