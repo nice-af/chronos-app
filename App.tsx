@@ -5,14 +5,30 @@ import { DebugTools } from './src/components/DebugTools';
 import { ApiSettings, GlobalContext } from './src/contexts/global.context';
 import { DayView } from './src/screens/DayView';
 import { Login } from './src/screens/Login';
-import { Screen } from './src/types/global.types';
+import { Screen, WorklogDaysObject } from './src/types/global.types';
+import { getWorklogsCompact } from './src/services/jira.service';
+import { convertWorklogsToDaysObject } from './src/services/worklogs.service';
 
 function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
+  const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
   const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
   const screenPos = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
+
+  useEffect(() => {
+    if (userInfo?.accountId) {
+      getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
+        console.log('worklogsCompact');
+        console.log(worklogsCompact);
+        const test = convertWorklogsToDaysObject(worklogsCompact);
+        console.log('test');
+        console.log(test);
+        setWorklogs(test);
+      });
+    }
+  }, [userInfo?.accountId]);
 
   useEffect(() => {
     Animated.timing(screenPos, {
@@ -24,7 +40,8 @@ function App(): JSX.Element {
   }, [currentScreen]);
 
   return (
-    <GlobalContext.Provider value={{ currentScreen, apiSettings, setApiSettings, userInfo, setUserInfo }}>
+    <GlobalContext.Provider
+      value={{ currentScreen, apiSettings, setApiSettings, userInfo, setUserInfo, worklogs, setWorklogs }}>
       <Animated.View
         style={[
           styles.screenContainer,

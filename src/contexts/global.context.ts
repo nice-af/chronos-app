@@ -1,7 +1,8 @@
 import { Version3Models } from 'jira.js';
 import React from 'react';
 import { JiraResource } from '../types/auth.types';
-import { Screen } from '../types/global.types';
+import { Screen, WorklogDaysObject } from '../types/global.types';
+import { Worklog } from 'jira.js/out/version2/models';
 
 export interface ApiSettings {
   token: string;
@@ -14,6 +15,8 @@ interface GlobalContextProps {
   setApiSettings: (apiSettings: ApiSettings) => void;
   userInfo: Version3Models.User | null;
   setUserInfo: (apiSettings: Version3Models.User) => void;
+  worklogs: WorklogDaysObject | null;
+  setWorklogs: (daysObject: WorklogDaysObject) => void;
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
@@ -22,4 +25,6 @@ export const GlobalContext = React.createContext<GlobalContextProps>({
   setApiSettings: () => {},
   userInfo: null,
   setUserInfo: () => {},
+  worklogs: null,
+  setWorklogs: () => {},
 });

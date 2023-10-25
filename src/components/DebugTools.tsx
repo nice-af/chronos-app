@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { getPadding } from '../styles/utils';
-import { getUserInfo } from '../services/jira.service';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;
@@ -25,7 +24,11 @@ export const DebugToolsTab: React.FC<DebugToolsTabProps> = ({ defaultExpanded, t
 
 export const DebugTools: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const globalContext = useContext(GlobalContext);
+  const { apiSettings, worklogs, userInfo, currentScreen } = useContext(GlobalContext);
+
+  useEffect(() => {
+    console.log(apiSettings?.token);
+  }, [apiSettings?.token]);
 
   if (!expanded) {
     return (
@@ -40,20 +43,17 @@ export const DebugTools: React.FC = () => {
           <Text style={styles.xButtonTitle}>X</Text>
         </Pressable>
         <ScrollView>
-          <DebugToolsTab title='globalContext'>
-            <Text>
-              {JSON.stringify(
-                {
-                  ...globalContext,
-                  apiSettings: {
-                    ...globalContext.apiSettings,
-                    token: globalContext.apiSettings?.token.substring(0, 20) + '...',
-                  },
-                },
-                null,
-                2
-              )}
-            </Text>
+          <DebugToolsTab title='apiSettings'>
+            <Text>{JSON.stringify(apiSettings, null, 2)}</Text>
+          </DebugToolsTab>
+          <DebugToolsTab title='worklogs'>
+            <Text>{JSON.stringify(worklogs, null, 2)}</Text>
+          </DebugToolsTab>
+          <DebugToolsTab title='userInfo'>
+            <Text>{JSON.stringify(userInfo, null, 2)}</Text>
+          </DebugToolsTab>
+          <DebugToolsTab title='currentScreen'>
+            <Text>{JSON.stringify(currentScreen, null, 2)}</Text>
           </DebugToolsTab>
         </ScrollView>
       </View>

@@ -61,7 +61,8 @@ export const useAuthRequest = () => {
       const resources = await getAccessibleResources(newToken);
       setApiSettings({ token: newToken, resource: resources[0] });
       initiateJiraClient(resources[0].id, newToken);
-      setUserInfo(await getUserInfo());
+      const userInfo = await getUserInfo();
+      setUserInfo(userInfo);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
