@@ -16,6 +16,7 @@ export interface TrackingEntry {
 }
 
 export interface WorklogCompact {
+  id: string;
   issueKey: string;
   issueSummary: string;
   started: string;

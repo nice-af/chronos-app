@@ -42,6 +42,7 @@ function convertWorklogs(worklogs: Worklog[], accountId: string, issue: Issue): 
   return worklogs
     ?.filter(worklog => worklog.author?.accountId === accountId && worklog.started && worklog.timeSpent)
     .map(worklog => ({
+      id: worklog.id ?? '',
       issueKey: issue.key,
       issueSummary: issue.fields.summary,
       started: worklog.started ?? '',

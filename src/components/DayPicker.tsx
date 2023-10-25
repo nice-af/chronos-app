@@ -1,52 +1,57 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { DayPickerArrowButton } from './DayPickerArrowButton';
 import { DayLabel, DayPickerButton } from './DayPickerButton';
+import { GlobalContext } from '../contexts/global.context';
+import ms from 'ms';
+import {
+  formatUnixTimestampToHHMM,
+  formatDateToYYYYMMDD,
+  getWeekday,
+  setDateToThisWeekday,
+} from '../services/date.service';
 
 export const dayPickerHeight = 56;
 
 const days: {
   id: number;
   abbreviation: DayLabel;
-  time?: string;
 }[] = [
-  { id: 0, abbreviation: 'M', time: '8:15' },
-  { id: 1, abbreviation: 'T', time: '7:45' },
-  { id: 2, abbreviation: 'W', time: '8:00' },
-  { id: 3, abbreviation: 'T', time: '7:10' },
-  { id: 4, abbreviation: 'F', time: undefined },
-  { id: 5, abbreviation: 'S', time: undefined },
-  { id: 6, abbreviation: 'S', time: undefined },
+  { id: 0, abbreviation: 'M' },
+  { id: 1, abbreviation: 'T' },
+  { id: 2, abbreviation: 'W' },
+  { id: 3, abbreviation: 'T' },
+  { id: 4, abbreviation: 'F' },
+  { id: 5, abbreviation: 'S' },
+  { id: 6, abbreviation: 'S' },
 ];
 
 export const DayPicker: React.FC = () => {
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-
-  useEffect(() => {
-    setSelectedDay(new Date().getDay());
-  }, []);
+  const { selectedDate, setSelectedDate, worklogs } = useContext(GlobalContext);
 
   return (
     <View style={styles.container}>
       <DayPickerArrowButton
         direction='left'
-        onPress={() => setSelectedDay(selectedDay !== null ? Math.max(selectedDay - 1, 0) : 0)}
+        onPress={() => setSelectedDate(new Date(selectedDate.getTime() - ms('1d')))}
       />
       {days.map(day => (
         <DayPickerButton
           key={day.id}
           day={day.abbreviation}
-          duration={day.time}
-          isSelected={selectedDay === day.id}
-          onPress={() => setSelectedDay(day.id)}
+          duration={formatUnixTimestampToHHMM(
+            worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
+          )}
+          isSelected={getWeekday(selectedDate) === day.id}
+          onPress={() => setSelectedDate(setDateToThisWeekday(selectedDate, day.id))}
         />
       ))}
       <DayPickerArrowButton
         direction='right'
-        onPress={() => setSelectedDay(selectedDay !== null ? Math.min(selectedDay + 1, 6) : 6)}
+        onPress={() => setSelectedDate(new Date(selectedDate.getTime() + ms('1d')))}
       />
     </View>
   );

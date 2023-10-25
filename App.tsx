@@ -14,6 +14,7 @@ function App(): JSX.Element {
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
   const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
   const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().setUTCHours(0, 0, 0, 0)));
   const screenPos = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
@@ -36,7 +37,17 @@ function App(): JSX.Element {
 
   return (
     <GlobalContext.Provider
-      value={{ currentScreen, apiSettings, setApiSettings, userInfo, setUserInfo, worklogs, setWorklogs }}>
+      value={{
+        currentScreen,
+        apiSettings,
+        setApiSettings,
+        userInfo,
+        setUserInfo,
+        worklogs,
+        setWorklogs,
+        selectedDate,
+        setSelectedDate,
+      }}>
       <Animated.View
         style={[
           styles.screenContainer,

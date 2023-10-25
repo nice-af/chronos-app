@@ -16,7 +16,9 @@ interface GlobalContextProps {
   userInfo: Version3Models.User | null;
   setUserInfo: (apiSettings: Version3Models.User) => void;
   worklogs: WorklogDaysObject | null;
-  setWorklogs: (daysObject: WorklogDaysObject) => void;
+  setWorklogs: (worklogs: WorklogDaysObject) => void;
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
@@ -27,4 +29,6 @@ export const GlobalContext = React.createContext<GlobalContextProps>({
   setUserInfo: () => {},
   worklogs: null,
   setWorklogs: () => {},
+  selectedDate: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+  setSelectedDate: () => {},
 });

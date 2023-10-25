@@ -1,34 +1,35 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
-import { getPadding } from '../styles/utils';
-import { TrackingEntry } from '../types/global.types';
-import { IssueTag } from './IssueTag';
 import { typo } from '../styles/typo';
+import { getPadding } from '../styles/utils';
+import { WorklogCompact } from '../types/global.types';
+import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
+import { formatDateToYYYYMMDD, formatUnixTimestampToHHMM } from '../services/date.service';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
-  trackingEntry: TrackingEntry;
+  worklogCompact: WorklogCompact;
   isSelected?: boolean;
   onPress?: () => void;
 }
 
-export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, trackingEntry, isSelected }) => {
+export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, worklogCompact, isSelected }) => {
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
-          <IssueTag label={trackingEntry.tag} project={trackingEntry.project} />
+          <IssueTag label={worklogCompact.issueKey} project={'orcaya'} />
           <Text numberOfLines={1} style={styles.title}>
-            {trackingEntry.title}
+            {worklogCompact.issueSummary}
           </Text>
         </View>
-        <Text style={styles.description}>{trackingEntry.description}</Text>
+        {worklogCompact.comment && <Text style={styles.description}>{worklogCompact.comment}</Text>}
       </View>
-      <PlayPauseButton duration={trackingEntry.duration} isRunning={false} onPress={() => {}} />
+      <PlayPauseButton duration={worklogCompact.timeSpent} isRunning={false} onPress={() => {}} />
     </Pressable>
   );
 };

@@ -1,9 +1,10 @@
 import { useAppState } from '@react-native-community/hooks';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { GlobalContext } from '../contexts/global.context';
 
 export const titleBarHeight = 28;
 
@@ -13,9 +14,17 @@ interface TitleBarProps {
 
 export const TitleBar: React.FC<TitleBarProps> = ({ title }) => {
   const currentAppState = useAppState();
+  const { selectedDate } = useContext(GlobalContext);
+
+  const selectedDateString = selectedDate.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+
   return (
     <View style={styles.container}>
-      <Text style={[styles.today, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>
+      <Text style={[styles.today, currentAppState === 'inactive' && { opacity: 0.4 }]}>{selectedDateString}</Text>
     </View>
   );
 };
