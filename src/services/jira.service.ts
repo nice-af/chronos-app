@@ -60,6 +60,8 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
     throw new Error('Jira client not initialized');
   }
 
+  const startedAfterTimestamp = new Date().getTime() - ms('4w');
+
   const worklogsCompact: WorklogCompact[] = [];
   const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -4w`;
   const maxIssuesResults = 40;
@@ -92,6 +94,7 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
             issueIdOrKey: issue.id,
             maxResults: maxWorklogResults,
             startAt: currentWorklog,
+            startedAfter: startedAfterTimestamp,
           });
           worklogsCompact.push(...convertWorklogs(worklogsCall.worklogs ?? [], accountId, issue));
           currentWorklog += maxWorklogResults;
