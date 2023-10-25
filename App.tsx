@@ -1,14 +1,16 @@
+import { Version3Models } from 'jira.js';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, useWindowDimensions } from 'react-native';
+import { DebugTools } from './src/components/DebugTools';
 import { ApiSettings, GlobalContext } from './src/contexts/global.context';
 import { DayView } from './src/screens/DayView';
 import { Login } from './src/screens/Login';
 import { Screen } from './src/types/global.types';
-import { DebugTools } from './src/components/DebugTools';
 
 function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
+  const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
   const screenPos = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
 
@@ -22,7 +24,7 @@ function App(): JSX.Element {
   }, [currentScreen]);
 
   return (
-    <GlobalContext.Provider value={{ currentScreen, apiSettings, setApiSettings }}>
+    <GlobalContext.Provider value={{ currentScreen, apiSettings, setApiSettings, userInfo, setUserInfo }}>
       <Animated.View
         style={[
           styles.screenContainer,

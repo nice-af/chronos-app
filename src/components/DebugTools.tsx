@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { getPadding } from '../styles/utils';
+import { getUserInfo } from '../services/jira.service';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;

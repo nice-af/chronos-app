@@ -1,11 +1,12 @@
-import uuid from 'react-native-uuid';
-import qs from 'qs';
-import { Alert, Linking } from 'react-native';
-import { useContext, useEffect, useRef, useState } from 'react';
 import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
-import { getUrlParams } from '../utils/url';
-import { GetAccessibleResourcesResponse, GetOauthTokenResponse } from '../types/auth.types';
+import qs from 'qs';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Alert, Linking } from 'react-native';
+import uuid from 'react-native-uuid';
 import { GlobalContext } from '../contexts/global.context';
+import { GetAccessibleResourcesResponse, GetOauthTokenResponse } from '../types/auth.types';
+import { getUrlParams } from '../utils/url';
+import { getUserInfo, initiateJiraClient } from './jira.service';
 
 /**
  * Exchanges the OAuth code for an access token
@@ -23,7 +24,7 @@ async function getOAuthToken(code: string): Promise<GetOauthTokenResponse> {
       code: code,
       redirect_uri: JIRA_REDIRECT_URI,
     }),
-  }).then(response => response.json());
+  }).then(response => response.json() as Promise<GetOauthTokenResponse>);
 }
 
 /**
@@ -36,11 +37,11 @@ async function getAccessibleResources(accessToken: string): Promise<GetAccessibl
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
     },
-  }).then(response => response.json());
+  }).then(response => response.json() as Promise<GetAccessibleResourcesResponse>);
 }
 
 export const useAuthRequest = () => {
-  const { setApiSettings } = useContext(GlobalContext);
+  const { setApiSettings, setUserInfo } = useContext(GlobalContext);
   const state = useRef<string>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,6 +60,8 @@ export const useAuthRequest = () => {
       const { access_token: newToken } = await getOAuthToken(urlCode);
       const resources = await getAccessibleResources(newToken);
       setApiSettings({ token: newToken, resource: resources[0] });
+      initiateJiraClient(resources[0].id, newToken);
+      setUserInfo(await getUserInfo());
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -73,7 +76,7 @@ export const useAuthRequest = () => {
     oAuthUrl += qs.stringify({
       audience: 'api.atlassian.com',
       client_id: JIRA_CLIENT_ID,
-      scope: 'read:jira-work',
+      scope: 'read:jira-work read:jira-user',
       redirect_uri: JIRA_REDIRECT_URI,
       state: state.current,
       response_type: 'code',
