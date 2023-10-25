@@ -20,6 +20,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (userInfo?.accountId) {
+      setCurrentScreen('dayView');
       getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
         setWorklogs(convertWorklogsToDaysObject(worklogsCompact));
       });
