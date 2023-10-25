@@ -70,7 +70,6 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
 
   // Loop through all issues with recent worklogs
   for (let currentIssue = 0; currentIssue < totalIssues; issuesFailsafe++) {
-    console.log('Fetching issues', currentIssue, totalIssues);
     const issuesCall = await client.issueSearch.searchForIssuesUsingJqlPost({
       jql: jqlQuery,
       fields: ['summary', 'worklog'],
@@ -89,7 +88,6 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
         let totalWorklogs = 1;
         let worklogsFailsafe = 0;
         for (let currentWorklog = 0; currentWorklog < totalWorklogs; worklogsFailsafe++) {
-          console.log('Fetching worklogs', currentWorklog, totalWorklogs);
           const worklogsCall = await client.issueWorklogs.getIssueWorklog({
             issueIdOrKey: issue.id,
             maxResults: maxWorklogResults,
@@ -115,7 +113,5 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
     }
   }
 
-  console.log('Worklogs fetched', worklogsCompact.length);
-  console.log(worklogsCompact);
   return worklogsCompact;
 }

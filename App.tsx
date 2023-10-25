@@ -20,12 +20,7 @@ function App(): JSX.Element {
   useEffect(() => {
     if (userInfo?.accountId) {
       getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
-        console.log('worklogsCompact');
-        console.log(worklogsCompact);
-        const test = convertWorklogsToDaysObject(worklogsCompact);
-        console.log('test');
-        console.log(test);
-        setWorklogs(test);
+        setWorklogs(convertWorklogsToDaysObject(worklogsCompact));
       });
     }
   }, [userInfo?.accountId]);
