@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+// import LinearGradient from 'react-native-linear-gradient';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { useAuthRequest } from '../services/auth.service';
@@ -27,9 +27,9 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
         <Text>-</Text>
         <ButtonPrimary label='To next page' onPress={onLoginPress} />
       </View>
-      <LinearGradient colors={['rgba(42,115,245,0.45)', 'rgba(42,115,245,0)']} style={styles.backgroundContainer}>
+      {/* <LinearGradient colors={['rgba(42,115,245,0.45)', 'rgba(42,115,245,0)']} style={styles.backgroundContainer}>
         <Text>Sign in with Facebook</Text>
-      </LinearGradient>
+      </LinearGradient> */}
     </Layout>
   );
 };
