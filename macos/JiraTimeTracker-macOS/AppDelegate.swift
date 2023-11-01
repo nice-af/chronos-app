@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   func applicationDidFinishLaunching(_ aNotification: Notification) {
     // Assign the new handler for deep links
-    var em = NSAppleEventManager.shared()
+    let em = NSAppleEventManager.shared()
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
 
     let jsCodeLocation: URL
@@ -41,17 +41,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       backing: .buffered,
       defer: false)
 
-    window.isOpaque = false
-    window.titlebarAppearsTransparent = true
-    window.makeKeyAndOrderFront(nil)
-    window.isMovableByWindowBackground = true
+    // window.isOpaque = false
+    // window.makeKeyAndOrderFront(nil)
+    // window.isMovableByWindowBackground = true
     window.titlebarAppearsTransparent = true
     window.titleVisibility = .hidden
+    window.toolbarStyle = .unified
+    window.styleMask.insert(NSWindow.StyleMask.unifiedTitleAndToolbar)
     window.contentViewController = rootViewController
     window.center()
-    window.setFrameAutosaveName("Tempomat Main Window")
+    window.setFrameAutosaveName("Jira Time Tracker Main Window")
     window.isReleasedWhenClosed = false
     window.makeKeyAndOrderFront(self)
+    
+    // Add a toolbar to the window to increase its titlebar height
+    window.toolbar = NSToolbar()
+    
     let screen: NSScreen = NSScreen.main!
     let midScreenX = screen.frame.midX
     let posScreenY = 200
