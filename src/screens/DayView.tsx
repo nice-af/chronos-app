@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { dayPickerHeight } from '../components/DayPicker';
 import { Footer, footerHeight } from '../components/Footer';
 import { Layout } from '../components/Layout';
-import { titleBarHeight } from '../components/TitleBar';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
@@ -19,11 +18,11 @@ export const DayView: React.FC<DayViewProps> = ({ onSubmitPress }) => {
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
   return (
-    <Layout header={{ title: 'Today, 21 Oct', showDayPicker: true }}>
+    <Layout header={{ title: 'Today, 21 Oct' }}>
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}
-        contentInset={{ top: titleBarHeight + dayPickerHeight + 6, bottom: footerHeight + 6 }}>
+        contentInset={{ top: 52 + 6, bottom: footerHeight + 6 }}>
         <View style={styles.spacerTop} />
         {currentWorklogs.map(worklog => (
           <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
   spacerTop: {
-    height: titleBarHeight + dayPickerHeight,
+    height: 52,
   },
   spacerBottom: {
     height: footerHeight,

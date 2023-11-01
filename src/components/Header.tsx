@@ -1,20 +1,18 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import BackgroundView from './BackgroundView.macos';
-import { DayPicker, dayPickerHeight } from './DayPicker';
-import { TitleBar, titleBarHeight } from './TitleBar';
+import { DayPicker } from './DayPicker';
+import { typo } from '../styles/typo';
 
 export interface HeaderProps {
   title: string;
-  showDayPicker?: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, showDayPicker }) => {
+export const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
-    <View style={[styles.container, { minHeight: titleBarHeight + (showDayPicker ? dayPickerHeight : 0) }]}>
+    <View style={styles.container}>
       <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
-      <TitleBar title={title} />
-      {showDayPicker && <DayPicker />}
+      {title && <Text style={styles.title}>{title}</Text>}
     </View>
   );
 };
@@ -25,10 +23,14 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 99,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
+    height: 53,
     paddingTop: 0,
     backgroundColor: 'transparent',
-    borderBottomColor: 'rgba(0,0,0,0.25)',
+    borderBottomColor: 'rgba(0,0,0,0.5)',
     borderBottomWidth: 1,
   },
   backgroundView: {
@@ -37,5 +39,8 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: '100%',
+  },
+  title: {
+    ...typo.title3Emphasized,
   },
 });

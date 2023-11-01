@@ -11,8 +11,8 @@ const baseColors = {
   teal: '#6AC4DC',
   cyan: '#5AC8F5',
   blue: '#0A84FF',
-  blueHover: '#017AF4',
-  blueActive: '#0270DE',
+  blueHover: '#0c7ced',
+  blueActive: '#0e77e1',
   indigo: '#5E5CE6',
   purple: '#BF5AF2',
   pink: '#FF375F',
@@ -20,10 +20,16 @@ const baseColors = {
   brown: '#AC8E68',
 };
 
+const windowColors = {
+  background: '#242422',
+  surface: '#292827',
+  surfaceBorder: '#3A3938',
+};
+
 const buttonColors = {
   buttonBase: baseColors.blue,
-  buttonHover: '#0872dd',
-  buttonActive: '#0b6ac9',
+  buttonHover: baseColors.blueHover,
+  buttonActive: baseColors.blueActive,
   secondaryButtonBase: 'rgba(255,255,255,0.1)',
   secondaryButtonHover: 'rgba(255,255,255,0.2)',
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
@@ -31,5 +37,6 @@ const buttonColors = {
 
 export const colors = {
   ...baseColors,
+  ...windowColors,
   ...buttonColors,
 };

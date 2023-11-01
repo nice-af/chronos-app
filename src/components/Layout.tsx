@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import BackgroundView from './BackgroundView.macos';
 import { Header, HeaderProps } from './Header';
+import { colors } from '../styles/colors';
 
 interface LayoutProps {
   header: HeaderProps;
@@ -11,7 +12,7 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
   return (
     <View style={styles.globalContainer}>
-      <BackgroundView blendingMode={0} style={styles.backgroundView} />
+      {/* <BackgroundView blendingMode={0} style={styles.backgroundView} /> */}
       <View style={styles.container}>
         <Header {...header} />
         {children}
@@ -22,7 +23,8 @@ export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
 
 const styles = StyleSheet.create({
   globalContainer: {
-    marginTop: -28,
+    marginTop: -52,
+    backgroundColor: colors.background,
   },
   container: {
     display: 'flex',
@@ -30,11 +32,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
   },
-  backgroundView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
+  // backgroundView: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   left: 0,
+  //   width: '100%',
+  //   height: '100%',
+  // },
 });

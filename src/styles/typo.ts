@@ -1,5 +1,17 @@
 import { TextStyle } from 'react-native';
 
+const title3: TextStyle = {
+  fontSize: 15,
+  lineHeight: 20,
+  fontWeight: '400',
+  letterSpacing: 0.35,
+};
+
+const title3Emphasized: TextStyle = {
+  ...title3,
+  fontWeight: '600',
+};
+
 const headline: TextStyle = {
   fontSize: 14,
   lineHeight: 16,
@@ -57,6 +69,8 @@ const footnoteEmphasized: TextStyle = {
 };
 
 export const typo = {
+  title3,
+  title3Emphasized,
   headline,
   headlineEmphasized,
   body,

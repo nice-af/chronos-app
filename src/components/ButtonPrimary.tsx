@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     backgroundColor: colors.buttonBase,
-    borderRadius: 5,
-    ...getPadding(6, 12),
+    borderRadius: 8,
+    ...getPadding(8, 20),
   },
   isHovered: {
     backgroundColor: colors.buttonHover,
