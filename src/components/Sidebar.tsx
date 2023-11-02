@@ -1,4 +1,3 @@
-import ms from 'ms';
 import React, { useContext } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
@@ -12,8 +11,7 @@ import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import BackgroundView from './BackgroundView.macos';
-import { DayPickerArrowButton } from './DayPickerArrowButton';
-import { DayLabel, DayPickerButton } from './DayPickerButton';
+import { DayButton, DayLabel } from './DayButton';
 import { WeekPicker } from './WeekPicker';
 
 export const dayPickerHeight = 56;
@@ -40,7 +38,7 @@ export const Sidebar: React.FC = () => {
       <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
       <WeekPicker />
       {days.map(day => (
-        <DayPickerButton
+        <DayButton
           key={day.id}
           day={day.abbreviation}
           duration={formatUnixTimestampToHMM(
@@ -67,8 +65,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 10,
     flexGrow: 0,
     flexBasis: 93,
     width: 93,

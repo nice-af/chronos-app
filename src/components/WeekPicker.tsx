@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { getPadding } from '../styles/utils';
 import { ButtonTransparent } from './ButtonTransparent';
 
 export const WeekPicker: React.FC = () => {
@@ -28,6 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    marginBottom: 8,
   },
   arrow: {
     width: 7,
