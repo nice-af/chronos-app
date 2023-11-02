@@ -16,7 +16,7 @@ export const Main: React.FC = () => {
   return (
     <View style={styles.container}>
       <Sidebar />
-      <Layout header={{ title: 'Today, 21 Oct' }}>
+      <Layout header={{ layout: 'left', title: 'Today, 21 Oct' }}>
         <ScrollView
           style={styles.entriesContainer}
           removeClippedSubviews={false}

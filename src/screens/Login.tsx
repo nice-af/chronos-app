@@ -15,7 +15,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
   const { requestOAuth, isLoading } = useAuthRequest();
 
   return (
-    <Layout header={{ title: 'Login' }}>
+    <Layout header={{ layout: 'center', title: 'Login' }}>
       <View style={styles.bgContainer}>
         <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
         <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />

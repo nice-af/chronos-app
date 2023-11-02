@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BackgroundView from './BackgroundView.macos';
-import { Header, HeaderProps } from './Header';
 import { colors } from '../styles/colors';
+import { Header, HeaderProps } from './Header';
 
 interface LayoutProps {
   header: HeaderProps;
@@ -22,7 +21,7 @@ export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
 
 const styles = StyleSheet.create({
   globalContainer: {
-    width: '100%',
+    flexGrow: 1,
     marginTop: -52,
     backgroundColor: colors.background,
   },

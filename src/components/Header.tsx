@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import BackgroundView from './BackgroundView.macos';
-import { Sidebar } from './Sidebar';
 import { typo } from '../styles/typo';
+import BackgroundView from './BackgroundView.macos';
 
 export interface HeaderProps {
   title: string;
+  layout: 'center' | 'left';
 }
 
-export const Header: React.FC<HeaderProps> = ({ title }) => {
+export const Header: React.FC<HeaderProps> = ({ title, layout }) => {
   return (
     <View style={styles.container}>
       <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
-      {title && <Text style={styles.title}>{title}</Text>}
+      <View style={[styles.content, layout === 'center' && styles.isCentered]}>
+        {title && <Text style={styles.title}>{title}</Text>}
+      </View>
     </View>
   );
 };
@@ -23,15 +25,21 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 99,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     width: '100%',
     height: 53,
-    paddingTop: 0,
-    backgroundColor: 'transparent',
     borderBottomColor: 'rgba(0,0,0,0.5)',
     borderBottomWidth: 1,
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: 53,
+    paddingHorizontal: 16,
+  },
+  isCentered: {
+    justifyContent: 'center',
   },
   backgroundView: {
     position: 'absolute',
