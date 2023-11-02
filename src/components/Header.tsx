@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import BackgroundView from './BackgroundView.macos';
-import { DayPicker } from './DayPicker';
+import { Sidebar } from './Sidebar';
 import { typo } from '../styles/typo';
 
 export interface HeaderProps {

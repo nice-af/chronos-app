@@ -4,14 +4,13 @@ import { colors } from '../styles/colors';
 import { getPadding } from '../styles/utils';
 import { typo } from '../styles/typo';
 
-interface ButtonPrimaryProps extends Omit<PressableProps, 'style'> {
-  label: string;
+interface ButtonTransparentProps extends Omit<PressableProps, 'style'> {
   onPress: () => void;
   style?: ViewStyle;
-  iconRight?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ onPress, label, iconRight, ...props }) => {
+export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({ onPress, children, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -25,8 +24,7 @@ export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ onPress, label, ic
         pressed && styles.isActive,
         props.style,
       ]}>
-      <Text style={styles.label}>{label}</Text>
-      {iconRight}
+      {children}
     </Pressable>
   );
 };
@@ -37,15 +35,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: 8,
-    backgroundColor: colors.buttonBase,
+    backgroundColor: 'transparent',
     borderRadius: 8,
-    ...getPadding(7, 20),
+    padding: 8,
   },
   isHovered: {
-    backgroundColor: colors.buttonHover,
+    backgroundColor: colors.transparentButtonHover,
   },
   isActive: {
-    backgroundColor: colors.buttonActive,
+    backgroundColor: colors.transparentButtonActive,
   },
   label: {
     ...typo.bodyEmphasized,

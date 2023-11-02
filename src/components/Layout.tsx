@@ -12,7 +12,6 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
   return (
     <View style={styles.globalContainer}>
-      {/* <BackgroundView blendingMode={0} style={styles.backgroundView} /> */}
       <View style={styles.container}>
         <Header {...header} />
         {children}
@@ -23,6 +22,7 @@ export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
 
 const styles = StyleSheet.create({
   globalContainer: {
+    width: '100%',
     marginTop: -52,
     backgroundColor: colors.background,
   },
@@ -32,11 +32,4 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
   },
-  // backgroundView: {
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: 0,
-  //   width: '100%',
-  //   height: '100%',
-  // },
 });

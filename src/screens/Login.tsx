@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-// import LinearGradient from 'react-native-linear-gradient';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { useAuthRequest } from '../services/auth.service';
@@ -17,9 +16,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
 
   return (
     <Layout header={{ title: 'Login' }}>
+      <View style={styles.bgContainer}>
+        <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
+        <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />
+        <Image style={styles.shapeDice} source={require('../assets/login/shape-dice.png')} />
+        <Image style={styles.shapePuck} source={require('../assets/login/shape-puck.png')} />
+        <Image style={styles.shapeCone} source={require('../assets/login/shape-cone.png')} />
+        <Image style={styles.shapeBallHalf} source={require('../assets/login/shape-ball-half.png')} />
+      </View>
       <View style={styles.container}>
         <Image style={styles.appIcon} source={require('../assets/app-icon.png')} />
-        <Image style={styles.title} source={require('../assets/login-title-en.png')} />
+        <Image style={styles.title} source={require('../assets/login/title-en.png')} />
         <Text style={styles.text}>
           Please click the button below to connect your Jira account with Jira Time Tracker.
         </Text>
@@ -27,9 +34,6 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
         <Text>-</Text>
         <ButtonPrimary label='To next page' onPress={onLoginPress} />
       </View>
-      {/* <LinearGradient colors={['rgba(42,115,245,0.45)', 'rgba(42,115,245,0)']} style={styles.backgroundContainer}>
-        <Text>Sign in with Facebook</Text>
-      </LinearGradient> */}
     </Layout>
   );
 };
@@ -40,6 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    zIndex: 2,
     height: '100%',
     ...getPadding(12, 16),
   },
@@ -60,11 +65,59 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.textSecondary,
   },
-  backgroundContainer: {
+  bgContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+    width: '100%',
+    height: 228,
+  },
+  bgGradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     width: '100%',
     height: 205,
+  },
+  bgShine: {
+    position: 'absolute',
+    bottom: 0,
+    left: '50%',
+    width: 568,
+    height: 228,
+    marginLeft: -284,
+  },
+  shapeDice: {
+    position: 'absolute',
+    bottom: 110,
+    left: '50%',
+    width: 72,
+    height: 72,
+    marginLeft: -242,
+  },
+  shapePuck: {
+    position: 'absolute',
+    bottom: -11,
+    left: '50%',
+    width: 75,
+    height: 55,
+    marginLeft: -122,
+  },
+  shapeCone: {
+    position: 'absolute',
+    bottom: 25,
+    left: '50%',
+    width: 66,
+    height: 69,
+    marginLeft: 40,
+  },
+  shapeBallHalf: {
+    position: 'absolute',
+    bottom: 115,
+    left: '50%',
+    width: 75,
+    height: 62,
+    marginLeft: 181,
   },
 });

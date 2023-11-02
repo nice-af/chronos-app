@@ -33,6 +33,8 @@ const buttonColors = {
   secondaryButtonBase: 'rgba(255,255,255,0.1)',
   secondaryButtonHover: 'rgba(255,255,255,0.2)',
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
+  transparentButtonHover: 'rgba(10,132,255,0.2)',
+  transparentButtonActive: 'rgba(10,132,255,0.3)',
 };
 
 export const colors = {

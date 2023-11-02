@@ -1,6 +1,6 @@
 import ms from 'ms';
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import {
   formatDateToYYYYMMDD,
@@ -11,8 +11,10 @@ import {
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import BackgroundView from './BackgroundView.macos';
 import { DayPickerArrowButton } from './DayPickerArrowButton';
 import { DayLabel, DayPickerButton } from './DayPickerButton';
+import { WeekPicker } from './WeekPicker';
 
 export const dayPickerHeight = 56;
 
@@ -29,15 +31,14 @@ const days: {
   { id: 6, abbreviation: 'S' },
 ];
 
-export const DayPicker: React.FC = () => {
+export const Sidebar: React.FC = () => {
   const { selectedDate, setSelectedDate, worklogs } = useContext(GlobalContext);
+  const windowHeight = useWindowDimensions().height;
 
   return (
     <View style={styles.container}>
-      <DayPickerArrowButton
-        direction='left'
-        onPress={() => setSelectedDate(new Date(selectedDate.getTime() - ms('1d')))}
-      />
+      <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
+      <WeekPicker />
       {days.map(day => (
         <DayPickerButton
           key={day.id}
@@ -49,21 +50,32 @@ export const DayPicker: React.FC = () => {
           onPress={() => setSelectedDate(setDateToThisWeekday(selectedDate, day.id))}
         />
       ))}
-      <DayPickerArrowButton
-        direction='right'
-        onPress={() => setSelectedDate(new Date(selectedDate.getTime() + ms('1d')))}
-      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 92,
+    height: '100%',
+  },
   container: {
+    position: 'relative',
+    zIndex: 2,
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    ...getPadding(6, 16),
+    flexGrow: 0,
+    flexBasis: 93,
+    width: 93,
+    ...getPadding(56, 16, 6),
+    marginTop: -52,
+    borderRightColor: 'rgba(0,0,0,0.5)',
+    borderRightWidth: 1,
   },
   today: {
     ...typo.bodyEmphasized,

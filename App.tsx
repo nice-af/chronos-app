@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, useWindowDimensions } from 'react-native';
 import { DebugTools } from './src/components/DebugTools';
 import { ApiSettings, GlobalContext } from './src/contexts/global.context';
-import { DayView } from './src/screens/DayView';
+import { Main } from './src/screens/Main';
 import { Login } from './src/screens/Login';
 import { Screen, WorklogDaysObject } from './src/types/global.types';
 import { getWorklogsCompact } from './src/services/jira.service';
@@ -81,7 +81,7 @@ function App(): JSX.Element {
             zIndex: currentScreen === 'dayView' ? 1 : 0,
           },
         ]}>
-        <DayView onSubmitPress={() => setCurrentScreen('login')} />
+        <Main />
       </Animated.View>
       <DebugTools />
     </GlobalContext.Provider>
