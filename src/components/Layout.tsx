@@ -22,7 +22,6 @@ export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
 const styles = StyleSheet.create({
   globalContainer: {
     flexGrow: 1,
-    marginTop: -52,
     backgroundColor: colors.background,
   },
   container: {

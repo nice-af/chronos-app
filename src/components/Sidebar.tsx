@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     flexBasis: 93,
     width: 93,
     ...getPadding(56, 16, 6),
-    marginTop: -52,
     borderRightColor: 'rgba(0,0,0,0.5)',
     borderRightWidth: 1,
   },

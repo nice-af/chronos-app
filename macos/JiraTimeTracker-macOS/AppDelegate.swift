@@ -47,7 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.titlebarAppearsTransparent = true
     window.titleVisibility = .hidden
     window.toolbarStyle = .unified
-    window.styleMask.insert(NSWindow.StyleMask.unifiedTitleAndToolbar)
+    window.styleMask.insert(NSWindow.StyleMask.fullSizeContentView)
     window.contentViewController = rootViewController
     window.center()
     window.setFrameAutosaveName("Jira Time Tracker Main Window")
