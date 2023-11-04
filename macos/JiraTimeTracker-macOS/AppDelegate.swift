@@ -66,6 +66,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     window.setFrame(frame, display: true)
   }
   
+  // Reopen window on dock icon click
+  func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    window.makeKeyAndOrderFront(self)
+    return true;
+  }
+  
   @objc func toggleWindow(_ sender: AnyObject?) {
     if let button = self.statusBarItem.button {
       if self.window.isMiniaturized {
