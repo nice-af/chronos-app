@@ -8,9 +8,15 @@ interface ButtonTransparentProps extends Omit<PressableProps, 'style'> {
   onPress: () => void;
   style?: ViewStyle;
   children?: React.ReactNode;
+  hasLargePadding?: boolean;
 }
 
-export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({ onPress, children, ...props }) => {
+export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({
+  onPress,
+  children,
+  hasLargePadding,
+  ...props
+}) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -22,6 +28,7 @@ export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({ onPress, c
         styles.pressable,
         isHovered && styles.isHovered,
         pressed && styles.isActive,
+        hasLargePadding && styles.hasLargePadding,
         props.style,
       ]}>
       {children}
@@ -31,13 +38,19 @@ export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({ onPress, c
 
 const styles = StyleSheet.create({
   pressable: {
+    position: 'relative', // Needed for elements within this button elsewhere
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
     gap: 8,
     backgroundColor: 'transparent',
     borderRadius: 8,
+    padding: 2,
+    margin: -2,
+  },
+  hasLargePadding: {
     padding: 8,
+    margin: -8,
   },
   isHovered: {
     backgroundColor: colors.transparentButtonHover,

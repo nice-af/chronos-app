@@ -2,7 +2,6 @@ import { Version3Models } from 'jira.js';
 import React from 'react';
 import { JiraResource } from '../types/auth.types';
 import { Screen, WorklogDaysObject } from '../types/global.types';
-import { Worklog } from 'jira.js/out/version2/models';
 
 export interface ApiSettings {
   token: string;
@@ -11,6 +10,7 @@ export interface ApiSettings {
 
 interface GlobalContextProps {
   currentScreen: Screen;
+  setCurrentScreen: (screen: Screen) => void;
   apiSettings: ApiSettings | null;
   setApiSettings: (apiSettings: ApiSettings) => void;
   userInfo: Version3Models.User | null;
@@ -23,6 +23,7 @@ interface GlobalContextProps {
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
   currentScreen: 'login',
+  setCurrentScreen: () => {},
   apiSettings: null,
   setApiSettings: () => {},
   userInfo: null,

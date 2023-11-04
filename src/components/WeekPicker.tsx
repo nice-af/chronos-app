@@ -7,14 +7,14 @@ import { ButtonTransparent } from './ButtonTransparent';
 export const WeekPicker: React.FC = () => {
   return (
     <View style={styles.container}>
-      <ButtonTransparent onPress={() => {}}>
+      <ButtonTransparent onPress={() => {}} hasLargePadding>
         <Image style={styles.arrow} source={require('../assets/icon-chevron-left.png')} />
       </ButtonTransparent>
       <View>
         <Text style={styles.label}>KW</Text>
         <Text style={styles.value}>41</Text>
       </View>
-      <ButtonTransparent onPress={() => {}}>
+      <ButtonTransparent onPress={() => {}} hasLargePadding>
         <Image style={styles.arrow} source={require('../assets/icon-chevron-right.png')} />
       </ButtonTransparent>
     </View>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 16,
     marginBottom: 8,
   },
   arrow: {

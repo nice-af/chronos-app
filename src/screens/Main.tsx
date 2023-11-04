@@ -1,32 +1,42 @@
 import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Footer, footerHeight } from '../components/Footer';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Layout } from '../components/Layout';
+import { Sidebar } from '../components/Sidebar';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
-import { Sidebar } from '../components/Sidebar';
+import { ButtonTransparent } from '../components/ButtonTransparent';
+import { JumpToTodayButton } from '../components/JumpToTodayButton';
 
 export const Main: React.FC = () => {
-  const { worklogs, selectedDate } = useContext(GlobalContext);
+  const { worklogs, selectedDate, setCurrentScreen } = useContext(GlobalContext);
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
+
+  const rightElement = (
+    <View style={styles.actions}>
+      <JumpToTodayButton />
+      <ButtonTransparent onPress={() => {}}>
+        <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
+      </ButtonTransparent>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <Sidebar />
-      <Layout header={{ layout: 'left', title: 'Today, 21 Oct' }}>
+      <Layout
+        header={{ layout: 'left', title: 'Today, 21 Oct', rightElement, onBackPress: () => setCurrentScreen('login') }}>
         <ScrollView
           style={styles.entriesContainer}
           removeClippedSubviews={false}
-          contentInset={{ top: 52 + 6, bottom: footerHeight + 6 }}>
+          contentInset={{ top: 52 + 6, bottom: 6 }}>
           <View style={styles.spacerTop} />
           {currentWorklogs.map(worklog => (
             <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
           ))}
           {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
-          <View style={styles.spacerBottom} />
         </ScrollView>
       </Layout>
     </View>
@@ -34,6 +44,17 @@ export const Main: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  actions: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginLeft: 'auto',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
   container: {
     display: 'flex',
     flexDirection: 'row',
@@ -45,9 +66,6 @@ const styles = StyleSheet.create({
   },
   spacerTop: {
     height: 52,
-  },
-  spacerBottom: {
-    height: footerHeight,
   },
   errorMessage: {
     ...typo.body,

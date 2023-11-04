@@ -40,6 +40,7 @@ function App(): JSX.Element {
     <GlobalContext.Provider
       value={{
         currentScreen,
+        setCurrentScreen,
         apiSettings,
         setApiSettings,
         userInfo,
