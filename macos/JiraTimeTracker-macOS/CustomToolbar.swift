@@ -1,0 +1,2 @@
+public class CustomToolbar: NSToolbar {
+}
