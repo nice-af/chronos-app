@@ -1,25 +1,23 @@
-public class CustomWindowController: NSWindowController {
+public class CustomWindowController: NSWindowController, NSWindowDelegate {
+  private let customWindow: CustomWindow
+  
   override public init(window: NSWindow?) {
-    super.init(window: window)
+    customWindow = CustomWindow()
+    super.init(window: customWindow)
+    customWindow.delegate = self
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  
+ 
   public func windowWillEnterFullScreen(_ notification: Notification) {
-     // fullContentWindow.titleBarAccessoryViewController.isHidden = true
-     // titleOffsetConstraint.constant = 0
-  }
-
-  public  func windowWillExitFullScreen(_ notification: Notification) {
-     // fullContentWindow.titleBarAccessoryViewController.isHidden = false
-     // titleOffsetConstraint.constant = fullContentWindow.standardWindowButtonsRect.maxX
+    print("fullscreen on")
+    customWindow.enterFullscreen()
   }
   
-  override public func windowDidLoad() {
-    super.windowDidLoad()
+  public  func windowWillExitFullScreen(_ notification: Notification) {
+    print("fullscreen off")
+    customWindow.exitFullscreen()
   }
-
 }

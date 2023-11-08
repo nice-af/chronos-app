@@ -5,8 +5,9 @@ import SwiftUI
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
   var popover: NSPopover!
-  var window: NSWindow!
+  // var window: NSWindow!
   var statusBarItem: NSStatusItem!
+  var windowController : CustomWindowController!
   
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
@@ -28,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "JiraTimeTracker", initialProperties: nil, launchOptions: nil)
     let rootViewController = NSViewController()
-    rootViewController.view = rootView
+    // rootViewController.view = rootView
     
     statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(60))
     
@@ -38,10 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     // Create the application window
-    window = CustomWindow()
-
-    window.contentViewController = rootViewController
-    let windowController = CustomWindowController(window: window)
+    windowController = CustomWindowController()
+    // windowController.window!.contentViewController = rootViewController
     
     // window.isOpaque = false
     // window.makeKeyAndOrderFront(nil)
@@ -72,13 +71,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let size = CGSize(width: 460, height: 507)
     let frame = NSRect(origin: origin, size: size)
     windowController.window!.setFrame(frame, display: true)
-    window.center()
+    windowController.window!.center()
     windowController.window!.makeKeyAndOrderFront(self)
   }
   
   // Reopen window on dock icon click
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-    window.makeKeyAndOrderFront(self)
+    windowController.window!.makeKeyAndOrderFront(self)
     return true;
   }
   
@@ -90,11 +89,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   @objc func toggleWindow(_ sender: AnyObject?) {
     if let button = self.statusBarItem.button {
-      if self.window.isMiniaturized {
-        self.window.close()
+      if self.windowController.window!.isMiniaturized {
+        self.windowController.window!.close()
       } else {
-        self.window.display();
-        self.window.becomeKey();
+        self.windowController.window!.display();
+        self.windowController.window!.becomeKey();
         // self.window.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
         
         // self.popover.contentViewController?.view.window?.becomeKey()
