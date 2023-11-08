@@ -19,11 +19,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
     
     let jsCodeLocation: URL
-#if DEBUGl
-    jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-#else
-    jsCodeLocation = Bundle.main.url(forResource: "main", withExtension: "jsbundle")!
-#endif
+    
+    #if DEBUG
+      jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    #else
+      jsCodeLocation = Bundle.main.url(forResource: "main", withExtension: "jsbundle")!
+    #endif
+    
     let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "JiraTimeTracker", initialProperties: nil, launchOptions: nil)
     let rootViewController = NSViewController()
     rootViewController.view = rootView
@@ -36,41 +38,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     // Create the application window
-    window = FullContentWindow(
-      contentRect: NSRect(x: 0, y: 0, width: 1, height: 1),
-      styleMask: [.titled, .closable, .miniaturizable, .resizable],
-      backing: .buffered,
-      defer: false)
-    
-    window.isOpaque = false
-    window.makeKeyAndOrderFront(nil)
-    window.isMovableByWindowBackground = false
-    window.titlebarAppearsTransparent = true
-    window.titleVisibility = .hidden
-    window.styleMask.insert(NSWindow.StyleMask.fullSizeContentView)
+    window = CustomWindow()
+
     window.contentViewController = rootViewController
-    window.center()
-    window.setFrameAutosaveName("Jira Time Tracker Main Window")
-    window.isReleasedWhenClosed = false
-    window.makeKeyAndOrderFront(self)
+    let windowController = CustomWindowController(window: window)
+    
+    // window.isOpaque = false
+    // window.makeKeyAndOrderFront(nil)
+    // window.isMovableByWindowBackground = false
+    // window.titlebarAppearsTransparent = true
+    // window.titleVisibility = .hidden
+    // window.styleMask.insert(NSWindow.StyleMask.fullSizeContentView)
+    // window.contentViewController = rootViewController
+    // window.center()
+    // window.setFrameAutosaveName("Jira Time Tracker Main Window")
+    // window.isReleasedWhenClosed = false
+    // window.makeKeyAndOrderFront(self)
     
     // Add a toolbar to the window to increase its titlebar height
     // let toolbar = NSToolbar()
     // toolbar.showsBaselineSeparator = false
     // window.toolbar = toolbar
-    window.toolbarStyle = .unified
+    // window.toolbarStyle = .unified
     
     // Click through toolbar
-    window.addTitlebarAccessoryViewController(NSTitlebarAccessoryViewController())
+    // window.addTitlebarAccessoryViewController(NSTitlebarAccessoryViewController())
     
     
     let screen: NSScreen = NSScreen.main!
     let midScreenX = screen.frame.midX
     let posScreenY = 200
     let origin = CGPoint(x: Int(midScreenX), y: posScreenY)
-    let size = CGSize(width: 700, height: 800)
+    let size = CGSize(width: 460, height: 507)
     let frame = NSRect(origin: origin, size: size)
-    window.setFrame(frame, display: true)
+    windowController.window!.setFrame(frame, display: true)
+    window.center()
+    windowController.window!.makeKeyAndOrderFront(self)
   }
   
   // Reopen window on dock icon click
