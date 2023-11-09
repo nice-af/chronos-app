@@ -11,6 +11,7 @@ import { convertWorklogsToDaysObject } from './src/services/worklogs.service';
 
 function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
+  const [visibleScreens, setVisibleScreens] = useState<Screen[]>(['login']);
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
   const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
   const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
@@ -34,6 +35,8 @@ function App(): JSX.Element {
       useNativeDriver: true,
       easing: Easing.inOut(Easing.quad),
     }).start();
+    setVisibleScreens(['login', 'dayView']);
+    setTimeout(() => setVisibleScreens([currentScreen]), 250);
   }, [currentScreen]);
 
   return (
@@ -50,40 +53,44 @@ function App(): JSX.Element {
         selectedDate,
         setSelectedDate,
       }}>
-      <Animated.View
-        style={[
-          styles.screenContainer,
-          {
-            transform: [
-              {
-                translateX: screenPos.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, -windowWidth],
-                }),
-              },
-            ],
-            zIndex: currentScreen === 'login' ? 1 : 0,
-          },
-        ]}>
-        <Login onLoginPress={() => setCurrentScreen('dayView')} />
-      </Animated.View>
-      <Animated.View
-        style={[
-          styles.screenContainer,
-          {
-            transform: [
-              {
-                translateX: screenPos.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [windowWidth, 0],
-                }),
-              },
-            ],
-            zIndex: currentScreen === 'dayView' ? 1 : 0,
-          },
-        ]}>
-        <Main />
-      </Animated.View>
+      {visibleScreens.includes('login') && (
+        <Animated.View
+          style={[
+            styles.screenContainer,
+            {
+              transform: [
+                {
+                  translateX: screenPos.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -windowWidth],
+                  }),
+                },
+              ],
+              zIndex: currentScreen === 'login' ? 1 : 0,
+            },
+          ]}>
+          <Login onLoginPress={() => setCurrentScreen('dayView')} />
+        </Animated.View>
+      )}
+      {visibleScreens.includes('dayView') && (
+        <Animated.View
+          style={[
+            styles.screenContainer,
+            {
+              transform: [
+                {
+                  translateX: screenPos.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [windowWidth, 0],
+                  }),
+                },
+              ],
+              zIndex: currentScreen === 'dayView' ? 1 : 0,
+            },
+          ]}>
+          <Main />
+        </Animated.View>
+      )}
       <DebugTools />
     </GlobalContext.Provider>
   );
