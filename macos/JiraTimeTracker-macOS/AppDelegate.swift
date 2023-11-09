@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "JiraTimeTracker", initialProperties: nil, launchOptions: nil)
     let rootViewController = NSViewController()
-    // rootViewController.view = rootView
+    rootViewController.view = rootView
     
     statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(60))
     
@@ -40,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // Create the application window
     windowController = CustomWindowController()
-    // windowController.window!.contentViewController = rootViewController
+    windowController.window!.contentViewController = rootViewController
     
     // window.isOpaque = false
     // window.makeKeyAndOrderFront(nil)

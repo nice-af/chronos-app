@@ -35,8 +35,8 @@ public class CustomWindow: NSWindow {
     if (buttonsShouldBeMoved) {
       let windowControls = super.standardWindowButton(.closeButton)!.superview!
       let titlebarContainer = windowControls.superview!
-      windowControls.layer?.backgroundColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
-      titlebarContainer.layer?.backgroundColor = CGColor(red: 0, green: 255, blue: 0, alpha: 1)
+      // windowControls.layer?.backgroundColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
+      // titlebarContainer.layer?.backgroundColor = CGColor(red: 0, green: 255, blue: 0, alpha: 1)
       
       titlebarContainer.setFrameSize(NSSize(width: super.frame.size.width, height: 52))
       titlebarContainer.setFrameOrigin(NSPoint(x: 0, y: super.frame.size.height - 52))

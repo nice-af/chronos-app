@@ -12,12 +12,10 @@ public class CustomWindowController: NSWindowController, NSWindowDelegate {
   }
  
   public func windowWillEnterFullScreen(_ notification: Notification) {
-    print("fullscreen on")
     customWindow.enterFullscreen()
   }
   
   public  func windowWillExitFullScreen(_ notification: Notification) {
-    print("fullscreen off")
     customWindow.exitFullscreen()
   }
 }
