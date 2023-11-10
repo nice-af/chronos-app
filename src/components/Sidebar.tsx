@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flexBasis: 93,
     width: 93,
     ...getPadding(56, 16, 6),
-    borderRightColor: 'rgba(0,0,0,0.5)',
+    borderRightColor: colors.border,
     borderRightWidth: 1,
   },
   today: {

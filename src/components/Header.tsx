@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { typo } from '../styles/typo';
 import BackgroundView from './BackgroundView.macos';
 import { ButtonTransparent } from './ButtonTransparent';
+import { colors } from '../styles/colors';
 
 export interface HeaderProps {
   title: string;
@@ -30,13 +31,10 @@ export const Header: React.FC<HeaderProps> = ({ title, layout, onBackPress, righ
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
     zIndex: 99,
     width: '100%',
     height: 53,
-    borderBottomColor: 'rgba(0,0,0,0.5)',
+    borderBottomColor: colors.border,
     borderBottomWidth: 1,
   },
   content: {

@@ -22,6 +22,7 @@ const baseColors = {
 
 const windowColors = {
   background: '#242422',
+  border: 'rgba(0,0,0,0.4)',
   surface: '#292827',
   surfaceBorder: '#3A3938',
 };

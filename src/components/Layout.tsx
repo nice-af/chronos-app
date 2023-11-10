@@ -26,8 +26,9 @@ const styles = StyleSheet.create({
   },
   container: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'column',
+    alignItems: 'stretch',
     height: '100%',
   },
 });

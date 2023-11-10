@@ -41,12 +41,12 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     zIndex: 2,
-    height: '100%',
-    ...getPadding(12, 16),
+    padding: 16,
   },
   appIcon: {
     width: 90,

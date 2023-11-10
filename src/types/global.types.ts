@@ -1,7 +1,5 @@
-import { Issue, Worklog } from 'jira.js/out/version3/models';
-
 export type Screen = 'login' | 'dayView';
-
+export type Layout = 'normal' | 'compact' | 'micro';
 export type Project = 'tmh' | 'orcaya' | 'solid';
 
 export interface TrackingEntry {

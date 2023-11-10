@@ -8,6 +8,7 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
+import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
   const { worklogs, selectedDate, setCurrentScreen } = useContext(GlobalContext);
@@ -26,7 +27,7 @@ export const Main: React.FC = () => {
   return (
     <View style={styles.container}>
       <Sidebar />
-      <Layout
+      {/* <Layout
         header={{ layout: 'left', title: 'Today, 21 Oct', rightElement, onBackPress: () => setCurrentScreen('login') }}>
         <ScrollView
           style={styles.entriesContainer}
@@ -38,7 +39,8 @@ export const Main: React.FC = () => {
           ))}
           {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
         </ScrollView>
-      </Layout>
+      </Layout> */}
+      <Settings />
     </View>
   );
 };
@@ -58,6 +60,9 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%',
   },
   entriesContainer: {
     flexGrow: 1,

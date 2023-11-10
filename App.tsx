@@ -5,12 +5,13 @@ import { DebugTools } from './src/components/DebugTools';
 import { ApiSettings, GlobalContext } from './src/contexts/global.context';
 import { Main } from './src/screens/Main';
 import { Login } from './src/screens/Login';
-import { Screen, WorklogDaysObject } from './src/types/global.types';
+import { Layout, Screen, WorklogDaysObject } from './src/types/global.types';
 import { getWorklogsCompact } from './src/services/jira.service';
 import { convertWorklogsToDaysObject } from './src/services/worklogs.service';
 
 function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
+  const [layout, setLayout] = useState<Layout>('normal');
   const [visibleScreens, setVisibleScreens] = useState<Screen[]>(['login']);
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
   const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
@@ -44,6 +45,8 @@ function App(): JSX.Element {
       value={{
         currentScreen,
         setCurrentScreen,
+        layout,
+        setLayout,
         apiSettings,
         setApiSettings,
         userInfo,
