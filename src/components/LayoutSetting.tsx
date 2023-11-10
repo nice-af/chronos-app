@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
+import { GlobalContext } from '../contexts/global.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { getPadding } from '../styles/utils';
-import { GlobalContext } from '../contexts/global.context';
 import { Layout } from '../types/global.types';
 
 const layoutToLabelMap: Record<Layout, string> = {
@@ -12,13 +11,14 @@ const layoutToLabelMap: Record<Layout, string> = {
   micro: 'Micro',
 };
 
-interface LayoutSettingsButtonProps {
+interface LayoutSettingButtonProps {
   option: Layout;
   image: ImageSourcePropType;
 }
 
-const LayoutSettingsButton: React.FC<LayoutSettingsButtonProps> = ({ option, image }) => {
+const LayoutSettingButton: React.FC<LayoutSettingButtonProps> = ({ option, image }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const { layout, setLayout } = useContext(GlobalContext);
 
   const isChecked = layout === option;
@@ -29,9 +29,18 @@ const LayoutSettingsButton: React.FC<LayoutSettingsButtonProps> = ({ option, ima
       <Pressable
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
         onPress={() => setLayout(option)}
         style={styles.pressable}>
-        <View style={[styles.highlight, isHovered && styles.highlightHovered, isChecked && styles.highlightHovered]} />
+        <View
+          style={[
+            styles.highlight,
+            isHovered && styles.highlightHovered,
+            isChecked && styles.highlightHovered,
+            isPressed && styles.highlightPressed,
+          ]}
+        />
         <Image style={styles.image} source={image} />
       </Pressable>
       <Text style={isChecked ? styles.labelChecked : styles.label}>{layoutToLabelMap[option]}</Text>
@@ -42,9 +51,9 @@ const LayoutSettingsButton: React.FC<LayoutSettingsButtonProps> = ({ option, ima
 export const LayoutSettings: React.FC = () => {
   return (
     <View style={styles.layoutSettingsContainer}>
-      <LayoutSettingsButton option='normal' image={require('../assets/settings/layout-normal.png')} />
-      <LayoutSettingsButton option='compact' image={require('../assets/settings/layout-compact.png')} />
-      <LayoutSettingsButton option='micro' image={require('../assets/settings/layout-micro.png')} />
+      <LayoutSettingButton option='normal' image={require('../assets/settings/layout-normal.png')} />
+      <LayoutSettingButton option='compact' image={require('../assets/settings/layout-compact.png')} />
+      <LayoutSettingButton option='micro' image={require('../assets/settings/layout-micro.png')} />
     </View>
   );
 };
@@ -86,6 +95,9 @@ const styles = StyleSheet.create({
   },
   highlightHovered: {
     backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  highlightPressed: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
   },
   checkedBorder: {
     position: 'absolute',

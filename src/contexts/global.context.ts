@@ -1,7 +1,7 @@
 import { Version3Models } from 'jira.js';
 import React from 'react';
 import { JiraResource } from '../types/auth.types';
-import { Layout, Screen, WorklogDaysObject } from '../types/global.types';
+import { DayId, Layout, Screen, WorklogDaysObject } from '../types/global.types';
 
 export interface ApiSettings {
   token: string;
@@ -21,6 +21,8 @@ interface GlobalContextProps {
   setSelectedDate: (date: Date) => void;
   layout: Layout;
   setLayout: (layout: Layout) => void;
+  workingDays: DayId[];
+  setWorkingDays: (days: DayId[]) => void;
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
@@ -36,4 +38,6 @@ export const GlobalContext = React.createContext<GlobalContextProps>({
   setSelectedDate: () => {},
   layout: 'normal',
   setLayout: () => {},
+  workingDays: [0, 1, 2, 3, 4],
+  setWorkingDays: () => {},
 });

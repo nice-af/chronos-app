@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Layout } from '../components/Layout';
-import { colors } from '../styles/colors';
+import { LayoutSettings } from '../components/LayoutSetting';
+import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { GlobalContext } from '../contexts/global.context';
-import { getPadding } from '../styles/utils';
+import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { LayoutSettings } from '../components/LayoutSettings';
 
 export const Settings: React.FC = () => {
   const { setCurrentScreen } = useContext(GlobalContext);
@@ -16,6 +16,9 @@ export const Settings: React.FC = () => {
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>
           <LayoutSettings />
+          <View style={styles.hr} />
+          <Text style={styles.headline}>Working days</Text>
+          <WorkingDaysSetting />
         </View>
       </View>
     </Layout>
@@ -39,6 +42,12 @@ const styles = StyleSheet.create({
   },
   headline: {
     ...typo.headline,
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  hr: {
+    width: '100%',
+    height: 1,
+    backgroundColor: colors.surfaceBorder,
+    marginVertical: 12,
   },
 });

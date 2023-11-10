@@ -11,23 +11,11 @@ import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import BackgroundView from './BackgroundView.macos';
-import { DayButton, DayLabel } from './DayButton';
+import { DayButton } from './DayButton';
 import { WeekPicker } from './WeekPicker';
+import { weekDays } from '../types/global.types';
 
 export const dayPickerHeight = 56;
-
-const days: {
-  id: number;
-  abbreviation: DayLabel;
-}[] = [
-  { id: 0, abbreviation: 'M' },
-  { id: 1, abbreviation: 'T' },
-  { id: 2, abbreviation: 'W' },
-  { id: 3, abbreviation: 'T' },
-  { id: 4, abbreviation: 'F' },
-  { id: 5, abbreviation: 'S' },
-  { id: 6, abbreviation: 'S' },
-];
 
 export const Sidebar: React.FC = () => {
   const { selectedDate, setSelectedDate, worklogs } = useContext(GlobalContext);
@@ -37,7 +25,7 @@ export const Sidebar: React.FC = () => {
     <View style={styles.container}>
       <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
       <WeekPicker />
-      {days.map(day => (
+      {weekDays.map(day => (
         <DayButton
           key={day.id}
           day={day.abbreviation}

@@ -36,6 +36,9 @@ const buttonColors = {
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
   transparentButtonHover: 'rgba(10,132,255,0.2)',
   transparentButtonActive: 'rgba(10,132,255,0.3)',
+  surfaceButtonBase: '#3A3938',
+  surfaceButtonHover: '#434241',
+  surfaceButtonActive: '#454443',
 };
 
 export const colors = {

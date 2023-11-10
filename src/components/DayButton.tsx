@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-
-export type DayLabel = 'M' | 'T' | 'W' | 'F' | 'S';
+import { DayLabel } from '../types/global.types';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   day: DayLabel;

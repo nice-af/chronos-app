@@ -1,6 +1,21 @@
 export type Screen = 'login' | 'dayView';
 export type Layout = 'normal' | 'compact' | 'micro';
 export type Project = 'tmh' | 'orcaya' | 'solid';
+export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type DayLabel = 'Mo' | 'Tu' | 'We' | 'Th' | 'Fr' | 'Sa' | 'Su';
+
+export const weekDays: {
+  id: DayId;
+  abbreviation: DayLabel;
+}[] = [
+  { id: 0, abbreviation: 'Mo' },
+  { id: 1, abbreviation: 'Tu' },
+  { id: 2, abbreviation: 'We' },
+  { id: 3, abbreviation: 'Th' },
+  { id: 4, abbreviation: 'Fr' },
+  { id: 5, abbreviation: 'Sa' },
+  { id: 6, abbreviation: 'Su' },
+];
 
 export interface TrackingEntry {
   id: number;
