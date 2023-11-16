@@ -6,9 +6,16 @@ import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { GlobalContext } from '../contexts/global.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
+import { Toggle } from '../components/Toggle';
 
 export const Settings: React.FC = () => {
-  const { setCurrentScreen } = useContext(GlobalContext);
+  const {
+    setCurrentScreen,
+    disableEditingOfPastWorklogs,
+    setDisableEditingOfPastWorklogs,
+    hideNonWorkingDays,
+    setHideNonWorkingDays,
+  } = useContext(GlobalContext);
 
   return (
     <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setCurrentScreen('login') }}>
@@ -19,6 +26,16 @@ export const Settings: React.FC = () => {
           <View style={styles.hr} />
           <Text style={styles.headline}>Working days</Text>
           <WorkingDaysSetting />
+          <View style={styles.hr} />
+          <Toggle label='Hide non working days' state={hideNonWorkingDays} setState={setHideNonWorkingDays} />
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.headline}>Worklogs</Text>
+          <Toggle
+            label='Disable editing of worklogs from past days'
+            state={disableEditingOfPastWorklogs}
+            setState={setDisableEditingOfPastWorklogs}
+          />
         </View>
       </View>
     </Layout>
@@ -32,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     padding: 16,
+    gap: 16,
   },
   card: {
     padding: 10,
@@ -42,7 +60,7 @@ const styles = StyleSheet.create({
   },
   headline: {
     ...typo.headline,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   hr: {
     width: '100%',

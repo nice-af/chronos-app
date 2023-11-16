@@ -13,6 +13,8 @@ function App(): JSX.Element {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login');
   const [layout, setLayout] = useState<Layout>('normal');
   const [workingDays, setWorkingDays] = useState<DayId[]>([0, 1, 2, 3, 4]);
+  const [hideNonWorkingDays, setHideNonWorkingDays] = useState<boolean>(false);
+  const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useState<boolean>(true);
   const [visibleScreens, setVisibleScreens] = useState<Screen[]>(['login']);
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
   const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
@@ -58,6 +60,10 @@ function App(): JSX.Element {
         setLayout,
         workingDays,
         setWorkingDays,
+        hideNonWorkingDays,
+        setHideNonWorkingDays,
+        disableEditingOfPastWorklogs,
+        setDisableEditingOfPastWorklogs,
       }}>
       {visibleScreens.includes('login') && (
         <Animated.View

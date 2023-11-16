@@ -8,6 +8,7 @@ export interface ApiSettings {
   resource: JiraResource;
 }
 
+// TODO @florianmrz: Sollten wir das hier refactoren?
 interface GlobalContextProps {
   currentScreen: Screen;
   setCurrentScreen: (screen: Screen) => void;
@@ -23,6 +24,10 @@ interface GlobalContextProps {
   setLayout: (layout: Layout) => void;
   workingDays: DayId[];
   setWorkingDays: (days: DayId[]) => void;
+  hideNonWorkingDays: boolean;
+  setHideNonWorkingDays: (newValue: boolean) => void;
+  disableEditingOfPastWorklogs: boolean;
+  setDisableEditingOfPastWorklogs: (newValue: boolean) => void;
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
@@ -40,4 +45,8 @@ export const GlobalContext = React.createContext<GlobalContextProps>({
   setLayout: () => {},
   workingDays: [0, 1, 2, 3, 4],
   setWorkingDays: () => {},
+  hideNonWorkingDays: false,
+  setHideNonWorkingDays: () => {},
+  disableEditingOfPastWorklogs: true,
+  setDisableEditingOfPastWorklogs: () => {},
 });
