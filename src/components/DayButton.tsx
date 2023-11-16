@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     ...typo.headline,
     textAlign: 'center',
-    color: colors.textSecondary,
+    color: colors.textPrimary,
   },
   time: {
     zIndex: 2,
