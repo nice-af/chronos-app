@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     width: '100%',
-    height: 53,
+    height: 52,
     paddingHorizontal: 16,
   },
   isCentered: {
