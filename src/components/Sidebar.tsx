@@ -28,7 +28,7 @@ export const Sidebar: React.FC = () => {
       {weekDays.map(day => (
         <DayButton
           key={day.id}
-          day={day.abbreviation}
+          dayLabel={day.abbreviation}
           duration={formatUnixTimestampToHMM(
             worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
           )}

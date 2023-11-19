@@ -4,6 +4,16 @@ export type Project = 'tmh' | 'orcaya' | 'solid';
 export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DayLabel = 'Mo' | 'Tu' | 'We' | 'Th' | 'Fr' | 'Sa' | 'Su';
 
+export const dayLabelToDayIdMap: Record<DayLabel, DayId> = {
+  Mo: 0,
+  Tu: 1,
+  We: 2,
+  Th: 3,
+  Fr: 4,
+  Sa: 5,
+  Su: 6,
+};
+
 export const weekDays: {
   id: DayId;
   abbreviation: DayLabel;

@@ -1,29 +1,44 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { DayLabel } from '../types/global.types';
+import { DayLabel, dayLabelToDayIdMap } from '../types/global.types';
+import { GlobalContext } from '../contexts/global.context';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
-  day: DayLabel;
+  dayLabel: DayLabel;
   duration?: string;
   onPress: () => void;
   isSelected?: boolean;
 }
 
-export const DayButton: React.FC<DayButtonProps> = ({ onPress, day, duration, isSelected, ...props }) => {
+export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { layout, workingDays, hideNonWorkingDays } = useContext(GlobalContext);
+  const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
+
+  let height = 54;
+  if (layout === 'compact') {
+    height = 44;
+  }
+  if (layout === 'micro' || !isWorkingDay) {
+    height = 28;
+  }
+
+  if (hideNonWorkingDays && !isWorkingDay) {
+    return null;
+  }
 
   return (
     <Pressable
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       onPress={onPress}
-      style={[styles.default, (isHovered || isSelected) && styles.isHovered]}>
-      <View style={styles.insetBorder} />
-      {isSelected && <View style={styles.selectedBorder} />}
-      <Text style={styles.day}>{day}</Text>
-      <Text style={styles.time}>{duration ?? '-'}</Text>
+      style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
+      <View style={[styles.insetBorder, { height: height - 2 }]} />
+      {isSelected && <View style={[styles.selectedBorder, { height: height + 4 }]} />}
+      <Text style={styles.day}>{dayLabel}</Text>
+      {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}
     </Pressable>
   );
 };
@@ -35,7 +50,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 54,
-    height: 54,
     borderRadius: 10,
     backgroundColor: 'rgba(255,255,255,0.04)',
     textAlign: 'center',
@@ -50,7 +64,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: 52,
-    height: 52,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.1)',
     borderRadius: 10,
@@ -60,7 +73,6 @@ const styles = StyleSheet.create({
     top: -3,
     left: -3,
     width: 58,
-    height: 58,
     borderWidth: 2,
     borderColor: colors.blue,
     borderRadius: 12,
