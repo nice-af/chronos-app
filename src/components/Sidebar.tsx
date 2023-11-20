@@ -10,19 +10,22 @@ import {
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { weekDays } from '../types/global.types';
 import BackgroundView from './BackgroundView.macos';
 import { DayButton } from './DayButton';
+import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
-import { weekDays } from '../types/global.types';
+import { useAppState } from '@react-native-community/hooks';
 
 export const dayPickerHeight = 56;
 
 export const Sidebar: React.FC = () => {
   const { selectedDate, setSelectedDate, worklogs } = useContext(GlobalContext);
   const windowHeight = useWindowDimensions().height;
+  const currentAppState = useAppState();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
       <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
       <WeekPicker />
       {weekDays.map(day => (
@@ -36,6 +39,7 @@ export const Sidebar: React.FC = () => {
           onPress={() => setSelectedDate(setDateToThisWeekday(selectedDate, day.id))}
         />
       ))}
+      <SettingsButton />
     </View>
   );
 };

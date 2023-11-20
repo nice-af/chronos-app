@@ -10,8 +10,11 @@ export interface ApiSettings {
 
 // TODO @florianmrz: Sollten wir das hier refactoren?
 interface GlobalContextProps {
+  previousScreen: Screen;
   currentScreen: Screen;
   setCurrentScreen: (screen: Screen) => void;
+  visibleScreens: Screen[];
+  setVisibleScreens: (screens: [Screen]) => void;
   apiSettings: ApiSettings | null;
   setApiSettings: (apiSettings: ApiSettings) => void;
   userInfo: Version3Models.User | null;
@@ -31,8 +34,11 @@ interface GlobalContextProps {
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
+  previousScreen: 'login',
   currentScreen: 'login',
   setCurrentScreen: () => {},
+  visibleScreens: ['login', 'entries'],
+  setVisibleScreens: () => {},
   apiSettings: null,
   setApiSettings: () => {},
   userInfo: null,

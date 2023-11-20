@@ -16,6 +16,7 @@ function App(): JSX.Element {
   const [hideNonWorkingDays, setHideNonWorkingDays] = useState<boolean>(false);
   const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useState<boolean>(true);
   const [visibleScreens, setVisibleScreens] = useState<Screen[]>(['login']);
+  const previousScreen = useRef<Screen>('login');
   const [apiSettings, setApiSettings] = useState<ApiSettings | null>(null);
   const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
   const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
@@ -25,7 +26,7 @@ function App(): JSX.Element {
 
   useEffect(() => {
     if (userInfo?.accountId) {
-      setCurrentScreen('dayView');
+      setCurrentScreen('entries');
       getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
         setWorklogs(convertWorklogsToDaysObject(worklogsCompact));
       });
@@ -33,21 +34,33 @@ function App(): JSX.Element {
   }, [userInfo?.accountId]);
 
   useEffect(() => {
-    Animated.timing(screenPos, {
-      toValue: currentScreen === 'login' ? 0 : 1,
-      duration: 250,
-      useNativeDriver: true,
-      easing: Easing.inOut(Easing.quad),
-    }).start();
-    setVisibleScreens(['login', 'dayView']);
-    setTimeout(() => setVisibleScreens([currentScreen]), 250);
+    // The current screen is the next screen in this case at the end of this useEffect it actually is the current screen
+    // This is only for better readability
+    const nextScreen = currentScreen;
+
+    if (previousScreen.current === 'login' || nextScreen === 'login') {
+      // Run animation only if login screen should move
+      Animated.timing(screenPos, {
+        toValue: nextScreen === 'login' ? 0 : 1,
+        duration: 250,
+        useNativeDriver: true,
+        easing: Easing.inOut(Easing.quad),
+      }).start();
+    }
+
+    setVisibleScreens([previousScreen.current, nextScreen]);
+    previousScreen.current = nextScreen;
+    setTimeout(() => setVisibleScreens([nextScreen]), 250);
   }, [currentScreen]);
 
   return (
     <GlobalContext.Provider
       value={{
+        previousScreen: previousScreen.current,
         currentScreen,
         setCurrentScreen,
+        visibleScreens,
+        setVisibleScreens,
         apiSettings,
         setApiSettings,
         userInfo,
@@ -81,28 +94,27 @@ function App(): JSX.Element {
               zIndex: currentScreen === 'login' ? 1 : 0,
             },
           ]}>
-          <Login onLoginPress={() => setCurrentScreen('dayView')} />
+          <Login onLoginPress={() => setCurrentScreen('entries')} />
         </Animated.View>
       )}
-      {visibleScreens.includes('dayView') && (
-        <Animated.View
-          style={[
-            styles.screenContainer,
-            {
-              transform: [
-                {
-                  translateX: screenPos.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [windowWidth, 0],
-                  }),
-                },
-              ],
-              zIndex: currentScreen === 'dayView' ? 1 : 0,
-            },
-          ]}>
-          <Main />
-        </Animated.View>
-      )}
+      {/* We always render this screen since it is the main screen */}
+      <Animated.View
+        style={[
+          styles.screenContainer,
+          {
+            transform: [
+              {
+                translateX: screenPos.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [windowWidth, 0],
+                }),
+              },
+            ],
+            zIndex: currentScreen === 'entries' ? 1 : 0,
+          },
+        ]}>
+        <Main />
+      </Animated.View>
       <DebugTools />
     </GlobalContext.Provider>
   );

@@ -89,6 +89,5 @@ const styles = StyleSheet.create({
     ...typo.subheadline,
     color: colors.textSecondary,
     textAlign: 'center',
-    marginTop: 2,
   },
 });

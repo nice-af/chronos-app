@@ -26,10 +26,6 @@ export const DebugTools: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const { apiSettings, worklogs, userInfo, currentScreen } = useContext(GlobalContext);
 
-  useEffect(() => {
-    console.log(apiSettings?.token);
-  }, [apiSettings?.token]);
-
   if (!expanded) {
     return (
       <Pressable style={styles.smallContainer} onPress={() => setExpanded(true)}>

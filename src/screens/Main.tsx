@@ -1,81 +1,87 @@
-import React, { useContext } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Layout } from '../components/Layout';
+import React, { useContext, useEffect, useRef } from 'react';
+import { Animated, Easing, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Sidebar } from '../components/Sidebar';
-import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
-import { formatDateToYYYYMMDD } from '../services/date.service';
-import { typo } from '../styles/typo';
-import { ButtonTransparent } from '../components/ButtonTransparent';
-import { JumpToTodayButton } from '../components/JumpToTodayButton';
+import { Entries } from './Entries';
 import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
-  const { worklogs, selectedDate, setCurrentScreen } = useContext(GlobalContext);
+  const { previousScreen, currentScreen, visibleScreens } = useContext(GlobalContext);
+  const screenPos = useRef(new Animated.Value(0)).current;
+  const { width: windowWidth } = useWindowDimensions();
 
-  const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
+  useEffect(() => {
+    // The current screen is the next screen in this case at the end of this useEffect it actually is the current screen
+    // This is only for better readability
+    const nextScreen = currentScreen;
 
-  const rightElement = (
-    <View style={styles.actions}>
-      <JumpToTodayButton />
-      <ButtonTransparent onPress={() => {}}>
-        <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
-      </ButtonTransparent>
-    </View>
-  );
+    if (previousScreen !== 'login' && nextScreen !== 'login') {
+      Animated.timing(screenPos, {
+        toValue: currentScreen === 'entries' ? 0 : 1,
+        duration: 250,
+        useNativeDriver: true,
+        easing: Easing.inOut(Easing.quad),
+      }).start();
+    }
+  }, [currentScreen]);
 
   return (
     <View style={styles.container}>
       <Sidebar />
-      {/* <Layout
-        header={{ layout: 'left', title: 'Today, 21 Oct', rightElement, onBackPress: () => setCurrentScreen('login') }}>
-        <ScrollView
-          style={styles.entriesContainer}
-          removeClippedSubviews={false}
-          contentInset={{ top: 52 + 6, bottom: 6 }}>
-          <View style={styles.spacerTop} />
-          {currentWorklogs.map(worklog => (
-            <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
-          ))}
-          {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
-        </ScrollView>
-      </Layout> */}
-      <Settings />
+      <View style={styles.mainViewContainer}>
+        <View style={styles.entriesContainer}>
+          <Entries />
+        </View>
+        {visibleScreens.includes('settings') && (
+          <Animated.View
+            style={[
+              styles.overlayContainer,
+              {
+                transform: [
+                  {
+                    translateX: screenPos.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [windowWidth - 52, 0],
+                    }),
+                  },
+                ],
+                zIndex: currentScreen === 'entries' ? 1 : 0,
+              },
+            ]}>
+            <Settings />
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  actions: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginLeft: 'auto',
-  },
-  icon: {
-    width: 24,
-    height: 24,
-  },
   container: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'stretch',
     width: '100%',
     height: '100%',
   },
-  entriesContainer: {
+  mainViewContainer: {
+    position: 'relative',
     flexGrow: 1,
-    overflow: 'visible',
-    backgroundColor: 'rgba(0,0,0,0.2)',
   },
-  spacerTop: {
-    height: 52,
+  entriesContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
   },
-  errorMessage: {
-    ...typo.body,
-    textAlign: 'center',
-    opacity: 0.4,
-    marginTop: 100,
+  overlayContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    width: '100%',
+    height: '100%',
   },
 });

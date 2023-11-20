@@ -29,7 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ title, layout, onBackPress, righ
           </ButtonTransparent>
         )}
         {title && <Text style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>}
-        {rightElement}
+        {rightElement && (
+          <View style={[styles.actions, currentAppState === 'inactive' ? { opacity: 0.4 } : undefined]}>
+            {rightElement}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -68,5 +72,12 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typo.title3Emphasized,
+  },
+  actions: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginLeft: 'auto',
   },
 });

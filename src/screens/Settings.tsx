@@ -18,7 +18,7 @@ export const Settings: React.FC = () => {
   } = useContext(GlobalContext);
 
   return (
-    <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setCurrentScreen('login') }}>
+    <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setCurrentScreen('entries') }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>
