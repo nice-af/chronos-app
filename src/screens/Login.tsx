@@ -31,8 +31,12 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
           Please click the button below to connect your Jira account with Jira Time Tracker.
         </Text>
         <ButtonPrimary label='Login to Jira' onPress={requestOAuth} />
-        <Text>-</Text>
-        <ButtonPrimary label='To next page' onPress={onLoginPress} />
+        {__DEV__ && (
+          <>
+            <Text>-</Text>
+            <ButtonPrimary label='To next page' onPress={onLoginPress} />
+          </>
+        )}
       </View>
     </Layout>
   );

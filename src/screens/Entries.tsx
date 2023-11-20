@@ -24,7 +24,12 @@ export const Entries: React.FC = () => {
 
   return (
     <Layout
-      header={{ layout: 'left', title: 'Today, 21 Oct', rightElement, onBackPress: () => setCurrentScreen('login') }}>
+      header={{
+        layout: 'left',
+        title: 'Today, 21 Oct',
+        rightElement,
+        onBackPress: __DEV__ ? () => setCurrentScreen('login') : undefined,
+      }}>
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}

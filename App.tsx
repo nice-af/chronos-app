@@ -53,6 +53,8 @@ function App(): JSX.Element {
     setTimeout(() => setVisibleScreens([nextScreen]), 250);
   }, [currentScreen]);
 
+  console.log(process.env);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -115,7 +117,7 @@ function App(): JSX.Element {
         ]}>
         <Main />
       </Animated.View>
-      <DebugTools />
+      {__DEV__ && <DebugTools />}
     </GlobalContext.Provider>
   );
 }
