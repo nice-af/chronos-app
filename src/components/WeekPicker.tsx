@@ -22,6 +22,7 @@ export const WeekPicker: React.FC = () => {
         </ButtonTransparent>
         <View>
           <Text style={styles.label}>KW</Text>
+          {/* TODO: This is not locale aware, but it's fine for now. */}
           <Text style={styles.value}>{getISOWeek(selectedDate)}</Text>
         </View>
         <ButtonTransparent
