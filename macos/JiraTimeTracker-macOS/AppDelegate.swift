@@ -68,7 +68,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let midScreenX = screen.frame.midX
     let posScreenY = 200
     let origin = CGPoint(x: Int(midScreenX), y: posScreenY)
-    let size = CGSize(width: 460, height: 507)
+    let size = CGSize(width: 460, height: 548)
     let frame = NSRect(origin: origin, size: size)
     windowController.window!.setFrame(frame, display: true)
     windowController.window!.center()
