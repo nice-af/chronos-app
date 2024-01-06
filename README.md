@@ -1,5 +1,14 @@
 # JiraTimeTracker App
 
+## Debug starting issues
+
+Sometimes the dev environment will not start after updating packages or other changes.
+A good try to fix this is to do a hard clean install and build using this command:
+
+```bash
+cd ios && rm -rf ~/Library/Caches/CocoaPods && rm -rf Pods && rm -rf ~/Library/Developer/Xcode/DerivedData/* && pod deintegrate && pod setup && cd .. && rm -rf node_modules yarn.lock Podfile.lock && yarn && npx pod-install ios && yarn start --reset-cache
+```
+
 ## WIP Build on MacOS WIP
 
 @see https://github.com/microsoft/react-native-macos/issues/400
