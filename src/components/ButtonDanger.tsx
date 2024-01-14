@@ -4,14 +4,14 @@ import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
-interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
+interface ButtonDangerProps extends Omit<PressableProps, 'style'> {
   label: string;
   onPress: () => void;
   style?: ViewStyle;
   iconRight?: React.ReactNode;
 }
 
-export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label, iconRight, ...props }) => {
+export const ButtonDanger: React.FC<ButtonDangerProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -38,17 +38,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     alignSelf: 'flex-start',
-    backgroundColor: colors.secondaryButtonBase,
-    borderColor: colors.secondaryButtonBorder,
+    backgroundColor: colors.dangerButtonBase,
     borderWidth: 1,
     borderRadius: 9,
     ...getPadding(7, 12),
   },
   isHovered: {
-    backgroundColor: colors.secondaryButtonHover,
+    backgroundColor: colors.dangerButtonHover,
   },
   isActive: {
-    backgroundColor: colors.secondaryButtonActive,
+    backgroundColor: colors.dangerButtonActive,
   },
   label: {
     ...typo.bodyEmphasized,

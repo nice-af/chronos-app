@@ -38,7 +38,7 @@ export const EditWorklog: React.FC = () => {
         ),
         onBackPress: () => setCurrentWorklogToEdit(null),
       }}>
-      <EditWorklogHeader onCancelPress={() => {}} onSavePress={() => {}} />
+      <EditWorklogHeader onDeletePress={() => {}} onCancelPress={() => {}} onSavePress={() => {}} />
       <View style={styles.container}>
         <Text>Test</Text>
       </View>

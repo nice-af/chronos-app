@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
+import { ButtonDanger } from './ButtonDanger';
 
 interface EditWorklogHeaderProps {
+  onDeletePress: () => void;
   onCancelPress: () => void;
   onSavePress: () => void;
 }
 
-export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onCancelPress, onSavePress }) => {
+export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onDeletePress, onCancelPress, onSavePress }) => {
+  const [showDelete, setShowDelete] = useState(false);
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/edit-stripes-bg.png')} resizeMode='repeat' style={styles.stripesBg} />
       <View style={styles.content}>
         <Text style={styles.title}>Edit worklog</Text>
         <View style={styles.buttonsContainer}>
+          {showDelete && <ButtonDanger label='Yes, delete this' onPress={onDeletePress} />}
+          {!showDelete && <ButtonSecondary label='Delete' onPress={() => setShowDelete(true)} />}
           <ButtonSecondary label='Cancel' onPress={onCancelPress} />
           <ButtonPrimary label='Save' onPress={onSavePress} />
         </View>
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
     whiteSpace: 'nowrap',
     width: '100%',
     height: 48,
-    ...getPadding(0, 10),
+    ...getPadding(0, 16),
   },
   stripesBg: {
     position: 'absolute',
@@ -56,7 +61,6 @@ const styles = StyleSheet.create({
   title: {
     ...typo.headline,
     flex: 1,
-    marginLeft: 8,
     marginTop: 2,
   },
   buttonsContainer: {
