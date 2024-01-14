@@ -1,4 +1,3 @@
-export type Screen = 'login' | 'entries' | 'settings';
 export type Layout = 'normal' | 'compact' | 'micro';
 export type Project = 'tmh' | 'orcaya' | 'solid';
 export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;

@@ -1,29 +1,29 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 
 export const dayPickerHeight = 56;
 
 export const SettingsButton: React.FC = () => {
-  const { currentScreen, setCurrentScreen } = useContext(GlobalContext);
+  const { showSettingsScreen, setShowSettingsScreen } = useContext(NavigationContext);
   const [isHovered, setIsHovered] = useState(false);
   const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(rotation, {
-      toValue: currentScreen === 'settings' ? 1 : 0,
+      toValue: showSettingsScreen ? 1 : 0,
       duration: 250,
       useNativeDriver: true,
       easing: Easing.inOut(Easing.quad),
     }).start();
-  }, [currentScreen]);
+  }, [showSettingsScreen]);
 
   return (
     <Pressable
       style={({ pressed }) => [styles.pressable, isHovered && { opacity: 0.8 }, pressed && { opacity: 0.7 }]}
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
-      onPress={() => setCurrentScreen(currentScreen === 'entries' ? 'settings' : 'entries')}>
+      onPress={() => setShowSettingsScreen(!showSettingsScreen)}>
       <Animated.Image
         style={[
           styles.cog,

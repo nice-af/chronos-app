@@ -1,30 +1,9 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import { Animated, Easing, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Sidebar } from '../components/Sidebar';
-import { GlobalContext } from '../contexts/global.context';
 import { Entries } from './Entries';
-import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
-  const { previousScreen, currentScreen, visibleScreens } = useContext(GlobalContext);
-  const screenPos = useRef(new Animated.Value(0)).current;
-  const { width: windowWidth } = useWindowDimensions();
-
-  useEffect(() => {
-    // The current screen is the next screen in this case at the end of this useEffect it actually is the current screen
-    // This is only for better readability
-    const nextScreen = currentScreen;
-
-    if (previousScreen !== 'login' && nextScreen !== 'login') {
-      Animated.timing(screenPos, {
-        toValue: currentScreen === 'entries' ? 0 : 1,
-        duration: 250,
-        useNativeDriver: true,
-        easing: Easing.inOut(Easing.quad),
-      }).start();
-    }
-  }, [currentScreen]);
-
   return (
     <View style={styles.container}>
       <Sidebar />
@@ -32,25 +11,6 @@ export const Main: React.FC = () => {
         <View style={styles.entriesContainer}>
           <Entries />
         </View>
-        {visibleScreens.includes('settings') && (
-          <Animated.View
-            style={[
-              styles.overlayContainer,
-              {
-                transform: [
-                  {
-                    translateX: screenPos.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [windowWidth - 52, 0],
-                    }),
-                  },
-                ],
-                zIndex: currentScreen === 'entries' ? 1 : 0,
-              },
-            ]}>
-            <Settings />
-          </Animated.View>
-        )}
       </View>
     </View>
   );

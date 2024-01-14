@@ -11,13 +11,14 @@ export interface HeaderProps {
   layout: 'center' | 'left';
   onBackPress?: () => void;
   rightElement?: React.ReactNode;
+  position?: 'absolute';
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, layout, onBackPress, rightElement }) => {
+export const Header: React.FC<HeaderProps> = ({ title, layout, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
       <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
       <View style={[styles.content, layout === 'center' && styles.isCentered]}>
         {onBackPress && (
@@ -46,6 +47,11 @@ const styles = StyleSheet.create({
     height: 53,
     borderBottomColor: colors.border,
     borderBottomWidth: 1,
+  },
+  containerAbsolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   content: {
     display: 'flex',

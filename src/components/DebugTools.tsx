@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { getPadding } from '../styles/utils';
+import { NavigationContext } from '../contexts/navigation.context';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;
@@ -24,7 +25,8 @@ export const DebugToolsTab: React.FC<DebugToolsTabProps> = ({ defaultExpanded, t
 
 export const DebugTools: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const { apiSettings, worklogs, userInfo, currentScreen } = useContext(GlobalContext);
+  const { apiSettings, worklogs, userInfo } = useContext(GlobalContext);
+  const { showLoginScreen, showSettingsScreen } = useContext(NavigationContext);
 
   if (!expanded) {
     return (
@@ -48,8 +50,8 @@ export const DebugTools: React.FC = () => {
           <DebugToolsTab title='userInfo'>
             <Text>{JSON.stringify(userInfo, null, 2)}</Text>
           </DebugToolsTab>
-          <DebugToolsTab title='currentScreen'>
-            <Text>{JSON.stringify(currentScreen, null, 2)}</Text>
+          <DebugToolsTab title='navigationContext'>
+            <Text>{JSON.stringify({ showLoginScreen, showSettingsScreen }, null, 2)}</Text>
           </DebugToolsTab>
         </ScrollView>
       </View>

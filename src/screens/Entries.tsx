@@ -7,9 +7,11 @@ import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
+import { NavigationContext } from '../contexts/navigation.context';
 
 export const Entries: React.FC = () => {
-  const { worklogs, selectedDate, setCurrentScreen } = useContext(GlobalContext);
+  const { worklogs } = useContext(GlobalContext);
+  const { selectedDate, setShowLoginScreen } = useContext(NavigationContext);
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -28,13 +30,13 @@ export const Entries: React.FC = () => {
         layout: 'left',
         title: 'Today, 21 Oct',
         rightElement,
-        onBackPress: __DEV__ ? () => setCurrentScreen('login') : undefined,
+        onBackPress: __DEV__ ? () => setShowLoginScreen(true) : undefined,
+        position: 'absolute',
       }}>
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}
         contentInset={{ top: 52 + 6, bottom: 6 }}>
-        <View style={styles.spacerTop} />
         {currentWorklogs.map(worklog => (
           <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
         ))}
@@ -53,9 +55,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     overflow: 'visible',
     backgroundColor: 'rgba(0,0,0,0.2)',
-  },
-  spacerTop: {
-    height: 52,
   },
   errorMessage: {
     ...typo.body,

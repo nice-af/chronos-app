@@ -1,6 +1,8 @@
+import { useAppState } from '@react-native-community/hooks';
 import React, { useContext } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 import {
   formatDateToYYYYMMDD,
   formatUnixTimestampToHMM,
@@ -15,12 +17,12 @@ import BackgroundView from './BackgroundView.macos';
 import { DayButton } from './DayButton';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
-import { useAppState } from '@react-native-community/hooks';
 
 export const dayPickerHeight = 56;
 
 export const Sidebar: React.FC = () => {
-  const { selectedDate, setSelectedDate, worklogs } = useContext(GlobalContext);
+  const { worklogs } = useContext(GlobalContext);
+  const { selectedDate, setSelectedDate } = useContext(NavigationContext);
   const windowHeight = useWindowDimensions().height;
   const currentAppState = useAppState();
 

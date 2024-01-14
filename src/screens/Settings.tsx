@@ -2,23 +2,20 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Layout } from '../components/Layout';
 import { LayoutSettings } from '../components/LayoutSetting';
+import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { Toggle } from '../components/Toggle';
 
 export const Settings: React.FC = () => {
-  const {
-    setCurrentScreen,
-    disableEditingOfPastWorklogs,
-    setDisableEditingOfPastWorklogs,
-    hideNonWorkingDays,
-    setHideNonWorkingDays,
-  } = useContext(GlobalContext);
+  const { disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs, hideNonWorkingDays, setHideNonWorkingDays } =
+    useContext(GlobalContext);
+  const { setShowSettingsScreen } = useContext(NavigationContext);
 
   return (
-    <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setCurrentScreen('entries') }}>
+    <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>

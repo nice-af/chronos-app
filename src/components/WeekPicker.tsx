@@ -1,13 +1,14 @@
 import { getISOWeek } from 'date-fns';
 import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { ButtonTransparent } from './ButtonTransparent';
 
 export const WeekPicker: React.FC = () => {
-  const { selectedDate, setSelectedDate } = useContext(GlobalContext);
+  const { selectedDate, setSelectedDate } = useContext(NavigationContext);
+
   return (
     <>
       <View style={styles.container}>
