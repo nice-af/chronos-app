@@ -3,11 +3,17 @@ import { Animated, Easing, StyleSheet, useWindowDimensions } from 'react-native'
 
 interface AnimateScreenContainerProps {
   isVisible?: boolean;
+  zIndex?: number;
   offScreenLocation: 'left' | 'right';
   children: React.ReactNode;
 }
 
-const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({ isVisible, offScreenLocation, children }) => {
+const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({
+  isVisible,
+  zIndex,
+  offScreenLocation,
+  children,
+}) => {
   const [isRendered, setIsRendered] = useState(false);
   const screenPos = useRef(new Animated.Value(0)).current;
   const { width: windowWidth } = useWindowDimensions();
@@ -44,7 +50,7 @@ const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({ isVisib
               }),
             },
           ],
-          zIndex: isVisible ? 1 : 0,
+          zIndex: zIndex,
         },
       ]}>
       {children}

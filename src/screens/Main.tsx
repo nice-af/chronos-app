@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Sidebar } from '../components/Sidebar';
 import { Entries } from './Entries';
+import { Settings } from './Settings';
+import { NavigationContext } from '../contexts/navigation.context';
+import AnimateScreenContainer from '../components/AnimateScreenContainer';
 
 export const Main: React.FC = () => {
+  const { showSettingsScreen } = useContext(NavigationContext);
+
   return (
     <View style={styles.container}>
       <Sidebar />
       <View style={styles.mainViewContainer}>
+        <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={3}>
+          <Settings />
+        </AnimateScreenContainer>
         <View style={styles.entriesContainer}>
           <Entries />
         </View>
