@@ -6,6 +6,8 @@ import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
 import { typo } from '../styles/typo';
 import { WorklogCompact } from '../types/global.types';
+import { TimeInputField } from '../components/TimeInputField';
+import { Textarea } from '../components/Textarea';
 
 export const EditWorklog: React.FC = () => {
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
@@ -40,7 +42,8 @@ export const EditWorklog: React.FC = () => {
       }}>
       <EditWorklogHeader onDeletePress={() => {}} onCancelPress={() => {}} onSavePress={() => {}} />
       <View style={styles.container}>
-        <Text>Test</Text>
+        <TimeInputField />
+        <Textarea />
       </View>
     </Layout>
   );
