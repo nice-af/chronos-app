@@ -21,7 +21,7 @@ function App(): JSX.Element {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().setUTCHours(0, 0, 0, 0)));
 
   const [showLoginScreen, setShowLoginScreen] = useState(true);
-  const [showSettingsScreen, setShowSettingsScreen] = useState(true);
+  const [showSettingsScreen, setShowSettingsScreen] = useState(false);
 
   useEffect(() => {
     if (userInfo?.accountId) {

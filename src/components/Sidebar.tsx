@@ -23,6 +23,7 @@ export const dayPickerHeight = 56;
 export const Sidebar: React.FC = () => {
   const { worklogs } = useContext(GlobalContext);
   const { selectedDate, setSelectedDate } = useContext(NavigationContext);
+  const { setShowSettingsScreen } = useContext(NavigationContext);
   const windowHeight = useWindowDimensions().height;
   const currentAppState = useAppState();
 
@@ -38,7 +39,10 @@ export const Sidebar: React.FC = () => {
             worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
           )}
           isSelected={getWeekday(selectedDate) === day.id}
-          onPress={() => setSelectedDate(setDateToThisWeekday(selectedDate, day.id))}
+          onPress={() => {
+            setShowSettingsScreen(false);
+            setSelectedDate(setDateToThisWeekday(selectedDate, day.id));
+          }}
         />
       ))}
       <SettingsButton />

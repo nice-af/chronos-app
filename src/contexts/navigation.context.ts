@@ -18,7 +18,7 @@ interface NavigationContextProps {
 export const NavigationContext = React.createContext<NavigationContextProps>({
   showLoginScreen: true,
   setShowLoginScreen: () => {},
-  showSettingsScreen: true,
+  showSettingsScreen: false,
   setShowSettingsScreen: () => {},
   selectedDate: new Date(new Date().setUTCHours(0, 0, 0, 0)),
   setSelectedDate: () => {},
