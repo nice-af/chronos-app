@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
@@ -6,13 +6,14 @@ import { useAuthRequest } from '../services/auth.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { NavigationContext } from '../contexts/navigation.context';
+import { GlobalContext } from '../contexts/global.context';
+import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
 
-interface LoginProps {
-  onLoginPress: () => void;
-}
-
-export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
+export const Login: React.FC = () => {
   const { requestOAuth, isLoading } = useAuthRequest();
+  const { setShowLoginScreen } = useContext(NavigationContext);
+  const { setWorklogs, setUserInfo } = useContext(GlobalContext);
 
   return (
     <Layout header={{ layout: 'center', title: 'Login' }}>
@@ -34,7 +35,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginPress }) => {
         {__DEV__ && (
           <>
             <Text>-</Text>
-            <ButtonPrimary label='To next page' onPress={onLoginPress} />
+            <ButtonPrimary
+              label='To next page'
+              onPress={() => {
+                setShowLoginScreen(false);
+                setWorklogs(worklogsFakeData);
+                setUserInfo(userInfoFakeData);
+              }}
+            />
           </>
         )}
       </View>

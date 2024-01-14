@@ -13,6 +13,7 @@ const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({ isVisib
   const { width: windowWidth } = useWindowDimensions();
 
   useEffect(() => {
+    console.log('now visible', isVisible);
     if (isVisible) {
       setIsRendered(true);
     } else {

@@ -60,7 +60,7 @@ function App(): JSX.Element {
           setShowSettingsScreen,
         }}>
         <AnimateScreenContainer isVisible={showLoginScreen} offScreenLocation='left'>
-          <Login onLoginPress={() => setShowLoginScreen(false)} />
+          <Login />
         </AnimateScreenContainer>
         <AnimateScreenContainer isVisible={!showLoginScreen} offScreenLocation='right'>
           <Main />
