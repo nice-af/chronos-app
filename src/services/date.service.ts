@@ -1,4 +1,5 @@
 import ms from 'ms';
+import { intervalToDuration } from 'date-fns';
 
 /**
  * Returns the day of the week from Monday (0) to Sunday (6) for the given date.
@@ -27,12 +28,6 @@ export const formatDateToYYYYMMDD = (date: Date): string => {
 };
 
 export function formatUnixTimestampToHMM(timestamp: number): string {
-  if (timestamp === 0) {
-    // We need this otherwise a timestamp of 0 will be converted to 01:00
-    return '0:00';
-  }
-  const date = new Date(timestamp);
-  const hours = date.getHours();
-  const minutes = `${date.getMinutes()}`.padStart(2, '0');
-  return `${hours}:${minutes}`;
+  const duration = intervalToDuration({ start: 0, end: timestamp });
+  return `${duration.hours ?? 0}:${(duration.minutes ?? 0).toString().padStart(2, '0')}`;
 }
