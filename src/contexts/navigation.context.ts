@@ -1,5 +1,6 @@
 import React from 'react';
 import { JiraResource } from '../types/auth.types';
+import { WorklogCompact } from '../types/global.types';
 
 export interface ApiSettings {
   token: string;
@@ -11,6 +12,8 @@ interface NavigationContextProps {
   setShowLoginScreen: (state: boolean) => void;
   showSettingsScreen: boolean;
   setShowSettingsScreen: (state: boolean) => void;
+  currentWorklogToEdit: WorklogCompact | null;
+  setCurrentWorklogToEdit: (worklog: WorklogCompact | null) => void;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
 }
@@ -20,6 +23,8 @@ export const NavigationContext = React.createContext<NavigationContextProps>({
   setShowLoginScreen: () => {},
   showSettingsScreen: false,
   setShowSettingsScreen: () => {},
+  currentWorklogToEdit: null,
+  setCurrentWorklogToEdit: () => {},
   selectedDate: new Date(new Date().setUTCHours(0, 0, 0, 0)),
   setSelectedDate: () => {},
 });

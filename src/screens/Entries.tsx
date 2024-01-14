@@ -27,7 +27,7 @@ export const Entries: React.FC = () => {
   return (
     <Layout
       header={{
-        layout: 'left',
+        align: 'left',
         title: 'Today, 21 Oct',
         rightElement,
         onBackPress: __DEV__ ? () => setShowLoginScreen(true) : undefined,

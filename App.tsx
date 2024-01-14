@@ -8,7 +8,7 @@ import { Login } from './src/screens/Login';
 import { Main } from './src/screens/Main';
 import { getWorklogsCompact } from './src/services/jira.service';
 import { convertWorklogsToDaysObject } from './src/services/worklogs.service';
-import { DayId, Layout, WorklogDaysObject } from './src/types/global.types';
+import { DayId, Layout, WorklogCompact, WorklogDaysObject } from './src/types/global.types';
 
 function App(): JSX.Element {
   const [layout, setLayout] = useState<Layout>('normal');
@@ -22,6 +22,7 @@ function App(): JSX.Element {
 
   const [showLoginScreen, setShowLoginScreen] = useState(true);
   const [showSettingsScreen, setShowSettingsScreen] = useState(false);
+  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useState<WorklogCompact | null>(null);
 
   useEffect(() => {
     if (userInfo?.accountId) {
@@ -58,6 +59,8 @@ function App(): JSX.Element {
           setShowLoginScreen,
           showSettingsScreen,
           setShowSettingsScreen,
+          currentWorklogToEdit,
+          setCurrentWorklogToEdit,
         }}>
         <AnimateScreenContainer isVisible={showLoginScreen} offScreenLocation='left'>
           <Login />

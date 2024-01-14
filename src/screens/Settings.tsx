@@ -15,7 +15,7 @@ export const Settings: React.FC = () => {
   const { setShowSettingsScreen } = useContext(NavigationContext);
 
   return (
-    <Layout header={{ layout: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
+    <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>

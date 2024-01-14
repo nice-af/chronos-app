@@ -7,20 +7,20 @@ import { colors } from '../styles/colors';
 import { useAppState } from '@react-native-community/hooks';
 
 export interface HeaderProps {
-  title: string;
-  layout: 'center' | 'left';
+  title: React.ReactNode;
+  align: 'center' | 'left';
   onBackPress?: () => void;
   rightElement?: React.ReactNode;
   position?: 'absolute';
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, layout, onBackPress, rightElement, position }) => {
+export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
       <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
-      <View style={[styles.content, layout === 'center' && styles.isCentered]}>
+      <View style={[styles.content, align === 'center' && styles.isCentered]}>
         {onBackPress && (
           <ButtonTransparent
             onPress={onBackPress}

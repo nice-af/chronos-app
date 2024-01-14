@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
   const { setWorklogs, setUserInfo } = useContext(GlobalContext);
 
   return (
-    <Layout header={{ layout: 'center', title: 'Login' }}>
+    <Layout header={{ align: 'center', title: 'Login' }}>
       <View style={styles.bgContainer}>
         <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
         <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />

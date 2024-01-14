@@ -5,14 +5,18 @@ import { Entries } from './Entries';
 import { Settings } from './Settings';
 import { NavigationContext } from '../contexts/navigation.context';
 import AnimateScreenContainer from '../components/AnimateScreenContainer';
+import { EditWorklog } from './EditWorklog';
 
 export const Main: React.FC = () => {
-  const { showSettingsScreen } = useContext(NavigationContext);
+  const { showSettingsScreen, currentWorklogToEdit: showEditWorklogScreen } = useContext(NavigationContext);
 
   return (
     <View style={styles.container}>
       <Sidebar />
       <View style={styles.mainViewContainer}>
+        <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={2}>
+          <EditWorklog />
+        </AnimateScreenContainer>
         <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={3}>
           <Settings />
         </AnimateScreenContainer>

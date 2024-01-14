@@ -1,6 +1,7 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { NavigationContext } from '../contexts/navigation.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
@@ -11,13 +12,14 @@ import { PlayPauseButton } from './PlayPauseButton';
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklogCompact: WorklogCompact;
   isSelected?: boolean;
-  onPress?: () => void;
 }
 
-export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ onPress, worklogCompact, isSelected }) => {
+export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCompact, isSelected }) => {
+  const { setCurrentWorklogToEdit } = useContext(NavigationContext);
+
   return (
     <Pressable
-      onPress={onPress}
+      onPress={() => setCurrentWorklogToEdit(worklogCompact)}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>

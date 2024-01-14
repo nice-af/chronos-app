@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    alignSelf: 'flex-start',
     height: 20,
     backgroundColor: 'transparent',
     textAlign: 'center',
