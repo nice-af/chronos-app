@@ -28,29 +28,38 @@ export const Sidebar: React.FC = () => {
   const currentAppState = useAppState();
 
   return (
-    <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
+    <View style={styles.outerContainer}>
       <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
-      <WeekPicker />
-      {weekDays.map(day => (
-        <DayButton
-          key={day.id}
-          dayLabel={day.abbreviation}
-          duration={formatUnixTimestampToHMM(
-            worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
-          )}
-          isSelected={getWeekday(selectedDate) === day.id}
-          onPress={() => {
-            setShowSettingsScreen(false);
-            setSelectedDate(setDateToThisWeekday(selectedDate, day.id));
-          }}
-        />
-      ))}
-      <SettingsButton />
+      <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
+        <WeekPicker />
+        {weekDays.map(day => (
+          <DayButton
+            key={day.id}
+            dayLabel={day.abbreviation}
+            duration={formatUnixTimestampToHMM(
+              worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
+            )}
+            isSelected={getWeekday(selectedDate) === day.id}
+            onPress={() => {
+              setShowSettingsScreen(false);
+              setSelectedDate(setDateToThisWeekday(selectedDate, day.id));
+            }}
+          />
+        ))}
+        <SettingsButton />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    position: 'relative',
+    borderRightColor: colors.border,
+    borderRightWidth: 1,
+    width: 93,
+    backgroundColor: colors.borderSolid,
+  },
   backgroundView: {
     position: 'absolute',
     top: 0,
@@ -66,11 +75,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     flexGrow: 0,
-    flexBasis: 93,
-    width: 93,
+    flexBasis: 92,
+    width: 92,
     ...getPadding(56, 16, 6),
-    borderRightColor: colors.border,
-    borderRightWidth: 1,
   },
   today: {
     ...typo.bodyEmphasized,

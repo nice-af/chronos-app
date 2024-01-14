@@ -26,7 +26,6 @@ export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label
         isHovered && styles.isHovered,
         pressed && styles.isActive,
         props.style,
-        currentAppState === 'inactive' && { opacity: 0.4 },
       ]}>
       <Text style={styles.label}>{label}</Text>
       {iconRight}
@@ -42,8 +41,10 @@ const styles = StyleSheet.create({
     gap: 8,
     alignSelf: 'flex-start',
     backgroundColor: colors.secondaryButtonBase,
-    borderRadius: 5,
-    ...getPadding(6, 12),
+    borderColor: colors.secondaryButtonBorder,
+    borderWidth: 1,
+    borderRadius: 9,
+    ...getPadding(7, 12),
   },
   isHovered: {
     backgroundColor: colors.secondaryButtonHover,

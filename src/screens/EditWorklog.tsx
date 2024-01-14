@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
@@ -37,6 +38,7 @@ export const EditWorklog: React.FC = () => {
         ),
         onBackPress: () => setCurrentWorklogToEdit(null),
       }}>
+      <EditWorklogHeader onCancelPress={() => {}} onSavePress={() => {}} />
       <View style={styles.container}>
         <Text>Test</Text>
       </View>

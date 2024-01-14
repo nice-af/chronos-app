@@ -22,7 +22,9 @@ const baseColors = {
 
 const windowColors = {
   background: '#1e1e1e',
+  backgroundDark: '#1a1a1a',
   border: 'rgba(0,0,0,0.4)',
+  borderSolid: '#111',
   surface: '#292827',
   surfaceBorder: '#3A3938',
 };
@@ -34,6 +36,7 @@ const buttonColors = {
   secondaryButtonBase: 'rgba(255,255,255,0.1)',
   secondaryButtonHover: 'rgba(255,255,255,0.2)',
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
+  secondaryButtonBorder: 'rgba(255,255,255,0.1)',
   transparentButtonHover: 'rgba(10,132,255,0.2)',
   transparentButtonActive: 'rgba(10,132,255,0.3)',
   surfaceButtonBase: '#3A3938',
