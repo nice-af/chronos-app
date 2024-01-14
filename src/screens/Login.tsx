@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     zIndex: 2,
-    padding: 16,
+    ...getPadding(16, 16, 48, 16),
   },
   appIcon: {
     width: 90,
