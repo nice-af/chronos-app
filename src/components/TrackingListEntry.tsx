@@ -8,6 +8,7 @@ import { getPadding } from '../styles/utils';
 import { WorklogCompact } from '../types/global.types';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
+import { useDoublePress } from '../utils/double-press';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklogCompact: WorklogCompact;
@@ -16,10 +17,11 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 
 export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCompact, isSelected }) => {
   const { setCurrentWorklogToEdit } = useContext(NavigationContext);
+  const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklogCompact));
 
   return (
     <Pressable
-      onPress={() => setCurrentWorklogToEdit(worklogCompact)}
+      onPress={onPress}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
