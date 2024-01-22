@@ -20,12 +20,12 @@ export function setDateToThisWeekday(date: Date, weekday: number): Date {
 /**
  * Converts a date to the YYYY-MM-DD format used in the worklogs object.
  */
-export const formatDateToYYYYMMDD = (date: Date): string => {
+export function formatDateToYYYYMMDD(date: Date): string {
   const year = date.getUTCFullYear();
   const month = `${date.getUTCMonth() + 1}`.padStart(2, '0');
   const day = `${date.getUTCDate()}`.padStart(2, '0');
   return `${year}-${month}-${day}`;
-};
+}
 
 export function formatUnixTimestampToHMM(timestamp: number): string {
   const duration = intervalToDuration({ start: 0, end: timestamp });
