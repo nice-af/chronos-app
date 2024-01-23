@@ -22,6 +22,7 @@ function App(): JSX.Element {
 
   const [showLoginScreen, setShowLoginScreen] = useState(true);
   const [showSettingsScreen, setShowSettingsScreen] = useState(false);
+  const [showSearchScreen, setShowSearchScreen] = useState(false);
   const [currentWorklogToEdit, setCurrentWorklogToEdit] = useState<WorklogCompact | null>(null);
 
   useEffect(() => {
@@ -59,6 +60,8 @@ function App(): JSX.Element {
           setShowLoginScreen,
           showSettingsScreen,
           setShowSettingsScreen,
+          showSearchScreen,
+          setShowSearchScreen,
           currentWorklogToEdit,
           setCurrentWorklogToEdit,
         }}>

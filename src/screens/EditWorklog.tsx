@@ -40,7 +40,11 @@ export const EditWorklog: React.FC = () => {
         ),
         onBackPress: () => setCurrentWorklogToEdit(null),
       }}>
-      <EditWorklogHeader onDeletePress={() => {}} onCancelPress={() => {}} onSavePress={() => {}} />
+      <EditWorklogHeader
+        onDeletePress={() => {}}
+        onCancelPress={() => setCurrentWorklogToEdit(null)}
+        onSavePress={() => {}}
+      />
       <View style={styles.container}>
         <TimeInputField />
         <Textarea />

@@ -1,28 +1,36 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Sidebar } from '../components/Sidebar';
-import { Entries } from './Entries';
-import { Settings } from './Settings';
-import { NavigationContext } from '../contexts/navigation.context';
 import AnimateScreenContainer from '../components/AnimateScreenContainer';
+import { Sidebar } from '../components/Sidebar';
+import { NavigationContext } from '../contexts/navigation.context';
 import { EditWorklog } from './EditWorklog';
+import { Entries } from './Entries';
+import { Search } from './Search';
+import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
-  const { showSettingsScreen, currentWorklogToEdit: showEditWorklogScreen } = useContext(NavigationContext);
+  const {
+    showSettingsScreen,
+    showSearchScreen,
+    currentWorklogToEdit: showEditWorklogScreen,
+  } = useContext(NavigationContext);
 
   return (
     <View style={styles.container}>
       <Sidebar />
       <View style={styles.mainViewContainer}>
-        <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={2}>
-          <EditWorklog />
-        </AnimateScreenContainer>
-        <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={3}>
-          <Settings />
-        </AnimateScreenContainer>
         <View style={styles.entriesContainer}>
           <Entries />
         </View>
+        <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
+          <Search />
+        </AnimateScreenContainer>
+        <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={3}>
+          <EditWorklog />
+        </AnimateScreenContainer>
+        <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}>
+          <Settings />
+        </AnimateScreenContainer>
       </View>
     </View>
   );

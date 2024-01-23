@@ -1,36 +1,25 @@
 import React, { useContext } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ButtonTransparent } from '../components/ButtonTransparent';
-import { JumpToTodayButton } from '../components/JumpToTodayButton';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { Layout } from '../components/Layout';
+import { SearchInput } from '../components/SearchInput';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
-import { NavigationContext } from '../contexts/navigation.context';
 
-export const Entries: React.FC = () => {
+export const Search: React.FC = () => {
   const { worklogs } = useContext(GlobalContext);
-  const { selectedDate, setShowLoginScreen, setShowSearchScreen } = useContext(NavigationContext);
+  const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
-
-  const rightElement = (
-    <>
-      <JumpToTodayButton />
-      <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
-        <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
-      </ButtonTransparent>
-    </>
-  );
 
   return (
     <Layout
       header={{
         align: 'left',
-        title: 'Today, 21 Oct',
-        rightElement,
-        onBackPress: __DEV__ ? () => setShowLoginScreen(true) : undefined,
+        title: <SearchInput />,
+        onBackPress: () => setShowSearchScreen(false),
         position: 'absolute',
       }}>
       <ScrollView
@@ -40,7 +29,7 @@ export const Entries: React.FC = () => {
         {currentWorklogs.map(worklog => (
           <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
         ))}
-        {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
+        {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No search results found</Text>}
       </ScrollView>
     </Layout>
   );

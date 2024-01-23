@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
+import { NavigationContext } from '../contexts/navigation.context';
 import { ButtonTransparent } from './ButtonTransparent';
 
 export const JumpToTodayButton: React.FC = () => {
+  const { setSelectedDate } = useContext(NavigationContext);
   const now = new Date();
   return (
-    <ButtonTransparent onPress={() => {}}>
+    <ButtonTransparent onPress={() => setSelectedDate(now)}>
       <Text style={styles.day}>{now.getDate()}</Text>
       <Image style={styles.icon} source={require('../assets/icon-calendar-blank.png')} />
     </ButtonTransparent>

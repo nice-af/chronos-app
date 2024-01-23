@@ -4,12 +4,12 @@ import { inputStyles } from '../styles/input';
 import { typo } from '../styles/typo';
 
 export const TimeInputField: React.FC = () => {
-  const [text, onChangeText] = useState('0:30');
+  const [text, setText] = useState('0:30');
 
   return (
     <View>
       <Text style={typo.calloutEmphasized}>Time</Text>
-      <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
+      <TextInput style={styles.input} onChangeText={setText} value={text} />
     </View>
   );
 };
