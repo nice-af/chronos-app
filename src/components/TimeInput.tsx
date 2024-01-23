@@ -1,16 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { inputStyles } from '../styles/input';
-import { getPadding } from '../styles/utils';
+import { typo } from '../styles/typo';
 
-interface SearchInputProps {
+interface TimeInputProps {
   // Needed to blur the input when the modal is closed
   isVisible: boolean;
 }
 
-export const SearchInput: React.FC<SearchInputProps> = ({ isVisible }) => {
-  const [text, setText] = useState('Search...');
-
+export const TimeInput: React.FC<TimeInputProps> = ({ isVisible }) => {
+  const [text, setText] = useState('0:30');
   const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
@@ -21,6 +20,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({ isVisible }) => {
 
   return (
     <View>
+      <Text style={typo.calloutEmphasized}>Time</Text>
       <TextInput ref={inputRef} style={styles.input} onChangeText={setText} value={text} />
     </View>
   );
@@ -29,7 +29,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({ isVisible }) => {
 const styles = StyleSheet.create({
   input: {
     ...inputStyles.textInput,
-    width: '100%',
-    ...getPadding(8, 12),
+    width: 90,
+    height: 42,
+    fontSize: 20,
+    lineHeight: 22,
   },
 });

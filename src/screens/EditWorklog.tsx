@@ -6,7 +6,7 @@ import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
 import { typo } from '../styles/typo';
 import { WorklogCompact } from '../types/global.types';
-import { TimeInputField } from '../components/TimeInputField';
+import { TimeInput } from '../components/TimeInput';
 import { Textarea } from '../components/Textarea';
 
 export const EditWorklog: React.FC = () => {
@@ -46,8 +46,8 @@ export const EditWorklog: React.FC = () => {
         onSavePress={() => {}}
       />
       <View style={styles.container}>
-        <TimeInputField />
-        <Textarea />
+        <TimeInput isVisible={!!currentWorklogToEdit} />
+        <Textarea isVisible={!!currentWorklogToEdit} />
       </View>
     </Layout>
   );

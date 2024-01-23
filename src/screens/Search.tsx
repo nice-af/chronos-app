@@ -10,7 +10,7 @@ import { typo } from '../styles/typo';
 
 export const Search: React.FC = () => {
   const { worklogs } = useContext(GlobalContext);
-  const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
+  const { selectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -18,7 +18,7 @@ export const Search: React.FC = () => {
     <Layout
       header={{
         align: 'left',
-        title: <SearchInput />,
+        title: <SearchInput isVisible={showSearchScreen} />,
         onBackPress: () => setShowSearchScreen(false),
         position: 'absolute',
       }}>
