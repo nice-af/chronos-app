@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     whiteSpace: 'nowrap',
-    paddingTop: 6,
   },
   container: {
     display: 'flex',

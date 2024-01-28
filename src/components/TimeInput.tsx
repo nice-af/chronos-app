@@ -21,7 +21,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({ isVisible }) => {
   return (
     <View>
       <Text style={typo.calloutEmphasized}>Time</Text>
-      <TextInput ref={inputRef} style={styles.input} onChangeText={setText} value={text} />
+      <TextInput ref={inputRef} style={styles.input} onChangeText={setText} value={text} multiline numberOfLines={1} />
     </View>
   );
 };
@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
     width: 90,
     height: 42,
     fontSize: 20,
-    lineHeight: 22,
+    lineHeight: 26,
   },
 });

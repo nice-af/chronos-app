@@ -20,16 +20,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({ isVisible }) => {
   }, [isVisible]);
 
   return (
-    <View>
-      <TextInput ref={inputRef} style={styles.input} onChangeText={setText} value={text} />
-    </View>
+    <TextInput ref={inputRef} style={styles.input} onChangeText={setText} value={text} multiline numberOfLines={1} />
   );
 };
 
 const styles = StyleSheet.create({
   input: {
     ...inputStyles.textInput,
-    width: '100%',
     ...getPadding(8, 12),
+    marginTop: 0,
   },
 });

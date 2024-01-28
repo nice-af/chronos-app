@@ -29,7 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
             <Image style={styles.arrow} source={require('../assets/icon-chevron-left.png')} />
           </ButtonTransparent>
         )}
-        {title && <Text style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>}
+        {title && typeof title === 'string' ? (
+          <Text style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>
+        ) : (
+          <View style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</View>
+        )}
         {rightElement && (
           <View style={[styles.actions, currentAppState === 'inactive' ? { opacity: 0.4 } : undefined]}>
             {rightElement}
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   content: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -78,6 +83,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typo.title3Emphasized,
+    flexGrow: 1,
   },
   actions: {
     display: 'flex',
