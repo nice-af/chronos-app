@@ -9,7 +9,8 @@
     "build:macos": "xcodebuild -workspace macos/JiraTimeTracker.xcworkspace -scheme JiraTimeTracker-macOS -config Release",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "fix-repo": "sh ./scripts/fix-repo.sh"
   },
   "dependencies": {
     "@react-native-community/hooks": "^3.0.0",
@@ -19,9 +20,9 @@
     "polished": "^4.2.2",
     "qs": "^6.11.2",
     "react": "^18.2.0",
-    "react-native": "^0.71.14",
+    "react-native": "0.73.3",
     "react-native-dotenv": "^3.4.9",
-    "react-native-macos": "^0.71.34",
+    "react-native-macos": "0.73.11",
     "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
