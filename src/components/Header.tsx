@@ -30,9 +30,23 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
           </ButtonTransparent>
         )}
         {title && typeof title === 'string' ? (
-          <Text style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</Text>
+          <Text
+            style={[
+              styles.title,
+              align === 'center' && styles.isCentered,
+              currentAppState === 'inactive' && { opacity: 0.4 },
+            ]}>
+            {title}
+          </Text>
         ) : (
-          <View style={[styles.title, currentAppState === 'inactive' && { opacity: 0.4 }]}>{title}</View>
+          <View
+            style={[
+              styles.title,
+              align === 'center' && styles.isCentered,
+              currentAppState === 'inactive' && { opacity: 0.4 },
+            ]}>
+            {title}
+          </View>
         )}
         {rightElement && (
           <View style={[styles.actions, currentAppState === 'inactive' ? { opacity: 0.4 } : undefined]}>
@@ -69,6 +83,7 @@ const styles = StyleSheet.create({
   },
   isCentered: {
     justifyContent: 'center',
+    textAlign: 'center',
   },
   backgroundView: {
     position: 'absolute',
