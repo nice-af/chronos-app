@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    whiteSpace: 'nowrap',
   },
   container: {
     display: 'flex',
