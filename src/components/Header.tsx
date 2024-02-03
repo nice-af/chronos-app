@@ -7,7 +7,7 @@ import { colors } from '../styles/colors';
 import { useAppState } from '@react-native-community/hooks';
 
 export interface HeaderProps {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   align: 'center' | 'left';
   onBackPress?: () => void;
   rightElement?: React.ReactNode;

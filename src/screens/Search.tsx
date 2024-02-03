@@ -1,16 +1,18 @@
-import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Layout } from '../components/Layout';
-import { SearchInput } from '../components/SearchInput';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { typo } from '../styles/typo';
+import { CustomTextInput } from '../components/CustomTextInput';
+import { colors } from '../styles/colors';
 
 export const Search: React.FC = () => {
   const { worklogs } = useContext(GlobalContext);
   const { selectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
+  const [searchValue, setSearchValue] = useState('');
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -18,14 +20,20 @@ export const Search: React.FC = () => {
     <Layout
       header={{
         align: 'left',
-        title: <SearchInput isVisible={showSearchScreen} />,
         onBackPress: () => setShowSearchScreen(false),
         position: 'absolute',
+        title: 'Add new worklog',
       }}>
-      <ScrollView
-        style={styles.entriesContainer}
-        removeClippedSubviews={false}
-        contentInset={{ top: 52 + 6, bottom: 6 }}>
+      <View style={styles.inputContainer}>
+        <CustomTextInput
+          isVisible={showSearchScreen}
+          placeholder='Search...'
+          value={searchValue}
+          onChangeText={setSearchValue}
+          iconLeft={<Image style={styles.icon} source={require('../assets/icon-search.png')} />}
+        />
+      </View>
+      <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
         {currentWorklogs.map(worklog => (
           <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
         ))}
@@ -36,9 +44,19 @@ export const Search: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    width: '100%',
+    height: 52,
+    flexBasis: 52,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginTop: 53,
+    borderBottomColor: colors.border,
+    borderBottomWidth: 1,
+  },
   icon: {
-    width: 24,
-    height: 24,
+    width: 16,
+    height: 16,
   },
   entriesContainer: {
     flexGrow: 1,

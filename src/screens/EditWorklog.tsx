@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
 import { typo } from '../styles/typo';
 import { WorklogCompact } from '../types/global.types';
-import { TimeInput } from '../components/TimeInput';
-import { Textarea } from '../components/Textarea';
 
 export const EditWorklog: React.FC = () => {
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
@@ -18,6 +17,10 @@ export const EditWorklog: React.FC = () => {
     started: '',
     timeSpent: 0,
   });
+  const [timeValue, setTimeValue] = useState('0:30');
+  const [descriptionValue, setDescriptionValue] = useState(
+    'Dui molestie fermentum bibendum etiam tellus curabitur purus proin.'
+  );
 
   useEffect(() => {
     if (!currentWorklogToEdit) {
@@ -46,8 +49,20 @@ export const EditWorklog: React.FC = () => {
         onSavePress={() => {}}
       />
       <View style={styles.container}>
-        <TimeInput isVisible={!!currentWorklogToEdit} />
-        <Textarea isVisible={!!currentWorklogToEdit} />
+        <CustomTextInput
+          isVisible={!!currentWorklogToEdit}
+          value={timeValue}
+          onChangeText={setTimeValue}
+          style={styles.timeInput}
+        />
+        <CustomTextInput
+          isVisible={!!currentWorklogToEdit}
+          value={descriptionValue}
+          onChangeText={setDescriptionValue}
+          style={styles.descriptionInput}
+          multiline
+          numberOfLines={4}
+        />
       </View>
     </Layout>
   );
@@ -73,5 +88,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 8,
     marginTop: 2,
+  },
+  timeInput: {
+    width: 90,
+    height: 42,
+    fontSize: 20,
+    lineHeight: 26,
+  },
+  descriptionInput: {
+    width: '100%',
+    height: 100,
   },
 });
