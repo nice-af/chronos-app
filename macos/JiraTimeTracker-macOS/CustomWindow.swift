@@ -11,6 +11,7 @@ public class CustomWindow: NSWindow {
     self.titlebarAppearsTransparent = true
     self.titleVisibility = .hidden
     self.setFrameAutosaveName("Jira Time Tracker Main Window")
+    self.minSize = NSSize(width: 420, height: 480)
     
     // Add titlebar accessory for larger drag area
     self.addTitlebarAccessoryViewController(titlebarAccessory)
