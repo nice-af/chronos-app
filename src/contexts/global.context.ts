@@ -11,9 +11,9 @@ export interface ApiSettings {
 // TODO @florianmrz: Sollten wir das hier refactoren?
 interface GlobalContextProps {
   apiSettings: ApiSettings | null;
-  setApiSettings: (apiSettings: ApiSettings) => void;
+  setApiSettings: (apiSettings: ApiSettings | null) => void;
   userInfo: Version3Models.User | null;
-  setUserInfo: (apiSettings: Version3Models.User) => void;
+  setUserInfo: (apiSettings: Version3Models.User | null) => void;
   worklogs: WorklogDaysObject | null;
   setWorklogs: (worklogs: WorklogDaysObject) => void;
   layout: Layout;

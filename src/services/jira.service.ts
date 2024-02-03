@@ -10,7 +10,7 @@ import { extractTextFromJSON } from './atlassian-document-format.service';
 //   issues = new Issues(this);
 // }
 
-let client: Version3Client;
+let client: Version3Client | undefined;
 
 /**
  * Creates a new Jira client instance
@@ -26,6 +26,10 @@ export function initiateJiraClient(cloudId: string, accessToken: string) {
       },
     },
   });
+}
+
+export function removeJiraClient() {
+  client = undefined;
 }
 
 export async function getUserInfo() {

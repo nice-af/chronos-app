@@ -6,9 +6,11 @@ import { ApiSettings, GlobalContext } from './src/contexts/global.context';
 import { NavigationContext } from './src/contexts/navigation.context';
 import { Login } from './src/screens/Login';
 import { Main } from './src/screens/Main';
-import { getWorklogsCompact } from './src/services/jira.service';
+import { getWorklogsCompact, initiateJiraClient } from './src/services/jira.service';
 import { convertWorklogsToDaysObject } from './src/services/worklogs.service';
 import { DayId, Layout, WorklogCompact, WorklogDaysObject } from './src/types/global.types';
+import { StorageKey } from './src/const';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function App(): JSX.Element {
   const [layout, setLayout] = useState<Layout>('normal');
@@ -26,11 +28,28 @@ function App(): JSX.Element {
   const [currentWorklogToEdit, setCurrentWorklogToEdit] = useState<WorklogCompact | null>(null);
 
   useEffect(() => {
+    (async () => {
+      const storedApiSettings = await AsyncStorage.getItem(StorageKey.API_SETTINGS);
+      if (storedApiSettings) {
+        const parsedStoredApiSettings = JSON.parse(storedApiSettings);
+        setApiSettings(parsedStoredApiSettings);
+        initiateJiraClient(parsedStoredApiSettings.resource.id, parsedStoredApiSettings.token);
+      }
+      const storedUserInfo = await AsyncStorage.getItem(StorageKey.USER_INFO);
+      if (storedUserInfo) {
+        setUserInfo(JSON.parse(storedUserInfo));
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (userInfo?.accountId) {
       setShowLoginScreen(false);
       getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
         setWorklogs(convertWorklogsToDaysObject(worklogsCompact));
       });
+    } else {
+      setShowLoginScreen(true);
     }
   }, [userInfo?.accountId]);
 

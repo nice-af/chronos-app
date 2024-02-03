@@ -7,6 +7,8 @@ import { GlobalContext } from '../contexts/global.context';
 import { GetAccessibleResourcesResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
 import { getUserInfo, initiateJiraClient } from './jira.service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StorageKey } from '../const';
 
 /**
  * Exchanges the OAuth code for an access token
@@ -59,10 +61,13 @@ export const useAuthRequest = () => {
     try {
       const { access_token: newToken } = await getOAuthToken(urlCode);
       const resources = await getAccessibleResources(newToken);
-      setApiSettings({ token: newToken, resource: resources[0] });
+      const apiSettings = { token: newToken, resource: resources[0] };
+      setApiSettings(apiSettings);
+      await AsyncStorage.setItem(StorageKey.API_SETTINGS, JSON.stringify(apiSettings));
       initiateJiraClient(resources[0].id, newToken);
       const userInfo = await getUserInfo();
       setUserInfo(userInfo);
+      await AsyncStorage.setItem(StorageKey.USER_INFO, JSON.stringify(userInfo));
       setIsLoading(false);
     } catch (error) {
       console.error(error);

@@ -8,11 +8,32 @@ import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
+import { ButtonDanger } from '../components/ButtonDanger';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StorageKey } from '../const';
+import { removeJiraClient } from '../services/jira.service';
 
 export const Settings: React.FC = () => {
-  const { disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs, hideNonWorkingDays, setHideNonWorkingDays } =
-    useContext(GlobalContext);
-  const { setShowSettingsScreen } = useContext(NavigationContext);
+  const {
+    disableEditingOfPastWorklogs,
+    setDisableEditingOfPastWorklogs,
+    hideNonWorkingDays,
+    setHideNonWorkingDays,
+    setApiSettings,
+    setUserInfo,
+  } = useContext(GlobalContext);
+  const { setShowSettingsScreen, setCurrentWorklogToEdit, setShowSearchScreen } = useContext(NavigationContext);
+
+  function logout() {
+    setShowSettingsScreen(false);
+    setShowSearchScreen(false);
+    setCurrentWorklogToEdit(null);
+    AsyncStorage.removeItem(StorageKey.API_SETTINGS);
+    AsyncStorage.removeItem(StorageKey.USER_INFO);
+    setApiSettings(null);
+    setUserInfo(null);
+    removeJiraClient();
+  }
 
   return (
     <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
@@ -33,6 +54,10 @@ export const Settings: React.FC = () => {
             state={disableEditingOfPastWorklogs}
             setState={setDisableEditingOfPastWorklogs}
           />
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.headline}>Account</Text>
+          <ButtonDanger label='Logout' onPress={logout} />
         </View>
       </View>
     </Layout>
