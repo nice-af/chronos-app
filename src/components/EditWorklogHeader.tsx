@@ -8,12 +8,11 @@ import { ButtonSecondary } from './ButtonSecondary';
 import { ButtonDanger } from './ButtonDanger';
 
 interface EditWorklogHeaderProps {
-  onDeletePress: () => void;
   onCancelPress: () => void;
   onSavePress: () => void;
 }
 
-export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onDeletePress, onCancelPress, onSavePress }) => {
+export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onCancelPress, onSavePress }) => {
   const [showDelete, setShowDelete] = useState(false);
   return (
     <View style={styles.container}>
@@ -21,8 +20,6 @@ export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onDeletePr
       <View style={styles.content}>
         <Text style={styles.title}>Edit worklog</Text>
         <View style={styles.buttonsContainer}>
-          {showDelete && <ButtonDanger label='Yes, delete this' onPress={onDeletePress} />}
-          {!showDelete && <ButtonSecondary label='Delete' onPress={() => setShowDelete(true)} />}
           <ButtonSecondary label='Cancel' onPress={onCancelPress} />
           <ButtonPrimary label='Save' onPress={onSavePress} />
         </View>

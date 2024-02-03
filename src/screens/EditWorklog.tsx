@@ -7,6 +7,7 @@ import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
 import { typo } from '../styles/typo';
 import { WorklogCompact } from '../types/global.types';
+import { EditWorklogFooter } from '../components/EditWorklogFooter';
 
 export const EditWorklog: React.FC = () => {
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
@@ -43,11 +44,7 @@ export const EditWorklog: React.FC = () => {
         ),
         onBackPress: () => setCurrentWorklogToEdit(null),
       }}>
-      <EditWorklogHeader
-        onDeletePress={() => {}}
-        onCancelPress={() => setCurrentWorklogToEdit(null)}
-        onSavePress={() => {}}
-      />
+      <EditWorklogHeader onCancelPress={() => setCurrentWorklogToEdit(null)} onSavePress={() => {}} />
       <View style={styles.container}>
         <CustomTextInput
           isVisible={!!currentWorklogToEdit}
@@ -64,6 +61,7 @@ export const EditWorklog: React.FC = () => {
           numberOfLines={4}
         />
       </View>
+      <EditWorklogFooter onDeletePress={() => {}} />
     </Layout>
   );
 };
