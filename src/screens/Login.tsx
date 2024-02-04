@@ -9,44 +9,47 @@ import { getPadding } from '../styles/utils';
 import { NavigationContext } from '../contexts/navigation.context';
 import { GlobalContext } from '../contexts/global.context';
 import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
+import AnimateScreenContainer from '../components/AnimateScreenContainer';
 
 export const Login: React.FC = () => {
   const { requestOAuth, isLoading } = useAuthRequest();
-  const { setShowLoginScreen } = useContext(NavigationContext);
+  const { showLoginScreen, setShowLoginScreen } = useContext(NavigationContext);
   const { setWorklogs, setUserInfo } = useContext(GlobalContext);
 
   return (
-    <Layout header={{ align: 'center', title: 'Login' }}>
-      <View style={styles.bgContainer}>
-        <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
-        <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />
-        <Image style={styles.shapeDice} source={require('../assets/login/shape-dice.png')} />
-        <Image style={styles.shapePuck} source={require('../assets/login/shape-puck.png')} />
-        <Image style={styles.shapeCone} source={require('../assets/login/shape-cone.png')} />
-        <Image style={styles.shapeBallHalf} source={require('../assets/login/shape-ball-half.png')} />
-      </View>
-      <View style={styles.container}>
-        <Image style={styles.appIcon} source={require('../assets/app-icon.png')} />
-        <Image style={styles.title} source={require('../assets/login/title-en.png')} />
-        <Text style={styles.text}>
-          Please click the button below to connect your Jira account with Jira Time Tracker.
-        </Text>
-        <ButtonPrimary label='Login to Jira' onPress={requestOAuth} />
-        {__DEV__ && (
-          <>
-            <Text>-</Text>
-            <ButtonPrimary
-              label='To next page'
-              onPress={() => {
-                setShowLoginScreen(false);
-                setWorklogs(worklogsFakeData);
-                setUserInfo(userInfoFakeData);
-              }}
-            />
-          </>
-        )}
-      </View>
-    </Layout>
+    <AnimateScreenContainer isVisible={showLoginScreen} offScreenLocation='left'>
+      <Layout header={{ align: 'center', title: 'Login' }}>
+        <View style={styles.bgContainer}>
+          <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
+          <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />
+          <Image style={styles.shapeDice} source={require('../assets/login/shape-dice.png')} />
+          <Image style={styles.shapePuck} source={require('../assets/login/shape-puck.png')} />
+          <Image style={styles.shapeCone} source={require('../assets/login/shape-cone.png')} />
+          <Image style={styles.shapeBallHalf} source={require('../assets/login/shape-ball-half.png')} />
+        </View>
+        <View style={styles.container}>
+          <Image style={styles.appIcon} source={require('../assets/app-icon.png')} />
+          <Image style={styles.title} source={require('../assets/login/title-en.png')} />
+          <Text style={styles.text}>
+            Please click the button below to connect your Jira account with Jira Time Tracker.
+          </Text>
+          <ButtonPrimary label='Login to Jira' onPress={requestOAuth} />
+          {__DEV__ && (
+            <>
+              <Text>-</Text>
+              <ButtonPrimary
+                label='To next page'
+                onPress={() => {
+                  setShowLoginScreen(false);
+                  setWorklogs(worklogsFakeData);
+                  setUserInfo(userInfoFakeData);
+                }}
+              />
+            </>
+          )}
+        </View>
+      </Layout>
+    </AnimateScreenContainer>
   );
 };
 

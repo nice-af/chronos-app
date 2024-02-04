@@ -9,30 +9,28 @@ import { Search } from './Search';
 import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
-  const {
-    showSettingsScreen,
-    showSearchScreen,
-    currentWorklogToEdit: showEditWorklogScreen,
-  } = useContext(NavigationContext);
+  const { showLoginScreen, showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
 
   return (
-    <View style={styles.container}>
-      <Sidebar />
-      <View style={styles.mainViewContainer}>
-        <View style={styles.entriesContainer}>
-          <Entries />
+    <AnimateScreenContainer isVisible={!showLoginScreen} offScreenLocation='right'>
+      <View style={styles.container}>
+        <Sidebar />
+        <View style={styles.mainViewContainer}>
+          <View style={styles.entriesContainer}>
+            <Entries />
+          </View>
+          <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
+            <Search />
+          </AnimateScreenContainer>
+          <AnimateScreenContainer isVisible={!!currentWorklogToEdit} offScreenLocation='right' zIndex={3}>
+            <EditWorklog />
+          </AnimateScreenContainer>
+          <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}>
+            <Settings />
+          </AnimateScreenContainer>
         </View>
-        <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
-          <Search />
-        </AnimateScreenContainer>
-        <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={3}>
-          <EditWorklog />
-        </AnimateScreenContainer>
-        <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}>
-          <Settings />
-        </AnimateScreenContainer>
       </View>
-    </View>
+    </AnimateScreenContainer>
   );
 };
 
