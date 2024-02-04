@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 20,
     color: colors.textSecondary,
+    pointerEvents: 'none',
   },
   placeholderWithIcon: {
     left: 35,
