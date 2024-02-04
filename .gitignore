@@ -54,6 +54,7 @@ yarn-error.log
 
 # Bundle artifact
 *.jsbundle
+/msbuild.binlog
 
 # Ruby / CocoaPods
 /ios/Pods/
