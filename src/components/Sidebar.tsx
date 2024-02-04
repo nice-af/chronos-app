@@ -13,7 +13,7 @@ import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { weekDays } from '../types/global.types';
-import BackgroundView from './BackgroundView.macos';
+import BackgroundView from './BackgroundView';
 import { DayButton } from './DayButton';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';

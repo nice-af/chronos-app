@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { typo } from '../styles/typo';
-import BackgroundView from './BackgroundView.macos';
+import BackgroundView from './BackgroundView';
 import { ButtonTransparent } from './ButtonTransparent';
 import { colors } from '../styles/colors';
 import { useAppState } from '@react-native-community/hooks';
