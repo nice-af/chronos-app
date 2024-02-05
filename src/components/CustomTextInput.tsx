@@ -93,6 +93,7 @@ function createStyles(theme: Theme) {
       width: '100%',
       height: 20,
       color: theme.textSecondary,
+      pointerEvents: 'none',
     },
     placeholderWithIcon: {
       left: 35,
