@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
-import { colors } from '../styles/colors';
-import { getPadding } from '../styles/utils';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { getPadding } from '../styles/utils';
 
 interface ButtonPrimaryProps extends Omit<PressableProps, 'style'> {
   label: string;
@@ -13,6 +14,7 @@ interface ButtonPrimaryProps extends Omit<PressableProps, 'style'> {
 
 export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const styles = useThemedStyles(createStyles);
 
   return (
     <Pressable
@@ -31,24 +33,26 @@ export const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({ onPress, label, ic
   );
 };
 
-const styles = StyleSheet.create({
-  pressable: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 8,
-    backgroundColor: colors.buttonBase,
-    borderRadius: 8,
-    ...getPadding(7, 20),
-  },
-  isHovered: {
-    backgroundColor: colors.buttonHover,
-  },
-  isActive: {
-    backgroundColor: colors.buttonActive,
-  },
-  label: {
-    ...typo.bodyEmphasized,
-    color: colors.textPrimary,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    pressable: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      gap: 8,
+      backgroundColor: theme.buttonBase,
+      borderRadius: 8,
+      ...getPadding(7, 20),
+    },
+    isHovered: {
+      backgroundColor: theme.buttonHover,
+    },
+    isActive: {
+      backgroundColor: theme.buttonActive,
+    },
+    label: {
+      ...typo.bodyEmphasized,
+      color: theme.textPrimary,
+    },
+  });
+}

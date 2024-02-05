@@ -1,17 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ButtonDanger } from '../components/ButtonDanger';
 import { Layout } from '../components/Layout';
 import { LayoutSettings } from '../components/LayoutSetting';
 import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
+import { StorageKey } from '../const';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
-import { colors } from '../styles/colors';
-import { typo } from '../styles/typo';
-import { ButtonDanger } from '../components/ButtonDanger';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StorageKey } from '../const';
 import { removeJiraClient } from '../services/jira.service';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
+import { typo } from '../styles/typo';
 
 export const Settings: React.FC = () => {
   const {
@@ -23,6 +24,7 @@ export const Settings: React.FC = () => {
     setUserInfo,
   } = useContext(GlobalContext);
   const { setShowSettingsScreen, setCurrentWorklogToEdit, setShowSearchScreen } = useContext(NavigationContext);
+  const styles = useThemedStyles(createStyles);
 
   function logout() {
     setShowSettingsScreen(false);
@@ -64,30 +66,32 @@ export const Settings: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    padding: 16,
-    gap: 16,
-  },
-  card: {
-    padding: 10,
-    backgroundColor: colors.surface,
-    borderColor: colors.surfaceBorder,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  headline: {
-    ...typo.headline,
-    marginBottom: 12,
-  },
-  hr: {
-    width: '100%',
-    height: 1,
-    backgroundColor: colors.surfaceBorder,
-    marginVertical: 12,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
+      padding: 16,
+      gap: 16,
+    },
+    card: {
+      padding: 10,
+      backgroundColor: theme.surface,
+      borderColor: theme.surfaceBorder,
+      borderWidth: 1,
+      borderRadius: 5,
+    },
+    headline: {
+      ...typo.headline,
+      marginBottom: 12,
+    },
+    hr: {
+      width: '100%',
+      height: 1,
+      backgroundColor: theme.surfaceBorder,
+      marginVertical: 12,
+    },
+  });
+}

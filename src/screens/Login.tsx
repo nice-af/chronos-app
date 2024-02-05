@@ -1,20 +1,22 @@
 import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import AnimateScreenContainer from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
+import { GlobalContext } from '../contexts/global.context';
+import { NavigationContext } from '../contexts/navigation.context';
 import { useAuthRequest } from '../services/auth.service';
-import { colors } from '../styles/colors';
+import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { NavigationContext } from '../contexts/navigation.context';
-import { GlobalContext } from '../contexts/global.context';
-import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
-import AnimateScreenContainer from '../components/AnimateScreenContainer';
 
 export const Login: React.FC = () => {
   const { requestOAuth, isLoading } = useAuthRequest();
   const { showLoginScreen, setShowLoginScreen } = useContext(NavigationContext);
   const { setWorklogs, setUserInfo } = useContext(GlobalContext);
+  const styles = useThemedStyles(createStyles);
 
   return (
     <AnimateScreenContainer isVisible={showLoginScreen} offScreenLocation='left'>
@@ -53,86 +55,88 @@ export const Login: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    zIndex: 2,
-    ...getPadding(16, 16, 48, 16),
-  },
-  appIcon: {
-    width: 90,
-    height: 90,
-  },
-  title: {
-    width: 183,
-    height: 18,
-    marginTop: 16,
-  },
-  text: {
-    ...typo.body,
-    maxWidth: 284,
-    marginTop: 16,
-    marginBottom: 24,
-    textAlign: 'center',
-    color: colors.textSecondary,
-  },
-  bgContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    zIndex: 1,
-    width: '100%',
-    height: 228,
-  },
-  bgGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    height: 205,
-  },
-  bgShine: {
-    position: 'absolute',
-    bottom: 0,
-    left: '50%',
-    width: 568,
-    height: 228,
-    marginLeft: -284,
-  },
-  shapeDice: {
-    position: 'absolute',
-    bottom: 110,
-    left: '50%',
-    width: 72,
-    height: 72,
-    marginLeft: -242,
-  },
-  shapePuck: {
-    position: 'absolute',
-    bottom: -11,
-    left: '50%',
-    width: 75,
-    height: 55,
-    marginLeft: -122,
-  },
-  shapeCone: {
-    position: 'absolute',
-    bottom: 25,
-    left: '50%',
-    width: 66,
-    height: 69,
-    marginLeft: 40,
-  },
-  shapeBallHalf: {
-    position: 'absolute',
-    bottom: 115,
-    left: '50%',
-    width: 75,
-    height: 62,
-    marginLeft: 181,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      zIndex: 2,
+      ...getPadding(16, 16, 48, 16),
+    },
+    appIcon: {
+      width: 90,
+      height: 90,
+    },
+    title: {
+      width: 183,
+      height: 18,
+      marginTop: 16,
+    },
+    text: {
+      ...typo.body,
+      maxWidth: 284,
+      marginTop: 16,
+      marginBottom: 24,
+      textAlign: 'center',
+      color: theme.textSecondary,
+    },
+    bgContainer: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      zIndex: 1,
+      width: '100%',
+      height: 228,
+    },
+    bgGradient: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: 205,
+    },
+    bgShine: {
+      position: 'absolute',
+      bottom: 0,
+      left: '50%',
+      width: 568,
+      height: 228,
+      marginLeft: -284,
+    },
+    shapeDice: {
+      position: 'absolute',
+      bottom: 110,
+      left: '50%',
+      width: 72,
+      height: 72,
+      marginLeft: -242,
+    },
+    shapePuck: {
+      position: 'absolute',
+      bottom: -11,
+      left: '50%',
+      width: 75,
+      height: 55,
+      marginLeft: -122,
+    },
+    shapeCone: {
+      position: 'absolute',
+      bottom: 25,
+      left: '50%',
+      width: 66,
+      height: 69,
+      marginLeft: 40,
+    },
+    shapeBallHalf: {
+      position: 'absolute',
+      bottom: 115,
+      left: '50%',
+      width: 75,
+      height: 62,
+      marginLeft: 181,
+    },
+  });
+}

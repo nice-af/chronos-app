@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import AnimateScreenContainer from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
 import { NavigationContext } from '../contexts/navigation.context';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { EditWorklog } from './EditWorklog';
 import { Entries } from './Entries';
 import { Search } from './Search';
@@ -10,6 +12,7 @@ import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
   const { showLoginScreen, showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
+  const styles = useThemedStyles(createStyles);
 
   return (
     <AnimateScreenContainer isVisible={!showLoginScreen} offScreenLocation='right'>
@@ -34,32 +37,34 @@ export const Main: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    width: '100%',
-    height: '100%',
-  },
-  mainViewContainer: {
-    position: 'relative',
-    flexGrow: 1,
-  },
-  entriesContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: '100%',
-    height: '100%',
-  },
-  overlayContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    zIndex: 2,
-    width: '100%',
-    height: '100%',
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'stretch',
+      width: '100%',
+      height: '100%',
+    },
+    mainViewContainer: {
+      position: 'relative',
+      flexGrow: 1,
+    },
+    entriesContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      width: '100%',
+      height: '100%',
+    },
+    overlayContainer: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      zIndex: 2,
+      width: '100%',
+      height: '100%',
+    },
+  });
+}

@@ -2,13 +2,14 @@ import transparentize from 'polished/lib/color/transparentize';
 import React, { useContext } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
-import { colors } from '../styles/colors';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { WorklogCompact } from '../types/global.types';
+import { useDoublePress } from '../utils/double-press';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
-import { useDoublePress } from '../utils/double-press';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklogCompact: WorklogCompact;
@@ -18,6 +19,7 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCompact, isSelected }) => {
   const { setCurrentWorklogToEdit } = useContext(NavigationContext);
   const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklogCompact));
+  const styles = useThemedStyles(createStyles);
 
   return (
     <Pressable
@@ -37,35 +39,37 @@ export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCom
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    backgroundColor: 'transparent',
-    ...getPadding(12, 16),
-  },
-  containerIsSelected: {
-    backgroundColor: transparentize(0.96, colors.contrast),
-  },
-  infoContainer: {
-    flex: 1,
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  title: {
-    ...typo.headline,
-    flex: 1,
-    marginLeft: 8,
-    marginTop: 2,
-  },
-  description: {
-    marginTop: 8,
-    ...typo.callout,
-    color: colors.textSecondary,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
+      backgroundColor: 'transparent',
+      ...getPadding(12, 16),
+    },
+    containerIsSelected: {
+      backgroundColor: transparentize(0.96, theme.contrast),
+    },
+    infoContainer: {
+      flex: 1,
+    },
+    header: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    title: {
+      ...typo.headline,
+      flex: 1,
+      marginLeft: 8,
+      marginTop: 2,
+    },
+    description: {
+      marginTop: 8,
+      ...typo.callout,
+      color: theme.textSecondary,
+    },
+  });
+}

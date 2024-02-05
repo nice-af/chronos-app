@@ -1,10 +1,11 @@
+import { useAppState } from '@react-native-community/hooks';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import BackgroundView from './BackgroundView';
 import { ButtonTransparent } from './ButtonTransparent';
-import { colors } from '../styles/colors';
-import { useAppState } from '@react-native-community/hooks';
 
 export interface HeaderProps {
   title?: React.ReactNode;
@@ -16,6 +17,7 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
+  const styles = useThemedStyles(createStyles);
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
@@ -58,53 +60,55 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    zIndex: 99,
-    width: '100%',
-    height: 53,
-    borderBottomColor: colors.border,
-    borderBottomWidth: 1,
-  },
-  containerAbsolute: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  content: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    width: '100%',
-    height: 52,
-    paddingHorizontal: 16,
-  },
-  isCentered: {
-    justifyContent: 'center',
-    textAlign: 'center',
-  },
-  backgroundView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-  },
-  arrow: {
-    width: 7,
-    height: 12,
-  },
-  title: {
-    ...typo.title3Emphasized,
-    flexGrow: 1,
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginLeft: 'auto',
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      zIndex: 99,
+      width: '100%',
+      height: 53,
+      borderBottomColor: theme.border,
+      borderBottomWidth: 1,
+    },
+    containerAbsolute: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
+    content: {
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
+      width: '100%',
+      height: 52,
+      paddingHorizontal: 16,
+    },
+    isCentered: {
+      justifyContent: 'center',
+      textAlign: 'center',
+    },
+    backgroundView: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+    },
+    arrow: {
+      width: 7,
+      height: 12,
+    },
+    title: {
+      ...typo.title3Emphasized,
+      flexGrow: 1,
+    },
+    actions: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginLeft: 'auto',
+    },
+  });
+}
