@@ -25,8 +25,8 @@ export const DebugToolsTab: React.FC<DebugToolsTabProps> = ({ defaultExpanded, t
 
 export const DebugTools: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const { apiSettings, worklogs, userInfo } = useContext(GlobalContext);
-  const { showLoginScreen, showSettingsScreen } = useContext(NavigationContext);
+  const { worklogs, userInfo } = useContext(GlobalContext);
+  const { showSettingsScreen } = useContext(NavigationContext);
 
   if (!expanded) {
     return (
@@ -41,17 +41,14 @@ export const DebugTools: React.FC = () => {
           <Text style={styles.xButtonTitle}>X</Text>
         </Pressable>
         <ScrollView>
-          <DebugToolsTab title='apiSettings'>
-            <Text>{JSON.stringify(apiSettings, null, 2)}</Text>
+          <DebugToolsTab title='userInfo'>
+            <Text>{JSON.stringify(userInfo, null, 2)}</Text>
           </DebugToolsTab>
           <DebugToolsTab title='worklogs'>
             <Text>{JSON.stringify(worklogs, null, 2)}</Text>
           </DebugToolsTab>
-          <DebugToolsTab title='userInfo'>
-            <Text>{JSON.stringify(userInfo, null, 2)}</Text>
-          </DebugToolsTab>
           <DebugToolsTab title='navigationContext'>
-            <Text>{JSON.stringify({ showLoginScreen, showSettingsScreen }, null, 2)}</Text>
+            <Text>{JSON.stringify({ showSettingsScreen }, null, 2)}</Text>
           </DebugToolsTab>
         </ScrollView>
       </View>
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 2,
     right: 2,
-    zIndex: 9999999,
+    zIndex: 999999,
     padding: 6,
     width: 24,
     backgroundColor: 'black',
