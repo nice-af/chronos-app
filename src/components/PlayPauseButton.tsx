@@ -58,7 +58,11 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
               ],
             },
           ]}
-          source={require('../assets/icon-play.png')}
+          source={
+            theme.type === 'light'
+              ? require('../assets/icons/play-light.png')
+              : require('../assets/icons/play-dark.png')
+          }
         />
         <Animated.Image
           style={[
@@ -77,7 +81,7 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
               ],
             },
           ]}
-          source={require('../assets/icon-pause-green.png')}
+          source={require('../assets/icons/pause-green.png')}
         />
         <Animated.View style={[styles.buttonFill, { transform: [{ scale: animBounce }] }]} />
       </Pressable>

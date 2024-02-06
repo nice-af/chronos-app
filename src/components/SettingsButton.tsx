@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
+import { ThemeContext } from '../contexts/theme.context';
 
 export const dayPickerHeight = 56;
 
 export const SettingsButton: React.FC = () => {
   const { showSettingsScreen, setShowSettingsScreen } = useContext(NavigationContext);
   const [isHovered, setIsHovered] = useState(false);
+  const { theme } = useContext(ThemeContext);
   const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -38,7 +40,9 @@ export const SettingsButton: React.FC = () => {
             ],
           },
         ]}
-        source={require('../assets/settings/icon-cog.png')}
+        source={
+          theme.type === 'light' ? require('../assets/icons/cog-light.png') : require('../assets/icons/cog-dark.png')
+        }
       />
     </Pressable>
   );

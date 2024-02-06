@@ -52,6 +52,9 @@ const buttonColors = {
   dayButtonHover: 'rgba(255,255,255,0.06)',
   dayButtonBorder: 'rgba(0,0,0,0.4)',
   dayButtonBorderInset: 'rgba(255,255,255,0.1)',
+  cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+  cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
+  cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
 };
 
 export const darkTheme: Theme = {

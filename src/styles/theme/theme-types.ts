@@ -21,12 +21,14 @@ export interface Theme {
   pink: string;
   gray: string;
   brown: string;
+
   background: string;
   backgroundDark: string;
   border: string;
   borderSolid: string;
   surface: string;
   surfaceBorder: string;
+
   buttonBase: string;
   buttonHover: string;
   buttonActive: string;
@@ -46,4 +48,7 @@ export interface Theme {
   dayButtonHover: string;
   dayButtonBorder: string;
   dayButtonBorderInset: string;
+  cardsSelectionButtonBorderInset: string;
+  cardsSelectionButtonHover: string;
+  cardsSelectionButtonActive: string;
 }

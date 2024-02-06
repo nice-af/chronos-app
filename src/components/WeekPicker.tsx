@@ -2,6 +2,7 @@ import { getISOWeek } from 'date-fns';
 import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
+import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -9,6 +10,7 @@ import { ButtonTransparent } from './ButtonTransparent';
 
 export const WeekPicker: React.FC = () => {
   const { selectedDate, setSelectedDate } = useContext(NavigationContext);
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
   return (
@@ -21,7 +23,14 @@ export const WeekPicker: React.FC = () => {
             setSelectedDate(newDate);
           }}
           hasLargePadding>
-          <Image style={styles.arrow} source={require('../assets/icon-chevron-left.png')} />
+          <Image
+            style={styles.arrow}
+            source={
+              theme.type === 'light'
+                ? require('../assets/icons/chevron-left-light.png')
+                : require('../assets/icons/chevron-left-dark.png')
+            }
+          />
         </ButtonTransparent>
         <View>
           <Text style={styles.label}>KW</Text>
@@ -35,7 +44,14 @@ export const WeekPicker: React.FC = () => {
             setSelectedDate(newDate);
           }}
           hasLargePadding>
-          <Image style={styles.arrow} source={require('../assets/icon-chevron-right.png')} />
+          <Image
+            style={styles.arrow}
+            source={
+              theme.type === 'light'
+                ? require('../assets/icons/chevron-right-light.png')
+                : require('../assets/icons/chevron-right-dark.png')
+            }
+          />
         </ButtonTransparent>
       </View>
     </>

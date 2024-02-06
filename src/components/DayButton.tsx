@@ -57,10 +57,10 @@ function createStyles(theme: Theme) {
       backgroundColor: theme.dayButtonBase,
       textAlign: 'center',
       borderWidth: 1,
-      borderColor: 'rgba(0,0,0,0.4)',
+      borderColor: theme.dayButtonBorder,
     },
     isHovered: {
-      backgroundColor: 'rgba(255,255,255,0.06)',
+      backgroundColor: theme.dayButtonHover,
     },
     insetBorder: {
       position: 'absolute',
@@ -68,7 +68,7 @@ function createStyles(theme: Theme) {
       left: 0,
       width: 52,
       borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.1)',
+      borderColor: theme.dayButtonBorderInset,
       borderRadius: 10,
     },
     selectedBorder: {

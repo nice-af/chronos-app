@@ -8,6 +8,7 @@ import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
+import { ThemeContext } from '../contexts/theme.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -30,6 +31,7 @@ export const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResults>();
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -52,8 +54,6 @@ export const Search: React.FC = () => {
     debouncedSearch(trimmedValue);
   }, [searchValue]);
 
-  console.log('searchResults', searchResults);
-
   return (
     <Layout
       header={{
@@ -68,7 +68,16 @@ export const Search: React.FC = () => {
           placeholder='Search...'
           value={searchValue}
           onChangeText={setSearchValue}
-          iconLeft={<Image style={styles.icon} source={require('../assets/icon-search.png')} />}
+          iconLeft={
+            <Image
+              style={styles.icon}
+              source={
+                theme.type === 'light'
+                  ? require('../assets/icons/search-light.png')
+                  : require('../assets/icons/search-dark.png')
+              }
+            />
+          }
         />
       </View>
       <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
@@ -94,7 +103,14 @@ export const Search: React.FC = () => {
               <Text>{issue.fields.summary}</Text>
             </View>
             <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
-              <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
+              <Image
+                style={styles.icon}
+                source={
+                  theme.type === 'light'
+                    ? require('../assets/icons/plus-light.png')
+                    : require('../assets/icons/plus-dark.png')
+                }
+              />
             </ButtonTransparent>
           </View>
         ))}

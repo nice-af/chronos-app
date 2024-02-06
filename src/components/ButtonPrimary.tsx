@@ -41,7 +41,6 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       gap: 8,
       backgroundColor: theme.buttonBase,
-      color: theme.textButton,
       borderRadius: 8,
       ...getPadding(7, 20),
     },
@@ -53,7 +52,7 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
-      color: theme.textPrimary,
+      color: theme.textButton,
     },
   });
 }
