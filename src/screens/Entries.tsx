@@ -1,18 +1,20 @@
 import React, { useContext } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text } from 'react-native';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
-import { formatDateToYYYYMMDD } from '../services/date.service';
-import { typo } from '../styles/typo';
 import { NavigationContext } from '../contexts/navigation.context';
+import { formatDateToYYYYMMDD } from '../services/date.service';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
+import { typo } from '../styles/typo';
 
 export const Entries: React.FC = () => {
   const { worklogs, logout } = useContext(GlobalContext);
   const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
-
+  const styles = useThemedStyles(createStyles);
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
   const rightElement = (
@@ -46,19 +48,21 @@ export const Entries: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  icon: {
-    width: 24,
-    height: 24,
-  },
-  entriesContainer: {
-    flexGrow: 1,
-    overflow: 'visible',
-  },
-  errorMessage: {
-    ...typo.body,
-    textAlign: 'center',
-    opacity: 0.4,
-    marginTop: 100,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    icon: {
+      width: 24,
+      height: 24,
+    },
+    entriesContainer: {
+      flexGrow: 1,
+      overflow: 'visible',
+    },
+    errorMessage: {
+      ...typo.body,
+      textAlign: 'center',
+      opacity: 0.4,
+      marginTop: 100,
+    },
+  });
+}

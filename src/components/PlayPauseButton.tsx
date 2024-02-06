@@ -1,8 +1,10 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { ThemeContext } from '../contexts/theme.context';
 import { formatUnixTimestampToHMM } from '../services/date.service';
-import { colors } from '../styles/colors';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
@@ -17,6 +19,8 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
   const [isHovered, setIsHovered] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const animBounce = useRef(new Animated.Value(0)).current;
+  const styles = useThemedStyles(createStyles);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     Animated.timing(animBounce, {
@@ -77,53 +81,55 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
         />
         <Animated.View style={[styles.buttonFill, { transform: [{ scale: animBounce }] }]} />
       </Pressable>
-      <Text style={[styles.duration, { color: isRunning ? colors.green : colors.textSecondary }]}>
+      <Text style={[styles.duration, { color: isRunning ? theme.green : theme.textSecondary }]}>
         {formatUnixTimestampToHMM(duration)}
       </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  pressable: {
-    position: 'relative',
-    alignSelf: 'center',
-    width: 34,
-    height: 34,
-    borderRadius: 5,
-    ...getPadding(9, 15),
-    overflow: 'visible',
-    margin: -3,
-  },
-  isHovered: {
-    opacity: 0.8,
-  },
-  play: {
-    position: 'absolute',
-    top: 9,
-    left: 9,
-    width: 16,
-    height: 16,
-  },
-  pause: {
-    position: 'absolute',
-    top: 9,
-    left: 9,
-    width: 16,
-    height: 16,
-  },
-  buttonFill: {
-    position: 'absolute',
-    top: 1,
-    left: 1,
-    backgroundColor: transparentize(0.75, colors.green),
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  duration: {
-    ...typo.headline,
-    marginTop: 6,
-    textAlign: 'center',
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    pressable: {
+      position: 'relative',
+      alignSelf: 'center',
+      width: 34,
+      height: 34,
+      borderRadius: 5,
+      ...getPadding(9, 15),
+      overflow: 'visible',
+      margin: -3,
+    },
+    isHovered: {
+      opacity: 0.8,
+    },
+    play: {
+      position: 'absolute',
+      top: 9,
+      left: 9,
+      width: 16,
+      height: 16,
+    },
+    pause: {
+      position: 'absolute',
+      top: 9,
+      left: 9,
+      width: 16,
+      height: 16,
+    },
+    buttonFill: {
+      position: 'absolute',
+      top: 1,
+      left: 1,
+      backgroundColor: transparentize(0.75, theme.green),
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+    },
+    duration: {
+      ...typo.headline,
+      marginTop: 6,
+      textAlign: 'center',
+    },
+  });
+}

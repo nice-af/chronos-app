@@ -9,7 +9,8 @@ import {
   getWeekday,
   setDateToThisWeekday,
 } from '../services/date.service';
-import { colors } from '../styles/colors';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { weekDays } from '../types/global.types';
@@ -26,6 +27,7 @@ export const Sidebar: React.FC = () => {
   const { setShowSettingsScreen } = useContext(NavigationContext);
   const windowHeight = useWindowDimensions().height;
   const currentAppState = useAppState();
+  const styles = useThemedStyles(createStyles);
 
   return (
     <View style={styles.outerContainer}>
@@ -52,40 +54,42 @@ export const Sidebar: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  outerContainer: {
-    position: 'relative',
-    borderRightColor: colors.border,
-    borderRightWidth: 1,
-    width: 93,
-    backgroundColor: colors.borderSolid,
-  },
-  backgroundView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: 92,
-    height: '100%',
-  },
-  container: {
-    position: 'relative',
-    zIndex: 2,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 10,
-    flexGrow: 0,
-    flexBasis: 92,
-    width: 92,
-    ...getPadding(56, 16, 6),
-  },
-  today: {
-    ...typo.bodyEmphasized,
-    position: 'absolute',
-    top: 6,
-    left: 0,
-    width: '100%',
-    textAlign: 'center',
-    color: colors.textPrimary,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    outerContainer: {
+      position: 'relative',
+      borderRightColor: theme.border,
+      borderRightWidth: 1,
+      width: 93,
+      backgroundColor: theme.borderSolid,
+    },
+    backgroundView: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: 92,
+      height: '100%',
+    },
+    container: {
+      position: 'relative',
+      zIndex: 2,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 10,
+      flexGrow: 0,
+      flexBasis: 92,
+      width: 92,
+      ...getPadding(56, 16, 6),
+    },
+    today: {
+      ...typo.bodyEmphasized,
+      position: 'absolute',
+      top: 6,
+      left: 0,
+      width: '100%',
+      textAlign: 'center',
+      color: theme.textPrimary,
+    },
+  });
+}

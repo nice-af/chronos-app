@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
-import { colors } from '../styles/colors';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
@@ -13,6 +14,7 @@ interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
 
 export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const styles = useThemedStyles(createStyles);
 
   return (
     <Pressable
@@ -31,28 +33,30 @@ export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label
   );
 };
 
-const styles = StyleSheet.create({
-  pressable: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: 8,
-    alignSelf: 'flex-start',
-    backgroundColor: colors.secondaryButtonBase,
-    borderColor: colors.secondaryButtonBorder,
-    borderWidth: 1,
-    borderRadius: 9,
-    ...getPadding(7, 12),
-  },
-  isHovered: {
-    backgroundColor: colors.secondaryButtonHover,
-  },
-  isActive: {
-    backgroundColor: colors.secondaryButtonActive,
-  },
-  label: {
-    ...typo.bodyEmphasized,
-    color: colors.textPrimary,
-    lineHeight: 16,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    pressable: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      gap: 8,
+      alignSelf: 'flex-start',
+      backgroundColor: theme.secondaryButtonBase,
+      borderColor: theme.secondaryButtonBorder,
+      borderWidth: 1,
+      borderRadius: 9,
+      ...getPadding(7, 12),
+    },
+    isHovered: {
+      backgroundColor: theme.secondaryButtonHover,
+    },
+    isActive: {
+      backgroundColor: theme.secondaryButtonActive,
+    },
+    label: {
+      ...typo.bodyEmphasized,
+      color: theme.textPrimary,
+      lineHeight: 16,
+    },
+  });
+}

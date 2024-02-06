@@ -1,17 +1,18 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { SearchResults } from 'jira.js/out/version3/models';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ButtonTransparent } from '../components/ButtonTransparent';
+import { CustomTextInput } from '../components/CustomTextInput';
+import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
-import { typo } from '../styles/typo';
-import { CustomTextInput } from '../components/CustomTextInput';
-import { colors } from '../styles/colors';
-import { SearchResults } from 'jira.js/out/version3/models';
 import { getIssuesBySearchQuery } from '../services/jira.service';
-import { ButtonTransparent } from '../components/ButtonTransparent';
-import { IssueTag } from '../components/IssueTag';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
+import { typo } from '../styles/typo';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -29,6 +30,7 @@ export const Search: React.FC = () => {
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResults>();
+  const styles = useThemedStyles(createStyles);
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
   const debouncedSearch = debounce(async (query: string) => {
@@ -75,6 +77,7 @@ export const Search: React.FC = () => {
         {/* TODO @AdrianFahrbach make pretty */}
         {searchResults?.issues?.map(issue => (
           <View
+            key={issue.id}
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -104,29 +107,31 @@ export const Search: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  inputContainer: {
-    width: '100%',
-    height: 52,
-    flexBasis: 52,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginTop: 53,
-    borderBottomColor: colors.border,
-    borderBottomWidth: 1,
-  },
-  icon: {
-    width: 16,
-    height: 16,
-  },
-  entriesContainer: {
-    flexGrow: 1,
-    overflow: 'visible',
-  },
-  errorMessage: {
-    ...typo.body,
-    textAlign: 'center',
-    opacity: 0.4,
-    marginTop: 100,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    inputContainer: {
+      width: '100%',
+      height: 52,
+      flexBasis: 52,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginTop: 53,
+      borderBottomColor: theme.border,
+      borderBottomWidth: 1,
+    },
+    icon: {
+      width: 16,
+      height: 16,
+    },
+    entriesContainer: {
+      flexGrow: 1,
+      overflow: 'visible',
+    },
+    errorMessage: {
+      ...typo.body,
+      textAlign: 'center',
+      opacity: 0.4,
+      marginTop: 100,
+    },
+  });
+}

@@ -1,3 +1,5 @@
+import { Theme } from './theme-types';
+
 const baseColors = {
   contrast: '#FFFFFF',
   textPrimary: 'rgba(255,255,255,0.85)',
@@ -47,7 +49,8 @@ const buttonColors = {
   surfaceButtonActive: '#454443',
 };
 
-export const colors = {
+export const lightTheme: Theme = {
+  type: 'light',
   ...baseColors,
   ...windowColors,
   ...buttonColors,

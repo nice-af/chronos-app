@@ -7,7 +7,8 @@ import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
-import { colors } from '../styles/colors';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
 export const Settings: React.FC = () => {
@@ -19,6 +20,7 @@ export const Settings: React.FC = () => {
     logout,
   } = useContext(GlobalContext);
   const { setShowSettingsScreen } = useContext(NavigationContext);
+  const styles = useThemedStyles(createStyles);
 
   return (
     <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
@@ -49,30 +51,32 @@ export const Settings: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    padding: 16,
-    gap: 16,
-  },
-  card: {
-    padding: 10,
-    backgroundColor: colors.surface,
-    borderColor: colors.surfaceBorder,
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  headline: {
-    ...typo.headline,
-    marginBottom: 12,
-  },
-  hr: {
-    width: '100%',
-    height: 1,
-    backgroundColor: colors.surfaceBorder,
-    marginVertical: 12,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
+      padding: 16,
+      gap: 16,
+    },
+    card: {
+      padding: 10,
+      backgroundColor: theme.surface,
+      borderColor: theme.surfaceBorder,
+      borderWidth: 1,
+      borderRadius: 5,
+    },
+    headline: {
+      ...typo.headline,
+      marginBottom: 12,
+    },
+    hr: {
+      width: '100%',
+      height: 1,
+      backgroundColor: theme.surfaceBorder,
+      marginVertical: 12,
+    },
+  });
+}

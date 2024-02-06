@@ -1,10 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
-import { colors } from '../styles/colors';
+import { ThemeContext } from '../contexts/theme.context';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { DayId, DayLabel, Layout, weekDays } from '../types/global.types';
 import { getPadding } from '../styles/utils';
+import { DayId, DayLabel, weekDays } from '../types/global.types';
 
 interface WorkingDaysSettingProps {
   id: DayId;
@@ -14,7 +16,8 @@ interface WorkingDaysSettingProps {
 const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { workingDays, setWorkingDays } = useContext(GlobalContext);
-
+  const { theme } = useContext(ThemeContext);
+  const styles = useThemedStyles(createStyles);
   const isChecked = workingDays.includes(id);
 
   function handlePress() {
@@ -34,9 +37,9 @@ const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label
       onPress={handlePress}
       style={({ pressed }) => [
         styles.pressable,
-        { backgroundColor: isChecked ? colors.buttonBase : colors.surfaceButtonBase },
-        isHovered && { backgroundColor: isChecked ? colors.buttonHover : colors.surfaceButtonHover },
-        pressed && { backgroundColor: isChecked ? colors.buttonActive : colors.surfaceButtonActive },
+        { backgroundColor: isChecked ? theme.buttonBase : theme.surfaceButtonBase },
+        isHovered && { backgroundColor: isChecked ? theme.buttonHover : theme.surfaceButtonHover },
+        pressed && { backgroundColor: isChecked ? theme.buttonActive : theme.surfaceButtonActive },
       ]}>
       <Text style={isChecked ? styles.labelChecked : styles.label}>{label}</Text>
     </Pressable>
@@ -44,6 +47,8 @@ const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label
 };
 
 export const WorkingDaysSetting: React.FC = () => {
+  const styles = useThemedStyles(createStyles);
+
   return (
     <View style={styles.container}>
       {weekDays.map(weekDay => (
@@ -53,26 +58,28 @@ export const WorkingDaysSetting: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    gap: 6,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  pressable: {
-    width: 34,
-    ...getPadding(7, 8, 9),
-    borderRadius: 6,
-  },
-  labelChecked: {
-    ...typo.subheadlineEmphasized,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-  label: {
-    ...typo.subheadline,
-    color: colors.textPrimary,
-    textAlign: 'center',
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      gap: 6,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
+    pressable: {
+      width: 34,
+      ...getPadding(7, 8, 9),
+      borderRadius: 6,
+    },
+    labelChecked: {
+      ...typo.subheadlineEmphasized,
+      color: theme.textPrimary,
+      textAlign: 'center',
+    },
+    label: {
+      ...typo.subheadline,
+      color: theme.textPrimary,
+      textAlign: 'center',
+    },
+  });
+}
