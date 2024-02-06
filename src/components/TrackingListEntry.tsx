@@ -62,6 +62,7 @@ function createStyles(theme: Theme) {
     },
     title: {
       ...typo.headline,
+      color: theme.textPrimary,
       flex: 1,
       marginLeft: 8,
       marginTop: 2,

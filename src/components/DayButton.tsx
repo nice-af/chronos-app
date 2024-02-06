@@ -54,7 +54,7 @@ function createStyles(theme: Theme) {
       justifyContent: 'center',
       width: 54,
       borderRadius: 10,
-      backgroundColor: 'rgba(255,255,255,0.04)',
+      backgroundColor: theme.dayButtonBase,
       textAlign: 'center',
       borderWidth: 1,
       borderColor: 'rgba(0,0,0,0.4)',

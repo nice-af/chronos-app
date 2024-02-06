@@ -5,6 +5,7 @@ const baseColors = {
   textPrimary: 'rgba(255,255,255,0.85)',
   textSecondary: 'rgba(255,255,255,0.55)',
   textTertiary: 'rgba(255,255,255,0.25)',
+  textButton: '#FFFFFF',
   red: '#FF453A',
   orange: '#FF9F0A',
   yellow: '#FFD60A',
@@ -47,6 +48,10 @@ const buttonColors = {
   surfaceButtonBase: '#3A3938',
   surfaceButtonHover: '#434241',
   surfaceButtonActive: '#454443',
+  dayButtonBase: 'rgba(255,255,255,0.04)',
+  dayButtonHover: 'rgba(255,255,255,0.06)',
+  dayButtonBorder: 'rgba(0,0,0,0.4)',
+  dayButtonBorderInset: 'rgba(255,255,255,0.1)',
 };
 
 export const lightTheme: Theme = {

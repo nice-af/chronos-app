@@ -5,6 +5,7 @@ export interface Theme {
   textPrimary: string;
   textSecondary: string;
   textTertiary: string;
+  textButton: string;
   red: string;
   orange: string;
   yellow: string;
@@ -41,4 +42,8 @@ export interface Theme {
   surfaceButtonBase: string;
   surfaceButtonHover: string;
   surfaceButtonActive: string;
+  dayButtonBase: string;
+  dayButtonHover: string;
+  dayButtonBorder: string;
+  dayButtonBorderInset: string;
 }

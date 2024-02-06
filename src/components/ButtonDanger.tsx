@@ -42,6 +42,7 @@ function createStyles(theme: Theme) {
       gap: 8,
       alignSelf: 'flex-start',
       backgroundColor: theme.dangerButtonBase,
+      color: theme.textButton,
       borderWidth: 1,
       borderRadius: 9,
       ...getPadding(7, 12),
