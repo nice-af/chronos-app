@@ -1,15 +1,7 @@
 import React from 'react';
-import { JiraResource } from '../types/auth.types';
 import { WorklogCompact } from '../types/global.types';
 
-export interface ApiSettings {
-  token: string;
-  resource: JiraResource;
-}
-
 interface NavigationContextProps {
-  showLoginScreen: boolean;
-  setShowLoginScreen: (state: boolean) => void;
   showSettingsScreen: boolean;
   setShowSettingsScreen: (state: boolean) => void;
   showSearchScreen: boolean;
@@ -21,8 +13,6 @@ interface NavigationContextProps {
 }
 
 export const NavigationContext = React.createContext<NavigationContextProps>({
-  showLoginScreen: true,
-  setShowLoginScreen: () => {},
   showSettingsScreen: false,
   setShowSettingsScreen: () => {},
   showSearchScreen: true,

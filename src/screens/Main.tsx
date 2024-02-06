@@ -22,15 +22,15 @@ export const Main: React.FC = () => {
         <View style={styles.entriesContainer}>
           <Entries />
         </View>
-        <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
-          <Search />
-        </AnimateScreenContainer>
-        <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={3}>
-          <EditWorklog />
-        </AnimateScreenContainer>
-        <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}>
-          <Settings />
-        </AnimateScreenContainer>
+        {/* <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}> */}
+        {showSearchScreen && <Search />}
+        {/* </AnimateScreenContainer> */}
+        {/* <AnimateScreenContainer isVisible={!!showEditWorklogScreen} offScreenLocation='right' zIndex={3}> */}
+        {!!showEditWorklogScreen && <EditWorklog />}
+        {/* </AnimateScreenContainer> */}
+        {/* <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}> */}
+        {showSettingsScreen && <Settings />}
+        {/* </AnimateScreenContainer> */}
       </View>
     </View>
   );

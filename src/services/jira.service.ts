@@ -3,6 +3,8 @@ import { Issue, Worklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { WorklogCompact } from '../types/global.types';
 import { extractTextFromJSON } from './atlassian-document-format.service';
+import { refreshAccessToken } from './auth.service';
+import { StorageKey, setInStorage } from './storage.service';
 
 // TODO: Use a more lightweight client
 // import { Issues } from 'jira.js/out/version3';
@@ -10,33 +12,53 @@ import { extractTextFromJSON } from './atlassian-document-format.service';
 //   issues = new Issues(this);
 // }
 
-let client: Version3Client | undefined;
+let client: Version3Client;
+
+export function getJiraClient() {
+  return client;
+}
 
 /**
  * Creates a new Jira client instance
  * @param cloudId Cloud ID of the Jira instance
  * @param accessToken The bearer token to use for authentication
  */
-export function initiateJiraClient(cloudId: string, accessToken: string) {
+export function initiateJiraClient({
+  cloudId,
+  accessToken,
+  refreshToken,
+}: {
+  cloudId: string;
+  accessToken: string;
+  refreshToken: string;
+}) {
+  let currentRefreshToken = refreshToken;
   client = new Version3Client({
     host: `https://api.atlassian.com/ex/jira/${cloudId}`,
     authentication: {
-      oauth2: {
-        accessToken: accessToken,
+      oauth2: { accessToken },
+    },
+    middlewares: {
+      onError: async error => {
+        console.error('Jira request failed', error);
+        if (error.status === 401) {
+          console.log('request failed with 401, refreshing token');
+          // TODO @florianmrz properly handle when this request fails (test by changing password or revoking token)
+          const freshTokens = await refreshAccessToken(currentRefreshToken);
+          client.handleFailedResponse(error);
+          console.log(error.config!);
+          (error.config! as any).oauth2.accessToken = freshTokens.access_token;
+          currentRefreshToken = freshTokens.refresh_token;
+          await setInStorage(StorageKey.AUTH, {
+            cloudId,
+            accessToken: freshTokens.access_token,
+            refreshToken: currentRefreshToken,
+          });
+        }
       },
     },
   });
-}
-
-export function removeJiraClient() {
-  client = undefined;
-}
-
-export async function getUserInfo() {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-  return await client.myself.getCurrentUser();
+  return client;
 }
 
 /**
@@ -122,4 +144,18 @@ export async function getWorklogsCompact(accountId: string): Promise<WorklogComp
   }
 
   return worklogsCompact;
+}
+
+/**
+ * Gets all issues that match a given search query
+ */
+export async function getIssuesBySearchQuery(query: string) {
+  if (!client) {
+    throw new Error('Jira client not initialized');
+  }
+  return await client.issueSearch.searchForIssuesUsingJqlPost({
+    jql: `summary ~ "${query}" OR description ~ "${query}" ORDER BY created DESC`,
+    fields: ['summary', 'project'],
+    maxResults: 50,
+  });
 }

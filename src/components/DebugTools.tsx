@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
-import { getPadding } from '../styles/utils';
 import { NavigationContext } from '../contexts/navigation.context';
+import { getPadding } from '../styles/utils';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;

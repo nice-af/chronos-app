@@ -2,17 +2,15 @@ import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
+import { GlobalContext } from '../contexts/global.context';
 import { useAuthRequest } from '../services/auth.service';
+import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { NavigationContext } from '../contexts/navigation.context';
-import { GlobalContext } from '../contexts/global.context';
-import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
 
 export const Login: React.FC = () => {
-  const { requestOAuth, isLoading } = useAuthRequest();
-  const { setShowLoginScreen } = useContext(NavigationContext);
+  const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
   const { setWorklogs, setUserInfo } = useContext(GlobalContext);
 
   return (
@@ -31,14 +29,16 @@ export const Login: React.FC = () => {
         <Text style={styles.text}>
           Please click the button below to connect your Jira account with Jira Time Tracker.
         </Text>
-        <ButtonPrimary label='Login to Jira' onPress={requestOAuth} />
+        {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
+        {isLoadingOAuth && <Text>Logging in...</Text>}
+        <ButtonPrimary label='Login to Jira' onPress={initOAuth} />
         {__DEV__ && (
           <>
             <Text>-</Text>
             <ButtonPrimary
               label='To next page'
               onPress={() => {
-                setShowLoginScreen(false);
+                // TODO set fake user info data
                 setWorklogs(worklogsFakeData);
                 setUserInfo(userInfoFakeData);
               }}

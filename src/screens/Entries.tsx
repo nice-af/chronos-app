@@ -10,8 +10,8 @@ import { typo } from '../styles/typo';
 import { NavigationContext } from '../contexts/navigation.context';
 
 export const Entries: React.FC = () => {
-  const { worklogs } = useContext(GlobalContext);
-  const { selectedDate, setShowLoginScreen, setShowSearchScreen } = useContext(NavigationContext);
+  const { worklogs, logout } = useContext(GlobalContext);
+  const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
 
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -30,7 +30,7 @@ export const Entries: React.FC = () => {
         align: 'left',
         title: 'Today, 21 Oct',
         rightElement,
-        onBackPress: __DEV__ ? () => setShowLoginScreen(true) : undefined,
+        onBackPress: __DEV__ ? () => logout() : undefined,
         position: 'absolute',
       }}>
       <ScrollView

@@ -78,6 +78,7 @@ interface IssueTagProps extends Omit<PressableProps, 'style'> {
   style?: ViewStyle;
 }
 
+// TODO @AdrianFahrbach should we rename this to `IssueKey(Tag)` since it would be clearer that this is about the issue key? There are actually issue tags in Jira.
 export const IssueTag: React.FC<IssueTagProps> = ({ onPress, label, project, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
 

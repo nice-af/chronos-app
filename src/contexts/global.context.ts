@@ -1,19 +1,18 @@
 import { Version3Models } from 'jira.js';
 import React from 'react';
-import { JiraResource } from '../types/auth.types';
 import { DayId, Layout, WorklogDaysObject } from '../types/global.types';
-
-export interface ApiSettings {
-  token: string;
-  resource: JiraResource;
-}
 
 // TODO @florianmrz: Sollten wir das hier refactoren?
 interface GlobalContextProps {
-  apiSettings: ApiSettings | null;
-  setApiSettings: (apiSettings: ApiSettings | null) => void;
-  userInfo: Version3Models.User | null;
+  /**
+   * Information about the current user:
+   * - `null`: the user is not logged in
+   * - `undefined`: the app is still loading the user info
+   * - `Version3Models.User`: the user is logged in
+   */
+  userInfo: Version3Models.User | null | undefined;
   setUserInfo: (apiSettings: Version3Models.User | null) => void;
+  logout: () => void;
   worklogs: WorklogDaysObject | null;
   setWorklogs: (worklogs: WorklogDaysObject) => void;
   layout: Layout;
@@ -27,10 +26,9 @@ interface GlobalContextProps {
 }
 
 export const GlobalContext = React.createContext<GlobalContextProps>({
-  apiSettings: null,
-  setApiSettings: () => {},
   userInfo: null,
   setUserInfo: () => {},
+  logout: () => {},
   worklogs: null,
   setWorklogs: () => {},
   layout: 'normal',

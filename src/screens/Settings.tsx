@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ButtonDanger } from '../components/ButtonDanger';
 import { Layout } from '../components/Layout';
 import { LayoutSettings } from '../components/LayoutSetting';
 import { Toggle } from '../components/Toggle';
@@ -8,10 +9,6 @@ import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { colors } from '../styles/colors';
 import { typo } from '../styles/typo';
-import { ButtonDanger } from '../components/ButtonDanger';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StorageKey } from '../const';
-import { removeJiraClient } from '../services/jira.service';
 
 export const Settings: React.FC = () => {
   const {
@@ -19,21 +16,9 @@ export const Settings: React.FC = () => {
     setDisableEditingOfPastWorklogs,
     hideNonWorkingDays,
     setHideNonWorkingDays,
-    setApiSettings,
-    setUserInfo,
+    logout,
   } = useContext(GlobalContext);
-  const { setShowSettingsScreen, setCurrentWorklogToEdit, setShowSearchScreen } = useContext(NavigationContext);
-
-  function logout() {
-    setShowSettingsScreen(false);
-    setShowSearchScreen(false);
-    setCurrentWorklogToEdit(null);
-    AsyncStorage.removeItem(StorageKey.API_SETTINGS);
-    AsyncStorage.removeItem(StorageKey.USER_INFO);
-    setApiSettings(null);
-    setUserInfo(null);
-    removeJiraClient();
-  }
+  const { setShowSettingsScreen } = useContext(NavigationContext);
 
   return (
     <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
