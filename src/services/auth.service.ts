@@ -27,7 +27,7 @@ async function getOAuthToken(code: string): Promise<GetOauthTokenResponse> {
 }
 
 /**
- * Gets a new access and refresh token, valid for one hour.
+ * Gets a new access and refresh token using a refresh token
  */
 export async function refreshAccessToken(refreshToken: string): Promise<GetOauthTokenResponse> {
   return await fetch('https://auth.atlassian.com/oauth/token', {

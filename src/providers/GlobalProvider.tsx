@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Version3Models } from 'jira.js';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { Login } from '../screens/Login';
 import { getJiraClient, getWorklogsCompact, initiateJiraClient } from '../services/jira.service';
@@ -38,7 +38,12 @@ export const GlobalProvider: React.FC<PropsWithChildren> = ({ children }) => {
         const userInfoRes = await getJiraClient().myself.getCurrentUser();
         setUserInfo(userInfoRes);
       } catch (error) {
-        console.error('Failed to authenticate with stored auth token', error);
+        if ((error as any).status === 403) {
+          // Refresh token has expired after 90 days, user needs to re-authenticate
+          Alert.alert('Your session has expired!', 'Please log in again.');
+        } else {
+          console.error('Failed to authenticate with stored auth token', error);
+        }
         setUserInfo(null);
       }
     })();

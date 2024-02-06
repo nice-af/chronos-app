@@ -1,4 +1,5 @@
-import { Version3Client } from 'jira.js';
+import { AxiosInstance } from 'axios';
+import { Config, Version3Client } from 'jira.js';
 import { Issue, Worklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { WorklogCompact } from '../types/global.types';
@@ -38,26 +39,39 @@ export function initiateJiraClient({
     authentication: {
       oauth2: { accessToken },
     },
-    middlewares: {
-      onError: async error => {
-        console.error('Jira request failed', error);
-        if (error.status === 401) {
-          console.log('request failed with 401, refreshing token');
-          // TODO @florianmrz properly handle when this request fails (test by changing password or revoking token)
-          const freshTokens = await refreshAccessToken(currentRefreshToken);
-          client.handleFailedResponse(error);
-          console.log(error.config!);
-          (error.config! as any).oauth2.accessToken = freshTokens.access_token;
-          currentRefreshToken = freshTokens.refresh_token;
-          await setInStorage(StorageKey.AUTH, {
-            cloudId,
-            accessToken: freshTokens.access_token,
-            refreshToken: currentRefreshToken,
-          });
-        }
-      },
-    },
   });
+
+  // @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
+  const axiosInstance = client.instance as AxiosInstance;
+  axiosInstance.interceptors.response.use(
+    response => response,
+    async error => {
+      const status = error.response ? error.response.status : null;
+
+      if (status === 401) {
+        const freshTokens = await refreshAccessToken(currentRefreshToken);
+
+        await setInStorage(StorageKey.AUTH, {
+          cloudId,
+          accessToken: freshTokens.access_token,
+          refreshToken: freshTokens.refresh_token,
+        });
+
+        // Set new token in for this request
+        error.config.headers.Authorization = `Bearer ${freshTokens.access_token}`;
+
+        // Set new token for all upcoming requests
+        // @ts-expect-error (we are accessing a protected property here, but it's the only way to update the token in the client instance)
+        (client.config! as Config).authentication.oauth2.accessToken = freshTokens.access_token;
+        currentRefreshToken = freshTokens.refresh_token;
+
+        return axiosInstance.request(error.config);
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
   return client;
 }
 
