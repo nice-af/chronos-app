@@ -5,6 +5,7 @@ export interface Theme {
   textPrimary: string;
   textSecondary: string;
   textTertiary: string;
+  textButton: string;
   red: string;
   orange: string;
   yellow: string;
@@ -20,12 +21,14 @@ export interface Theme {
   pink: string;
   gray: string;
   brown: string;
+
   background: string;
   backgroundDark: string;
   border: string;
   borderSolid: string;
   surface: string;
   surfaceBorder: string;
+
   buttonBase: string;
   buttonHover: string;
   buttonActive: string;
@@ -41,4 +44,11 @@ export interface Theme {
   surfaceButtonBase: string;
   surfaceButtonHover: string;
   surfaceButtonActive: string;
+  dayButtonBase: string;
+  dayButtonHover: string;
+  dayButtonBorder: string;
+  dayButtonBorderInset: string;
+  cardsSelectionButtonBorderInset: string;
+  cardsSelectionButtonHover: string;
+  cardsSelectionButtonActive: string;
 }

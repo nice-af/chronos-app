@@ -42,7 +42,6 @@ function createStyles(theme: Theme) {
       gap: 8,
       alignSelf: 'flex-start',
       backgroundColor: theme.dangerButtonBase,
-      borderWidth: 1,
       borderRadius: 9,
       ...getPadding(7, 12),
     },
@@ -54,7 +53,7 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
-      color: theme.textPrimary,
+      color: theme.textButton,
       lineHeight: 16,
     },
   });

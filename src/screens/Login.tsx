@@ -4,6 +4,7 @@ import AnimateScreenContainer from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { GlobalContext } from '../contexts/global.context';
+import { ThemeContext } from '../contexts/theme.context';
 import { useAuthRequest } from '../services/auth.service';
 import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -14,6 +15,7 @@ import { getPadding } from '../styles/utils';
 export const Login: React.FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
   const { setWorklogs, userInfo, setUserInfo } = useContext(GlobalContext);
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
   return (
@@ -29,7 +31,14 @@ export const Login: React.FC = () => {
         </View>
         <View style={styles.container}>
           <Image style={styles.appIcon} source={require('../assets/app-icon.png')} />
-          <Image style={styles.title} source={require('../assets/login/title-en.png')} />
+          <Image
+            style={styles.title}
+            source={
+              theme.type === 'light'
+                ? require('../assets/login/title-en-light.png')
+                : require('../assets/login/title-en-dark.png')
+            }
+          />
           <Text style={styles.text}>
             Please click the button below to connect your Jira account with Jira Time Tracker.
           </Text>
@@ -89,6 +98,7 @@ function createStyles(theme: Theme) {
       zIndex: 1,
       width: '100%',
       height: 228,
+      backgroundColor: theme.background,
     },
     bgGradient: {
       position: 'absolute',

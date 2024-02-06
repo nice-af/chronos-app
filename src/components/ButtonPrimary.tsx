@@ -52,7 +52,7 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
-      color: theme.textPrimary,
+      color: theme.textButton,
     },
   });
 }

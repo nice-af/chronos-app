@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ButtonDanger } from '../components/ButtonDanger';
+import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
-import { LayoutSettings } from '../components/LayoutSetting';
 import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
+import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -21,13 +22,46 @@ export const Settings: React.FC = () => {
   } = useContext(GlobalContext);
   const { setShowSettingsScreen } = useContext(NavigationContext);
   const styles = useThemedStyles(createStyles);
+  const { layout, setLayout } = useContext(GlobalContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>
-          <LayoutSettings />
+          <View style={styles.cardsButtonContainer}>
+            <CardsSelectionButton
+              isChecked={layout === 'normal'}
+              onClick={() => setLayout('normal')}
+              image={
+                theme.type === 'light'
+                  ? require('../assets/settings/layout-normal-light.png')
+                  : require('../assets/settings/layout-normal-dark.png')
+              }
+              label='Normal'
+            />
+            <CardsSelectionButton
+              isChecked={layout === 'compact'}
+              onClick={() => setLayout('compact')}
+              image={
+                theme.type === 'light'
+                  ? require('../assets/settings/layout-compact-light.png')
+                  : require('../assets/settings/layout-compact-dark.png')
+              }
+              label='Compact'
+            />
+            <CardsSelectionButton
+              isChecked={layout === 'micro'}
+              onClick={() => setLayout('micro')}
+              image={
+                theme.type === 'light'
+                  ? require('../assets/settings/layout-micro-light.png')
+                  : require('../assets/settings/layout-micro-dark.png')
+              }
+              label='Micro'
+            />
+          </View>
           <View style={styles.hr} />
           <Text style={styles.headline}>Working days</Text>
           <WorkingDaysSetting />
@@ -70,7 +104,14 @@ function createStyles(theme: Theme) {
     },
     headline: {
       ...typo.headline,
+      color: theme.textPrimary,
       marginBottom: 12,
+    },
+    cardsButtonContainer: {
+      display: 'flex',
+      gap: 10,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
     },
     hr: {
       width: '100%',

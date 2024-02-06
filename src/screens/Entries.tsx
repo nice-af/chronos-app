@@ -10,10 +10,12 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { ThemeContext } from '../contexts/theme.context';
 
 export const Entries: React.FC = () => {
   const { worklogs, logout } = useContext(GlobalContext);
   const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
   const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
@@ -21,7 +23,14 @@ export const Entries: React.FC = () => {
     <>
       <JumpToTodayButton />
       <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
-        <Image style={styles.icon} source={require('../assets/icon-plus.png')} />
+        <Image
+          style={styles.icon}
+          source={
+            theme.type === 'light'
+              ? require('../assets/icons/plus-light.png')
+              : require('../assets/icons/plus-dark.png')
+          }
+        />
       </ButtonTransparent>
     </>
   );

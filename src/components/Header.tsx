@@ -1,6 +1,7 @@
 import { useAppState } from '@react-native-community/hooks';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -18,6 +19,7 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
@@ -28,7 +30,14 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
             onPress={onBackPress}
             hasLargePadding
             style={currentAppState === 'inactive' ? { opacity: 0.4 } : undefined}>
-            <Image style={styles.arrow} source={require('../assets/icon-chevron-left.png')} />
+            <Image
+              style={styles.arrow}
+              source={
+                theme.type === 'light'
+                  ? require('../assets/icons/chevron-left-light.png')
+                  : require('../assets/icons/chevron-left-dark.png')
+              }
+            />
           </ButtonTransparent>
         )}
         {title && typeof title === 'string' ? (

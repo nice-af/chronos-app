@@ -73,7 +73,7 @@ function createStyles(theme: Theme) {
     },
     labelChecked: {
       ...typo.subheadlineEmphasized,
-      color: theme.textPrimary,
+      color: theme.textButton,
       textAlign: 'center',
     },
     label: {
