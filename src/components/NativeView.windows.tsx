@@ -11,7 +11,7 @@ export const NativeView: React.FC<NativeViewProps> = ({ style, type, children })
     };
   } else if (type === 'sidebar') {
     nativeStyle = {
-      backgroundColor: PlatformColor('AcrylicBackgroundFillColorBaseBrush'),
+      backgroundColor: 'transparent',
     };
   }
 

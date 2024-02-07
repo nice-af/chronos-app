@@ -1,6 +1,6 @@
 import { useAppState } from '@react-native-community/hooks';
 import React, { useContext } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import {
@@ -18,6 +18,7 @@ import { DayButton } from './DayButton';
 import { NativeView } from './NativeView';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
+import { PlatformColor } from 'react-native-windows';
 
 export const dayPickerHeight = 56;
 
@@ -58,17 +59,26 @@ function createStyles(theme: Theme) {
   return StyleSheet.create({
     outerContainer: {
       position: 'relative',
-      borderColor: theme.border,
-      borderRightWidth: 1,
       width: 93,
-      backgroundColor: theme.borderSolid,
+      ...Platform.select({
+        macos: {
+          borderColor: theme.border,
+          borderRightWidth: 1,
+          backgroundColor: theme.borderSolid,
+        },
+      }),
     },
     backgroundView: {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: 92,
+      width: 93,
       height: '100%',
+      ...Platform.select({
+        macos: {
+          width: 92,
+        },
+      }),
     },
     container: {
       position: 'relative',
@@ -80,7 +90,12 @@ function createStyles(theme: Theme) {
       flexGrow: 0,
       flexBasis: 92,
       width: 92,
-      ...getPadding(56, 16, 6),
+      ...getPadding(11, 16, 6),
+      ...Platform.select({
+        macos: {
+          paddingTop: 56,
+        },
+      }),
     },
     today: {
       ...typo.bodyEmphasized,
