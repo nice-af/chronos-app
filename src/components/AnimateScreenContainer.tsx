@@ -8,7 +8,7 @@ interface AnimateScreenContainerProps {
   children: React.ReactNode;
 }
 
-const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({
+export const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({
   isVisible,
   zIndex,
   offScreenLocation,
@@ -68,5 +68,3 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
-
-export default AnimateScreenContainer;

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import AnimateScreenContainer from '../components/AnimateScreenContainer';
+import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { GlobalContext } from '../contexts/global.context';

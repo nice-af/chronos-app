@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
-import AnimateScreenContainer from '../components/AnimateScreenContainer';
+import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
 import { NavigationContext } from '../contexts/navigation.context';
 import { useThemedStyles } from '../services/theme.service';
