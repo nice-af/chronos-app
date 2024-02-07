@@ -58,7 +58,7 @@ function createStyles(theme: Theme) {
   return StyleSheet.create({
     outerContainer: {
       position: 'relative',
-      borderRightColor: theme.border,
+      borderColor: theme.border,
       borderRightWidth: 1,
       width: 93,
       backgroundColor: theme.borderSolid,

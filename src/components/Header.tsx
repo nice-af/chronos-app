@@ -75,7 +75,7 @@ function createStyles(theme: Theme) {
       zIndex: 99,
       width: '100%',
       height: 53,
-      borderBottomColor: theme.border,
+      borderColor: theme.border,
       borderBottomWidth: 1,
     },
     containerAbsolute: {

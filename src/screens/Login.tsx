@@ -79,9 +79,10 @@ function createStyles(theme: Theme) {
       height: 90,
     },
     title: {
-      width: 183,
+      width: 188,
       height: 18,
       marginTop: 16,
+      objectFit: 'contain',
     },
     text: {
       ...typo.body,
@@ -106,6 +107,7 @@ function createStyles(theme: Theme) {
       left: 0,
       width: '100%',
       height: 205,
+      objectFit: 'fill',
     },
     bgShine: {
       position: 'absolute',

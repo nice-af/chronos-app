@@ -38,7 +38,7 @@ function createStyles(theme: Theme) {
       height: 49,
       overflow: 'hidden',
       backgroundColor: theme.backgroundDark,
-      borderBottomColor: theme.borderSolid,
+      borderColor: theme.borderSolid,
       borderBottomWidth: 1,
     },
     content: {
