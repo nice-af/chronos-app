@@ -5,8 +5,8 @@ import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import BackgroundView from './BackgroundView';
 import { ButtonTransparent } from './ButtonTransparent';
+import { NativeView } from './NativeView';
 
 export interface HeaderProps {
   title?: React.ReactNode;
@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
-      <BackgroundView blendingMode={1} material={3} style={styles.backgroundView} />
+      <NativeView type='toolbar' style={styles.backgroundView} />
       <View style={[styles.content, align === 'center' && styles.isCentered]}>
         {onBackPress && (
           <ButtonTransparent

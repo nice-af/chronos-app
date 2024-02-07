@@ -14,8 +14,8 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { weekDays } from '../types/global.types';
-import BackgroundView from './BackgroundView';
 import { DayButton } from './DayButton';
+import { NativeView } from './NativeView';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
 
@@ -31,7 +31,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <View style={styles.outerContainer}>
-      <BackgroundView blendingMode={0} material={7} style={[styles.backgroundView, { height: windowHeight + 52 }]} />
+      <NativeView type='sidebar' style={[styles.backgroundView, { height: windowHeight + 52 }]} />
       <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
         <WeekPicker />
         {weekDays.map(day => (
