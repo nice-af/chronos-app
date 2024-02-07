@@ -93,7 +93,7 @@ export const Search: React.FC = () => {
               padding: 10,
               backgroundColor: 'grey',
               borderBottomWidth: 1,
-              borderBottomColor: '#fff',
+              borderColor: '#fff',
             }}>
             <View>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -132,7 +132,7 @@ function createStyles(theme: Theme) {
       paddingHorizontal: 16,
       paddingVertical: 8,
       marginTop: 53,
-      borderBottomColor: theme.border,
+      borderColor: theme.border,
       borderBottomWidth: 1,
     },
     icon: {
