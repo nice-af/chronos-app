@@ -7,14 +7,14 @@ import { Header, HeaderProps } from './Header';
 interface LayoutProps {
   header?: HeaderProps;
   children: React.ReactNode;
-  transparentBackground?: boolean;
+  customBackgroundColor?: any;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ header, children, transparentBackground }) => {
+export const Layout: React.FC<LayoutProps> = ({ header, children, customBackgroundColor }) => {
   const styles = useThemedStyles(createStyles);
 
   return (
-    <View style={[styles.globalContainer, transparentBackground && { backgroundColor: 'transparent' }]}>
+    <View style={[styles.globalContainer, customBackgroundColor && { backgroundColor: customBackgroundColor }]}>
       <View style={styles.container}>
         {header && <Header {...header} />}
         {children}
@@ -42,6 +42,7 @@ function createStyles(theme: Theme) {
       flexDirection: 'column',
       alignItems: 'stretch',
       height: '100%',
+      zIndex: 1,
     },
   });
 }

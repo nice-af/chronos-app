@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogFooter } from '../components/EditWorklogFooter';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
@@ -35,6 +35,7 @@ export const EditWorklog: React.FC = () => {
 
   return (
     <Layout
+      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
       header={{
         align: 'left',
         title: (

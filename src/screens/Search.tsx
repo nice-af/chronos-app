@@ -1,6 +1,6 @@
 import { SearchResults } from 'jira.js/out/version3/models';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, PlatformColor, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { IssueTag } from '../components/IssueTag';
@@ -56,6 +56,7 @@ export const Search: React.FC = () => {
 
   return (
     <Layout
+      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
       header={{
         align: 'left',
         onBackPress: () => setShowSearchScreen(false),

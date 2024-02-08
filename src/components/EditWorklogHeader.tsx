@@ -44,7 +44,7 @@ function createStyles(theme: Theme) {
           borderBottomWidth: 1,
         },
         windows: {
-          backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
+          backgroundColor: PlatformColor('SolidBackgroundFillColorBaseBrush'),
         },
       }),
     },

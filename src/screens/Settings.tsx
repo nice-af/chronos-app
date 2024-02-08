@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
@@ -26,7 +26,9 @@ export const Settings: React.FC = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <Layout header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
+    <Layout
+      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
+      header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>
