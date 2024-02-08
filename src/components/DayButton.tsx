@@ -39,7 +39,7 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
       style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
       {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
       {isSelected && (
-        <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height - 2 : height + 4 }]} />
+        <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
       )}
       <Text style={styles.day}>{dayLabel}</Text>
       {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}
@@ -76,20 +76,21 @@ function createStyles(theme: Theme) {
     },
     selectedBorder: {
       position: 'absolute',
+
       borderWidth: 2,
       borderColor: theme.blue,
-      borderRadius: 12,
       ...Platform.select({
         default: {
           top: -3,
           left: -3,
           width: 58,
+          borderRadius: 12,
         },
         windows: {
-          top: -0,
-          bottom: 0,
-          left: 0,
-          width: 52,
+          top: -1,
+          left: -1,
+          width: 54,
+          borderRadius: 10,
         },
       }),
     },
