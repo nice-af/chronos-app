@@ -3,9 +3,18 @@ import { Theme } from './theme-types';
 
 const baseColors = {
   contrast: '#FFFFFF',
-  textPrimary: 'rgba(255,255,255,0.85)',
-  textSecondary: 'rgba(255,255,255,0.55)',
-  textTertiary: 'rgba(255,255,255,0.25)',
+  ...Platform.select({
+    default: {
+      textPrimary: 'rgba(255,255,255,0.85)',
+      textSecondary: 'rgba(255,255,255,0.55)',
+      textTertiary: 'rgba(255,255,255,0.25)',
+    },
+    windows: {
+      textPrimary: PlatformColor('TextFillColorPrimaryBrush'),
+      textSecondary: PlatformColor('TextFillColorSecondaryBrush'),
+      textTertiary: PlatformColor('TextFillColorTertiaryBrush'),
+    },
+  }),
   textButton: '#FFFFFF',
   red: '#FF453A',
   orange: '#FF9F0A',
@@ -32,7 +41,6 @@ const windowColors = {
       backgroundLogin: '#1e1e1e',
       backgroundDrawer: '#1e1e1e',
       border: 'rgba(0,0,0,0.4)',
-      borderSolid: '#111',
       surface: '#292827',
       surfaceBorder: '#3A3938',
     },
@@ -40,13 +48,13 @@ const windowColors = {
       background: PlatformColor('LayerFillColorDefaultBrush'),
       backgroundDark: PlatformColor('SolidBackgroundFillColorBaseBrush'),
       backgroundLogin: 'transparent',
-      backgroundDrawer: PlatformColor('SolidBackgroundFillColorQuarternaryBrush'),
-      border: 'rgba(0,0,0,0.2)',
-      borderSolid: '#111',
-      surface: '#292827',
-      surfaceBorder: '#3A3938',
+      backgroundDrawer: PlatformColor('SolidBackgroundFillColorTertiaryBrush'),
+      border: PlatformColor('CardStrokeColorDefaultBrush'),
+      surface: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      surfaceBorder: PlatformColor('CardBackgroundFillColorDefaultBrush'),
     },
   }),
+  borderSolid: '#111',
 };
 
 const buttonColors = {
@@ -56,7 +64,14 @@ const buttonColors = {
   secondaryButtonBase: 'rgba(255,255,255,0.1)',
   secondaryButtonHover: 'rgba(255,255,255,0.2)',
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
-  secondaryButtonBorder: 'rgba(255,255,255,0.1)',
+  ...Platform.select({
+    default: {
+      secondaryButtonBorder: 'rgba(255,255,255,0.1)',
+    },
+    windows: {
+      secondaryButtonBorder: 'transparent',
+    },
+  }),
   dangerButtonBase: '#FF453A',
   dangerButtonHover: '#ef453c',
   dangerButtonActive: '#ec433a',
@@ -77,7 +92,14 @@ const buttonColors = {
   }),
   dayButtonBorder: Platform.OS === 'windows' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.4)',
   dayButtonBorderInset: 'rgba(255,255,255,0.1)',
-  cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+  ...Platform.select({
+    default: {
+      cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+    },
+    windows: {
+      cardsSelectionButtonBorderInset: 'transparent',
+    },
+  }),
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
 };

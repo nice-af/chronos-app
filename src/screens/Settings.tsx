@@ -96,6 +96,11 @@ function createStyles(theme: Theme) {
       justifyContent: 'flex-start',
       padding: 16,
       gap: 16,
+      ...Platform.select({
+        windows: {
+          paddingTop: 8,
+        },
+      }),
     },
     card: {
       padding: 10,
