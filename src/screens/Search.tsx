@@ -132,7 +132,14 @@ function createStyles(theme: Theme) {
       flexBasis: 52,
       paddingHorizontal: 16,
       paddingVertical: 8,
-      marginTop: 53,
+      ...Platform.select({
+        default: {
+          marginTop: 53,
+        },
+        windows: {
+          marginTop: 44,
+        },
+      }),
       borderColor: theme.border,
       borderBottomWidth: 1,
     },
