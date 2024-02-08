@@ -5,16 +5,17 @@ import { ButtonTransparent } from './ButtonTransparent';
 import { Theme } from '../styles/theme/theme-types';
 import { useThemedStyles } from '../services/theme.service';
 import { ThemeContext } from '../contexts/theme.context';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 export const JumpToTodayButton: React.FC = () => {
   const { setSelectedDate } = useContext(NavigationContext);
   const styles = useThemedStyles(createStyles);
   const { theme } = useContext(ThemeContext);
-  const now = new Date();
+  const today = new Date();
 
   return (
-    <ButtonTransparent onPress={() => setSelectedDate(now)}>
-      <Text style={styles.day}>{now.getDate()}</Text>
+    <ButtonTransparent onPress={() => setSelectedDate(formatDateToYYYYMMDD(today))}>
+      <Text style={styles.day}>{today.getDate()}</Text>
       <Image
         style={styles.icon}
         source={
