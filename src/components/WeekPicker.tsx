@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
 import { ThemeContext } from '../contexts/theme.context';
+import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -13,14 +14,16 @@ export const WeekPicker: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
+  const selectedDateParsed = parseDateFromYYYYMMDD(selectedDate);
+
   return (
     <>
       <View style={styles.container}>
         <ButtonTransparent
           onPress={() => {
-            const newDate = new Date(selectedDate);
+            const newDate = new Date(selectedDateParsed);
             newDate.setDate(newDate.getDate() - 7);
-            setSelectedDate(newDate);
+            setSelectedDate(formatDateToYYYYMMDD(newDate));
           }}
           hasLargePadding>
           <Image
@@ -35,13 +38,13 @@ export const WeekPicker: React.FC = () => {
         <View>
           <Text style={styles.label}>KW</Text>
           {/* TODO: This is not locale aware, but it's fine for now. */}
-          <Text style={styles.value}>{getISOWeek(selectedDate)}</Text>
+          <Text style={styles.value}>{getISOWeek(selectedDateParsed)}</Text>
         </View>
         <ButtonTransparent
           onPress={() => {
-            const newDate = new Date(selectedDate);
+            const newDate = new Date(selectedDateParsed);
             newDate.setDate(newDate.getDate() + 7);
-            setSelectedDate(newDate);
+            setSelectedDate(formatDateToYYYYMMDD(newDate));
           }}
           hasLargePadding>
           <Image

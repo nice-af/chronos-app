@@ -20,7 +20,7 @@ const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label
   const styles = useThemedStyles(createStyles);
   const isChecked = workingDays.includes(id);
 
-  function handlePress() {
+  const handlePress = () => {
     let newWorkingDays: DayId[] = [];
     if (isChecked) {
       newWorkingDays = workingDays.filter(day => day !== id);
@@ -28,7 +28,7 @@ const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label
       newWorkingDays = [...workingDays, id];
     }
     setWorkingDays(newWorkingDays);
-  }
+  };
 
   return (
     <Pressable

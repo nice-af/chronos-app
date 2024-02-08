@@ -37,18 +37,21 @@ export interface TrackingEntry {
   duration: number;
 }
 
-export interface WorklogCompact {
-  id: string;
-  issueKey: string;
-  issueSummary: string;
-  started: string;
-  timeSpent: number;
-  comment?: string;
+export enum WorklogState {
+  Local = 'local',
+  Synced = 'synced',
+  Edited = 'edited',
 }
 
-export interface WorklogDaysObject {
-  [key: string]: {
-    worklogs: WorklogCompact[];
-    totalTimeSpent: number;
+export interface Worklog {
+  id: string;
+  issue: {
+    id: string;
+    key: string;
+    summary: string;
   };
+  started: string;
+  timeSpentSeconds: number;
+  comment: string;
+  state: WorklogState;
 }

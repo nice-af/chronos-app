@@ -2,8 +2,8 @@ import transparentize from 'polished/lib/color/transparentize';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
-import { formatUnixTimestampToHMM } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
+import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
@@ -15,9 +15,8 @@ interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {
   style?: ViewStyle;
 }
 
-export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, duration, ...props }) => {
+export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, isRunning, duration, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isRunning, setIsRunning] = useState(false);
   const animBounce = useRef(new Animated.Value(0)).current;
   const styles = useThemedStyles(createStyles);
   const { theme } = useContext(ThemeContext);
@@ -36,7 +35,7 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
       <Pressable
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
-        onPress={() => setIsRunning(!isRunning)}
+        onPress={() => onPress()}
         style={[styles.pressable, isHovered && styles.isHovered, props.style]}>
         <Animated.Image
           style={[
@@ -86,7 +85,10 @@ export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, durat
         <Animated.View style={[styles.buttonFill, { transform: [{ scale: animBounce }] }]} />
       </Pressable>
       <Text style={[styles.duration, { color: isRunning ? theme.green : theme.textSecondary }]}>
-        {formatUnixTimestampToHMM(duration)}
+        {formatSecondsToHMM(duration)}
+      </Text>
+      <Text>
+        {/* TODO this is only for debugging */}({duration}s)
       </Text>
     </View>
   );

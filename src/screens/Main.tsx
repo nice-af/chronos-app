@@ -9,10 +9,12 @@ import { EditWorklog } from './EditWorklog';
 import { Entries } from './Entries';
 import { Search } from './Search';
 import { Settings } from './Settings';
+import { WorklogContext } from '../contexts/worklog.context';
 
 export const Main: React.FC = () => {
   const { showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
   const styles = useThemedStyles(createStyles);
+  const { addWorklog } = useContext(WorklogContext);
 
   return (
     <AnimateScreenContainer isVisible offScreenLocation='right'>
@@ -23,7 +25,7 @@ export const Main: React.FC = () => {
             <Entries />
           </View>
           <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
-            <Search />
+            <Search onNewWorklog={addWorklog} />
           </AnimateScreenContainer>
           <AnimateScreenContainer isVisible={!!currentWorklogToEdit} offScreenLocation='right' zIndex={3}>
             <EditWorklog />

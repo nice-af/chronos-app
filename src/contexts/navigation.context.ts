@@ -1,15 +1,17 @@
 import React from 'react';
-import { WorklogCompact } from '../types/global.types';
+import { Worklog } from '../types/global.types';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 interface NavigationContextProps {
   showSettingsScreen: boolean;
   setShowSettingsScreen: (state: boolean) => void;
   showSearchScreen: boolean;
   setShowSearchScreen: (state: boolean) => void;
-  currentWorklogToEdit: WorklogCompact | null;
-  setCurrentWorklogToEdit: (worklog: WorklogCompact | null) => void;
-  selectedDate: Date;
-  setSelectedDate: (date: Date) => void;
+  currentWorklogToEdit: Worklog | null;
+  setCurrentWorklogToEdit: (worklog: Worklog | null) => void;
+  // Format is 'YYYY-MM-DD'
+  selectedDate: string;
+  setSelectedDate: (date: string) => void;
 }
 
 export const NavigationContext = React.createContext<NavigationContextProps>({
@@ -19,6 +21,6 @@ export const NavigationContext = React.createContext<NavigationContextProps>({
   setShowSearchScreen: () => {},
   currentWorklogToEdit: null,
   setCurrentWorklogToEdit: () => {},
-  selectedDate: new Date(new Date().setUTCHours(0, 0, 0, 0)),
+  selectedDate: formatDateToYYYYMMDD(new Date()),
   setSelectedDate: () => {},
 });

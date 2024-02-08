@@ -5,15 +5,15 @@ import { ButtonTransparent } from '../components/ButtonTransparent';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
-import { TrackingListEntry } from '../components/TrackingListEntry';
-import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { ThemeContext } from '../contexts/theme.context';
-import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
+import { createNewWorklogForIssue } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { Worklog } from '../types/global.types';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -25,15 +25,17 @@ const debounce = (func: Function, delay: number) => {
   };
 };
 
-export const Search: React.FC = () => {
-  const { worklogs } = useContext(GlobalContext);
-  const { selectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
+interface SearchProps {
+  onNewWorklog: (worklog: Worklog) => void;
+}
+
+export const Search: React.FC<SearchProps> = ({ onNewWorklog }) => {
+  const { setSelectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResults>();
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
-  const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
 
   const debouncedSearch = debounce(async (query: string) => {
     setSearchIsLoading(true);
@@ -102,7 +104,12 @@ export const Search: React.FC = () => {
               </View>
               <Text>{issue.fields.summary}</Text>
             </View>
-            <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
+            <ButtonTransparent
+              onPress={() => {
+                setShowSearchScreen(false);
+                setSelectedDate(formatDateToYYYYMMDD(new Date()));
+                onNewWorklog(createNewWorklogForIssue({ issue }));
+              }}>
               <Image
                 style={styles.icon}
                 source={
@@ -114,10 +121,7 @@ export const Search: React.FC = () => {
             </ButtonTransparent>
           </View>
         ))}
-        {currentWorklogs.map(worklog => (
-          <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
-        ))}
-        {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No search results found</Text>}
+        {searchResults?.issues?.length === 0 && <Text style={styles.errorMessage}>No search results found</Text>}
       </ScrollView>
     </Layout>
   );

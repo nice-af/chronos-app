@@ -2,24 +2,33 @@ import transparentize from 'polished/lib/color/transparentize';
 import React, { useContext } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
+import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { WorklogCompact } from '../types/global.types';
+import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
-  worklogCompact: WorklogCompact;
+  worklog: Worklog;
   isSelected?: boolean;
 }
 
-export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCompact, isSelected }) => {
+export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
   const { setCurrentWorklogToEdit } = useContext(NavigationContext);
-  const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklogCompact));
+  const { activeWorklogId, setActiveWorklogId, activeWorklogTimeElapsed, updateWorklog } = useContext(WorklogContext);
+  const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklog));
   const styles = useThemedStyles(createStyles);
+
+  const isActiveWorklog = activeWorklogId === worklog.id;
+
+  let duration = worklog.timeSpentSeconds;
+  if (isActiveWorklog) {
+    duration = worklog.timeSpentSeconds + activeWorklogTimeElapsed;
+  }
 
   return (
     <Pressable
@@ -27,14 +36,37 @@ export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklogCom
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
-          <IssueTag label={worklogCompact.issueKey} project={'orcaya'} />
+          {/* TODO remove, only for debugging */}
+          <Text
+            style={{
+              color:
+                worklog.state === WorklogState.Synced
+                  ? 'lime'
+                  : worklog.state === WorklogState.Edited
+                  ? 'yellow'
+                  : 'aqua',
+            }}>
+            [{worklog.state}]
+          </Text>
+          <IssueTag label={worklog.issue.key} project={'orcaya'} />
           <Text numberOfLines={1} style={styles.title}>
-            {worklogCompact.issueSummary}
+            {worklog.issue.summary}
           </Text>
         </View>
-        {worklogCompact.comment && <Text style={styles.description}>{worklogCompact.comment}</Text>}
+        {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
       </View>
-      <PlayPauseButton duration={worklogCompact.timeSpent} isRunning={false} onPress={() => {}} />
+      <PlayPauseButton
+        duration={duration}
+        isRunning={isActiveWorklog}
+        onPress={() => {
+          if (isActiveWorklog) {
+            setActiveWorklogId(null);
+            updateWorklog({ ...worklog, timeSpentSeconds: duration });
+          } else {
+            setActiveWorklogId(worklog.id);
+          }
+        }}
+      />
     </Pressable>
   );
 };
@@ -47,7 +79,8 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       gap: 16,
       backgroundColor: 'transparent',
-      ...getPadding(12, 16),
+      // TODO revert
+      ...getPadding(70, 16),
     },
     containerIsSelected: {
       backgroundColor: transparentize(0.96, theme.contrast),

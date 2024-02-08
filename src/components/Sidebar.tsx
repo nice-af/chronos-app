@@ -1,15 +1,11 @@
 import { useAppState } from '@react-native-community/hooks';
 import React, { useContext } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
-import {
-  formatDateToYYYYMMDD,
-  formatUnixTimestampToHMM,
-  getWeekday,
-  setDateToThisWeekday,
-} from '../services/date.service';
+import { WorklogContext } from '../contexts/worklog.context';
+import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
+import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
@@ -22,7 +18,7 @@ import { WeekPicker } from './WeekPicker';
 export const dayPickerHeight = 56;
 
 export const Sidebar: React.FC = () => {
-  const { worklogs } = useContext(GlobalContext);
+  const { worklogs } = useContext(WorklogContext);
   const { selectedDate, setSelectedDate } = useContext(NavigationContext);
   const { setShowSettingsScreen } = useContext(NavigationContext);
   const windowHeight = useWindowDimensions().height;
@@ -34,20 +30,27 @@ export const Sidebar: React.FC = () => {
       <NativeView type='sidebar' style={[styles.backgroundView, { height: windowHeight + 52 }]} />
       <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
         <WeekPicker />
-        {weekDays.map(day => (
-          <DayButton
-            key={day.id}
-            dayLabel={day.abbreviation}
-            duration={formatUnixTimestampToHMM(
-              worklogs?.[formatDateToYYYYMMDD(setDateToThisWeekday(selectedDate, day.id))]?.totalTimeSpent ?? 0
-            )}
-            isSelected={getWeekday(selectedDate) === day.id}
-            onPress={() => {
-              setShowSettingsScreen(false);
-              setSelectedDate(setDateToThisWeekday(selectedDate, day.id));
-            }}
-          />
-        ))}
+        {weekDays.map(day => {
+          const date = setDateToThisWeekday(parseDateFromYYYYMMDD(selectedDate), day.id);
+          const dateString = formatDateToYYYYMMDD(date);
+
+          return (
+            <DayButton
+              key={day.id}
+              dayLabel={day.abbreviation}
+              duration={formatSecondsToHMM(
+                worklogs
+                  .filter(worklog => worklog.started === dateString)
+                  .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0)
+              )}
+              isSelected={selectedDate === dateString}
+              onPress={() => {
+                setShowSettingsScreen(false);
+                setSelectedDate(dateString);
+              }}
+            />
+          );
+        })}
         <SettingsButton />
       </View>
     </View>

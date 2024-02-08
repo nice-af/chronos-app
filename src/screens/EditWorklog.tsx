@@ -6,32 +6,51 @@ import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
+import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
+import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { WorklogCompact } from '../types/global.types';
 
 export const EditWorklog: React.FC = () => {
+  const { updateWorklog, deleteWorklog } = useContext(WorklogContext);
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
-  const [selectedWorklog, setSelectedWorklog] = useState<WorklogCompact>({
-    id: '',
-    issueKey: '',
-    issueSummary: '',
-    started: '',
-    timeSpent: 0,
-  });
-  const [timeValue, setTimeValue] = useState('0:30');
-  const [descriptionValue, setDescriptionValue] = useState(
-    'Dui molestie fermentum bibendum etiam tellus curabitur purus proin.'
+  const [timeSpentInputValue, setTimeSpentInputValue] = useState(
+    formatSecondsToHMM(currentWorklogToEdit?.timeSpentSeconds ?? 0)
   );
+  const [descriptionValue, setDescriptionValue] = useState(currentWorklogToEdit?.comment ?? '');
   const styles = useThemedStyles(createStyles);
 
   useEffect(() => {
-    if (!currentWorklogToEdit) {
-      return;
+    if (currentWorklogToEdit) {
+      setTimeSpentInputValue(formatSecondsToHMM(currentWorklogToEdit.timeSpentSeconds));
+      setDescriptionValue(currentWorklogToEdit.comment);
     }
-    setSelectedWorklog(currentWorklogToEdit);
   }, [currentWorklogToEdit]);
+
+  if (!currentWorklogToEdit) {
+    return null;
+  }
+
+  const handleOnSaveClick = async () => {
+    // TODO @florianmrz use `immer` or similar
+    const newWorklog = JSON.parse(JSON.stringify(currentWorklogToEdit));
+    const parsed = parseHMMToSeconds(timeSpentInputValue);
+    if (parsed !== null) {
+      newWorklog.timeSpentSeconds = parsed;
+    }
+    newWorklog.comment = descriptionValue;
+
+    if (JSON.stringify(newWorklog) !== JSON.stringify(currentWorklogToEdit)) {
+      updateWorklog(newWorklog);
+    }
+    setCurrentWorklogToEdit(null);
+  };
+
+  const handleOnDeleteClick = async () => {
+    await deleteWorklog(currentWorklogToEdit.id);
+    setCurrentWorklogToEdit(null);
+  };
 
   return (
     <Layout
@@ -39,20 +58,20 @@ export const EditWorklog: React.FC = () => {
         align: 'left',
         title: (
           <View style={styles.headerContainer}>
-            <IssueTag label={selectedWorklog.issueKey} project={'orcaya'} />
+            <IssueTag label={currentWorklogToEdit.issue.key} project={'orcaya'} />
             <Text numberOfLines={1} style={styles.title}>
-              {selectedWorklog.issueSummary}
+              {currentWorklogToEdit.issue.summary}
             </Text>
           </View>
         ),
         onBackPress: () => setCurrentWorklogToEdit(null),
       }}>
-      <EditWorklogHeader onCancelPress={() => setCurrentWorklogToEdit(null)} onSavePress={() => {}} />
+      <EditWorklogHeader onCancelPress={() => setCurrentWorklogToEdit(null)} onSavePress={() => handleOnSaveClick()} />
       <View style={styles.container}>
         <CustomTextInput
           isVisible={!!currentWorklogToEdit}
-          value={timeValue}
-          onChangeText={setTimeValue}
+          value={timeSpentInputValue}
+          onChangeText={newText => setTimeSpentInputValue(newText)}
           style={styles.timeInput}
         />
         <CustomTextInput
@@ -64,7 +83,7 @@ export const EditWorklog: React.FC = () => {
           numberOfLines={4}
         />
       </View>
-      <EditWorklogFooter onDeletePress={() => {}} />
+      <EditWorklogFooter onDeletePress={() => handleOnDeleteClick()} />
     </Layout>
   );
 };

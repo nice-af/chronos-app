@@ -1,5 +1,5 @@
+import { format } from 'date-fns';
 import ms from 'ms';
-import { intervalToDuration } from 'date-fns';
 
 /**
  * Returns the day of the week from Monday (0) to Sunday (6) for the given date.
@@ -21,13 +21,17 @@ export function setDateToThisWeekday(date: Date, weekday: number): Date {
  * Converts a date to the YYYY-MM-DD format used in the worklogs object.
  */
 export function formatDateToYYYYMMDD(date: Date): string {
-  const year = date.getUTCFullYear();
-  const month = `${date.getUTCMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getUTCDate()}`.padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return format(date, 'yyyy-MM-dd');
 }
 
-export function formatUnixTimestampToHMM(timestamp: number): string {
-  const duration = intervalToDuration({ start: 0, end: timestamp });
-  return `${duration.hours ?? 0}:${(duration.minutes ?? 0).toString().padStart(2, '0')}`;
+/**
+ * Converts a date from the YYYY-MM-DD format used in the worklogs object to a Date object.
+ */
+export function parseDateFromYYYYMMDD(date: string): Date {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+export function formatDateToJiraFormat(date: Date): string {
+  return date.toISOString().replace('Z', '+0000');
 }

@@ -6,18 +6,22 @@ import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
-import { formatDateToYYYYMMDD } from '../services/date.service';
+import { ThemeContext } from '../contexts/theme.context';
+import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { ThemeContext } from '../contexts/theme.context';
+import { formatDateToYYYYMMDD } from '../services/date.service';
+import { ButtonSecondary } from '../components/ButtonSecondary';
 
 export const Entries: React.FC = () => {
-  const { worklogs, logout } = useContext(GlobalContext);
+  const { logout } = useContext(GlobalContext);
+  const { worklogsForCurrentDay, syncWorklogsForCurrentDay } = useContext(WorklogContext);
   const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
-  const currentWorklogs = (worklogs ?? {})[formatDateToYYYYMMDD(selectedDate)]?.worklogs ?? [];
+
+  const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
 
   const rightElement = (
     <>
@@ -39,7 +43,8 @@ export const Entries: React.FC = () => {
     <Layout
       header={{
         align: 'left',
-        title: 'Today, 21 Oct',
+        // TODO format pretty
+        title: `${selectedDate} ${isToday ? '(Today)' : ''}`,
         rightElement,
         onBackPress: __DEV__ ? () => logout() : undefined,
         position: 'absolute',
@@ -48,10 +53,13 @@ export const Entries: React.FC = () => {
         style={styles.entriesContainer}
         removeClippedSubviews={false}
         contentInset={{ top: 52 + 6, bottom: 6 }}>
-        {currentWorklogs.map(worklog => (
-          <TrackingListEntry key={worklog.id} worklogCompact={worklog} />
+        {worklogsForCurrentDay.map(worklog => (
+          <TrackingListEntry key={worklog.id} worklog={worklog} />
         ))}
-        {currentWorklogs.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
+        {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
+
+        {/* TODO remove again */}
+        <ButtonSecondary label='Sync this day' onPress={() => syncWorklogsForCurrentDay()} />
       </ScrollView>
     </Layout>
   );

@@ -4,23 +4,21 @@ import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { Alert, Text } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { Login } from '../screens/Login';
-import { getJiraClient, getWorklogsCompact, initiateJiraClient } from '../services/jira.service';
+import { getJiraClient, initiateJiraClient } from '../services/jira.service';
 import { StorageKey, getFromStorage } from '../services/storage.service';
-import { convertWorklogsToDaysObject } from '../services/worklogs.service';
-import { DayId, Layout, WorklogDaysObject } from '../types/global.types';
+import { DayId, Layout } from '../types/global.types';
 
 export const GlobalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [layout, setLayout] = useState<Layout>('normal');
   const [workingDays, setWorkingDays] = useState<DayId[]>([0, 1, 2, 3, 4]);
   const [hideNonWorkingDays, setHideNonWorkingDays] = useState<boolean>(false);
   const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useState<boolean>(true);
-  const [worklogs, setWorklogs] = useState<WorklogDaysObject | null>(null);
   const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
 
-  function logout() {
+  const logout = () => {
     AsyncStorage.removeItem(StorageKey.AUTH);
     setUserInfo(null);
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -49,22 +47,12 @@ export const GlobalProvider: React.FC<PropsWithChildren> = ({ children }) => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (userInfo?.accountId) {
-      getWorklogsCompact(userInfo?.accountId).then(worklogsCompact => {
-        setWorklogs(convertWorklogsToDaysObject(worklogsCompact));
-      });
-    }
-  }, [userInfo?.accountId]);
-
   return (
     <GlobalContext.Provider
       value={{
         userInfo,
         setUserInfo,
         logout,
-        worklogs,
-        setWorklogs,
         layout,
         setLayout,
         workingDays,

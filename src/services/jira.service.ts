@@ -1,11 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { Config, Version3Client } from 'jira.js';
-import { Issue, Worklog } from 'jira.js/out/version3/models';
+import { Issue, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
-import { WorklogCompact } from '../types/global.types';
+import { Worklog, WorklogState } from '../types/global.types';
 import { extractTextFromJSON } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
 import { StorageKey, setInStorage } from './storage.service';
+import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
 
 // TODO: Use a more lightweight client
 // import { Issues } from 'jira.js/out/version3';
@@ -76,37 +77,41 @@ export function initiateJiraClient({
 }
 
 /**
- * Converts regular worklogs to the JTT compact format
+ * Converts Jira worklogs to our custom format
  */
-function convertWorklogs(worklogs: Worklog[], accountId: string, issue: Issue): WorklogCompact[] {
+function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issue): Worklog[] {
   return worklogs
     ?.filter(worklog => worklog.author?.accountId === accountId && worklog.started && worklog.timeSpent)
     .map(worklog => ({
       id: worklog.id ?? '',
-      issueKey: issue.key,
-      issueSummary: issue.fields.summary,
-      started: worklog.started ?? '',
-      timeSpent: (worklog.timeSpent ?? '').split(' ').reduce(
+      issue: {
+        id: issue.id,
+        key: issue.key,
+        summary: issue.fields.summary,
+      },
+      started: formatDateToYYYYMMDD(new Date(worklog.started ?? 0)),
+      timeSpentSeconds: (worklog.timeSpent ?? '').split(' ').reduce(
         (acc: number, curr: string) =>
           // TODO: This is a hacky way to convert the Jira time format to ms
-          acc + ms(curr.replace('m', 'min').replace('1d', '8h').replace('2d', '16h').replace('3d', '24h')),
+          acc + ms(curr.replace('m', 'min').replace('1d', '8h').replace('2d', '16h').replace('3d', '24h')) / 1_000,
         0
       ),
-      comment: worklog.comment ? extractTextFromJSON(worklog.comment) : undefined,
+      comment: worklog.comment ? extractTextFromJSON(worklog.comment) : '',
+      state: WorklogState.Synced,
     }));
 }
 
 /**
  * Gets all worklogs of the last month of the current user
  */
-export async function getWorklogsCompact(accountId: string): Promise<WorklogCompact[]> {
+export async function getWorklogs(accountId: string): Promise<Worklog[]> {
   if (!client) {
     throw new Error('Jira client not initialized');
   }
 
   const startedAfterTimestamp = new Date().getTime() - ms('4w');
 
-  const worklogsCompact: WorklogCompact[] = [];
+  const worklogsCompact: Worklog[] = [];
   const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -4w`;
   const maxIssuesResults = 40;
   let totalIssues = 1;
@@ -171,5 +176,43 @@ export async function getIssuesBySearchQuery(query: string) {
     jql: `summary ~ "${query}" OR description ~ "${query}" ORDER BY created DESC`,
     fields: ['summary', 'project'],
     maxResults: 50,
+  });
+}
+
+export async function createWorklog(worklog: Worklog) {
+  if (!client) {
+    throw new Error('Jira client not initialized');
+  }
+
+  return await client.issueWorklogs.addWorklog({
+    issueIdOrKey: worklog.issue.id,
+    started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
+    timeSpentSeconds: worklog.timeSpentSeconds,
+    comment: worklog.comment,
+  });
+}
+
+export async function updateWorklog(worklog: Worklog) {
+  if (!client) {
+    throw new Error('Jira client not initialized');
+  }
+
+  return await client.issueWorklogs.updateWorklog({
+    issueIdOrKey: worklog.issue.id,
+    id: worklog.id,
+    started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
+    timeSpentSeconds: worklog.timeSpentSeconds,
+    comment: worklog.comment,
+  });
+}
+
+export async function deleteWorklog(worklog: Worklog) {
+  if (!client) {
+    throw new Error('Jira client not initialized');
+  }
+
+  return await client.issueWorklogs.deleteWorklog({
+    issueIdOrKey: worklog.issue.id,
+    id: worklog.id,
   });
 }

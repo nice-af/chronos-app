@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogCompact } from '../types/global.types';
+import { Worklog } from '../types/global.types';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 export const NavigationProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date(new Date().setUTCHours(0, 0, 0, 0)));
+  const [selectedDate, setSelectedDate] = useState<string>(formatDateToYYYYMMDD(new Date()));
   const [showSettingsScreen, setShowSettingsScreen] = useState(false);
   const [showSearchScreen, setShowSearchScreen] = useState(false);
-  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useState<WorklogCompact | null>(null);
+  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useState<Worklog | null>(null);
 
   return (
     <NavigationContext.Provider

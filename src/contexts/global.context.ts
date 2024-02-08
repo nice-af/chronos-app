@@ -1,6 +1,6 @@
 import { Version3Models } from 'jira.js';
 import React from 'react';
-import { DayId, Layout, WorklogDaysObject } from '../types/global.types';
+import { DayId, Layout } from '../types/global.types';
 
 // TODO @florianmrz: Sollten wir das hier refactoren?
 interface GlobalContextProps {
@@ -13,8 +13,6 @@ interface GlobalContextProps {
   userInfo: Version3Models.User | null | undefined;
   setUserInfo: (apiSettings: Version3Models.User | null) => void;
   logout: () => void;
-  worklogs: WorklogDaysObject | null;
-  setWorklogs: (worklogs: WorklogDaysObject) => void;
   layout: Layout;
   setLayout: (layout: Layout) => void;
   workingDays: DayId[];
@@ -29,8 +27,6 @@ export const GlobalContext = React.createContext<GlobalContextProps>({
   userInfo: null,
   setUserInfo: () => {},
   logout: () => {},
-  worklogs: null,
-  setWorklogs: () => {},
   layout: 'normal',
   setLayout: () => {},
   workingDays: [0, 1, 2, 3, 4],

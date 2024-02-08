@@ -6,7 +6,6 @@ import { Layout } from '../components/Layout';
 import { GlobalContext } from '../contexts/global.context';
 import { ThemeContext } from '../contexts/theme.context';
 import { useAuthRequest } from '../services/auth.service';
-import { userInfoFakeData, worklogsFakeData } from '../services/fake-data.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -14,7 +13,7 @@ import { getPadding } from '../styles/utils';
 
 export const Login: React.FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
-  const { setWorklogs, userInfo, setUserInfo } = useContext(GlobalContext);
+  const { userInfo } = useContext(GlobalContext);
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
@@ -45,18 +44,6 @@ export const Login: React.FC = () => {
           {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
           {isLoadingOAuth && <Text>Logging in...</Text>}
           <ButtonPrimary label='Login to Jira' onPress={initOAuth} />
-          {__DEV__ && (
-            <>
-              <Text>-</Text>
-              <ButtonPrimary
-                label='To next page'
-                onPress={() => {
-                  setWorklogs(worklogsFakeData);
-                  setUserInfo(userInfoFakeData);
-                }}
-              />
-            </>
-          )}
         </View>
       </Layout>
     </AnimateScreenContainer>
