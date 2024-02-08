@@ -79,8 +79,7 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       gap: 16,
       backgroundColor: 'transparent',
-      // TODO revert
-      ...getPadding(70, 16),
+      ...getPadding(12, 16),
     },
     containerIsSelected: {
       backgroundColor: transparentize(0.96, theme.contrast),
