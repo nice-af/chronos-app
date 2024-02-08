@@ -41,7 +41,7 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       gap: 8,
       backgroundColor: theme.buttonBase,
-      borderRadius: 8,
+      borderRadius: theme.buttonBorderRadius,
       ...getPadding(7, 20),
     },
     isHovered: {

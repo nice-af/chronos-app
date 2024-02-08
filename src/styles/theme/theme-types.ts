@@ -53,4 +53,6 @@ export interface Theme {
   cardsSelectionButtonBorderInset: string | OpaqueColorValue;
   cardsSelectionButtonHover: string | OpaqueColorValue;
   cardsSelectionButtonActive: string | OpaqueColorValue;
+
+  buttonBorderRadius: number;
 }

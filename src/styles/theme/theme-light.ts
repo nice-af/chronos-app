@@ -63,4 +63,5 @@ export const lightTheme: Theme = {
   ...baseColors,
   ...windowColors,
   ...buttonColors,
+  buttonBorderRadius: Platform.OS === 'windows' ? 4 : 8,
 };

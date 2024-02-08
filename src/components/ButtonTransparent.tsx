@@ -46,7 +46,7 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       gap: 8,
       backgroundColor: 'transparent',
-      borderRadius: 8,
+      borderRadius: theme.buttonBorderRadius,
       padding: 2,
       margin: -2,
     },

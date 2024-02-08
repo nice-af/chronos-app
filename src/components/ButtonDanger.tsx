@@ -42,7 +42,7 @@ function createStyles(theme: Theme) {
       gap: 8,
       alignSelf: 'flex-start',
       backgroundColor: theme.dangerButtonBase,
-      borderRadius: 9,
+      borderRadius: theme.buttonBorderRadius,
       ...getPadding(7, 12),
     },
     isHovered: {

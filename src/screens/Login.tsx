@@ -99,7 +99,6 @@ function createStyles(theme: Theme) {
       zIndex: 1,
       width: '100%',
       height: 228,
-      backgroundColor: theme.background,
     },
     bgGradient: {
       position: 'absolute',
