@@ -6,6 +6,7 @@ import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
+import { ThemeContext } from '../contexts/theme.context';
 import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service';
@@ -19,6 +20,7 @@ export const EditWorklog: React.FC = () => {
     formatSecondsToHMM(currentWorklogToEdit?.timeSpentSeconds ?? 0)
   );
   const [descriptionValue, setDescriptionValue] = useState(currentWorklogToEdit?.comment ?? '');
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export const EditWorklog: React.FC = () => {
 
   return (
     <Layout
+      customBackgroundColor={theme.backgroundDrawer}
       header={{
         align: 'left',
         title: (

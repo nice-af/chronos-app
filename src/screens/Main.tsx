@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
 import { NavigationContext } from '../contexts/navigation.context';
@@ -52,6 +52,14 @@ function createStyles(theme: Theme) {
     mainViewContainer: {
       position: 'relative',
       flexGrow: 1,
+      ...Platform.select({
+        windows: {
+          borderTopLeftRadius: 10,
+          overflow: 'hidden',
+          borderWidth: 1,
+          borderColor: theme.border,
+        },
+      }),
     },
     entriesContainer: {
       position: 'absolute',

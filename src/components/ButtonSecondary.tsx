@@ -44,7 +44,7 @@ function createStyles(theme: Theme) {
       backgroundColor: theme.secondaryButtonBase,
       borderColor: theme.secondaryButtonBorder,
       borderWidth: 1,
-      borderRadius: 9,
+      borderRadius: theme.buttonBorderRadius,
       ...getPadding(7, 12),
     },
     isHovered: {

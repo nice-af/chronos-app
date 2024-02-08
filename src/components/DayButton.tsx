@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { Platform, PlatformColor, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,11 +13,15 @@ interface DayButtonProps extends Omit<PressableProps, 'style'> {
   isSelected?: boolean;
 }
 
-export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, ...props }) => {
+export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { layout, workingDays, hideNonWorkingDays } = useContext(GlobalContext);
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
   const styles = useThemedStyles(createStyles);
+
+  if (hideNonWorkingDays && !isWorkingDay) {
+    return null;
+  }
 
   let height = 54;
   if (layout === 'compact') {
@@ -27,18 +31,21 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
     height = 28;
   }
 
-  if (hideNonWorkingDays && !isWorkingDay) {
-    return null;
-  }
-
   return (
     <Pressable
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       onPress={onPress}
-      style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
-      <View style={[styles.insetBorder, { height: height - 2 }]} />
-      {isSelected && <View style={[styles.selectedBorder, { height: height + 4 }]} />}
+      style={({ pressed }) => [
+        styles.default,
+        (isHovered || isSelected) && styles.isHovered,
+        pressed && styles.isPressed,
+        { height: height },
+      ]}>
+      {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
+      {isSelected && (
+        <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
+      )}
       <Text style={styles.day}>{dayLabel}</Text>
       {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}
     </Pressable>
@@ -58,9 +65,13 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.dayButtonBorder,
+      overflow: 'visible',
     },
     isHovered: {
       backgroundColor: theme.dayButtonHover,
+    },
+    isPressed: {
+      opacity: 0.8,
     },
     insetBorder: {
       position: 'absolute',
@@ -73,12 +84,22 @@ function createStyles(theme: Theme) {
     },
     selectedBorder: {
       position: 'absolute',
-      top: -3,
-      left: -3,
-      width: 58,
       borderWidth: 2,
       borderColor: theme.blue,
-      borderRadius: 12,
+      ...Platform.select({
+        default: {
+          top: -3,
+          left: -3,
+          width: 58,
+          borderRadius: 12,
+        },
+        windows: {
+          top: -1,
+          left: -1,
+          width: 54,
+          borderRadius: 10,
+        },
+      }),
     },
     day: {
       zIndex: 2,

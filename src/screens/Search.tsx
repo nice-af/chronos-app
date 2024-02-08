@@ -1,6 +1,6 @@
 import { SearchResults } from 'jira.js/out/version3/models';
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, PlatformColor, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { IssueTag } from '../components/IssueTag';
@@ -58,6 +58,7 @@ export const Search: React.FC<SearchProps> = ({ onNewWorklog }) => {
 
   return (
     <Layout
+      customBackgroundColor={theme.backgroundDrawer}
       header={{
         align: 'left',
         onBackPress: () => setShowSearchScreen(false),
@@ -135,7 +136,14 @@ function createStyles(theme: Theme) {
       flexBasis: 52,
       paddingHorizontal: 16,
       paddingVertical: 8,
-      marginTop: 53,
+      ...Platform.select({
+        default: {
+          marginTop: 53,
+        },
+        windows: {
+          marginTop: 44,
+        },
+      }),
       borderColor: theme.border,
       borderBottomWidth: 1,
     },

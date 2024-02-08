@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Image, ScrollView, StyleSheet, Text } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text } from 'react-native';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
@@ -52,7 +52,7 @@ export const Entries: React.FC = () => {
       <ScrollView
         style={styles.entriesContainer}
         removeClippedSubviews={false}
-        contentInset={{ top: 52 + 6, bottom: 6 }}>
+        contentInset={{ top: Platform.OS === 'windows' ? 0 : 52 + 6, bottom: 6 }}>
         {worklogsForCurrentDay.map(worklog => (
           <TrackingListEntry key={worklog.id} worklog={worklog} />
         ))}
@@ -74,6 +74,13 @@ function createStyles(theme: Theme) {
     entriesContainer: {
       flexGrow: 1,
       overflow: 'visible',
+      ...Platform.select({
+        default: {},
+        windows: {
+          marginTop: 52 + 6,
+          marginBottom: 6,
+        },
+      }),
     },
     errorMessage: {
       ...typo.body,

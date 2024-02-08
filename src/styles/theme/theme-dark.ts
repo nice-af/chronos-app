@@ -1,10 +1,20 @@
+import { Platform, PlatformColor } from 'react-native';
 import { Theme } from './theme-types';
 
 const baseColors = {
   contrast: '#FFFFFF',
-  textPrimary: 'rgba(255,255,255,0.85)',
-  textSecondary: 'rgba(255,255,255,0.55)',
-  textTertiary: 'rgba(255,255,255,0.25)',
+  ...Platform.select({
+    default: {
+      textPrimary: 'rgba(255,255,255,0.85)',
+      textSecondary: 'rgba(255,255,255,0.55)',
+      textTertiary: 'rgba(255,255,255,0.25)',
+    },
+    windows: {
+      textPrimary: PlatformColor('TextFillColorPrimaryBrush'),
+      textSecondary: PlatformColor('TextFillColorSecondaryBrush'),
+      textTertiary: PlatformColor('TextFillColorTertiaryBrush'),
+    },
+  }),
   textButton: '#FFFFFF',
   red: '#FF453A',
   orange: '#FF9F0A',
@@ -24,12 +34,27 @@ const baseColors = {
 };
 
 const windowColors = {
-  background: '#1e1e1e',
-  backgroundDark: '#1a1a1a',
-  border: 'rgba(0,0,0,0.4)',
+  ...Platform.select({
+    default: {
+      background: '#1e1e1e',
+      backgroundDark: '#1a1a1a',
+      backgroundLogin: '#1e1e1e',
+      backgroundDrawer: '#1e1e1e',
+      border: 'rgba(0,0,0,0.4)',
+      surface: '#292827',
+      surfaceBorder: '#3A3938',
+    },
+    windows: {
+      background: PlatformColor('LayerFillColorDefaultBrush'),
+      backgroundDark: PlatformColor('SolidBackgroundFillColorBaseBrush'),
+      backgroundLogin: 'transparent',
+      backgroundDrawer: PlatformColor('SolidBackgroundFillColorTertiaryBrush'),
+      border: PlatformColor('CardStrokeColorDefaultBrush'),
+      surface: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      surfaceBorder: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+    },
+  }),
   borderSolid: '#111',
-  surface: '#292827',
-  surfaceBorder: '#3A3938',
 };
 
 const buttonColors = {
@@ -39,7 +64,14 @@ const buttonColors = {
   secondaryButtonBase: 'rgba(255,255,255,0.1)',
   secondaryButtonHover: 'rgba(255,255,255,0.2)',
   secondaryButtonActive: 'rgba(255,255,255,0.1)',
-  secondaryButtonBorder: 'rgba(255,255,255,0.1)',
+  ...Platform.select({
+    default: {
+      secondaryButtonBorder: 'rgba(255,255,255,0.1)',
+    },
+    windows: {
+      secondaryButtonBorder: 'transparent',
+    },
+  }),
   dangerButtonBase: '#FF453A',
   dangerButtonHover: '#ef453c',
   dangerButtonActive: '#ec433a',
@@ -48,11 +80,26 @@ const buttonColors = {
   surfaceButtonBase: '#3A3938',
   surfaceButtonHover: '#434241',
   surfaceButtonActive: '#454443',
-  dayButtonBase: 'rgba(255,255,255,0.04)',
-  dayButtonHover: 'rgba(255,255,255,0.06)',
-  dayButtonBorder: 'rgba(0,0,0,0.4)',
+  ...Platform.select({
+    default: {
+      dayButtonBase: 'rgba(255,255,255,0.04)',
+      dayButtonHover: 'rgba(255,255,255,0.06)',
+    },
+    windows: {
+      dayButtonBase: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      dayButtonHover: PlatformColor('CardBackgroundFillColorSecondaryBrush'),
+    },
+  }),
+  dayButtonBorder: Platform.OS === 'windows' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.4)',
   dayButtonBorderInset: 'rgba(255,255,255,0.1)',
-  cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+  ...Platform.select({
+    default: {
+      cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+    },
+    windows: {
+      cardsSelectionButtonBorderInset: 'transparent',
+    },
+  }),
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
 };
@@ -62,4 +109,5 @@ export const darkTheme: Theme = {
   ...baseColors,
   ...windowColors,
   ...buttonColors,
+  buttonBorderRadius: Platform.OS === 'windows' ? 4 : 8,
 };
