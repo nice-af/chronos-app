@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -37,7 +37,7 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
       onHoverOut={() => setIsHovered(false)}
       onPress={onPress}
       style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
-      <View style={[styles.insetBorder, { height: height - 2 }]} />
+      {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
       {isSelected && <View style={[styles.selectedBorder, { height: height + 4 }]} />}
       <Text style={styles.day}>{dayLabel}</Text>
       {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}

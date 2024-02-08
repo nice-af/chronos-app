@@ -18,7 +18,6 @@ import { DayButton } from './DayButton';
 import { NativeView } from './NativeView';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
-import { PlatformColor } from 'react-native-windows';
 
 export const dayPickerHeight = 56;
 
@@ -32,7 +31,9 @@ export const Sidebar: React.FC = () => {
 
   return (
     <View style={styles.outerContainer}>
-      <NativeView type='sidebar' style={[styles.backgroundView, { height: windowHeight + 52 }]} />
+      {Platform.OS === 'macos' && (
+        <NativeView type='sidebar' style={[styles.backgroundView, { height: windowHeight + 52 }]} />
+      )}
       <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
         <WeekPicker />
         {weekDays.map(day => (

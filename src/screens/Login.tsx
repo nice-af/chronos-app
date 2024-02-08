@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
 
   return (
     <AnimateScreenContainer isVisible={!userInfo} offScreenLocation='left'>
-      <Layout header={{ align: 'center', title: 'Login' }}>
+      <Layout header={Platform.OS === 'windows' ? { align: 'center', title: 'Login' } : undefined}>
         <View style={styles.bgContainer}>
           <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
           <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />

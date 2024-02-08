@@ -5,7 +5,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { Header, HeaderProps } from './Header';
 
 interface LayoutProps {
-  header: HeaderProps;
+  header?: HeaderProps;
   children: React.ReactNode;
 }
 
@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
   return (
     <View style={styles.globalContainer}>
       <View style={styles.container}>
-        <Header {...header} />
+        {header && <Header {...header} />}
         {children}
       </View>
     </View>

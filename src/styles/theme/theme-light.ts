@@ -1,3 +1,4 @@
+import { Platform, PlatformColor } from 'react-native';
 import { Theme } from './theme-types';
 
 const baseColors = {
@@ -24,8 +25,16 @@ const baseColors = {
 };
 
 const windowColors = {
-  background: '#ffffff',
-  backgroundDark: '#f0f0f0',
+  ...Platform.select({
+    default: {
+      background: '#ffffff',
+      backgroundDark: '#f0f0f0',
+    },
+    windows: {
+      background: PlatformColor('LayerFillColorDefaultBrush'),
+      backgroundDark: PlatformColor('LayerFillColorDefaultBrush'),
+    },
+  }),
   border: 'rgba(0,0,0,0.08)',
   borderSolid: '#d9d9d9',
   surface: '#fbfbfb',

@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
 import { NavigationContext } from '../contexts/navigation.context';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
 import { EditWorklog } from './EditWorklog';
 import { Entries } from './Entries';
 import { Search } from './Search';
@@ -12,7 +10,6 @@ import { Settings } from './Settings';
 
 export const Main: React.FC = () => {
   const { showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
-  const styles = useThemedStyles(createStyles);
 
   return (
     <AnimateScreenContainer isVisible offScreenLocation='right'>
@@ -37,34 +34,38 @@ export const Main: React.FC = () => {
   );
 };
 
-function createStyles(theme: Theme) {
-  return StyleSheet.create({
-    container: {
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'stretch',
-      width: '100%',
-      height: '100%',
-    },
-    mainViewContainer: {
-      position: 'relative',
-      flexGrow: 1,
-    },
-    entriesContainer: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      width: '100%',
-      height: '100%',
-    },
-    overlayContainer: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      zIndex: 2,
-      width: '100%',
-      height: '100%',
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%',
+    ...Platform.select({
+      windows: {
+        borderRadiusTopStart: 16,
+        overflow: 'hidden',
+      },
+    }),
+  },
+  mainViewContainer: {
+    position: 'relative',
+    flexGrow: 1,
+  },
+  entriesContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
+  },
+  overlayContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 2,
+    width: '100%',
+    height: '100%',
+  },
+});
