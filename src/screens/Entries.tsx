@@ -66,7 +66,13 @@ function createStyles(theme: Theme) {
     entriesContainer: {
       flexGrow: 1,
       overflow: 'visible',
-      marginTop: Platform.OS === 'windows' ? 52 + 6 : 0,
+      ...Platform.select({
+        default: {},
+        windows: {
+          marginTop: 52 + 6,
+          marginBottom: 6,
+        },
+      }),
     },
     errorMessage: {
       ...typo.body,
