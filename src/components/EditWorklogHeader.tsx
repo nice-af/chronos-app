@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -38,8 +38,15 @@ function createStyles(theme: Theme) {
       height: 49,
       overflow: 'hidden',
       backgroundColor: theme.backgroundDark,
-      borderColor: theme.borderSolid,
-      borderBottomWidth: 1,
+      ...Platform.select({
+        macos: {
+          borderColor: theme.borderSolid,
+          borderBottomWidth: 1,
+        },
+        windows: {
+          backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
+        },
+      }),
     },
     content: {
       display: 'flex',

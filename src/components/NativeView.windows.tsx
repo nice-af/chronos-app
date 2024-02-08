@@ -7,7 +7,7 @@ export const NativeView: React.FC<NativeViewProps> = ({ style, type, children })
 
   if (type === 'toolbar') {
     nativeStyle = {
-      backgroundColor: PlatformColor('AcrylicInAppFillColorBaseBrush'),
+      backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
     };
   } else if (type === 'sidebar') {
     nativeStyle = {
