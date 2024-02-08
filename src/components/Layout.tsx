@@ -7,13 +7,14 @@ import { Header, HeaderProps } from './Header';
 interface LayoutProps {
   header?: HeaderProps;
   children: React.ReactNode;
+  transparentBackground?: boolean;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ header, children }) => {
+export const Layout: React.FC<LayoutProps> = ({ header, children, transparentBackground }) => {
   const styles = useThemedStyles(createStyles);
 
   return (
-    <View style={styles.globalContainer}>
+    <View style={[styles.globalContainer, transparentBackground && { backgroundColor: 'transparent' }]}>
       <View style={styles.container}>
         {header && <Header {...header} />}
         {children}
