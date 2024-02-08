@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { Platform, PlatformColor, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,7 +13,7 @@ interface DayButtonProps extends Omit<PressableProps, 'style'> {
   isSelected?: boolean;
 }
 
-export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, ...props }) => {
+export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { layout, workingDays, hideNonWorkingDays } = useContext(GlobalContext);
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
@@ -36,7 +36,12 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       onPress={onPress}
-      style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
+      style={({ pressed }) => [
+        styles.default,
+        (isHovered || isSelected) && styles.isHovered,
+        pressed && styles.isPressed,
+        { height: height },
+      ]}>
       {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
       {isSelected && (
         <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
@@ -56,14 +61,31 @@ function createStyles(theme: Theme) {
       justifyContent: 'center',
       width: 54,
       borderRadius: 10,
-      backgroundColor: theme.dayButtonBase,
+      ...Platform.select({
+        default: {
+          backgroundColor: theme.dayButtonBase,
+        },
+        windows: {
+          backgroundColor: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+        },
+      }),
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.dayButtonBorder,
       overflow: 'visible',
     },
     isHovered: {
-      backgroundColor: theme.dayButtonHover,
+      ...Platform.select({
+        default: {
+          backgroundColor: theme.dayButtonHover,
+        },
+        windows: {
+          backgroundColor: PlatformColor('CardBackgroundFillColorSecondaryBrush'),
+        },
+      }),
+    },
+    isPressed: {
+      opacity: 0.8,
     },
     insetBorder: {
       position: 'absolute',
