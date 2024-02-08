@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
 
   return (
     <AnimateScreenContainer isVisible={!userInfo} offScreenLocation='left'>
-      <Layout header={Platform.OS === 'windows' ? { align: 'center', title: 'Login' } : undefined}>
+      <Layout header={Platform.OS !== 'windows' ? { align: 'center', title: 'Login' } : undefined}>
         <View style={styles.bgContainer}>
           <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
           <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />

@@ -19,16 +19,16 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
   const styles = useThemedStyles(createStyles);
 
+  if (hideNonWorkingDays && !isWorkingDay) {
+    return null;
+  }
+
   let height = 54;
   if (layout === 'compact') {
     height = 44;
   }
   if (layout === 'micro' || !isWorkingDay) {
     height = 28;
-  }
-
-  if (hideNonWorkingDays && !isWorkingDay) {
-    return null;
   }
 
   return (
@@ -38,7 +38,9 @@ export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duratio
       onPress={onPress}
       style={[styles.default, (isHovered || isSelected) && styles.isHovered, { height: height }]}>
       {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
-      {isSelected && <View style={[styles.selectedBorder, { height: height + 4 }]} />}
+      {isSelected && (
+        <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height - 2 : height + 4 }]} />
+      )}
       <Text style={styles.day}>{dayLabel}</Text>
       {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}
     </Pressable>
@@ -58,6 +60,7 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.dayButtonBorder,
+      overflow: 'visible',
     },
     isHovered: {
       backgroundColor: theme.dayButtonHover,
@@ -73,12 +76,22 @@ function createStyles(theme: Theme) {
     },
     selectedBorder: {
       position: 'absolute',
-      top: -3,
-      left: -3,
-      width: 58,
       borderWidth: 2,
       borderColor: theme.blue,
       borderRadius: 12,
+      ...Platform.select({
+        default: {
+          top: -3,
+          left: -3,
+          width: 58,
+        },
+        windows: {
+          top: -0,
+          bottom: 0,
+          left: 0,
+          width: 52,
+        },
+      }),
     },
     day: {
       zIndex: 2,

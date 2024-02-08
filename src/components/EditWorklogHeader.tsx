@@ -37,11 +37,14 @@ function createStyles(theme: Theme) {
       width: '100%',
       height: 49,
       overflow: 'hidden',
-      backgroundColor: theme.backgroundDark,
       ...Platform.select({
-        macos: {
+        default: {
+          backgroundColor: theme.backgroundDark,
           borderColor: theme.borderSolid,
           borderBottomWidth: 1,
+        },
+        windows: {
+          backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
         },
       }),
     },

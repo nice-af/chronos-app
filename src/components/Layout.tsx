@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, PlatformColor, StyleSheet, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { Header, HeaderProps } from './Header';
@@ -26,7 +26,14 @@ function createStyles(theme: Theme) {
   return StyleSheet.create({
     globalContainer: {
       flexGrow: 1,
-      backgroundColor: theme.background,
+      ...Platform.select({
+        default: {
+          backgroundColor: theme.background,
+        },
+        windows: {
+          backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
+        },
+      }),
     },
     container: {
       display: 'flex',

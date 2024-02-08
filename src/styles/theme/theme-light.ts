@@ -25,16 +25,8 @@ const baseColors = {
 };
 
 const windowColors = {
-  ...Platform.select({
-    default: {
-      background: '#ffffff',
-      backgroundDark: '#f0f0f0',
-    },
-    windows: {
-      background: PlatformColor('LayerFillColorDefaultBrush'),
-      backgroundDark: PlatformColor('LayerFillColorDefaultBrush'),
-    },
-  }),
+  background: '#ffffff',
+  backgroundDark: '#f0f0f0',
   border: 'rgba(0,0,0,0.08)',
   borderSolid: '#d9d9d9',
   surface: '#fbfbfb',

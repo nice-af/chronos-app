@@ -1,6 +1,6 @@
 import { useAppState } from '@react-native-community/hooks';
 import React, { useContext } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, right
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
-      <NativeView type='toolbar' style={styles.backgroundView} />
+      {Platform.OS === 'macos' && <NativeView type='toolbar' style={styles.backgroundView} />}
       <View style={[styles.content, align === 'center' && styles.isCentered]}>
         {onBackPress && (
           <ButtonTransparent
@@ -75,8 +75,13 @@ function createStyles(theme: Theme) {
       zIndex: 99,
       width: '100%',
       height: 53,
-      borderColor: theme.border,
-      borderBottomWidth: 1,
+      ...Platform.select({
+        default: {
+          borderColor: theme.border,
+          borderBottomWidth: 1,
+        },
+        windows: {},
+      }),
     },
     containerAbsolute: {
       position: 'absolute',

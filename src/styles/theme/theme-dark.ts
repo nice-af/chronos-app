@@ -25,17 +25,9 @@ const baseColors = {
 };
 
 const windowColors = {
-  ...Platform.select({
-    default: {
-      background: '#1e1e1e',
-      backgroundDark: '#1a1a1a',
-    },
-    windows: {
-      background: PlatformColor('LayerFillColorDefaultBrush'),
-      backgroundDark: PlatformColor('LayerFillColorDefaultBrush'),
-    },
-  }),
-  border: 'rgba(0,0,0,0.4)',
+  background: '#1e1e1e',
+  backgroundDark: '#1a1a1a',
+  border: Platform.OS === 'windows' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.4)',
   borderSolid: '#111',
   surface: '#292827',
   surfaceBorder: '#3A3938',
@@ -59,7 +51,7 @@ const buttonColors = {
   surfaceButtonActive: '#454443',
   dayButtonBase: 'rgba(255,255,255,0.04)',
   dayButtonHover: 'rgba(255,255,255,0.06)',
-  dayButtonBorder: 'rgba(0,0,0,0.4)',
+  dayButtonBorder: Platform.OS === 'windows' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.4)',
   dayButtonBorderInset: 'rgba(255,255,255,0.1)',
   cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
