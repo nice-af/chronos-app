@@ -56,7 +56,7 @@ export const Search: React.FC = () => {
 
   return (
     <Layout
-      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
+      customBackgroundColor={theme.backgroundDrawer}
       header={{
         align: 'left',
         onBackPress: () => setShowSearchScreen(false),

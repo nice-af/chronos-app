@@ -61,28 +61,14 @@ function createStyles(theme: Theme) {
       justifyContent: 'center',
       width: 54,
       borderRadius: 10,
-      ...Platform.select({
-        default: {
-          backgroundColor: theme.dayButtonBase,
-        },
-        windows: {
-          backgroundColor: PlatformColor('CardBackgroundFillColorDefaultBrush'),
-        },
-      }),
+      backgroundColor: theme.dayButtonBase,
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.dayButtonBorder,
       overflow: 'visible',
     },
     isHovered: {
-      ...Platform.select({
-        default: {
-          backgroundColor: theme.dayButtonHover,
-        },
-        windows: {
-          backgroundColor: PlatformColor('CardBackgroundFillColorSecondaryBrush'),
-        },
-      }),
+      backgroundColor: theme.dayButtonHover,
     },
     isPressed: {
       opacity: 0.8,
@@ -98,7 +84,6 @@ function createStyles(theme: Theme) {
     },
     selectedBorder: {
       position: 'absolute',
-
       borderWidth: 2,
       borderColor: theme.blue,
       ...Platform.select({

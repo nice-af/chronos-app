@@ -10,6 +10,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogCompact } from '../types/global.types';
+import { ThemeContext } from '../contexts/theme.context';
 
 export const EditWorklog: React.FC = () => {
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
@@ -24,6 +25,7 @@ export const EditWorklog: React.FC = () => {
   const [descriptionValue, setDescriptionValue] = useState(
     'Dui molestie fermentum bibendum etiam tellus curabitur purus proin.'
   );
+  const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export const EditWorklog: React.FC = () => {
 
   return (
     <Layout
-      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
+      customBackgroundColor={theme.backgroundDrawer}
       header={{
         align: 'left',
         title: (

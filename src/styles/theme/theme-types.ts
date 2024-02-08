@@ -26,6 +26,8 @@ export interface Theme {
 
   background: string | OpaqueColorValue;
   backgroundDark: string | OpaqueColorValue;
+  backgroundLogin: string | OpaqueColorValue;
+  backgroundDrawer: string | OpaqueColorValue;
   border: string | OpaqueColorValue;
   borderSolid: string | OpaqueColorValue;
   surface: string | OpaqueColorValue;

@@ -5,7 +5,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { Header, HeaderProps } from './Header';
 
 interface LayoutProps {
-  header?: HeaderProps;
+  header?: HeaderProps | false;
   children: React.ReactNode;
   customBackgroundColor?: any;
 }
@@ -27,14 +27,7 @@ function createStyles(theme: Theme) {
   return StyleSheet.create({
     globalContainer: {
       flexGrow: 1,
-      ...Platform.select({
-        default: {
-          backgroundColor: theme.background,
-        },
-        windows: {
-          backgroundColor: PlatformColor('LayerFillColorDefaultBrush'),
-        },
-      }),
+      backgroundColor: theme.background,
     },
     container: {
       display: 'flex',

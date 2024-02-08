@@ -27,7 +27,7 @@ export const Settings: React.FC = () => {
 
   return (
     <Layout
-      customBackgroundColor={Platform.OS === 'windows' && PlatformColor('SolidBackgroundFillColorQuarternaryBrush')}
+      customBackgroundColor={theme.backgroundDrawer}
       header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
       <View style={styles.container}>
         <View style={styles.card}>

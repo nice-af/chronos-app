@@ -25,12 +25,28 @@ const baseColors = {
 };
 
 const windowColors = {
-  background: '#ffffff',
-  backgroundDark: '#f0f0f0',
-  border: 'rgba(0,0,0,0.08)',
-  borderSolid: '#d9d9d9',
-  surface: '#fbfbfb',
-  surfaceBorder: '#e3e3e3',
+  ...Platform.select({
+    default: {
+      background: '#ffffff',
+      backgroundDark: '#f0f0f0',
+      backgroundLogin: '#ffffff',
+      backgroundDrawer: '#ffffff',
+      border: 'rgba(0,0,0,0.08)',
+      borderSolid: '#d9d9d9',
+      surface: '#fbfbfb',
+      surfaceBorder: '#e3e3e3',
+    },
+    windows: {
+      background: PlatformColor('LayerFillColorDefaultBrush'),
+      backgroundDark: PlatformColor('SolidBackgroundFillColorBaseBrush'),
+      backgroundLogin: 'transparent',
+      backgroundDrawer: PlatformColor('SolidBackgroundFillColorQuarternaryBrush'),
+      border: 'rgba(0,0,0,0.08)',
+      borderSolid: '#d9d9d9',
+      surface: '#fbfbfb',
+      surfaceBorder: '#e3e3e3',
+    },
+  }),
 };
 
 const buttonColors = {
@@ -49,8 +65,16 @@ const buttonColors = {
   surfaceButtonBase: '#eeeeee',
   surfaceButtonHover: '#e3e3e3',
   surfaceButtonActive: '#dedede',
-  dayButtonBase: 'rgba(255,255,255,0.04)',
-  dayButtonHover: 'rgba(255,255,255,0.07)',
+  ...Platform.select({
+    default: {
+      dayButtonBase: 'rgba(255,255,255,0.04)',
+      dayButtonHover: 'rgba(255,255,255,0.07)',
+    },
+    windows: {
+      dayButtonBase: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      dayButtonHover: PlatformColor('CardBackgroundFillColorSecondaryBrush'),
+    },
+  }),
   dayButtonBorder: 'rgba(0,0,0,0.14)',
   dayButtonBorderInset: 'rgba(255,255,255,0.16)',
   cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
