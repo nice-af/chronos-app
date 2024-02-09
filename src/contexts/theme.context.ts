@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { Appearance } from 'react-native';
 import { darkTheme } from '../styles/theme/theme-dark';
 import { lightTheme } from '../styles/theme/theme-light';
@@ -10,6 +10,6 @@ interface ThemeContextProps {
   theme: Theme;
 }
 
-export const ThemeContext = React.createContext<ThemeContextProps>({
+export const ThemeContext = createContext<ThemeContextProps>({
   theme: !__DEV__ && Appearance.getColorScheme() === 'light' ? lightTheme : darkTheme,
 });

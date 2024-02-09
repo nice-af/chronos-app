@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 import { Worklog } from '../types/global.types';
 
 interface WorklogContextProps {
@@ -15,7 +15,7 @@ interface WorklogContextProps {
   activeWorklogTimeElapsed: number;
 }
 
-export const WorklogContext = React.createContext<WorklogContextProps>({
+export const WorklogContext = createContext<WorklogContextProps>({
   worklogs: [],
   addWorklog: () => {},
   updateWorklog: () => {},

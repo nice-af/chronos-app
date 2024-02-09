@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogFooter } from '../components/EditWorklogFooter';
@@ -13,7 +13,7 @@ import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service'
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
-export const EditWorklog: React.FC = () => {
+export const EditWorklog: FC = () => {
   const { updateWorklog, deleteWorklog } = useContext(WorklogContext);
   const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
   const [timeSpentInputValue, setTimeSpentInputValue] = useState(

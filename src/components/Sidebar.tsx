@@ -1,5 +1,5 @@
 import { useAppState } from '@react-native-community/hooks';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
 import { WorklogContext } from '../contexts/worklog.context';
@@ -17,7 +17,7 @@ import { WeekPicker } from './WeekPicker';
 
 export const dayPickerHeight = 56;
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: FC = () => {
   const { worklogs } = useContext(WorklogContext);
   const { selectedDate, setSelectedDate } = useContext(NavigationContext);
   const { setShowSettingsScreen } = useContext(NavigationContext);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, ReactNode, useContext, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
@@ -7,10 +7,10 @@ import { getPadding } from '../styles/utils';
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;
   title: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const DebugToolsTab: React.FC<DebugToolsTabProps> = ({ defaultExpanded, title, children }) => {
+export const DebugToolsTab: FC<DebugToolsTabProps> = ({ defaultExpanded, title, children }) => {
   const [expanded, setExpanded] = useState(defaultExpanded ?? false);
 
   return (
@@ -23,9 +23,9 @@ export const DebugToolsTab: React.FC<DebugToolsTabProps> = ({ defaultExpanded, t
   );
 };
 
-export const DebugTools: React.FC = () => {
+export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const { worklogs, userInfo } = useContext(GlobalContext);
+  const { userInfo } = useContext(GlobalContext);
   const { showSettingsScreen } = useContext(NavigationContext);
 
   if (!expanded) {
@@ -43,9 +43,6 @@ export const DebugTools: React.FC = () => {
         <ScrollView>
           <DebugToolsTab title='userInfo'>
             <Text>{JSON.stringify(userInfo, null, 2)}</Text>
-          </DebugToolsTab>
-          <DebugToolsTab title='worklogs'>
-            <Text>{JSON.stringify(worklogs, null, 2)}</Text>
           </DebugToolsTab>
           <DebugToolsTab title='navigationContext'>
             <Text>{JSON.stringify({ showSettingsScreen }, null, 2)}</Text>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -11,7 +11,7 @@ interface CardsSelectionButtonProps {
   onClick: () => void;
 }
 
-export const CardsSelectionButton: React.FC<CardsSelectionButtonProps> = ({ isChecked, onClick, image, label }) => {
+export const CardsSelectionButton: FC<CardsSelectionButtonProps> = ({ isChecked, onClick, image, label }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const styles = useThemedStyles(createStyles);

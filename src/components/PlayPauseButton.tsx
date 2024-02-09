@@ -1,5 +1,5 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
@@ -15,7 +15,7 @@ interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {
   style?: ViewStyle;
 }
 
-export const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ onPress, isRunning, duration, ...props }) => {
+export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, duration, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
   const animBounce = useRef(new Animated.Value(0)).current;
   const styles = useThemedStyles(createStyles);
@@ -127,7 +127,7 @@ function createStyles(theme: Theme) {
       position: 'absolute',
       top: 1,
       left: 1,
-      backgroundColor: transparentize(0.75, theme.green),
+      backgroundColor: transparentize(0.75, theme.green as string),
       width: 32,
       height: 32,
       borderRadius: 16,

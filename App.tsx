@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DebugTools } from './src/components/DebugTools';
 import { GlobalProvider } from './src/providers/GlobalProvider';
 import { NavigationProvider } from './src/providers/NavigationProvider';
 import { ThemeProvider } from './src/providers/ThemeProvider';
-import { Main } from './src/screens/Main';
 import { WorklogProvider } from './src/providers/WorklogProvider';
+import { Main } from './src/screens/Main';
 
-const App: React.FC = () => {
+const App: FC = () => {
   return (
     <NavigationProvider>
       <GlobalProvider>

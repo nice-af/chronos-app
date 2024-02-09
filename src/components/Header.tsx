@@ -1,6 +1,6 @@
 import { useAppState } from '@react-native-community/hooks';
-import React, { useContext } from 'react';
-import { Image, Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
+import React, { FC, ReactNode, useContext } from 'react';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -9,14 +9,14 @@ import { ButtonTransparent } from './ButtonTransparent';
 import { NativeView } from './NativeView';
 
 export interface HeaderProps {
-  title?: React.ReactNode;
+  title?: ReactNode;
   align: 'center' | 'left';
   onBackPress?: () => void;
-  rightElement?: React.ReactNode;
+  rightElement?: ReactNode;
   position?: 'absolute';
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
+export const Header: FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
   const { theme } = useContext(ThemeContext);

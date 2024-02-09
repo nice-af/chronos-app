@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import React, { FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { WorklogContext } from '../contexts/worklog.context';
@@ -7,7 +7,7 @@ import * as jiraService from '../services/jira.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogState } from '../types/global.types';
 
-export const WorklogProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const WorklogProvider: FC<PropsWithChildren> = ({ children }) => {
   const [worklogs, setWorklogs] = useState<Worklog[]>([]);
   const [activeWorklogId, setActiveWorklogId] = useState<string | null>(null);
   const [activeWorklogTimeElapsed, setActiveWorklogTimeElapsed] = useState(0);

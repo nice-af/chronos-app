@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text } from 'react-native';
+import { ButtonSecondary } from '../components/ButtonSecondary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
@@ -8,13 +9,12 @@ import { GlobalContext } from '../contexts/global.context';
 import { NavigationContext } from '../contexts/navigation.context';
 import { ThemeContext } from '../contexts/theme.context';
 import { WorklogContext } from '../contexts/worklog.context';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { formatDateToYYYYMMDD } from '../services/date.service';
-import { ButtonSecondary } from '../components/ButtonSecondary';
 
-export const Entries: React.FC = () => {
+export const Entries: FC = () => {
   const { logout } = useContext(GlobalContext);
   const { worklogsForCurrentDay, syncWorklogsForCurrentDay } = useContext(WorklogContext);
   const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Platform, PlatformColor, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -10,7 +10,7 @@ export interface ToggleProps {
   label: string;
 }
 
-export const Toggle: React.FC<ToggleProps> = ({ state, setState, label }) => {
+export const Toggle: FC<ToggleProps> = ({ state, setState, label }) => {
   const styles = useThemedStyles(createStyles);
 
   return (

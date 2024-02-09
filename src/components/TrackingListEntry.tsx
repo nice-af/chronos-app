@@ -1,5 +1,5 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
 import { WorklogContext } from '../contexts/worklog.context';
@@ -17,7 +17,7 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   isSelected?: boolean;
 }
 
-export const TrackingListEntry: React.FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
+export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
   const { setCurrentWorklogToEdit } = useContext(NavigationContext);
   const { activeWorklogId, setActiveWorklogId, activeWorklogTimeElapsed, updateWorklog } = useContext(WorklogContext);
   const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklog));
@@ -82,7 +82,7 @@ function createStyles(theme: Theme) {
       ...getPadding(12, 16),
     },
     containerIsSelected: {
-      backgroundColor: transparentize(0.96, theme.contrast),
+      backgroundColor: transparentize(0.96, theme.contrast as string),
     },
     infoContainer: {
       flex: 1,

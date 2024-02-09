@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Platform, PlatformColor, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useContext, useState } from 'react';
+import { Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,7 +13,7 @@ interface DayButtonProps extends Omit<PressableProps, 'style'> {
   isSelected?: boolean;
 }
 
-export const DayButton: React.FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected }) => {
+export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { layout, workingDays, hideNonWorkingDays } = useContext(GlobalContext);
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);

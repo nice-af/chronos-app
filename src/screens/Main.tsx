@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
 import { NavigationContext } from '../contexts/navigation.context';
+import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { EditWorklog } from './EditWorklog';
 import { Entries } from './Entries';
 import { Search } from './Search';
 import { Settings } from './Settings';
-import { WorklogContext } from '../contexts/worklog.context';
 
-export const Main: React.FC = () => {
+export const Main: FC = () => {
   const { showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
   const styles = useThemedStyles(createStyles);
   const { addWorklog } = useContext(WorklogContext);

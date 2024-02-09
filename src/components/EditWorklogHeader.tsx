@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ImageBackground, Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useState } from 'react';
+import { ImageBackground, Platform, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -12,8 +12,7 @@ interface EditWorklogHeaderProps {
   onSavePress: () => void;
 }
 
-export const EditWorklogHeader: React.FC<EditWorklogHeaderProps> = ({ onCancelPress, onSavePress }) => {
-  const [showDelete, setShowDelete] = useState(false);
+export const EditWorklogHeader: FC<EditWorklogHeaderProps> = ({ onCancelPress, onSavePress }) => {
   const styles = useThemedStyles(createStyles);
 
   return (

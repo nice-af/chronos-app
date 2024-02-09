@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
-import { ButtonTransparent } from './ButtonTransparent';
-import { Theme } from '../styles/theme/theme-types';
-import { useThemedStyles } from '../services/theme.service';
 import { ThemeContext } from '../contexts/theme.context';
 import { formatDateToYYYYMMDD } from '../services/date.service';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
+import { ButtonTransparent } from './ButtonTransparent';
 
-export const JumpToTodayButton: React.FC = () => {
+export const JumpToTodayButton: FC = () => {
   const { setSelectedDate } = useContext(NavigationContext);
   const styles = useThemedStyles(createStyles);
   const { theme } = useContext(ThemeContext);

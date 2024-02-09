@@ -1,5 +1,5 @@
 import { getISOWeek } from 'date-fns';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { NavigationContext } from '../contexts/navigation.context';
 import { ThemeContext } from '../contexts/theme.context';
@@ -9,7 +9,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { ButtonTransparent } from './ButtonTransparent';
 
-export const WeekPicker: React.FC = () => {
+export const WeekPicker: FC = () => {
   const { selectedDate, setSelectedDate } = useContext(NavigationContext);
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);

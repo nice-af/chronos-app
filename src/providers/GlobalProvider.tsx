@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Version3Models } from 'jira.js';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Alert, Text } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { Login } from '../screens/Login';
@@ -8,7 +8,7 @@ import { getJiraClient, initiateJiraClient } from '../services/jira.service';
 import { StorageKey, getFromStorage } from '../services/storage.service';
 import { DayId, Layout } from '../types/global.types';
 
-export const GlobalProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [layout, setLayout] = useState<Layout>('normal');
   const [workingDays, setWorkingDays] = useState<DayId[]>([0, 1, 2, 3, 4]);
   const [hideNonWorkingDays, setHideNonWorkingDays] = useState<boolean>(false);

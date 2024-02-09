@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { FC, ReactNode, useEffect, useRef } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,10 +13,10 @@ interface CustomTextInputProps {
   multiline?: boolean;
   numberOfLines?: number;
   placeholder?: string;
-  iconLeft?: React.ReactNode;
+  iconLeft?: ReactNode;
 }
 
-export const CustomTextInput: React.FC<CustomTextInputProps> = ({
+export const CustomTextInput: FC<CustomTextInputProps> = ({
   isVisible,
   value,
   onChangeText,

@@ -1,6 +1,6 @@
-import React from 'react';
-import { Worklog } from '../types/global.types';
+import { createContext } from 'react';
 import { formatDateToYYYYMMDD } from '../services/date.service';
+import { Worklog } from '../types/global.types';
 
 interface NavigationContextProps {
   showSettingsScreen: boolean;
@@ -14,7 +14,7 @@ interface NavigationContextProps {
   setSelectedDate: (date: string) => void;
 }
 
-export const NavigationContext = React.createContext<NavigationContextProps>({
+export const NavigationContext = createContext<NavigationContextProps>({
   showSettingsScreen: false,
   setShowSettingsScreen: () => {},
   showSearchScreen: true,

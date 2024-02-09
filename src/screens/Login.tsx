@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
@@ -11,7 +11,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
-export const Login: React.FC = () => {
+export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
   const { userInfo } = useContext(GlobalContext);
   const { theme } = useContext(ThemeContext);

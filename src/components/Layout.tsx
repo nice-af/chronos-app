@@ -1,16 +1,16 @@
-import React from 'react';
-import { Platform, PlatformColor, StyleSheet, View } from 'react-native';
+import React, { FC, ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { Header, HeaderProps } from './Header';
 
 interface LayoutProps {
   header?: HeaderProps | false;
-  children: React.ReactNode;
+  children: ReactNode;
   customBackgroundColor?: any;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ header, children, customBackgroundColor }) => {
+export const Layout: FC<LayoutProps> = ({ header, children, customBackgroundColor }) => {
   const styles = useThemedStyles(createStyles);
 
   return (

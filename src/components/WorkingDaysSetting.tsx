@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GlobalContext } from '../contexts/global.context';
 import { ThemeContext } from '../contexts/theme.context';
@@ -13,7 +13,7 @@ interface WorkingDaysSettingProps {
   label: DayLabel;
 }
 
-const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label }) => {
+const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { workingDays, setWorkingDays } = useContext(GlobalContext);
   const { theme } = useContext(ThemeContext);
@@ -46,7 +46,7 @@ const WorkingDaysSettingButton: React.FC<WorkingDaysSettingProps> = ({ id, label
   );
 };
 
-export const WorkingDaysSetting: React.FC = () => {
+export const WorkingDaysSetting: FC = () => {
   const styles = useThemedStyles(createStyles);
 
   return (

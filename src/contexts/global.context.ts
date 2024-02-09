@@ -1,5 +1,5 @@
 import { Version3Models } from 'jira.js';
-import React from 'react';
+import { createContext } from 'react';
 import { DayId, Layout } from '../types/global.types';
 
 // TODO @florianmrz: Sollten wir das hier refactoren?
@@ -23,7 +23,7 @@ interface GlobalContextProps {
   setDisableEditingOfPastWorklogs: (newValue: boolean) => void;
 }
 
-export const GlobalContext = React.createContext<GlobalContextProps>({
+export const GlobalContext = createContext<GlobalContextProps>({
   userInfo: null,
   setUserInfo: () => {},
   logout: () => {},

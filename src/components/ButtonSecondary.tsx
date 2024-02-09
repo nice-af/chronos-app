@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -9,10 +9,10 @@ interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
   label: string;
   onPress: () => void;
   style?: ViewStyle;
-  iconRight?: React.ReactNode;
+  iconRight?: ReactNode;
 }
 
-export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({ onPress, label, iconRight, ...props }) => {
+export const ButtonSecondary: FC<ButtonSecondaryProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 

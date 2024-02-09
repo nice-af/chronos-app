@@ -1,19 +1,19 @@
 import { SearchResults } from 'jira.js/out/version3/models';
-import React, { useContext, useEffect, useState } from 'react';
-import { Image, Platform, PlatformColor, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
 import { NavigationContext } from '../contexts/navigation.context';
 import { ThemeContext } from '../contexts/theme.context';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewWorklogForIssue } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { Worklog } from '../types/global.types';
-import { formatDateToYYYYMMDD } from '../services/date.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -29,7 +29,7 @@ interface SearchProps {
   onNewWorklog: (worklog: Worklog) => void;
 }
 
-export const Search: React.FC<SearchProps> = ({ onNewWorklog }) => {
+export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
   const { setSelectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);

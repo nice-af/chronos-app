@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, useWindowDimensions } from 'react-native';
 
 interface AnimateScreenContainerProps {
   isVisible?: boolean;
   zIndex?: number;
   offScreenLocation: 'left' | 'right';
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AnimateScreenContainer: React.FC<AnimateScreenContainerProps> = ({
+export const AnimateScreenContainer: FC<AnimateScreenContainerProps> = ({
   isVisible,
   zIndex,
   offScreenLocation,

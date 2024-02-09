@@ -1,5 +1,5 @@
 import transparentize from 'polished/lib/color/transparentize';
-import React, { useContext, useMemo } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
 import { typo } from '../styles/typo';
@@ -23,61 +23,61 @@ interface IssueTagProps extends Omit<PressableProps, 'style'> {
 }
 
 // TODO @AdrianFahrbach should we rename this to `IssueKey(Tag)` since it would be clearer that this is about the issue key? There are actually issue tags in Jira.
-export const IssueTag: React.FC<IssueTagProps> = ({ onPress, label, project, ...props }) => {
+export const IssueTag: FC<IssueTagProps> = ({ onPress, label, project, ...props }) => {
   const { theme } = useContext(ThemeContext);
   const tagThemes: Record<string, { text: TextStyle; bg: ViewStyle }> = useMemo(
     () => ({
       red: {
         text: { color: theme.red },
-        bg: { backgroundColor: transparentize(0.75, theme.red) },
+        bg: { backgroundColor: transparentize(0.75, theme.red as string) },
       },
       orange: {
         text: { color: theme.orange },
-        bg: { backgroundColor: transparentize(0.75, theme.orange) },
+        bg: { backgroundColor: transparentize(0.75, theme.orange as string) },
       },
       yellow: {
         text: { color: theme.yellow },
-        bg: { backgroundColor: transparentize(0.75, theme.yellow) },
+        bg: { backgroundColor: transparentize(0.75, theme.yellow as string) },
       },
       green: {
         text: { color: theme.green },
-        bg: { backgroundColor: transparentize(0.75, theme.green) },
+        bg: { backgroundColor: transparentize(0.75, theme.green as string) },
       },
       mint: {
         text: { color: theme.mint },
-        bg: { backgroundColor: transparentize(0.75, theme.mint) },
+        bg: { backgroundColor: transparentize(0.75, theme.mint as string) },
       },
       teal: {
         text: { color: theme.teal },
-        bg: { backgroundColor: transparentize(0.75, theme.teal) },
+        bg: { backgroundColor: transparentize(0.75, theme.teal as string) },
       },
       cyan: {
         text: { color: theme.cyan },
-        bg: { backgroundColor: transparentize(0.75, theme.cyan) },
+        bg: { backgroundColor: transparentize(0.75, theme.cyan as string) },
       },
       blue: {
         text: { color: theme.blue },
-        bg: { backgroundColor: transparentize(0.75, theme.blue) },
+        bg: { backgroundColor: transparentize(0.75, theme.blue as string) },
       },
       indigo: {
         text: { color: theme.indigo },
-        bg: { backgroundColor: transparentize(0.75, theme.indigo) },
+        bg: { backgroundColor: transparentize(0.75, theme.indigo as string) },
       },
       purple: {
         text: { color: theme.purple },
-        bg: { backgroundColor: transparentize(0.75, theme.purple) },
+        bg: { backgroundColor: transparentize(0.75, theme.purple as string) },
       },
       pink: {
         text: { color: theme.pink },
-        bg: { backgroundColor: transparentize(0.75, theme.pink) },
+        bg: { backgroundColor: transparentize(0.75, theme.pink as string) },
       },
       gray: {
         text: { color: theme.gray },
-        bg: { backgroundColor: transparentize(0.75, theme.gray) },
+        bg: { backgroundColor: transparentize(0.75, theme.gray as string) },
       },
       brown: {
         text: { color: theme.brown },
-        bg: { backgroundColor: transparentize(0.75, theme.brown) },
+        bg: { backgroundColor: transparentize(0.75, theme.brown as string) },
       },
     }),
     [theme.type]

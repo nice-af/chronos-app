@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Platform, PlatformColor, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useContext } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
@@ -12,7 +12,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
-export const Settings: React.FC = () => {
+export const Settings: FC = () => {
   const {
     disableEditingOfPastWorklogs,
     setDisableEditingOfPastWorklogs,

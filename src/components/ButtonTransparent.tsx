@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -7,16 +7,11 @@ import { typo } from '../styles/typo';
 interface ButtonTransparentProps extends Omit<PressableProps, 'style'> {
   onPress: () => void;
   style?: ViewStyle;
-  children?: React.ReactNode;
+  children?: ReactNode;
   hasLargePadding?: boolean;
 }
 
-export const ButtonTransparent: React.FC<ButtonTransparentProps> = ({
-  onPress,
-  children,
-  hasLargePadding,
-  ...props
-}) => {
+export const ButtonTransparent: FC<ButtonTransparentProps> = ({ onPress, children, hasLargePadding, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 

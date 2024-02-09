@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { getPadding } from '../styles/utils';
 import { ButtonDanger } from './ButtonDanger';
@@ -8,7 +8,7 @@ interface EditWorklogFooterProps {
   onDeletePress: () => void;
 }
 
-export const EditWorklogFooter: React.FC<EditWorklogFooterProps> = ({ onDeletePress }) => {
+export const EditWorklogFooter: FC<EditWorklogFooterProps> = ({ onDeletePress }) => {
   const [showDelete, setShowDelete] = useState(false);
   return (
     <View style={styles.container}>
