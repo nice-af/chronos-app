@@ -3,6 +3,7 @@ import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { GlobalContext } from '../contexts/global.context';
 import { ThemeContext } from '../contexts/theme.context';
 import { useAuthRequest } from '../services/auth.service';
@@ -44,7 +45,7 @@ export const Login: FC = () => {
             Please click the button below to connect your Jira account with Jira Time Tracker.
           </Text>
           {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
-          {isLoadingOAuth && <Text>Logging in...</Text>}
+          {isLoadingOAuth && <LoadingSpinner />}
           <ButtonPrimary label='Login to Jira' onPress={initOAuth} />
         </View>
       </Layout>

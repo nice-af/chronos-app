@@ -11,6 +11,7 @@ import { ThemeContext } from '../contexts/theme.context';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export const Settings: FC = () => {
   const {
