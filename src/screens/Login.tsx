@@ -45,7 +45,6 @@ export const Login: FC = () => {
             Please click the button below to connect your Jira account with Jira Time Tracker.
           </Text>
           <View style={styles.fixedHeightContainer}>
-            {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
             {isLoadingOAuth && <LoadingSpinner />}
             {!isLoadingOAuth && <ButtonPrimary label='Login to Jira' onPress={initOAuth} />}
           </View>
