@@ -12,7 +12,7 @@ interface NativeViewNativeComponentProps {
 }
 
 export const NativeViewNativeComponent: HostComponent<NativeViewNativeComponentProps> =
-  requireNativeComponent('NativeView');
+  requireNativeComponent('BackgroundView');
 
 export const NativeView: React.FC<NativeViewProps> = ({ style, type, children }) => {
   let props = {};
