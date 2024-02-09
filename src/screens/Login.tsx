@@ -44,9 +44,11 @@ export const Login: FC = () => {
           <Text style={styles.text}>
             Please click the button below to connect your Jira account with Jira Time Tracker.
           </Text>
-          {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
-          {isLoadingOAuth && <LoadingSpinner />}
-          <ButtonPrimary label='Login to Jira' onPress={initOAuth} />
+          <View style={styles.fixedHeightContainer}>
+            {/* TODO @AdrianFahrbach make loading state pretty (on button?) */}
+            {isLoadingOAuth && <LoadingSpinner />}
+            {!isLoadingOAuth && <ButtonPrimary label='Login to Jira' onPress={initOAuth} />}
+          </View>
         </View>
       </Layout>
     </AnimateScreenContainer>
@@ -81,6 +83,9 @@ function createStyles(theme: Theme) {
       marginBottom: 24,
       textAlign: 'center',
       color: theme.textSecondary,
+    },
+    fixedHeightContainer: {
+      height: 32,
     },
     bgContainer: {
       position: 'absolute',

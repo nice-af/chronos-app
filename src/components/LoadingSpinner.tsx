@@ -1,20 +1,10 @@
-import React, { FC, useContext, useMemo, useRef } from 'react';
-import { Animated, Easing, Image, StyleSheet, View } from 'react-native';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
 import { ThemeContext } from '../contexts/theme.context';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
 
 export const LoadingSpinner: FC = () => {
   const { theme } = useContext(ThemeContext);
-
-  const rotateAnim = useRef(new Animated.Value(1)).current;
-
-  Animated.timing(rotateAnim, {
-    toValue: 4,
-    duration: 1000,
-    easing: Easing.step0,
-    useNativeDriver: true,
-  }).start();
+  const [activeElement, setActiveElement] = useState(0);
 
   const { image, opacityInactive } = useMemo(() => {
     if (theme.type === 'light') {
@@ -24,26 +14,60 @@ export const LoadingSpinner: FC = () => {
     }
   }, [theme]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveElement(prev => (prev + 1) % 4);
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          transform: [
-            {
-              rotate: rotateAnim.interpolate({
-                inputRange: [0, 4],
-                outputRange: ['0deg', '360deg'],
-              }),
-            },
-          ],
-        },
-      ]}>
-      <Image width={14} height={14} style={styles.topRight} source={image} />
-      <Image width={14} height={14} style={[styles.bottomRight, { opacity: opacityInactive }]} source={image} />
-      <Image width={14} height={14} style={[styles.bottomLeft, { opacity: opacityInactive }]} source={image} />
-      <Image width={14} height={14} style={[styles.topLeft, { opacity: opacityInactive }]} source={image} />
-    </Animated.View>
+    <View style={styles.container}>
+      <Animated.Image
+        width={14}
+        height={14}
+        style={[
+          styles.topRight,
+          {
+            opacity: activeElement === 0 ? 1 : opacityInactive,
+          },
+        ]}
+        source={image}
+      />
+      <Animated.Image
+        width={14}
+        height={14}
+        style={[
+          styles.bottomRight,
+          {
+            opacity: activeElement === 1 ? 1 : opacityInactive,
+          },
+        ]}
+        source={image}
+      />
+      <Animated.Image
+        width={14}
+        height={14}
+        style={[
+          styles.bottomLeft,
+          {
+            opacity: activeElement === 2 ? 1 : opacityInactive,
+          },
+        ]}
+        source={image}
+      />
+      <Animated.Image
+        width={14}
+        height={14}
+        style={[
+          styles.topLeft,
+          {
+            opacity: activeElement === 3 ? 1 : opacityInactive,
+          },
+        ]}
+        source={image}
+      />
+    </View>
   );
 };
 
