@@ -1,6 +1,7 @@
+import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   currentOverlayAtom,
   selectedDateAtom,
@@ -8,7 +9,7 @@ import {
   themeAtom,
   worklogsForCurrentDayAtom,
 } from '../atoms';
-import { ButtonSecondary } from '../components/ButtonSecondary';
+import { ButtonPrimary } from '../components/ButtonPrimary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
@@ -26,6 +27,7 @@ export const Entries: FC = () => {
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
+  const hasChanges = false; // TODO @florianmrz: Implement this
 
   const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
 
@@ -49,8 +51,15 @@ export const Entries: FC = () => {
     <Layout
       header={{
         align: 'left',
-        // TODO format pretty
-        title: `${selectedDate} ${isToday ? '(Today)' : ''}`,
+        title: (
+          <View style={styles.titleContainer}>
+            {hasChanges && <View style={styles.dot} />}
+            <Text style={styles.title}>
+              {isToday ? 'Today, ' : ''}
+              {format(new Date(selectedDate), 'MMMM do')}
+            </Text>
+          </View>
+        ),
         rightElement,
         onBackPress: undefined,
         position: 'absolute',
@@ -63,16 +72,32 @@ export const Entries: FC = () => {
           <TrackingListEntry key={worklog.id} worklog={worklog} />
         ))}
         {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
-
-        {/* TODO remove again */}
-        <ButtonSecondary label='Sync this day' onPress={() => syncWorklogsForCurrentDay()} />
       </ScrollView>
+      {/* TODO @florianmrz: Only show this when there are entries to sync  */}
+      <View style={styles.submitButtonContainer}>
+        <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
+      </View>
     </Layout>
   );
 };
 
 function createStyles(theme: Theme) {
   return StyleSheet.create({
+    titleContainer: {
+      flexGrow: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    title: {
+      ...typo.title3Emphasized,
+    },
+    dot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: theme.red,
+    },
     icon: {
       width: 24,
       height: 24,
@@ -87,6 +112,12 @@ function createStyles(theme: Theme) {
           marginBottom: 6,
         },
       }),
+    },
+    submitButtonContainer: {
+      paddingVertical: 16,
+      paddingHorizontal: 12,
+      borderColor: theme.border,
+      borderTopWidth: 1,
     },
     errorMessage: {
       ...typo.body,

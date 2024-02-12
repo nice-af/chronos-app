@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
-import { Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { hideNonWorkingDaysAtom, sidebarLayoutAtom, workingDaysAtom } from '../atoms';
+import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { hideNonWorkingDaysAtom, sidebarLayoutAtom, themeAtom, workingDaysAtom } from '../atoms';
 import { SidebarLayout } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,15 +13,17 @@ interface DayButtonProps extends Omit<PressableProps, 'style'> {
   duration?: string;
   onPress: () => void;
   isSelected?: boolean;
+  state?: 'checked' | 'inProgress';
 }
 
-export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected }) => {
+export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, state }) => {
   const [isHovered, setIsHovered] = useState(false);
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
   const styles = useThemedStyles(createStyles);
+  const theme = useAtomValue(themeAtom);
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -50,7 +52,20 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
       {isSelected && (
         <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
       )}
-      <Text style={styles.day}>{dayLabel}</Text>
+      <View style={styles.dayContainer}>
+        {state === 'inProgress' && <View style={styles.dot} />}
+        {state === 'checked' && (
+          <Image
+            style={styles.checkmark}
+            source={
+              theme.type === 'light'
+                ? require('../assets/icons/checkmark-small-light.png')
+                : require('../assets/icons/checkmark-small-dark.png')
+            }
+          />
+        )}
+        <Text style={styles.day}>{dayLabel}</Text>
+      </View>
       {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && <Text style={styles.time}>{duration ?? '-'}</Text>}
     </Pressable>
   );
@@ -104,6 +119,25 @@ function createStyles(theme: Theme) {
           borderRadius: 10,
         },
       }),
+    },
+    dayContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 3,
+      width: '100%',
+      marginBottom: 1,
+    },
+    checkmark: {
+      width: 8,
+      height: 6,
+    },
+    dot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: theme.red,
     },
     day: {
       zIndex: 2,

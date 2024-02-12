@@ -70,6 +70,7 @@ export const useAuthRequest = () => {
   }, []);
 
   async function handleDeepLink(event: { url: string }) {
+    setIsLoading(true);
     const { code: urlCode, state: urlState } = getUrlParams(event.url);
     try {
       if (state.current !== urlState || !urlCode) {
@@ -135,7 +136,6 @@ export const useAuthRequest = () => {
 
     if (await Linking.canOpenURL(oAuthUrl)) {
       await Linking.openURL(oAuthUrl);
-      setIsLoading(true);
     } else {
       Alert.alert(`This device can't open this URL: ${oAuthUrl}`);
     }
