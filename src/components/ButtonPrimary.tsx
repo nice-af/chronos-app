@@ -10,9 +10,10 @@ interface ButtonPrimaryProps extends Omit<PressableProps, 'style'> {
   onPress: () => void;
   style?: ViewStyle;
   iconRight?: ReactNode;
+  textAlign?: 'left' | 'center' | 'right';
 }
 
-export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, iconRight, ...props }) => {
+export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, textAlign, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 
@@ -27,7 +28,7 @@ export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, iconRigh
         pressed && styles.isActive,
         props.style,
       ]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, { textAlign: textAlign }]}>{label}</Text>
       {iconRight}
     </Pressable>
   );
@@ -52,6 +53,7 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
+      flexGrow: 1,
       color: theme.textButton,
     },
   });

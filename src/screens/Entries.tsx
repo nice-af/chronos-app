@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ButtonSecondary } from '../components/ButtonSecondary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
@@ -13,6 +13,7 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { ButtonPrimary } from '../components/ButtonPrimary';
 
 export const Entries: FC = () => {
   const { logout } = useContext(GlobalContext);
@@ -57,10 +58,11 @@ export const Entries: FC = () => {
           <TrackingListEntry key={worklog.id} worklog={worklog} />
         ))}
         {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
-
-        {/* TODO remove again */}
-        <ButtonSecondary label='Sync this day' onPress={() => syncWorklogsForCurrentDay()} />
       </ScrollView>
+      {/* TODO @florianmrz: Only show this when there are entries to sync  */}
+      <View style={styles.submitButtonContainer}>
+        <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
+      </View>
     </Layout>
   );
 };
@@ -81,6 +83,12 @@ function createStyles(theme: Theme) {
           marginBottom: 6,
         },
       }),
+    },
+    submitButtonContainer: {
+      paddingVertical: 16,
+      paddingHorizontal: 12,
+      borderColor: theme.border,
+      borderTopWidth: 1,
     },
     errorMessage: {
       ...typo.body,
