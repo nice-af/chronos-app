@@ -1,13 +1,14 @@
 import { Issue } from 'jira.js/out/version3/models';
-import React, { FC, useContext } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC } from 'react';
 import { Image, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom } from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
+import { typo } from '../styles/typo';
+import { getPadding } from '../styles/utils';
 import { ButtonTransparent } from './ButtonTransparent';
 import { IssueTag } from './IssueTag';
-import { getPadding } from '../styles/utils';
-import { typo } from '../styles/typo';
 
 interface SearchResultsEntryProps extends Omit<PressableProps, 'style'> {
   issue: Issue;
@@ -16,7 +17,7 @@ interface SearchResultsEntryProps extends Omit<PressableProps, 'style'> {
 
 export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress }) => {
   const styles = useThemedStyles(createStyles);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
 
   return (
     <View key={issue.id} style={styles.container}>
