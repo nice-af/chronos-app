@@ -14,6 +14,8 @@ import { createNewWorklogForIssue } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { Worklog } from '../types/global.types';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { SearchResultsEntry } from '../components/SearchResultsEntry';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -36,6 +38,8 @@ export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
   const [searchResults, setSearchResults] = useState<SearchResults>();
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
+  const hasCharacters = searchValue.trim().length > 0;
+  const enoughCharacters = searchValue.trim().length >= 3;
 
   const debouncedSearch = debounce(async (query: string) => {
     setSearchIsLoading(true);
@@ -84,45 +88,29 @@ export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
         />
       </View>
       <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
-        {/* TODO @AdrianFahrbach make pretty */}
-        {searchIsLoading && <Text style={styles.errorMessage}>Searching...</Text>}
-        {/* TODO @AdrianFahrbach make pretty */}
-        {searchResults?.issues?.map(issue => (
-          <View
-            key={issue.id}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              padding: 10,
-              backgroundColor: 'grey',
-              borderBottomWidth: 1,
-              borderColor: '#fff',
-            }}>
-            <View>
-              <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <IssueTag label={issue.key} project='orcaya' />
-                <Text> &gt; {issue.fields.project.name}</Text>
-              </View>
-              <Text>{issue.fields.summary}</Text>
-            </View>
-            <ButtonTransparent
+        {searchIsLoading && (
+          <View style={styles.loadingSpinnerContainer}>
+            <LoadingSpinner />
+          </View>
+        )}
+        {!searchIsLoading &&
+          searchResults?.issues?.map(issue => (
+            <SearchResultsEntry
+              key={issue.id}
+              issue={issue}
               onPress={() => {
                 setShowSearchScreen(false);
                 setSelectedDate(formatDateToYYYYMMDD(new Date()));
                 onNewWorklog(createNewWorklogForIssue({ issue }));
-              }}>
-              <Image
-                style={styles.icon}
-                source={
-                  theme.type === 'light'
-                    ? require('../assets/icons/plus-light.png')
-                    : require('../assets/icons/plus-dark.png')
-                }
-              />
-            </ButtonTransparent>
-          </View>
-        ))}
-        {searchResults?.issues?.length === 0 && <Text style={styles.errorMessage}>No search results found</Text>}
+              }}
+            />
+          ))}
+        {hasCharacters && !enoughCharacters && !searchIsLoading && (
+          <Text style={styles.errorMessage}>Please enter at least 3 characters</Text>
+        )}
+        {enoughCharacters && !searchIsLoading && searchResults?.issues?.length === 0 && (
+          <Text style={styles.errorMessage}>No search results found</Text>
+        )}
       </ScrollView>
     </Layout>
   );
@@ -154,6 +142,12 @@ function createStyles(theme: Theme) {
     entriesContainer: {
       flexGrow: 1,
       overflow: 'visible',
+    },
+    loadingSpinnerContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      marginTop: 98,
     },
     errorMessage: {
       ...typo.body,

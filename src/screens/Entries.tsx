@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ButtonSecondary } from '../components/ButtonSecondary';
+import { ButtonPrimary } from '../components/ButtonPrimary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
@@ -13,7 +13,6 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { ButtonPrimary } from '../components/ButtonPrimary';
 
 export const Entries: FC = () => {
   const { logout } = useContext(GlobalContext);
