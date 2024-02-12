@@ -1,7 +1,7 @@
-import { OpaqueColorValue } from 'react-native';
+import { ColorSchemeName, OpaqueColorValue } from 'react-native';
 
 export interface Theme {
-  type: 'light' | 'dark';
+  type: ColorSchemeName;
 
   contrast: string | OpaqueColorValue;
   textPrimary: string | OpaqueColorValue;

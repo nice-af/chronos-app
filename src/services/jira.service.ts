@@ -5,8 +5,8 @@ import ms from 'ms';
 import { Worklog, WorklogState } from '../types/global.types';
 import { extractTextFromJSON } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
-import { StorageKey, setInStorage } from './storage.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
+import { StorageKey, setInStorage } from './storage.service';
 
 // TODO: Use a more lightweight client
 // import { Issues } from 'jira.js/out/version3';

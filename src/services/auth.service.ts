@@ -1,13 +1,12 @@
 import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
+import { useSetAtom } from 'jotai';
 import qs from 'qs';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import uuid from 'react-native-uuid';
-import { GlobalContext } from '../contexts/global.context';
+import { jiraAuthAtom } from '../atoms';
 import { GetAccessibleResourcesResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
-import { initiateJiraClient } from './jira.service';
-import { StorageKey, setInStorage } from './storage.service';
 
 /**
  * Exchanges the OAuth code for an access token and refresh token
@@ -59,9 +58,9 @@ async function getCloudId(accessToken: string): Promise<string | null> {
 }
 
 export const useAuthRequest = () => {
-  const { setUserInfo } = useContext(GlobalContext);
   const state = useRef<string>();
   const [isLoading, setIsLoading] = useState(false);
+  const setJiraAuth = useSetAtom(jiraAuthAtom);
 
   useEffect(() => {
     Linking.addEventListener('url', handleDeepLink);
@@ -84,11 +83,7 @@ export const useAuthRequest = () => {
         // TODO better wording - when does this actually happen? (e.g. when the user has no Jira account?)
         throw new Error('Could not find a valid resource to connect to. Please try again.');
       }
-
-      await setInStorage(StorageKey.AUTH, { accessToken, refreshToken, cloudId });
-      const client = initiateJiraClient({ accessToken, cloudId, refreshToken });
-      const userInfo = await client.myself.getCurrentUser();
-      setUserInfo(userInfo);
+      setJiraAuth({ accessToken, refreshToken, cloudId });
     } catch (error) {
       Alert.alert((error as Error).message);
       return;

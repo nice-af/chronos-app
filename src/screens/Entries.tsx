@@ -1,24 +1,30 @@
-import React, { FC, useContext } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text } from 'react-native';
+import {
+  currentOverlayAtom,
+  selectedDateAtom,
+  syncWorklogsForCurrentDayAtom,
+  themeAtom,
+  worklogsForCurrentDayAtom,
+} from '../atoms';
 import { ButtonSecondary } from '../components/ButtonSecondary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
-import { GlobalContext } from '../contexts/global.context';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
 export const Entries: FC = () => {
-  const { logout } = useContext(GlobalContext);
-  const { worklogsForCurrentDay, syncWorklogsForCurrentDay } = useContext(WorklogContext);
-  const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
-  const { theme } = useContext(ThemeContext);
+  const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
+  const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
+  const [selectedDate] = useAtomValue(selectedDateAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
 
   const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
@@ -26,7 +32,7 @@ export const Entries: FC = () => {
   const rightElement = (
     <>
       <JumpToTodayButton />
-      <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
+      <ButtonTransparent onPress={() => setCurrentOverlay(Overlay.Search)}>
         <Image
           style={styles.icon}
           source={
@@ -46,7 +52,7 @@ export const Entries: FC = () => {
         // TODO format pretty
         title: `${selectedDate} ${isToday ? '(Today)' : ''}`,
         rightElement,
-        onBackPress: __DEV__ ? () => logout() : undefined,
+        onBackPress: undefined,
         position: 'absolute',
       }}>
       <ScrollView

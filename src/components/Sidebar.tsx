@@ -1,8 +1,8 @@
 import { useAppState } from '@react-native-community/hooks';
-import React, { FC, useContext } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import { currentOverlayAtom, selectedDateAtom, worklogsAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM } from '../services/time.service';
@@ -18,9 +18,9 @@ import { WeekPicker } from './WeekPicker';
 export const dayPickerHeight = 56;
 
 export const Sidebar: FC = () => {
-  const { worklogs } = useContext(WorklogContext);
-  const { selectedDate, setSelectedDate } = useContext(NavigationContext);
-  const { setShowSettingsScreen } = useContext(NavigationContext);
+  const worklogs = useAtomValue(worklogsAtom);
+  const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const windowHeight = useWindowDimensions().height;
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
@@ -47,7 +47,7 @@ export const Sidebar: FC = () => {
               )}
               isSelected={selectedDate === dateString}
               onPress={() => {
-                setShowSettingsScreen(false);
+                setCurrentOverlay(null);
                 setSelectedDate(dateString);
               }}
             />

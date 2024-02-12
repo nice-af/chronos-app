@@ -1,8 +1,13 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import {
+  activeWorklogIdAtom,
+  activeWorklogTimeElapsedAtom,
+  currentWorklogToEditAtom,
+  updateWorklogAtom,
+} from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -18,8 +23,11 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 }
 
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
-  const { setCurrentWorklogToEdit } = useContext(NavigationContext);
-  const { activeWorklogId, setActiveWorklogId, activeWorklogTimeElapsed, updateWorklog } = useContext(WorklogContext);
+  const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
+  const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
+  const activeWorklogId = useAtomValue(activeWorklogIdAtom);
+  const activeWorklogTimeElapsed = useAtomValue(activeWorklogTimeElapsedAtom);
+  const updateWorklog = useSetAtom(updateWorklogAtom);
   const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklog));
   const styles = useThemedStyles(createStyles);
 

@@ -1,23 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, Suspense } from 'react';
 import { DebugTools } from './src/components/DebugTools';
 import { GlobalProvider } from './src/providers/GlobalProvider';
-import { NavigationProvider } from './src/providers/NavigationProvider';
-import { ThemeProvider } from './src/providers/ThemeProvider';
-import { WorklogProvider } from './src/providers/WorklogProvider';
 import { Main } from './src/screens/Main';
+import { Text } from 'react-native';
 
 const App: FC = () => {
   return (
-    <NavigationProvider>
+    // TODO @AdrianFahrbach make pretty
+    <Suspense fallback={<Text>Loading...</Text>}>
       <GlobalProvider>
-        <WorklogProvider>
-          <ThemeProvider>
-            <Main />
-            {__DEV__ && <DebugTools />}
-          </ThemeProvider>
-        </WorklogProvider>
+        <Main />
+        {__DEV__ && <DebugTools />}
       </GlobalProvider>
-    </NavigationProvider>
+    </Suspense>
   );
 };
 

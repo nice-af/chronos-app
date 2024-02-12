@@ -1,7 +1,8 @@
+import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, useContext, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom } from '../atoms';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { Project } from '../types/global.types';
@@ -24,7 +25,7 @@ interface IssueTagProps extends Omit<PressableProps, 'style'> {
 
 // TODO @AdrianFahrbach should we rename this to `IssueKey(Tag)` since it would be clearer that this is about the issue key? There are actually issue tags in Jira.
 export const IssueTag: FC<IssueTagProps> = ({ onPress, label, project, ...props }) => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const tagThemes: Record<string, { text: TextStyle; bg: ViewStyle }> = useMemo(
     () => ({
       red: {

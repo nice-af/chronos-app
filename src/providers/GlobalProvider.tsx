@@ -1,37 +1,46 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Version3Models } from 'jira.js';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
-import { Alert, Text } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
+import { Alert, Text, useColorScheme } from 'react-native';
+import {
+  activeWorklogIdAtom,
+  activeWorklogTimeElapsedAtom,
+  jiraAuthAtom,
+  loadWorklogsAtom,
+  themeAtom,
+  userInfoAtom,
+  worklogsAtom,
+} from '../atoms';
 import { Login } from '../screens/Login';
+import { worklogsFakeData } from '../services/fake-data.service';
 import { getJiraClient, initiateJiraClient } from '../services/jira.service';
-import { StorageKey, getFromStorage } from '../services/storage.service';
-import { DayId, Layout } from '../types/global.types';
+import { darkTheme } from '../styles/theme/theme-dark';
+import { lightTheme } from '../styles/theme/theme-light';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [layout, setLayout] = useState<Layout>('normal');
-  const [workingDays, setWorkingDays] = useState<DayId[]>([0, 1, 2, 3, 4]);
-  const [hideNonWorkingDays, setHideNonWorkingDays] = useState<boolean>(false);
-  const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useState<boolean>(true);
-  const [userInfo, setUserInfo] = useState<Version3Models.User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+  const colorScheme = useColorScheme();
+  const setTheme = useSetAtom(themeAtom);
+  const setActiveWorklogTimeElapsed = useSetAtom(activeWorklogTimeElapsedAtom);
+  const setWorklogs = useSetAtom(worklogsAtom);
+  const loadWorklogs = useSetAtom(loadWorklogsAtom);
+  const activeWorklogId = useAtomValue(activeWorklogIdAtom);
+  const jiraAuth = useAtomValue(jiraAuthAtom);
 
-  const logout = () => {
-    AsyncStorage.removeItem(StorageKey.AUTH);
-    setUserInfo(null);
-  };
+  // TODO remove again when basic implemention is stable
+  const useFakeData = false;
 
   useEffect(() => {
     (async () => {
       // Attempt to authenticate using existing auth token
-      const storedAuth = await getFromStorage(StorageKey.AUTH);
-
-      if (!storedAuth) {
-        setUserInfo(null);
-        return;
+      if (!jiraAuth) {
+        return setUserInfo(null);
       }
 
-      const { accessToken, refreshToken, cloudId } = storedAuth;
-      initiateJiraClient({ accessToken, refreshToken, cloudId });
+      initiateJiraClient(jiraAuth);
+
+      setIsLoading(true);
+
       try {
         const userInfoRes = await getJiraClient().myself.getCurrentUser();
         setUserInfo(userInfoRes);
@@ -43,29 +52,42 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
           console.error('Failed to authenticate with stored auth token', error);
         }
         setUserInfo(null);
+      } finally {
+        setIsLoading(false);
       }
     })();
-  }, []);
+  }, [jiraAuth]);
 
-  return (
-    <GlobalContext.Provider
-      value={{
-        userInfo,
-        setUserInfo,
-        logout,
-        layout,
-        setLayout,
-        workingDays,
-        setWorkingDays,
-        hideNonWorkingDays,
-        setHideNonWorkingDays,
-        disableEditingOfPastWorklogs,
-        setDisableEditingOfPastWorklogs,
-      }}>
-      {/* TODO @AdrianFahrbach make pretty */}
-      {userInfo === undefined && <Text>Loading user state...</Text>}
-      {userInfo === null && <Login />}
-      {!!userInfo && children}
-    </GlobalContext.Provider>
-  );
+  useEffect(() => {
+    if (useFakeData) {
+      setWorklogs(worklogsFakeData);
+      return;
+    }
+    if (userInfo?.accountId) {
+      loadWorklogs();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (activeWorklogId) {
+      intervalId = setInterval(() => setActiveWorklogTimeElapsed(prev => prev + 1), 1000);
+    } else {
+      setActiveWorklogTimeElapsed(0);
+    }
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [activeWorklogId]);
+
+  /**
+   * Auto-set theme
+   */
+  useEffect(() => {
+    // The theme is always set to light during development, but we use dark so we change the dev default to dark
+    setTheme(!__DEV__ && colorScheme === 'light' ? lightTheme : darkTheme);
+  }, [colorScheme]);
+
+  // TODO @AdrianFahrbach make pretty
+  return isLoading ? <Text>Loading user state...</Text> : userInfo === null ? <Login /> : children;
 };

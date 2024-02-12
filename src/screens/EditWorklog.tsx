@@ -1,26 +1,26 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { currentWorklogToEditAtom, deleteWorklogAtom, themeAtom, updateWorklogAtom } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogFooter } from '../components/EditWorklogFooter';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
-import { WorklogContext } from '../contexts/worklog.context';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
 export const EditWorklog: FC = () => {
-  const { updateWorklog, deleteWorklog } = useContext(WorklogContext);
-  const { currentWorklogToEdit, setCurrentWorklogToEdit } = useContext(NavigationContext);
+  const updateWorklog = useSetAtom(updateWorklogAtom);
+  const deleteWorklog = useSetAtom(deleteWorklogAtom);
+  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useAtom(currentWorklogToEditAtom);
   const [timeSpentInputValue, setTimeSpentInputValue] = useState(
     formatSecondsToHMM(currentWorklogToEdit?.timeSpentSeconds ?? 0)
   );
   const [descriptionValue, setDescriptionValue] = useState(currentWorklogToEdit?.comment ?? '');
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
 
   useEffect(() => {

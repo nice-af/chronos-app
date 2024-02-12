@@ -1,11 +1,11 @@
-import React, { FC, useContext } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC } from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { themeAtom, userInfoAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { GlobalContext } from '../contexts/global.context';
-import { ThemeContext } from '../contexts/theme.context';
 import { useAuthRequest } from '../services/auth.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -14,8 +14,8 @@ import { getPadding } from '../styles/utils';
 
 export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
-  const { userInfo } = useContext(GlobalContext);
-  const { theme } = useContext(ThemeContext);
+  const userInfo = useAtomValue(userInfoAtom);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
 
   return (

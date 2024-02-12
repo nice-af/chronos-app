@@ -1,15 +1,18 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { currentOverlayAtom, themeAtom } from '../atoms';
+import { Overlay } from '../const';
 
 export const dayPickerHeight = 56;
 
 export const SettingsButton: FC = () => {
-  const { showSettingsScreen, setShowSettingsScreen } = useContext(NavigationContext);
+  const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const [isHovered, setIsHovered] = useState(false);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const rotation = useRef(new Animated.Value(0)).current;
+
+  const showSettingsScreen = currentOverlay === Overlay.Settings;
 
   useEffect(() => {
     Animated.timing(rotation, {
@@ -25,7 +28,7 @@ export const SettingsButton: FC = () => {
       style={({ pressed }) => [styles.pressable, isHovered && { opacity: 0.8 }, pressed && { opacity: 0.7 }]}
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
-      onPress={() => setShowSettingsScreen(!showSettingsScreen)}>
+      onPress={() => (showSettingsScreen ? setCurrentOverlay(null) : setCurrentOverlay(Overlay.Settings))}>
       <Animated.Image
         style={[
           styles.cog,

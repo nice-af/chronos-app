@@ -1,42 +1,44 @@
-import React, { FC, useContext } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import {
+  currentOverlayAtom,
+  disableEditingOfPastWorklogsAtom,
+  hideNonWorkingDaysAtom,
+  logoutAtom,
+  sidebarLayoutAtom,
+  themeAtom,
+} from '../atoms';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
 import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
-import { GlobalContext } from '../contexts/global.context';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { SidebarLayout } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export const Settings: FC = () => {
-  const {
-    disableEditingOfPastWorklogs,
-    setDisableEditingOfPastWorklogs,
-    hideNonWorkingDays,
-    setHideNonWorkingDays,
-    logout,
-  } = useContext(GlobalContext);
-  const { setShowSettingsScreen } = useContext(NavigationContext);
+  const logout = useSetAtom(logoutAtom);
+  const [sidebarLayout, setSidebarLayout] = useAtom(sidebarLayoutAtom);
+  const [hideNonWorkingDays, setHideNonWorkingDays] = useAtom(hideNonWorkingDaysAtom);
+  const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useAtom(disableEditingOfPastWorklogsAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
-  const { layout, setLayout } = useContext(GlobalContext);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
 
   return (
     <Layout
       customBackgroundColor={theme.backgroundDrawer}
-      header={{ align: 'left', title: 'Settings', onBackPress: () => setShowSettingsScreen(false) }}>
+      header={{ align: 'left', title: 'Settings', onBackPress: () => setCurrentOverlay(null) }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>Sidebar layout</Text>
           <View style={styles.cardsButtonContainer}>
             <CardsSelectionButton
-              isChecked={layout === 'normal'}
-              onClick={() => setLayout('normal')}
+              isChecked={sidebarLayout === 'normal'}
+              onClick={() => setSidebarLayout(SidebarLayout.Normal)}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-normal-light.png')
@@ -45,8 +47,8 @@ export const Settings: FC = () => {
               label='Normal'
             />
             <CardsSelectionButton
-              isChecked={layout === 'compact'}
-              onClick={() => setLayout('compact')}
+              isChecked={sidebarLayout === 'compact'}
+              onClick={() => setSidebarLayout(SidebarLayout.Compact)}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-compact-light.png')
@@ -55,8 +57,8 @@ export const Settings: FC = () => {
               label='Compact'
             />
             <CardsSelectionButton
-              isChecked={layout === 'micro'}
-              onClick={() => setLayout('micro')}
+              isChecked={sidebarLayout === 'micro'}
+              onClick={() => setSidebarLayout(SidebarLayout.Micro)}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-micro-light.png')

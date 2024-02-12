@@ -1,16 +1,16 @@
-import React, { FC, useContext } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { selectedDateAtom, themeAtom } from '../atoms';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { ButtonTransparent } from './ButtonTransparent';
 
 export const JumpToTodayButton: FC = () => {
-  const { setSelectedDate } = useContext(NavigationContext);
+  const setSelectedDate = useSetAtom(selectedDateAtom);
   const styles = useThemedStyles(createStyles);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const today = new Date();
 
   return (

@@ -1,9 +1,10 @@
-import React, { FC, useContext } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import { currentOverlayAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { Sidebar } from '../components/Sidebar';
-import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import { Overlay } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { EditWorklog } from './EditWorklog';
@@ -12,9 +13,8 @@ import { Search } from './Search';
 import { Settings } from './Settings';
 
 export const Main: FC = () => {
-  const { showSettingsScreen, showSearchScreen, currentWorklogToEdit } = useContext(NavigationContext);
+  const currentOverlay = useAtomValue(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
-  const { addWorklog } = useContext(WorklogContext);
 
   return (
     <AnimateScreenContainer isVisible offScreenLocation='right'>
@@ -24,13 +24,16 @@ export const Main: FC = () => {
           <View style={styles.entriesContainer}>
             <Entries />
           </View>
-          <AnimateScreenContainer isVisible={showSearchScreen} offScreenLocation='right' zIndex={2}>
-            <Search onNewWorklog={addWorklog} />
+          <AnimateScreenContainer isVisible={currentOverlay === Overlay.Search} offScreenLocation='right' zIndex={2}>
+            <Search />
           </AnimateScreenContainer>
-          <AnimateScreenContainer isVisible={!!currentWorklogToEdit} offScreenLocation='right' zIndex={3}>
+          <AnimateScreenContainer
+            isVisible={currentOverlay === Overlay.EditWorklog}
+            offScreenLocation='right'
+            zIndex={3}>
             <EditWorklog />
           </AnimateScreenContainer>
-          <AnimateScreenContainer isVisible={showSettingsScreen} offScreenLocation='right' zIndex={4}>
+          <AnimateScreenContainer isVisible={currentOverlay === Overlay.Settings} offScreenLocation='right' zIndex={4}>
             <Settings />
           </AnimateScreenContainer>
         </View>

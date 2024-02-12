@@ -1,7 +1,7 @@
-import React, { FC, ReactNode, useContext, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
-import { NavigationContext } from '../contexts/navigation.context';
+import { currentOverlayAtom, userInfoAtom } from '../atoms';
 import { getPadding } from '../styles/utils';
 
 interface DebugToolsTabProps {
@@ -25,8 +25,8 @@ export const DebugToolsTab: FC<DebugToolsTabProps> = ({ defaultExpanded, title, 
 
 export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const { userInfo } = useContext(GlobalContext);
-  const { showSettingsScreen } = useContext(NavigationContext);
+  const userInfo = useAtomValue(userInfoAtom);
+  const currentOverlay = useAtomValue(currentOverlayAtom);
 
   if (!expanded) {
     return (
@@ -44,8 +44,8 @@ export const DebugTools: FC = () => {
           <DebugToolsTab title='userInfo'>
             <Text>{JSON.stringify(userInfo, null, 2)}</Text>
           </DebugToolsTab>
-          <DebugToolsTab title='navigationContext'>
-            <Text>{JSON.stringify({ showSettingsScreen }, null, 2)}</Text>
+          <DebugToolsTab title='currentOverlay'>
+            <Text>{JSON.stringify({ currentOverlay }, null, 2)}</Text>
           </DebugToolsTab>
         </ScrollView>
       </View>

@@ -1,9 +1,10 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom } from '../atoms';
 
 export const LoadingSpinner: FC = () => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const [activeElement, setActiveElement] = useState(0);
 
   const { image, opacityInactive } = useMemo(() => {

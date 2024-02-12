@@ -1,8 +1,8 @@
 import { getISOWeek } from 'date-fns';
-import React, { FC, useContext } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { selectedDateAtom, themeAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -10,8 +10,8 @@ import { typo } from '../styles/typo';
 import { ButtonTransparent } from './ButtonTransparent';
 
 export const WeekPicker: FC = () => {
-  const { selectedDate, setSelectedDate } = useContext(NavigationContext);
-  const { theme } = useContext(ThemeContext);
+  const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
 
   const selectedDateParsed = parseDateFromYYYYMMDD(selectedDate);

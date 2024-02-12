@@ -1,7 +1,8 @@
 import { useAppState } from '@react-native-community/hooks';
-import React, { FC, ReactNode, useContext } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC, ReactNode } from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom } from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -19,7 +20,7 @@ export interface HeaderProps {
 export const Header: FC<HeaderProps> = ({ title, align, onBackPress, rightElement, position }) => {
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>

@@ -1,12 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Version3Models } from 'jira.js';
 
 export enum StorageKey {
   AUTH = 'auth',
   FOO = 'foo',
 }
 
-interface AuthModel {
+export interface AuthModel {
   accessToken: string;
   refreshToken: string;
   cloudId: string;
