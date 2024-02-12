@@ -5,9 +5,11 @@ import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
 import {
   activeWorklogIdAtom,
   activeWorklogTimeElapsedAtom,
+  currentOverlayAtom,
   currentWorklogToEditAtom,
   updateWorklogAtom,
 } from '../atoms';
+import { Overlay } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -28,7 +30,11 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const activeWorklogId = useAtomValue(activeWorklogIdAtom);
   const activeWorklogTimeElapsed = useAtomValue(activeWorklogTimeElapsedAtom);
   const updateWorklog = useSetAtom(updateWorklogAtom);
-  const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklog));
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
+  const { onPress } = useDoublePress(() => {
+    setCurrentWorklogToEdit(worklog);
+    setCurrentOverlay(Overlay.EditWorklog);
+  });
   const styles = useThemedStyles(createStyles);
 
   const isActiveWorklog = activeWorklogId === worklog.id;

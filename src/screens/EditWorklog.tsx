@@ -1,7 +1,13 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { currentWorklogToEditAtom, deleteWorklogAtom, themeAtom, updateWorklogAtom } from '../atoms';
+import {
+  currentOverlayAtom,
+  currentWorklogToEditAtom,
+  deleteWorklogAtom,
+  themeAtom,
+  updateWorklogAtom,
+} from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogFooter } from '../components/EditWorklogFooter';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
@@ -15,7 +21,8 @@ import { typo } from '../styles/typo';
 export const EditWorklog: FC = () => {
   const updateWorklog = useSetAtom(updateWorklogAtom);
   const deleteWorklog = useSetAtom(deleteWorklogAtom);
-  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useAtom(currentWorklogToEditAtom);
+  const currentWorklogToEdit = useAtomValue(currentWorklogToEditAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const [timeSpentInputValue, setTimeSpentInputValue] = useState(
     formatSecondsToHMM(currentWorklogToEdit?.timeSpentSeconds ?? 0)
   );
@@ -46,12 +53,12 @@ export const EditWorklog: FC = () => {
     if (JSON.stringify(newWorklog) !== JSON.stringify(currentWorklogToEdit)) {
       updateWorklog(newWorklog);
     }
-    setCurrentWorklogToEdit(null);
+    setCurrentOverlay(null);
   };
 
   const handleOnDeleteClick = async () => {
     await deleteWorklog(currentWorklogToEdit.id);
-    setCurrentWorklogToEdit(null);
+    setCurrentOverlay(null);
   };
 
   return (
@@ -67,9 +74,9 @@ export const EditWorklog: FC = () => {
             </Text>
           </View>
         ),
-        onBackPress: () => setCurrentWorklogToEdit(null),
+        onBackPress: () => setCurrentOverlay(null),
       }}>
-      <EditWorklogHeader onCancelPress={() => setCurrentWorklogToEdit(null)} onSavePress={() => handleOnSaveClick()} />
+      <EditWorklogHeader onCancelPress={() => setCurrentOverlay(null)} onSavePress={() => handleOnSaveClick()} />
       <View style={styles.container}>
         <CustomTextInput
           isVisible={!!currentWorklogToEdit}
