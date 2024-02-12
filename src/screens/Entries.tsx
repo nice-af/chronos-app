@@ -21,6 +21,7 @@ export const Entries: FC = () => {
   const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
   const { theme } = useContext(ThemeContext);
   const styles = useThemedStyles(createStyles);
+  const hasChanges = false; // TODO @florianmrz: Implement this
 
   const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
 
@@ -44,7 +45,15 @@ export const Entries: FC = () => {
     <Layout
       header={{
         align: 'left',
-        title: `${isToday ? 'Today, ' : ''}${format(new Date(selectedDate), 'MMMM do')}`,
+        title: (
+          <View style={styles.titleContainer}>
+            {hasChanges && <View style={styles.dot} />}
+            <Text style={styles.title}>
+              {isToday ? 'Today, ' : ''}
+              {format(new Date(selectedDate), 'MMMM do')}
+            </Text>
+          </View>
+        ),
         rightElement,
         onBackPress: __DEV__ ? () => logout() : undefined,
         position: 'absolute',
@@ -68,6 +77,21 @@ export const Entries: FC = () => {
 
 function createStyles(theme: Theme) {
   return StyleSheet.create({
+    titleContainer: {
+      flexGrow: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    title: {
+      ...typo.title3Emphasized,
+    },
+    dot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+      backgroundColor: theme.red,
+    },
     icon: {
       width: 24,
       height: 24,
