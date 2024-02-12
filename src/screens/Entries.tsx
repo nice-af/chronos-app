@@ -13,6 +13,7 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { format } from 'date-fns';
 
 export const Entries: FC = () => {
   const { logout } = useContext(GlobalContext);
@@ -43,8 +44,7 @@ export const Entries: FC = () => {
     <Layout
       header={{
         align: 'left',
-        // TODO format pretty
-        title: `${selectedDate} ${isToday ? '(Today)' : ''}`,
+        title: `${isToday ? 'Today, ' : ''}${format(new Date(selectedDate), 'MMMM do')}`,
         rightElement,
         onBackPress: __DEV__ ? () => logout() : undefined,
         position: 'absolute',
