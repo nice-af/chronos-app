@@ -1,22 +1,28 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { hideNonWorkingDaysAtom, sidebarLayoutAtom, themeAtom, workingDaysAtom } from '../atoms';
+import {
+  hideNonWorkingDaysAtom,
+  selectedDateAtom,
+  sidebarLayoutAtom,
+  themeAtom,
+  workingDaysAtom,
+  worklogsAtom,
+} from '../atoms';
 import { SidebarLayout } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { DayLabel, dayLabelToDayIdMap } from '../types/global.types';
+import { DayLabel, WorklogState, dayLabelToDayIdMap } from '../types/global.types';
+import { formatSecondsToHMM } from '../services/time.service';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
+  dateString: string;
   dayLabel: DayLabel;
-  duration?: string;
   onPress: () => void;
-  isSelected?: boolean;
-  state?: 'checked' | 'inProgress';
 }
 
-export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, state }) => {
+export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString }) => {
   const [isHovered, setIsHovered] = useState(false);
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
@@ -24,6 +30,8 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
+  const worklogs = useAtomValue(worklogsAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -36,6 +44,20 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
   if (sidebarLayout === SidebarLayout.Micro || !isWorkingDay) {
     height = 28;
   }
+
+  const duration = formatSecondsToHMM(
+    worklogs
+      .filter(worklog => worklog.started === dateString)
+      .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0)
+  );
+  const isSelected = selectedDate === dateString;
+
+  const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
+  const isChecked =
+    worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.Synced);
+  const hasChanges = worklogsForThisDay.some(
+    worklog => worklog.started === dateString && worklog.state !== WorklogState.Synced
+  );
 
   return (
     <Pressable
@@ -53,8 +75,8 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
         <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
       )}
       <View style={styles.dayContainer}>
-        {state === 'inProgress' && <View style={styles.dot} />}
-        {state === 'checked' && (
+        {hasChanges && <View style={styles.dot} />}
+        {isChecked && (
           <Image
             style={styles.checkmark}
             source={

@@ -19,6 +19,7 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { WorklogState } from '../types/global.types';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -27,7 +28,8 @@ export const Entries: FC = () => {
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
-  const hasChanges = false; // TODO @florianmrz: Implement this
+
+  const hasChanges = worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
 
   const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
 
@@ -73,10 +75,11 @@ export const Entries: FC = () => {
         ))}
         {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
       </ScrollView>
-      {/* TODO @florianmrz: Only show this when there are entries to sync  */}
-      <View style={styles.submitButtonContainer}>
-        <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
-      </View>
+      {hasChanges && (
+        <View style={styles.submitButtonContainer}>
+          <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
+        </View>
+      )}
     </Layout>
   );
 };
