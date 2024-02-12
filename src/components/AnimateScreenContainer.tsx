@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet, useWindowDimensions } from 'react-native';
+import { Animated, Easing, Platform, StyleSheet, useWindowDimensions } from 'react-native';
 
 interface AnimateScreenContainerProps {
   isVisible?: boolean;
@@ -35,6 +35,11 @@ export const AnimateScreenContainer: FC<AnimateScreenContainerProps> = ({
 
   if (!isRendered) {
     return null;
+  }
+
+  // TODO @AdrianFahrbach fix this for windows
+  if (Platform.OS === 'windows') {
+    return children;
   }
 
   return (
