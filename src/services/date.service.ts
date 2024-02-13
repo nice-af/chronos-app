@@ -32,6 +32,12 @@ export function parseDateFromYYYYMMDD(date: string): Date {
   return new Date(year, month - 1, day);
 }
 
+/**
+ * Formats a date to the Jira format used in the worklogs object.
+ * It also sets the time to 9:00 AM to prevent basic timezone issues.
+ */
 export function formatDateToJiraFormat(date: Date): string {
-  return date.toISOString().replace('Z', '+0000');
+  const copy = new Date(date);
+  copy.setHours(9);
+  return copy.toISOString().replace('Z', '+0000');
 }
