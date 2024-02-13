@@ -30,7 +30,6 @@
     "react-native": "^0.72.0",
     "react-native-dotenv": "^3.4.9",
     "react-native-macos": "^0.72.0",
-    "react-native-uuid": "^2.0.1",
     "react-native-windows": "^0.72.0"
   },
   "devDependencies": {

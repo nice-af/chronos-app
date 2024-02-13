@@ -3,7 +3,6 @@ import { useSetAtom } from 'jotai';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
-import uuid from 'react-native-uuid';
 import { jiraAuthAtom } from '../atoms';
 import { GetAccessibleResourcesResponse, GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
@@ -105,8 +104,7 @@ export const useAuthRequest = () => {
   }
 
   async function initOAuth() {
-    // TODO @AdrianFahrbach can we replace this with a basic `Math.random()` and some other random input, so we can get rid of this dependency?
-    state.current = uuid.v4().toString();
+    state.current = (Math.random() * 100_000_000).toString().replace('.', '');
     let oAuthUrl = 'https://auth.atlassian.com/authorize?';
     oAuthUrl += qs.stringify({
       audience: 'api.atlassian.com',
