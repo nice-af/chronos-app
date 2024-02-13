@@ -1,38 +1,69 @@
-import React, { FC, useContext, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
-import { ThemeContext } from '../contexts/theme.context';
+import {
+  activeWorklogAtom,
+  hideNonWorkingDaysAtom,
+  selectedDateAtom,
+  sidebarLayoutAtom,
+  themeAtom,
+  workingDaysAtom,
+  worklogsAtom,
+} from '../atoms';
+import { SidebarLayout } from '../const';
 import { useThemedStyles } from '../services/theme.service';
+import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { DayLabel, dayLabelToDayIdMap } from '../types/global.types';
+import { DayLabel, WorklogState, dayLabelToDayIdMap } from '../types/global.types';
+import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
+  dateString: string;
   dayLabel: DayLabel;
-  duration?: string;
   onPress: () => void;
-  isSelected?: boolean;
-  state?: 'checked' | 'inProgress';
 }
 
-export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isSelected, state }) => {
+export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { layout, workingDays, hideNonWorkingDays } = useContext(GlobalContext);
+  const sidebarLayout = useAtomValue(sidebarLayoutAtom);
+  const workingDays = useAtomValue(workingDaysAtom);
+  const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
   const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
   const styles = useThemedStyles(createStyles);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
+  const worklogs = useAtomValue(worklogsAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
+  const activeWorklog = useAtomValue(activeWorklogAtom);
+  const activeWorklogTrackingDuration = useActiveWorklogDuration();
+  const activeWorklogIsThisDay = activeWorklog?.started === dateString;
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
   }
 
   let height = 54;
-  if (layout === 'compact') {
+  if (sidebarLayout === SidebarLayout.Compact) {
     height = 44;
   }
-  if (layout === 'micro' || !isWorkingDay) {
+  if (sidebarLayout === SidebarLayout.Micro || !isWorkingDay) {
     height = 28;
   }
+
+  let duration = worklogs
+    .filter(worklog => worklog.started === dateString)
+    .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
+  if (activeWorklogIsThisDay) {
+    duration += activeWorklogTrackingDuration;
+  }
+  const isSelected = selectedDate === dateString;
+
+  const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
+  const isChecked =
+    worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.Synced);
+  const hasChanges =
+    activeWorklogIsThisDay ||
+    worklogsForThisDay.some(worklog => worklog.started === dateString && worklog.state !== WorklogState.Synced);
 
   return (
     <Pressable
@@ -50,8 +81,9 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
         <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
       )}
       <View style={styles.dayContainer}>
-        {state === 'inProgress' && <View style={styles.dot} />}
-        {state === 'checked' && (
+        {hasChanges ? (
+          <View style={styles.dot} />
+        ) : isChecked ? (
           <Image
             style={styles.checkmark}
             source={
@@ -60,10 +92,12 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, duration, isS
                 : require('../assets/icons/checkmark-small-dark.png')
             }
           />
-        )}
+        ) : null}
         <Text style={styles.day}>{dayLabel}</Text>
       </View>
-      {isWorkingDay && layout !== 'micro' && <Text style={styles.time}>{duration ?? '-'}</Text>}
+      {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && (
+        <Text style={styles.time}>{duration ? formatSecondsToHMM(duration) : '-'}</Text>
+      )}
     </Pressable>
   );
 };

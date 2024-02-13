@@ -1,34 +1,47 @@
-import React, { FC, useContext } from 'react';
+import { format } from 'date-fns';
+import { useAtomValue, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  activeWorklogAtom,
+  currentOverlayAtom,
+  selectedDateAtom,
+  syncWorklogsForCurrentDayAtom,
+  themeAtom,
+  worklogsForCurrentDayAtom,
+} from '../atoms';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
-import { GlobalContext } from '../contexts/global.context';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { format } from 'date-fns';
+import { WorklogState } from '../types/global.types';
 
 export const Entries: FC = () => {
-  const { logout } = useContext(GlobalContext);
-  const { worklogsForCurrentDay, syncWorklogsForCurrentDay } = useContext(WorklogContext);
-  const { selectedDate, setShowSearchScreen } = useContext(NavigationContext);
-  const { theme } = useContext(ThemeContext);
+  const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
+  const activeWorklog = useAtomValue(activeWorklogAtom);
+  const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
-  const hasChanges = false; // TODO @florianmrz: Implement this
+  const todayDateString = formatDateToYYYYMMDD(new Date());
+  const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
 
-  const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
+  const hasChanges =
+    activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
+
+  const isToday = selectedDate === todayDateString;
 
   const rightElement = (
     <>
       <JumpToTodayButton />
-      <ButtonTransparent onPress={() => setShowSearchScreen(true)}>
+      <ButtonTransparent onPress={() => setCurrentOverlay(Overlay.Search)}>
         <Image
           style={styles.icon}
           source={
@@ -55,7 +68,7 @@ export const Entries: FC = () => {
           </View>
         ),
         rightElement,
-        onBackPress: __DEV__ ? () => logout() : undefined,
+        onBackPress: undefined,
         position: 'absolute',
       }}>
       <ScrollView
@@ -67,10 +80,11 @@ export const Entries: FC = () => {
         ))}
         {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
       </ScrollView>
-      {/* TODO @florianmrz: Only show this when there are entries to sync  */}
-      <View style={styles.submitButtonContainer}>
-        <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
-      </View>
+      {hasChanges && (
+        <View style={styles.submitButtonContainer}>
+          <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
+        </View>
+      )}
     </Layout>
   );
 };

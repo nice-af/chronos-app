@@ -1,13 +1,21 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import {
+  activeWorklogIdAtom,
+  activeWorklogTrackingStartedAtom,
+  currentOverlayAtom,
+  currentWorklogToEditAtom,
+  updateWorklogAtom,
+} from '../atoms';
+import { Overlay } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { Worklog, WorklogState } from '../types/global.types';
+import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 import { useDoublePress } from '../utils/double-press';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
@@ -18,16 +26,24 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 }
 
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
-  const { setCurrentWorklogToEdit } = useContext(NavigationContext);
-  const { activeWorklogId, setActiveWorklogId, activeWorklogTimeElapsed, updateWorklog } = useContext(WorklogContext);
-  const { onPress } = useDoublePress(() => setCurrentWorklogToEdit(worklog));
+  const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
+  const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
+  const activeWorklogId = useAtomValue(activeWorklogIdAtom);
+  const setActiveWorklogTrackingStarted = useSetAtom(activeWorklogTrackingStartedAtom);
+  const activeWorklogTrackingDuration = useActiveWorklogDuration();
+  const updateWorklog = useSetAtom(updateWorklogAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
+  const { onPress } = useDoublePress(() => {
+    setCurrentWorklogToEdit(worklog);
+    setCurrentOverlay(Overlay.EditWorklog);
+  });
   const styles = useThemedStyles(createStyles);
 
   const isActiveWorklog = activeWorklogId === worklog.id;
 
   let duration = worklog.timeSpentSeconds;
   if (isActiveWorklog) {
-    duration = worklog.timeSpentSeconds + activeWorklogTimeElapsed;
+    duration = worklog.timeSpentSeconds + activeWorklogTrackingDuration;
   }
 
   return (
@@ -61,8 +77,11 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         onPress={() => {
           if (isActiveWorklog) {
             setActiveWorklogId(null);
-            updateWorklog({ ...worklog, timeSpentSeconds: duration });
+            if (activeWorklogTrackingDuration > 60) {
+              updateWorklog({ ...worklog, timeSpentSeconds: duration });
+            }
           } else {
+            setActiveWorklogTrackingStarted(Date.now());
             setActiveWorklogId(worklog.id);
           }
         }}

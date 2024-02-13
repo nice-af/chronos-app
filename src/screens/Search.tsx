@@ -1,21 +1,19 @@
 import { SearchResults } from 'jira.js/out/version3/models';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ButtonTransparent } from '../components/ButtonTransparent';
+import { addWorklogAtom, currentOverlayAtom, selectedDateAtom, themeAtom } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
-import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
-import { NavigationContext } from '../contexts/navigation.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { SearchResultsEntry } from '../components/SearchResultsEntry';
+import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewWorklogForIssue } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { Worklog } from '../types/global.types';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { SearchResultsEntry } from '../components/SearchResultsEntry';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -27,16 +25,14 @@ const debounce = (func: Function, delay: number) => {
   };
 };
 
-interface SearchProps {
-  onNewWorklog: (worklog: Worklog) => void;
-}
-
-export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
-  const { setSelectedDate, showSearchScreen, setShowSearchScreen } = useContext(NavigationContext);
+export const Search: FC = () => {
+  const setSelectedDate = useSetAtom(selectedDateAtom);
+  const addWorklog = useSetAtom(addWorklogAtom);
+  const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResults>();
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const hasCharacters = searchValue.trim().length > 0;
   const enoughCharacters = searchValue.trim().length >= 3;
@@ -65,13 +61,13 @@ export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
       customBackgroundColor={theme.backgroundDrawer}
       header={{
         align: 'left',
-        onBackPress: () => setShowSearchScreen(false),
+        onBackPress: () => setCurrentOverlay(null),
         position: 'absolute',
         title: 'Add new worklog',
       }}>
       <View style={styles.inputContainer}>
         <CustomTextInput
-          isVisible={showSearchScreen}
+          isVisible={currentOverlay === Overlay.Search}
           placeholder='Search...'
           value={searchValue}
           onChangeText={setSearchValue}
@@ -99,9 +95,9 @@ export const Search: FC<SearchProps> = ({ onNewWorklog }) => {
               key={issue.id}
               issue={issue}
               onPress={() => {
-                setShowSearchScreen(false);
+                setCurrentOverlay(null);
                 setSelectedDate(formatDateToYYYYMMDD(new Date()));
-                onNewWorklog(createNewWorklogForIssue({ issue }));
+                addWorklog(createNewWorklogForIssue({ issue }));
               }}
             />
           ))}

@@ -1,7 +1,7 @@
-import React, { FC, useContext, useState } from 'react';
+import { useAtom, useAtomValue } from 'jotai';
+import React, { FC, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { GlobalContext } from '../contexts/global.context';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom, workingDaysAtom } from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -14,9 +14,9 @@ interface WorkingDaysSettingProps {
 }
 
 const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) => {
+  const [workingDays, setWorkingDays] = useAtom(workingDaysAtom);
   const [isHovered, setIsHovered] = useState(false);
-  const { workingDays, setWorkingDays } = useContext(GlobalContext);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const isChecked = workingDays.includes(id);
 

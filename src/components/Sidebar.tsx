@@ -1,11 +1,10 @@
 import { useAppState } from '@react-native-community/hooks';
-import React, { FC, useContext } from 'react';
+import { useAtom, useSetAtom } from 'jotai';
+import React, { FC } from 'react';
 import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { NavigationContext } from '../contexts/navigation.context';
-import { WorklogContext } from '../contexts/worklog.context';
+import { currentOverlayAtom, selectedDateAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
-import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
@@ -18,9 +17,8 @@ import { WeekPicker } from './WeekPicker';
 export const dayPickerHeight = 56;
 
 export const Sidebar: FC = () => {
-  const { worklogs } = useContext(WorklogContext);
-  const { selectedDate, setSelectedDate } = useContext(NavigationContext);
-  const { setShowSettingsScreen } = useContext(NavigationContext);
+  const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
+  const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const windowHeight = useWindowDimensions().height;
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
@@ -40,14 +38,9 @@ export const Sidebar: FC = () => {
             <DayButton
               key={day.id}
               dayLabel={day.abbreviation}
-              duration={formatSecondsToHMM(
-                worklogs
-                  .filter(worklog => worklog.started === dateString)
-                  .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0)
-              )}
-              isSelected={selectedDate === dateString}
+              dateString={dateString}
               onPress={() => {
-                setShowSettingsScreen(false);
+                setCurrentOverlay(null);
                 setSelectedDate(dateString);
               }}
             />

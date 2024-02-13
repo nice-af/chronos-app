@@ -1,7 +1,8 @@
+import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, PressableProps, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { ThemeContext } from '../contexts/theme.context';
+import { themeAtom } from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -19,7 +20,7 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
   const [isHovered, setIsHovered] = useState(false);
   const animBounce = useRef(new Animated.Value(0)).current;
   const styles = useThemedStyles(createStyles);
-  const { theme } = useContext(ThemeContext);
+  const theme = useAtomValue(themeAtom);
 
   useEffect(() => {
     Animated.timing(animBounce, {
