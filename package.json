@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "build:macos": "xcodebuild -workspace macos/JiraTimeTracker.xcworkspace -scheme JiraTimeTracker-macOS -config Release",
+    "build:macos": "xcodebuild -workspace macos/JiraTimeTracker.xcworkspace -scheme JiraTimeTracker-macOS-prod -config Release",
     "devtools": "npx react-devtools",
     "fix-repo": "sh ./scripts/fix-repo.sh",
     "ios": "react-native run-ios",

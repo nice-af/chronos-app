@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {
@@ -9,7 +9,6 @@ import {
   updateWorklogAtom,
 } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
-import { EditWorklogFooter } from '../components/EditWorklogFooter';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueTag } from '../components/IssueTag';
 import { Layout } from '../components/Layout';
@@ -76,7 +75,11 @@ export const EditWorklog: FC = () => {
         ),
         onBackPress: () => setCurrentOverlay(null),
       }}>
-      <EditWorklogHeader onCancelPress={() => setCurrentOverlay(null)} onSavePress={() => handleOnSaveClick()} />
+      <EditWorklogHeader
+        onCancelPress={() => setCurrentOverlay(null)}
+        onSavePress={() => handleOnSaveClick()}
+        onDeletePress={() => handleOnDeleteClick()}
+      />
       <View style={styles.container}>
         <CustomTextInput
           isVisible={!!currentWorklogToEdit}
@@ -93,7 +96,6 @@ export const EditWorklog: FC = () => {
           numberOfLines={4}
         />
       </View>
-      <EditWorklogFooter onDeletePress={() => handleOnDeleteClick()} />
     </Layout>
   );
 };

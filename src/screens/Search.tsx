@@ -1,6 +1,6 @@
 import { SearchResults } from 'jira.js/out/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { addWorklogAtom, currentOverlayAtom, selectedDateAtom, themeAtom } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
@@ -37,16 +37,20 @@ export const Search: FC = () => {
   const hasCharacters = searchValue.trim().length > 0;
   const enoughCharacters = searchValue.trim().length >= 3;
 
-  const debouncedSearch = debounce(async (query: string) => {
-    setSearchIsLoading(true);
-    try {
-      setSearchResults(await getIssuesBySearchQuery(query));
-    } catch (e) {
-      console.error('Error while searching', e);
-    } finally {
-      setSearchIsLoading(false);
-    }
-  }, 250);
+  const debouncedSearch = useMemo(
+    () =>
+      debounce(async (query: string) => {
+        setSearchIsLoading(true);
+        try {
+          setSearchResults(await getIssuesBySearchQuery(query));
+        } catch (e) {
+          console.error('Error while searching', e);
+        } finally {
+          setSearchIsLoading(false);
+        }
+      }, 500),
+    []
+  );
 
   useEffect(() => {
     const trimmedValue = searchValue.trim();

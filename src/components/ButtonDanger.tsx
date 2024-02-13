@@ -43,7 +43,7 @@ function createStyles(theme: Theme) {
       alignSelf: 'flex-start',
       backgroundColor: theme.dangerButtonBase,
       borderRadius: theme.buttonBorderRadius,
-      ...getPadding(7, 12),
+      ...getPadding(8, 12),
     },
     isHovered: {
       backgroundColor: theme.dangerButtonHover,

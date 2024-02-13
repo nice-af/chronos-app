@@ -6,7 +6,7 @@ import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
 interface ButtonSecondaryProps extends Omit<PressableProps, 'style'> {
-  label: string;
+  label?: string;
   onPress: () => void;
   style?: ViewStyle;
   iconRight?: ReactNode;
@@ -25,9 +25,10 @@ export const ButtonSecondary: FC<ButtonSecondaryProps> = ({ onPress, label, icon
         styles.pressable,
         isHovered && styles.isHovered,
         pressed && styles.isActive,
+        !label && !!iconRight && styles.isIconOnly,
         props.style,
       ]}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       {iconRight}
     </Pressable>
   );
@@ -46,6 +47,10 @@ function createStyles(theme: Theme) {
       borderWidth: 1,
       borderRadius: theme.buttonBorderRadius,
       ...getPadding(7, 12),
+    },
+    isIconOnly: {
+      paddingRight: 7,
+      paddingLeft: 7,
     },
     isHovered: {
       backgroundColor: theme.secondaryButtonHover,

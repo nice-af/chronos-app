@@ -39,6 +39,7 @@ function createStyles(theme: Theme) {
     pressable: {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'center',
       flexDirection: 'row',
       gap: 8,
       backgroundColor: theme.buttonBase,
@@ -53,7 +54,6 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
-      flexGrow: 1,
       color: theme.textButton,
     },
   });

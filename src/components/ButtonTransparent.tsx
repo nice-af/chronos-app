@@ -39,6 +39,7 @@ function createStyles(theme: Theme) {
       display: 'flex',
       alignItems: 'center',
       flexDirection: 'row',
+      flexShrink: 0,
       gap: 8,
       backgroundColor: 'transparent',
       borderRadius: theme.buttonBorderRadius,
