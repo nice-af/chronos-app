@@ -36,6 +36,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   const selectedDate = useAtomValue(selectedDateAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const activeWorklogTrackingDuration = useActiveWorklogDuration();
+  const activeWorklogIsThisDay = activeWorklog?.started === dateString;
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -52,7 +53,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   let duration = worklogs
     .filter(worklog => worklog.started === dateString)
     .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
-  if (activeWorklog?.started === dateString) {
+  if (activeWorklogIsThisDay) {
     duration += activeWorklogTrackingDuration;
   }
   const isSelected = selectedDate === dateString;
@@ -60,9 +61,9 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
   const isChecked =
     worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.Synced);
-  const hasChanges = worklogsForThisDay.some(
-    worklog => worklog.started === dateString && worklog.state !== WorklogState.Synced
-  );
+  const hasChanges =
+    activeWorklogIsThisDay ||
+    worklogsForThisDay.some(worklog => worklog.started === dateString && worklog.state !== WorklogState.Synced);
 
   return (
     <Pressable
@@ -80,8 +81,9 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
         <View style={[styles.selectedBorder, { height: Platform.OS === 'windows' ? height : height + 4 }]} />
       )}
       <View style={styles.dayContainer}>
-        {hasChanges && <View style={styles.dot} />}
-        {isChecked && (
+        {hasChanges ? (
+          <View style={styles.dot} />
+        ) : isChecked ? (
           <Image
             style={styles.checkmark}
             source={
@@ -90,7 +92,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
                 : require('../assets/icons/checkmark-small-dark.png')
             }
           />
-        )}
+        ) : null}
         <Text style={styles.day}>{dayLabel}</Text>
       </View>
       {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && (

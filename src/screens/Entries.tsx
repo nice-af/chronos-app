@@ -3,6 +3,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
+  activeWorklogAtom,
   currentOverlayAtom,
   selectedDateAtom,
   syncWorklogsForCurrentDayAtom,
@@ -23,15 +24,19 @@ import { WorklogState } from '../types/global.types';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
+  const activeWorklog = useAtomValue(activeWorklogAtom);
   const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
-  const [selectedDate] = useAtomValue(selectedDateAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
+  const todayDateString = formatDateToYYYYMMDD(new Date());
+  const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
 
-  const hasChanges = worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
+  const hasChanges =
+    activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
 
-  const isToday = selectedDate === formatDateToYYYYMMDD(new Date());
+  const isToday = selectedDate === todayDateString;
 
   const rightElement = (
     <>
