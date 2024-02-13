@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogIdAtom,
+  activeWorklogTrackingDurationAtom,
   activeWorklogTrackingStartedAtom,
   currentOverlayAtom,
   currentWorklogToEditAtom,
@@ -15,7 +16,6 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { Worklog, WorklogState } from '../types/global.types';
-import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 import { useDoublePress } from '../utils/double-press';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
@@ -30,7 +30,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
   const activeWorklogId = useAtomValue(activeWorklogIdAtom);
   const setActiveWorklogTrackingStarted = useSetAtom(activeWorklogTrackingStartedAtom);
-  const activeWorklogTrackingDuration = useActiveWorklogDuration();
+  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
   const updateWorklog = useSetAtom(updateWorklogAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
@@ -77,7 +77,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         onPress={() => {
           if (isActiveWorklog) {
             setActiveWorklogId(null);
-            if (activeWorklogTrackingDuration > 60) {
+            if (activeWorklogTrackingDuration >= 60) {
               updateWorklog({ ...worklog, timeSpentSeconds: duration });
             }
           } else {

@@ -43,6 +43,25 @@ export const activeWorklogAtom = atom(get => {
  * Unix timestamp where the tracking of the active worklog started
  */
 export const activeWorklogTrackingStartedAtom = atom(0);
+/**
+ * Duration in seconds of the currently running worklog
+ */
+export const activeWorklogTrackingDurationAtom = atom(0);
+
+/**
+ * Tick every 10 seconds to update the current duration
+ */
+setInterval(() => {
+  const start = store.get(activeWorklogTrackingStartedAtom);
+  if (start === 0) {
+    store.set(activeWorklogTrackingDurationAtom, 0);
+  }
+  const raw = Date.now() - start;
+  // Round to nearest minute
+  const diff = Math.floor(raw / 1000 / 60) * 60;
+  store.set(activeWorklogTrackingDurationAtom, diff);
+}, 1_000);
+
 export const worklogsForCurrentDayAtom = atom(get => {
   const worklogs = get(worklogsAtom);
   return worklogs.filter(worklog => worklog.started === get(selectedDateAtom));

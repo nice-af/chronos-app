@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
+  activeWorklogTrackingDurationAtom,
   hideNonWorkingDaysAtom,
   selectedDateAtom,
   sidebarLayoutAtom,
@@ -16,7 +17,6 @@ import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { DayLabel, WorklogState, dayLabelToDayIdMap } from '../types/global.types';
-import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   dateString: string;
@@ -35,7 +35,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   const worklogs = useAtomValue(worklogsAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
-  const activeWorklogTrackingDuration = useActiveWorklogDuration();
+  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
   const activeWorklogIsThisDay = activeWorklog?.started === dateString;
 
   if (hideNonWorkingDays && !isWorkingDay) {
