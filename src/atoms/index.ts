@@ -1,17 +1,17 @@
-import { atom } from 'jotai';
-import { Version3Models } from 'jira.js';
-import { Alert } from 'react-native';
-import { initiateJiraClient, getJiraClient, getWorklogs, deleteWorklog } from '../services/jira.service';
-import { getFromStorage, StorageKey } from '../services/storage.service';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { AuthModel } from '../services/storage.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DayId, Layout, Worklog, WorklogState } from '../types/global.types';
-import { formatDateToYYYYMMDD } from '../services/date.service';
+import { Version3Models } from 'jira.js';
+import { atom, createStore } from 'jotai';
+import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { Overlay, SidebarLayout } from '../const';
-import { createNewWorklogForIssue, syncWorklogs } from '../services/worklog.service';
+import { formatDateToYYYYMMDD } from '../services/date.service';
+import { deleteWorklog, getWorklogs } from '../services/jira.service';
+import { AuthModel, StorageKey } from '../services/storage.service';
+import { syncWorklogs } from '../services/worklog.service';
 import { lightTheme } from '../styles/theme/theme-light';
 import { Theme } from '../styles/theme/theme-types';
+import { DayId, Worklog, WorklogState } from '../types/global.types';
+
+export const store = createStore();
 
 // TODO @florianmrz is it secure to store the token in AsyncStorage?
 // TODO @florianmrz should we type `any` here?
@@ -21,6 +21,7 @@ export const jiraAuthAtom = atomWithStorage<AuthModel | null>(StorageKey.AUTH, n
 
 export const logoutAtom = atom(null, (_get, set) => {
   set(jiraAuthAtom, null);
+  set(userInfoAtom, null);
 });
 
 export const userInfoAtom = atom<Version3Models.User | null>(null);
@@ -47,15 +48,10 @@ export const worklogsForCurrentDayAtom = atom(get => {
   return worklogs.filter(worklog => worklog.started === get(selectedDateAtom));
 });
 
-export const loadWorklogsAtom = atom(null, async (get, set) => {
-  const userInfo = await get(userInfoAtom);
-  const worklogs = await getWorklogs(userInfo!.accountId!);
-  set(worklogsAtom, worklogs);
-});
 export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
   const worklogs = get(worklogsForCurrentDayAtom);
   await syncWorklogs(worklogs);
-  const userInfo = await get(userInfoAtom);
+  const userInfo = get(userInfoAtom);
   const updatedWorklogs = await getWorklogs(userInfo!.accountId!);
   set(worklogsAtom, updatedWorklogs);
   return updatedWorklogs;

@@ -1,10 +1,9 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Alert, Text, useColorScheme } from 'react-native';
-import { jiraAuthAtom, loadWorklogsAtom, themeAtom, userInfoAtom, worklogsAtom } from '../atoms';
+import { jiraAuthAtom, themeAtom, userInfoAtom, worklogsAtom } from '../atoms';
 import { Login } from '../screens/Login';
-import { worklogsFakeData } from '../services/fake-data.service';
-import { getJiraClient, initiateJiraClient } from '../services/jira.service';
+import { getWorklogs, jiraClient } from '../services/jira.service';
 import { darkTheme } from '../styles/theme/theme-dark';
 import { lightTheme } from '../styles/theme/theme-light';
 
@@ -14,28 +13,18 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const colorScheme = useColorScheme();
   const setTheme = useSetAtom(themeAtom);
   const setWorklogs = useSetAtom(worklogsAtom);
-  const loadWorklogs = useSetAtom(loadWorklogsAtom);
   const jiraAuth = useAtomValue(jiraAuthAtom);
-
-  // TODO remove again when basic implemention is stable
-  const useFakeData = false;
 
   useEffect(() => {
     (async () => {
-      // Attempt to authenticate using existing auth token
-      if (!jiraAuth) {
-        return setUserInfo(null);
-      }
-
-      initiateJiraClient(jiraAuth);
-
       setIsLoading(true);
-
       try {
-        const userInfoRes = await getJiraClient().myself.getCurrentUser();
+        const userInfoRes = await jiraClient.myself.getCurrentUser();
         setUserInfo(userInfoRes);
+        const worklogs = await getWorklogs(userInfoRes.accountId);
+        setWorklogs(worklogs);
       } catch (error) {
-        if ((error as any).status === 403) {
+        if ((error as any).status === 403 || (error as Error).message === 'refresh_token is invalid') {
           // Refresh token has expired after 90 days, user needs to re-authenticate
           Alert.alert('Your session has expired!', 'Please log in again.');
         } else {
@@ -47,16 +36,6 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     })();
   }, [jiraAuth]);
-
-  useEffect(() => {
-    if (useFakeData) {
-      setWorklogs(worklogsFakeData);
-      return;
-    }
-    if (userInfo?.accountId) {
-      loadWorklogs();
-    }
-  }, [userInfo]);
 
   /**
    * Auto-set theme

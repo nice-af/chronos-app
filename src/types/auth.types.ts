@@ -6,6 +6,11 @@ export interface GetOauthTokenResponse {
   token_type: 'Bearer';
 }
 
+export interface GetOauthTokenErrorResponse {
+  error: string;
+  error_description: string;
+}
+
 export type GetAccessibleResourcesResponse = JiraResource[];
 
 export interface JiraResource {

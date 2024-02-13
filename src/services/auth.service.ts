@@ -5,8 +5,15 @@ import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import uuid from 'react-native-uuid';
 import { jiraAuthAtom } from '../atoms';
-import { GetAccessibleResourcesResponse, GetOauthTokenResponse } from '../types/auth.types';
+import { GetAccessibleResourcesResponse, GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
+
+const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
+  if ('error' in res) {
+    throw new Error(res.error_description);
+  }
+  return res;
+};
 
 /**
  * Exchanges the OAuth code for an access token and refresh token
@@ -22,7 +29,9 @@ async function getOAuthToken(code: string): Promise<GetOauthTokenResponse> {
       code: code,
       redirect_uri: JIRA_REDIRECT_URI,
     }),
-  }).then(response => response.json() as Promise<GetOauthTokenResponse>);
+  })
+    .then(response => response.json() as Promise<GetOauthTokenResponse | GetOauthTokenErrorResponse>)
+    .then(handleOAuthError);
 }
 
 /**
@@ -38,7 +47,9 @@ export async function refreshAccessToken(refreshToken: string): Promise<GetOauth
       client_secret: JIRA_SECRET,
       refresh_token: refreshToken,
     }),
-  }).then(response => response.json() as Promise<GetOauthTokenResponse>);
+  })
+    .then(response => response.json() as Promise<GetOauthTokenResponse | GetOauthTokenErrorResponse>)
+    .then(handleOAuthError);
 }
 
 /**

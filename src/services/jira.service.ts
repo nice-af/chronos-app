@@ -1,80 +1,56 @@
 import { AxiosInstance } from 'axios';
-import { Config, Version3Client } from 'jira.js';
+import { Version3Client } from 'jira.js';
 import { Issue, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
+import { jiraAuthAtom, store } from '../atoms';
 import { Worklog, WorklogState } from '../types/global.types';
 import { extractTextFromJSON } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
-import { StorageKey, setInStorage } from './storage.service';
 
 // TODO: Use a more lightweight client
-// import { Issues } from 'jira.js/out/version3';
-// export class CustomJiraClient extends BaseClient {
-//   issues = new Issues(this);
-// }
 
-let client: Version3Client;
+export const jiraClient = new Version3Client({ host: 'https://example.com' });
 
-export function getJiraClient() {
-  return client;
-}
+// @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
+const axiosInstance = jiraClient.instance as AxiosInstance;
 
-/**
- * Creates a new Jira client instance
- * @param cloudId Cloud ID of the Jira instance
- * @param accessToken The bearer token to use for authentication
- */
-export function initiateJiraClient({
-  cloudId,
-  accessToken,
-  refreshToken,
-}: {
-  cloudId: string;
-  accessToken: string;
-  refreshToken: string;
-}) {
-  let currentRefreshToken = refreshToken;
-  client = new Version3Client({
-    host: `https://api.atlassian.com/ex/jira/${cloudId}`,
-    authentication: {
-      oauth2: { accessToken },
-    },
-  });
+// Inject current access token
+axiosInstance.interceptors.request.use(async config => {
+  const jiraAuth = await store.get(jiraAuthAtom);
+  config.baseURL = `https://api.atlassian.com/ex/jira/${jiraAuth!.cloudId}`;
+  if (jiraAuth?.accessToken) {
+    config.headers.Authorization = `Bearer ${jiraAuth!.accessToken}`;
+  }
+  return config;
+});
 
-  // @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
-  const axiosInstance = client.instance as AxiosInstance;
-  axiosInstance.interceptors.response.use(
-    response => response,
-    async error => {
-      const status = error.response ? error.response.status : null;
+axiosInstance.interceptors.response.use(
+  response => response,
+  async error => {
+    const status = error.response ? error.response.status : null;
 
-      if (status === 401) {
-        const freshTokens = await refreshAccessToken(currentRefreshToken);
-
-        await setInStorage(StorageKey.AUTH, {
-          cloudId,
-          accessToken: freshTokens.access_token,
-          refreshToken: freshTokens.refresh_token,
-        });
-
-        // Set new token in for this request
-        error.config.headers.Authorization = `Bearer ${freshTokens.access_token}`;
-
-        // Set new token for all upcoming requests
-        // @ts-expect-error (we are accessing a protected property here, but it's the only way to update the token in the client instance)
-        (client.config! as Config).authentication.oauth2.accessToken = freshTokens.access_token;
-        currentRefreshToken = freshTokens.refresh_token;
-
-        return axiosInstance.request(error.config);
+    if (status === 401) {
+      const jiraAuth = await store.get(jiraAuthAtom);
+      if (!jiraAuth?.refreshToken) {
+        return Promise.reject(error);
       }
 
-      return Promise.reject(error);
-    }
-  );
+      const freshTokens = await refreshAccessToken(jiraAuth.refreshToken);
 
-  return client;
-}
+      // Update auth tokens for upcoming requests
+      await store.set(jiraAuthAtom, {
+        ...jiraAuth,
+        accessToken: freshTokens.access_token,
+        refreshToken: freshTokens.refresh_token,
+      });
+
+      return axiosInstance.request(error.config);
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /**
  * Converts Jira worklogs to our custom format
@@ -105,10 +81,6 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
  * Gets all worklogs of the last month of the current user
  */
 export async function getWorklogs(accountId: string): Promise<Worklog[]> {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-
   const startedAfterTimestamp = new Date().getTime() - ms('4w');
 
   const worklogsCompact: Worklog[] = [];
@@ -119,7 +91,7 @@ export async function getWorklogs(accountId: string): Promise<Worklog[]> {
 
   // Loop through all issues with recent worklogs
   for (let currentIssue = 0; currentIssue < totalIssues; issuesFailsafe++) {
-    const issuesCall = await client.issueSearch.searchForIssuesUsingJqlPost({
+    const issuesCall = await jiraClient.issueSearch.searchForIssuesUsingJqlPost({
       jql: jqlQuery,
       fields: ['summary', 'worklog'],
       maxResults: maxIssuesResults,
@@ -137,7 +109,7 @@ export async function getWorklogs(accountId: string): Promise<Worklog[]> {
         let totalWorklogs = 1;
         let worklogsFailsafe = 0;
         for (let currentWorklog = 0; currentWorklog < totalWorklogs; worklogsFailsafe++) {
-          const worklogsCall = await client.issueWorklogs.getIssueWorklog({
+          const worklogsCall = await jiraClient.issueWorklogs.getIssueWorklog({
             issueIdOrKey: issue.id,
             maxResults: maxWorklogResults,
             startAt: currentWorklog,
@@ -168,23 +140,16 @@ export async function getWorklogs(accountId: string): Promise<Worklog[]> {
 /**
  * Gets all issues that match a given search query
  */
-export async function getIssuesBySearchQuery(query: string) {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-  return await client.issueSearch.searchForIssuesUsingJqlPost({
+export function getIssuesBySearchQuery(query: string) {
+  return jiraClient.issueSearch.searchForIssuesUsingJqlPost({
     jql: `summary ~ "${query}" OR description ~ "${query}" ORDER BY created DESC`,
     fields: ['summary', 'project'],
     maxResults: 50,
   });
 }
 
-export async function createWorklog(worklog: Worklog) {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-
-  return await client.issueWorklogs.addWorklog({
+export function createWorklog(worklog: Worklog) {
+  return jiraClient.issueWorklogs.addWorklog({
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
     timeSpentSeconds: worklog.timeSpentSeconds,
@@ -192,12 +157,8 @@ export async function createWorklog(worklog: Worklog) {
   });
 }
 
-export async function updateWorklog(worklog: Worklog) {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-
-  return await client.issueWorklogs.updateWorklog({
+export function updateWorklog(worklog: Worklog) {
+  return jiraClient.issueWorklogs.updateWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
@@ -206,12 +167,8 @@ export async function updateWorklog(worklog: Worklog) {
   });
 }
 
-export async function deleteWorklog(worklog: Worklog) {
-  if (!client) {
-    throw new Error('Jira client not initialized');
-  }
-
-  return await client.issueWorklogs.deleteWorklog({
+export function deleteWorklog(worklog: Worklog) {
+  return jiraClient.issueWorklogs.deleteWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
   });
