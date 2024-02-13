@@ -32,7 +32,9 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
                 : require('../assets/icons/chevron-right-small-dark.png')
             }
           />
-          <Text style={styles.parentIssue}>{issue.fields.project.name}</Text>
+          <Text numberOfLines={1} style={styles.parentIssue}>
+            {issue.fields.project.name}
+          </Text>
         </View>
         <Text style={styles.title}>{issue.fields.summary}</Text>
       </View>
@@ -61,6 +63,7 @@ function createStyles(theme: Theme) {
     },
     content: {
       flexGrow: 1,
+      flexShrink: 1,
     },
     headlineContainer: {
       display: 'flex',
@@ -71,11 +74,13 @@ function createStyles(theme: Theme) {
     parentIssue: {
       ...typo.callout,
       color: theme.textSecondary,
+      flex: 1,
     },
     title: {
       ...typo.headline,
       color: theme.textPrimary,
       marginTop: 8,
+      flex: 1,
     },
     plusIcon: {
       width: 24,
