@@ -88,9 +88,11 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
       <Text style={[styles.duration, { color: isRunning ? theme.green : theme.textSecondary }]}>
         {formatSecondsToHMM(duration)}
       </Text>
-      <Text>
-        {/* TODO this is only for debugging */}({duration}s)
-      </Text>
+      {__DEV__ && (
+        <Text>
+          {/* TODO this is only for debugging */}({duration}s)
+        </Text>
+      )}
     </View>
   );
 };
