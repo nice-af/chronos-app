@@ -4,8 +4,6 @@ import SwiftUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-  var popover: NSPopover!
-  // var window: NSWindow!
   var statusBarItem: NSStatusItem!
   var windowController : CustomWindowController!
   
@@ -20,7 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
     
     let jsCodeLocation: URL
-    
     #if DEBUG
       jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
     #else
@@ -32,7 +29,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     rootViewController.view = rootView
     
     statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(60))
-    
     if let button = self.statusBarItem.button {
       button.action = #selector(toggleWindow(_:))
       button.title = "JTA"
@@ -41,29 +37,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Create the application window
     windowController = CustomWindowController()
     windowController.window!.contentViewController = rootViewController
-    
-    // window.isOpaque = false
-    // window.makeKeyAndOrderFront(nil)
-    // window.isMovableByWindowBackground = false
-    // window.titlebarAppearsTransparent = true
-    // window.titleVisibility = .hidden
-    // window.styleMask.insert(NSWindow.StyleMask.fullSizeContentView)
-    // window.contentViewController = rootViewController
-    // window.center()
-    // window.setFrameAutosaveName("Jira Time Tracker Main Window")
-    // window.isReleasedWhenClosed = false
-    // window.makeKeyAndOrderFront(self)
-    
-    // Add a toolbar to the window to increase its titlebar height
-    // let toolbar = NSToolbar()
-    // toolbar.showsBaselineSeparator = false
-    // window.toolbar = toolbar
-    // window.toolbarStyle = .unified
-    
-    // Click through toolbar
-    // window.addTitlebarAccessoryViewController(NSTitlebarAccessoryViewController())
-    
-    
     let screen: NSScreen = NSScreen.main!
     let midScreenX = screen.frame.midX
     let posScreenY = 200
@@ -94,9 +67,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       } else {
         self.windowController.window!.display();
         self.windowController.window!.becomeKey();
-        // self.window.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
-        
-        // self.popover.contentViewController?.view.window?.becomeKey()
       }
     }
   }
