@@ -71,10 +71,7 @@ export const Entries: FC = () => {
         onBackPress: undefined,
         position: 'absolute',
       }}>
-      <ScrollView
-        style={styles.entriesContainer}
-        removeClippedSubviews={false}
-        contentInset={{ top: Platform.OS === 'windows' ? 0 : 52 + 6, bottom: 6 }}>
+      <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
         {worklogsForCurrentDay.map(worklog => (
           <TrackingListEntry key={worklog.id} worklog={worklog} />
         ))}
@@ -113,13 +110,6 @@ function createStyles(theme: Theme) {
     entriesContainer: {
       flexGrow: 1,
       overflow: 'visible',
-      ...Platform.select({
-        default: {},
-        windows: {
-          marginTop: 52 + 6,
-          marginBottom: 6,
-        },
-      }),
     },
     submitButtonContainer: {
       paddingVertical: 16,
