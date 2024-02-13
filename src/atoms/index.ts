@@ -34,7 +34,14 @@ export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 
 export const worklogsAtom = atom<Worklog[]>([]);
 export const activeWorklogIdAtom = atom<string | null>(null);
-export const activeWorklogTimeElapsedAtom = atom(0);
+export const activeWorklogAtom = atom(get => {
+  const worklogId = get(activeWorklogIdAtom);
+  return get(worklogsAtom).find(worklog => worklog.id === worklogId) ?? null;
+});
+/**
+ * Unix timestamp where the tracking of the active worklog started
+ */
+export const activeWorklogTrackingStartedAtom = atom(0);
 export const worklogsForCurrentDayAtom = atom(get => {
   const worklogs = get(worklogsAtom);
   return worklogs.filter(worklog => worklog.started === get(selectedDateAtom));

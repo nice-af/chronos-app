@@ -1,15 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Alert, Text, useColorScheme } from 'react-native';
-import {
-  activeWorklogIdAtom,
-  activeWorklogTimeElapsedAtom,
-  jiraAuthAtom,
-  loadWorklogsAtom,
-  themeAtom,
-  userInfoAtom,
-  worklogsAtom,
-} from '../atoms';
+import { jiraAuthAtom, loadWorklogsAtom, themeAtom, userInfoAtom, worklogsAtom } from '../atoms';
 import { Login } from '../screens/Login';
 import { worklogsFakeData } from '../services/fake-data.service';
 import { getJiraClient, initiateJiraClient } from '../services/jira.service';
@@ -21,10 +13,8 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [userInfo, setUserInfo] = useAtom(userInfoAtom);
   const colorScheme = useColorScheme();
   const setTheme = useSetAtom(themeAtom);
-  const setActiveWorklogTimeElapsed = useSetAtom(activeWorklogTimeElapsedAtom);
   const setWorklogs = useSetAtom(worklogsAtom);
   const loadWorklogs = useSetAtom(loadWorklogsAtom);
-  const activeWorklogId = useAtomValue(activeWorklogIdAtom);
   const jiraAuth = useAtomValue(jiraAuthAtom);
 
   // TODO remove again when basic implemention is stable
@@ -67,18 +57,6 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
       loadWorklogs();
     }
   }, [userInfo]);
-
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-    if (activeWorklogId) {
-      intervalId = setInterval(() => setActiveWorklogTimeElapsed(prev => prev + 1), 1000);
-    } else {
-      setActiveWorklogTimeElapsed(0);
-    }
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [activeWorklogId]);
 
   /**
    * Auto-set theme

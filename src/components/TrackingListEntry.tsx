@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogIdAtom,
-  activeWorklogTimeElapsedAtom,
+  activeWorklogTrackingStartedAtom,
   currentOverlayAtom,
   currentWorklogToEditAtom,
   updateWorklogAtom,
@@ -15,6 +15,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { Worklog, WorklogState } from '../types/global.types';
+import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 import { useDoublePress } from '../utils/double-press';
 import { IssueTag } from './IssueTag';
 import { PlayPauseButton } from './PlayPauseButton';
@@ -28,7 +29,8 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
   const activeWorklogId = useAtomValue(activeWorklogIdAtom);
-  const activeWorklogTimeElapsed = useAtomValue(activeWorklogTimeElapsedAtom);
+  const setActiveWorklogTrackingStarted = useSetAtom(activeWorklogTrackingStartedAtom);
+  const activeWorklogTrackingDuration = useActiveWorklogDuration();
   const updateWorklog = useSetAtom(updateWorklogAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
@@ -41,7 +43,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
 
   let duration = worklog.timeSpentSeconds;
   if (isActiveWorklog) {
-    duration = worklog.timeSpentSeconds + activeWorklogTimeElapsed;
+    duration = worklog.timeSpentSeconds + activeWorklogTrackingDuration;
   }
 
   return (
@@ -75,8 +77,11 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         onPress={() => {
           if (isActiveWorklog) {
             setActiveWorklogId(null);
-            updateWorklog({ ...worklog, timeSpentSeconds: duration });
+            if (activeWorklogTrackingDuration > 60) {
+              updateWorklog({ ...worklog, timeSpentSeconds: duration });
+            }
           } else {
+            setActiveWorklogTrackingStarted(Date.now());
             setActiveWorklogId(worklog.id);
           }
         }}

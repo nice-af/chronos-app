@@ -2,6 +2,7 @@ import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
+  activeWorklogAtom,
   hideNonWorkingDaysAtom,
   selectedDateAtom,
   sidebarLayoutAtom,
@@ -11,10 +12,11 @@ import {
 } from '../atoms';
 import { SidebarLayout } from '../const';
 import { useThemedStyles } from '../services/theme.service';
+import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { DayLabel, WorklogState, dayLabelToDayIdMap } from '../types/global.types';
-import { formatSecondsToHMM } from '../services/time.service';
+import { useActiveWorklogDuration } from '../utils/active-worklog-duration';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   dateString: string;
@@ -32,6 +34,8 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   const theme = useAtomValue(themeAtom);
   const worklogs = useAtomValue(worklogsAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
+  const activeWorklog = useAtomValue(activeWorklogAtom);
+  const activeWorklogTrackingDuration = useActiveWorklogDuration();
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -45,11 +49,12 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
     height = 28;
   }
 
-  const duration = formatSecondsToHMM(
-    worklogs
-      .filter(worklog => worklog.started === dateString)
-      .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0)
-  );
+  let duration = worklogs
+    .filter(worklog => worklog.started === dateString)
+    .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
+  if (activeWorklog?.started === dateString) {
+    duration += activeWorklogTrackingDuration;
+  }
   const isSelected = selectedDate === dateString;
 
   const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
@@ -88,7 +93,9 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
         )}
         <Text style={styles.day}>{dayLabel}</Text>
       </View>
-      {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && <Text style={styles.time}>{duration ?? '-'}</Text>}
+      {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && (
+        <Text style={styles.time}>{duration ? formatSecondsToHMM(duration) : '-'}</Text>
+      )}
     </Pressable>
   );
 };
