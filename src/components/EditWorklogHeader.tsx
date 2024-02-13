@@ -33,7 +33,6 @@ function createStyles(theme: Theme) {
   return StyleSheet.create({
     container: {
       position: 'relative',
-      width: '100%',
       height: 49,
       overflow: 'hidden',
       backgroundColor: theme.backgroundDark,
@@ -49,7 +48,6 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      width: '100%',
       height: 48,
       ...getPadding(0, 16),
     },
@@ -63,13 +61,14 @@ function createStyles(theme: Theme) {
     title: {
       ...typo.headline,
       color: theme.textPrimary,
-      flex: 1,
+      flexShrink: 0,
       marginTop: 2,
     },
     buttonsContainer: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'flex-end',
       gap: 8,
     },
   });
