@@ -38,8 +38,11 @@ function createStyles(theme: Theme) {
     label: {
       ...typo.body,
       color: theme.textPrimary,
+      flexBasis: 'auto',
+      flexShrink: 1,
     },
     toggleContainer: {
+      flexShrink: 0,
       ...Platform.select({
         default: {
           width: 26,
