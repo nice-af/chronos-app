@@ -14,8 +14,12 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const setTheme = useSetAtom(themeAtom);
   const setWorklogs = useSetAtom(worklogsAtom);
   const jiraAuth = useAtomValue(jiraAuthAtom);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   useEffect(() => {
+    if (!isFirstLoad) {
+      return;
+    }
     (async () => {
       setIsLoading(true);
       try {
@@ -33,6 +37,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
         setUserInfo(null);
       } finally {
         setIsLoading(false);
+        setIsFirstLoad(false);
       }
     })();
   }, [jiraAuth]);
