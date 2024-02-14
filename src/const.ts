@@ -9,3 +9,5 @@ export enum SidebarLayout {
   Compact = 'compact',
   Micro = 'micro',
 }
+
+export const LOADING_SPINNER_SPEED = 200;

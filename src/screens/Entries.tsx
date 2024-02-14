@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
@@ -32,11 +32,18 @@ export const Entries: FC = () => {
   const styles = useThemedStyles(createStyles);
   const todayDateString = formatDateToYYYYMMDD(new Date());
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
 
   const isToday = selectedDate === todayDateString;
+
+  async function startSync() {
+    setIsSyncing(true);
+    await syncWorklogsForCurrentDay();
+    setIsSyncing(false);
+  }
 
   const rightElement = (
     <>
@@ -79,7 +86,7 @@ export const Entries: FC = () => {
       </ScrollView>
       {hasChanges && (
         <View style={styles.submitButtonContainer}>
-          <ButtonPrimary label='Sync this day' textAlign='center' onPress={() => syncWorklogsForCurrentDay()} />
+          <ButtonPrimary label='Sync this day' isLoading={isSyncing} textAlign='center' onPress={() => startSync()} />
         </View>
       )}
     </Layout>
