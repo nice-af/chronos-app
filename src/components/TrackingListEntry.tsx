@@ -52,18 +52,19 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
-          {/* TODO remove, only for debugging */}
-          <Text
-            style={{
-              color:
-                worklog.state === WorklogState.Synced
-                  ? 'lime'
-                  : worklog.state === WorklogState.Edited
-                  ? 'yellow'
-                  : 'aqua',
-            }}>
-            [{worklog.state}]
-          </Text>
+          {__DEV__ && (
+            <Text
+              style={{
+                color:
+                  worklog.state === WorklogState.Synced
+                    ? 'lime'
+                    : worklog.state === WorklogState.Edited
+                    ? 'yellow'
+                    : 'aqua',
+              }}>
+              [{worklog.state.substring(0, 1).toUpperCase()}]
+            </Text>
+          )}
           <IssueTag label={worklog.issue.key} project={'orcaya'} />
           <Text numberOfLines={1} style={styles.title}>
             {worklog.issue.summary}
