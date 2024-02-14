@@ -8,8 +8,8 @@
 
   <Identity
     Name="5bdccf43-ec13-4be1-bfc8-2c9b6780ce49"
-    Publisher="CN=florian"
-    Version="1.0.0.0" />
+    Publisher="CN=adria"
+    Version="1.0.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="5bdccf43-ec13-4be1-bfc8-2c9b6780ce49"
     PhonePublisherId="00000000-0000-0000-0000-000000000000" />
@@ -34,12 +34,12 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="JiraTimeTracker.App">
       <uap:VisualElements
-        DisplayName="JiraTimeTracker"
+        DisplayName="Jira Time Tracker"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="JiraTimeTracker"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  ShortName="Jira Time Tracker" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
