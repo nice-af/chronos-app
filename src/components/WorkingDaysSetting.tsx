@@ -1,7 +1,7 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { themeAtom, workingDaysAtom } from '../atoms';
+import { settingsAtom, themeAtom, workingDaysAtom } from '../atoms';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -14,7 +14,8 @@ interface WorkingDaysSettingProps {
 }
 
 const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) => {
-  const [workingDays, setWorkingDays] = useAtom(workingDaysAtom);
+  const workingDays = useAtomValue(workingDaysAtom);
+  const setSettings = useSetAtom(settingsAtom);
   const [isHovered, setIsHovered] = useState(false);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
@@ -27,7 +28,7 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
     } else {
       newWorkingDays = [...workingDays, id];
     }
-    setWorkingDays(newWorkingDays);
+    setSettings(cur => ({ ...cur, workingDays: newWorkingDays }));
   };
 
   return (

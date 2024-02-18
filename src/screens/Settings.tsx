@@ -1,14 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import {
-  currentOverlayAtom,
-  disableEditingOfPastWorklogsAtom,
-  hideNonWorkingDaysAtom,
-  logoutAtom,
-  sidebarLayoutAtom,
-  themeAtom,
-} from '../atoms';
+import { currentOverlayAtom, logoutAtom, settingsAtom, themeAtom } from '../atoms';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
@@ -21,9 +14,7 @@ import { typo } from '../styles/typo';
 
 export const Settings: FC = () => {
   const logout = useSetAtom(logoutAtom);
-  const [sidebarLayout, setSidebarLayout] = useAtom(sidebarLayoutAtom);
-  const [hideNonWorkingDays, setHideNonWorkingDays] = useAtom(hideNonWorkingDaysAtom);
-  const [disableEditingOfPastWorklogs, setDisableEditingOfPastWorklogs] = useAtom(disableEditingOfPastWorklogsAtom);
+  const [settings, setSettings] = useAtom(settingsAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
@@ -37,8 +28,8 @@ export const Settings: FC = () => {
           <Text style={styles.headline}>Sidebar layout</Text>
           <View style={styles.cardsButtonContainer}>
             <CardsSelectionButton
-              isChecked={sidebarLayout === 'normal'}
-              onClick={() => setSidebarLayout(SidebarLayout.Normal)}
+              isChecked={settings.sidebarLayout === 'normal'}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Normal }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-normal-light.png')
@@ -47,8 +38,8 @@ export const Settings: FC = () => {
               label='Normal'
             />
             <CardsSelectionButton
-              isChecked={sidebarLayout === 'compact'}
-              onClick={() => setSidebarLayout(SidebarLayout.Compact)}
+              isChecked={settings.sidebarLayout === 'compact'}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Compact }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-compact-light.png')
@@ -57,8 +48,8 @@ export const Settings: FC = () => {
               label='Compact'
             />
             <CardsSelectionButton
-              isChecked={sidebarLayout === 'micro'}
-              onClick={() => setSidebarLayout(SidebarLayout.Micro)}
+              isChecked={settings.sidebarLayout === 'micro'}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Micro }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-micro-light.png')
@@ -71,14 +62,18 @@ export const Settings: FC = () => {
           <Text style={styles.headline}>Working days</Text>
           <WorkingDaysSetting />
           <View style={styles.hr} />
-          <Toggle label='Hide non working days' state={hideNonWorkingDays} setState={setHideNonWorkingDays} />
+          <Toggle
+            label='Hide non working days'
+            state={settings.hideNonWorkingDays}
+            setState={newState => setSettings(cur => ({ ...cur, hideNonWorkingDays: newState }))}
+          />
         </View>
         <View style={styles.card}>
           <Text style={styles.headline}>Worklogs</Text>
           <Toggle
             label='Disable editing of worklogs from past days'
-            state={disableEditingOfPastWorklogs}
-            setState={setDisableEditingOfPastWorklogs}
+            state={settings.disableEditingOfPastWorklogs}
+            setState={newState => setSettings(cur => ({ ...cur, disableEditingOfPastWorklogs: newState }))}
           />
         </View>
         <View style={styles.card}>

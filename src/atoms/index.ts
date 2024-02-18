@@ -4,7 +4,7 @@ import { atom, createStore } from 'jotai';
 import { Overlay, SidebarLayout } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { deleteWorklog, getRemoteWorklogs } from '../services/jira.service';
-import { AuthModel, StorageKey, setInStorage } from '../services/storage.service';
+import { AuthModel, SettingsModel, StorageKey, defaultStorageValues, setInStorage } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { lightTheme } from '../styles/theme/theme-light';
 import { Theme } from '../styles/theme/theme-types';
@@ -93,14 +93,22 @@ export const deleteWorklogAtom = atom(null, async (get, set, worklogId: string) 
   }
 });
 
-export const sidebarLayoutAtom = atom<SidebarLayout>(SidebarLayout.Normal);
-export const workingDaysAtom = atom<DayId[]>([0, 1, 2, 3, 4]);
-export const hideNonWorkingDaysAtom = atom(false);
-export const disableEditingOfPastWorklogsAtom = atom(true);
-export const themeAtom = atom<Theme>(lightTheme);
+export const settingsAtom = atom<SettingsModel>(defaultStorageValues[StorageKey.SETTINGS] as SettingsModel);
+export const sidebarLayoutAtom = atom<SidebarLayout>(get => get(settingsAtom).sidebarLayout);
+export const workingDaysAtom = atom<DayId[]>(get => get(settingsAtom).workingDays);
+export const hideNonWorkingDaysAtom = atom(get => get(settingsAtom).hideNonWorkingDays);
+export const disableEditingOfPastWorklogsAtom = atom(get => get(settingsAtom).disableEditingOfPastWorklogs);
+export const themeAtom = atom<Theme>(get => get(settingsAtom).theme);
 
+/**
+ * Persist changes to AsyncStorage
+ */
 store.sub(jiraAuthAtom, () => {
   const jiraAuth = store.get(jiraAuthAtom);
   // TODO @florianmrz is it secure to store the token in AsyncStorage?
   setInStorage(StorageKey.AUTH, jiraAuth);
+});
+store.sub(settingsAtom, () => {
+  const settings = store.get(settingsAtom);
+  setInStorage(StorageKey.SETTINGS, settings);
 });

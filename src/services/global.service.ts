@@ -1,10 +1,13 @@
-import { jiraAuthAtom, store, userInfoAtom, worklogsAtom } from '../atoms';
+import { jiraAuthAtom, settingsAtom, store, userInfoAtom, worklogsAtom } from '../atoms';
 import { getRemoteWorklogs, jiraClient } from './jira.service';
 import { AuthModel, StorageKey, getFromStorage } from './storage.service';
 
 export async function initialize(newAuth?: AuthModel) {
   const auth = newAuth ?? (await getFromStorage(StorageKey.AUTH));
   store.set(jiraAuthAtom, auth);
+
+  const settings = await getFromStorage(StorageKey.SETTINGS);
+  store.set(settingsAtom, settings);
 
   if (auth) {
     const userInfoRes = await jiraClient.myself.getCurrentUser();
