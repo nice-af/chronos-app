@@ -1,11 +1,10 @@
 import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
-import { useSetAtom } from 'jotai';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
-import { jiraAuthAtom } from '../atoms';
 import { GetAccessibleResourcesResponse, GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
+import { initialize } from './global.service';
 
 const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
   if ('error' in res) {
@@ -70,7 +69,6 @@ async function getCloudId(accessToken: string): Promise<string | null> {
 export const useAuthRequest = () => {
   const state = useRef<string>();
   const [isLoading, setIsLoading] = useState(false);
-  const setJiraAuth = useSetAtom(jiraAuthAtom);
 
   useEffect(() => {
     Linking.addEventListener('url', handleDeepLink);
@@ -94,7 +92,7 @@ export const useAuthRequest = () => {
         // TODO better wording - when does this actually happen? (e.g. when the user has no Jira account?)
         throw new Error('Could not find a valid resource to connect to. Please try again.');
       }
-      setJiraAuth({ accessToken, refreshToken, cloudId });
+      await initialize({ accessToken, refreshToken, cloudId });
     } catch (error) {
       Alert.alert((error as Error).message);
       return;

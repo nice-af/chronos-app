@@ -15,7 +15,7 @@ interface FooModel {
 }
 
 interface StorageTypes {
-  [StorageKey.AUTH]: AuthModel;
+  [StorageKey.AUTH]: AuthModel | null;
   [StorageKey.FOO]: FooModel;
 }
 

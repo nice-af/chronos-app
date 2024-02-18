@@ -1,7 +1,7 @@
 import { Issue } from 'jira.js/out/version3/models';
 import { Worklog, WorklogState } from '../types/global.types';
 import { formatDateToYYYYMMDD } from './date.service';
-import { createWorklog, updateWorklog } from './jira.service';
+import { createLocalWorklog, updateLocalWorklog } from './jira.service';
 
 export function createNewWorklogForIssue({
   issue,
@@ -35,10 +35,10 @@ export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
   for (const worklog of worklogs) {
     if (worklog.state === WorklogState.Local) {
       console.log('creating worklog', worklog);
-      await createWorklog(worklog);
+      await createLocalWorklog(worklog);
     } else if (worklog.state === WorklogState.Edited) {
       console.log('updating worklog', worklog);
-      await updateWorklog(worklog);
+      await updateLocalWorklog(worklog);
     }
   }
 }

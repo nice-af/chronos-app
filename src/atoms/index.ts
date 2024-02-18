@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Version3Models } from 'jira.js';
 import { atom, createStore } from 'jotai';
-import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 import { Overlay, SidebarLayout } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
-import { deleteWorklog, getWorklogs } from '../services/jira.service';
-import { AuthModel, StorageKey } from '../services/storage.service';
+import { deleteWorklog, getRemoteWorklogs } from '../services/jira.service';
+import { AuthModel, StorageKey, setInStorage } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { lightTheme } from '../styles/theme/theme-light';
 import { Theme } from '../styles/theme/theme-types';
@@ -13,11 +12,7 @@ import { DayId, Worklog, WorklogState } from '../types/global.types';
 
 export const store = createStore();
 
-// TODO @florianmrz is it secure to store the token in AsyncStorage?
-// TODO @florianmrz should we type `any` here?
-const storage = createJSONStorage<any>(() => AsyncStorage);
-
-export const jiraAuthAtom = atomWithStorage<AuthModel | null>(StorageKey.AUTH, null, storage, { getOnInit: true });
+export const jiraAuthAtom = atom<AuthModel | null>(null);
 
 export const logoutAtom = atom(null, (_get, set) => {
   set(jiraAuthAtom, null);
@@ -71,7 +66,7 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
   const worklogs = get(worklogsForCurrentDayAtom);
   await syncWorklogs(worklogs);
   const userInfo = get(userInfoAtom);
-  const updatedWorklogs = await getWorklogs(userInfo!.accountId!);
+  const updatedWorklogs = await getRemoteWorklogs(userInfo!.accountId!);
   set(worklogsAtom, updatedWorklogs);
   return updatedWorklogs;
 });
@@ -103,3 +98,9 @@ export const workingDaysAtom = atom<DayId[]>([0, 1, 2, 3, 4]);
 export const hideNonWorkingDaysAtom = atom(false);
 export const disableEditingOfPastWorklogsAtom = atom(true);
 export const themeAtom = atom<Theme>(lightTheme);
+
+store.sub(jiraAuthAtom, () => {
+  const jiraAuth = store.get(jiraAuthAtom);
+  // TODO @florianmrz is it secure to store the token in AsyncStorage?
+  setInStorage(StorageKey.AUTH, jiraAuth);
+});

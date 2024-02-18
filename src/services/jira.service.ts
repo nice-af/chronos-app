@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
 import { Issue, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
+import { Alert } from 'react-native';
 import { jiraAuthAtom, store } from '../atoms';
 import { Worklog, WorklogState } from '../types/global.types';
 import { extractTextFromJSON } from './atlassian-document-format.service';
@@ -17,8 +18,8 @@ const axiosInstance = jiraClient.instance as AxiosInstance;
 
 // Inject current access token
 axiosInstance.interceptors.request.use(async config => {
-  const jiraAuth = await store.get(jiraAuthAtom);
-  config.baseURL = `https://api.atlassian.com/ex/jira/${jiraAuth!.cloudId}`;
+  const jiraAuth = store.get(jiraAuthAtom);
+  config.baseURL = `https://api.atlassian.com/ex/jira/${jiraAuth?.cloudId}`;
   if (jiraAuth?.accessToken) {
     config.headers.Authorization = `Bearer ${jiraAuth!.accessToken}`;
   }
@@ -31,19 +32,29 @@ axiosInstance.interceptors.response.use(
     const status = error.response ? error.response.status : null;
 
     if (status === 401) {
-      const jiraAuth = await store.get(jiraAuthAtom);
+      const jiraAuth = store.get(jiraAuthAtom);
       if (!jiraAuth?.refreshToken) {
         return Promise.reject(error);
       }
 
-      const freshTokens = await refreshAccessToken(jiraAuth.refreshToken);
-
-      // Update auth tokens for upcoming requests
-      await store.set(jiraAuthAtom, {
-        ...jiraAuth,
-        accessToken: freshTokens.access_token,
-        refreshToken: freshTokens.refresh_token,
-      });
+      try {
+        const freshTokens = await refreshAccessToken(jiraAuth.refreshToken);
+        // Update auth tokens for upcoming requests
+        store.set(jiraAuthAtom, {
+          ...jiraAuth,
+          accessToken: freshTokens.access_token,
+          refreshToken: freshTokens.refresh_token,
+        });
+      } catch (err) {
+        if ((err as Error).message === 'refresh_token is invalid') {
+          // Refresh token has expired after 90 days, user needs to re-authenticate
+          Alert.alert('Your session has expired!', 'Please log in again.');
+          store.set(jiraAuthAtom, null);
+        } else {
+          // Retrow unexpected errors
+          throw err;
+        }
+      }
 
       return axiosInstance.request(error.config);
     }
@@ -78,9 +89,9 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
 }
 
 /**
- * Gets all worklogs of the last month of the current user
+ * Loads all worklogs of the last month of the current user from JIRA
  */
-export async function getWorklogs(accountId: string): Promise<Worklog[]> {
+export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
   const startedAfterTimestamp = new Date().getTime() - ms('4w');
 
   const worklogsCompact: Worklog[] = [];
@@ -148,7 +159,7 @@ export function getIssuesBySearchQuery(query: string) {
   });
 }
 
-export function createWorklog(worklog: Worklog) {
+export function createLocalWorklog(worklog: Worklog) {
   return jiraClient.issueWorklogs.addWorklog({
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
@@ -157,7 +168,7 @@ export function createWorklog(worklog: Worklog) {
   });
 }
 
-export function updateWorklog(worklog: Worklog) {
+export function updateLocalWorklog(worklog: Worklog) {
   return jiraClient.issueWorklogs.updateWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
