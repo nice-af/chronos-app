@@ -20,6 +20,10 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!isFirstLoad) {
       return;
     }
+    if (!jiraAuth) {
+      setIsLoading(false);
+      return;
+    }
     (async () => {
       setIsLoading(true);
       try {
