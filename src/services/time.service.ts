@@ -15,7 +15,7 @@ export function parseHMMToSeconds(input: string): number | null {
   try {
     const [hours, minutes] = input.split(':').map(Number);
     seconds = hours * 3600 + minutes * 60;
-    if (isNaN(seconds) || seconds <= 0) {
+    if (isNaN(seconds) || seconds < 0) {
       return null;
     }
   } catch (e) {
