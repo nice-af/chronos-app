@@ -63,6 +63,10 @@ function createStyles(theme: Theme) {
           borderColor: theme.borderSolid,
           borderBottomWidth: 1,
         },
+        windows: {
+          height: 50,
+          borderBottomWidth: 0,
+        },
       }),
     },
     content: {
@@ -75,10 +79,17 @@ function createStyles(theme: Theme) {
     },
     stripesBg: {
       position: 'absolute',
-      top: 0,
       left: 0,
       width: '100%',
       height: 48,
+      ...Platform.select({
+        default: {
+          top: 0,
+        },
+        windows: {
+          top: 1,
+        },
+      }),
     },
     title: {
       ...typo.headline,
