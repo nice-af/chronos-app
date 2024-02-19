@@ -37,7 +37,7 @@ export const worklogsRemoteAtom = atom<Worklog[]>([]);
 export const worklogsAtom = atom<Worklog[]>(get => {
   const local = get(worklogsLocalAtom);
   const remote = get(worklogsRemoteAtom).filter(worklog => !local.some(w => w.id === worklog.id));
-  return [...remote, ...local];
+  return [...remote, ...local].sort((a, b) => a.id.localeCompare(b.id));
 });
 export const activeWorklogIdAtom = atom<string | null>(null);
 export const activeWorklogAtom = atom(get => {
