@@ -13,7 +13,7 @@ export function createNewWorklogForIssue({
   started?: string;
 }): Worklog {
   return {
-    id: `local_${Math.round(Math.random() * 100_000)}`,
+    id: `local_${Date.now()}`,
     issue: {
       id: issue.id,
       key: issue.key,
