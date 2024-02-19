@@ -1,14 +1,13 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
-  activeWorklogIdAtom,
+  activeWorklogAtom,
   activeWorklogTrackingDurationAtom,
-  activeWorklogTrackingStartedAtom,
   currentOverlayAtom,
   currentWorklogToEditAtom,
-  updateWorklogAtom,
+  setWorklogAsActiveAtom,
 } from '../atoms';
 import { Overlay } from '../const';
 import { useThemedStyles } from '../services/theme.service';
@@ -27,11 +26,9 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
-  const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
-  const activeWorklogId = useAtomValue(activeWorklogIdAtom);
-  const setActiveWorklogTrackingStarted = useSetAtom(activeWorklogTrackingStartedAtom);
-  const [activeWorklogTrackingDuration, setActiveWorklogTrackingDuration] = useAtom(activeWorklogTrackingDurationAtom);
-  const updateWorklog = useSetAtom(updateWorklogAtom);
+  const activeWorklog = useAtomValue(activeWorklogAtom);
+  const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
+  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
     setCurrentWorklogToEdit(worklog);
@@ -39,7 +36,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   });
   const styles = useThemedStyles(createStyles);
 
-  const isActiveWorklog = activeWorklogId === worklog.id;
+  const isActiveWorklog = activeWorklog?.id === worklog.id;
 
   let duration = worklog.timeSpentSeconds;
   if (isActiveWorklog) {
@@ -67,7 +64,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
           )}
           <IssueTag label={worklog.issue.key} project={'orcaya'} />
           <Text numberOfLines={1} style={styles.title}>
-            {worklog.issue.summary}
+            {worklog.id} - {worklog.issue.summary}
           </Text>
         </View>
         {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
@@ -77,14 +74,9 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         isRunning={isActiveWorklog}
         onPress={() => {
           if (isActiveWorklog) {
-            setActiveWorklogId(null);
-            if (activeWorklogTrackingDuration >= 60) {
-              updateWorklog({ ...worklog, timeSpentSeconds: duration });
-            }
+            setWorklogAsActive(null);
           } else {
-            setActiveWorklogTrackingDuration(0);
-            setActiveWorklogTrackingStarted(Date.now());
-            setActiveWorklogId(worklog.id);
+            setWorklogAsActive(worklog.id);
           }
         }}
       />

@@ -1,12 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Version3Models } from 'jira.js';
 import { atom, createStore } from 'jotai';
 import { Overlay, SidebarLayout } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
-import { deleteWorklog, getRemoteWorklogs } from '../services/jira.service';
+import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira.service';
 import { AuthModel, SettingsModel, StorageKey, defaultStorageValues, setInStorage } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
-import { lightTheme } from '../styles/theme/theme-light';
 import { Theme } from '../styles/theme/theme-types';
 import { DayId, Worklog, WorklogState } from '../types/global.types';
 
@@ -39,15 +37,15 @@ export const worklogsAtom = atom<Worklog[]>(get => {
   const remote = get(worklogsRemoteAtom).filter(worklog => !local.some(w => w.id === worklog.id));
   return [...remote, ...local].sort((a, b) => a.id.localeCompare(b.id));
 });
-export const activeWorklogIdAtom = atom<string | null>(null);
+const activeWorklogIdAtom = atom<string | null>(null);
 export const activeWorklogAtom = atom(get => {
   const worklogId = get(activeWorklogIdAtom);
-  return get(worklogsRemoteAtom).find(worklog => worklog.id === worklogId) ?? null;
+  return get(worklogsAtom).find(worklog => worklog.id === worklogId) ?? null;
 });
 /**
  * Unix timestamp where the tracking of the active worklog started
  */
-export const activeWorklogTrackingStartedAtom = atom(0);
+const activeWorklogTrackingStartedAtom = atom(0);
 /**
  * Duration in seconds of the currently running worklog
  */
@@ -58,12 +56,14 @@ export const activeWorklogTrackingDurationAtom = atom(0);
  */
 setInterval(() => {
   const start = store.get(activeWorklogTrackingStartedAtom);
+  let diff: number;
   if (start === 0) {
-    store.set(activeWorklogTrackingDurationAtom, 0);
+    diff = 0;
+  } else {
+    const raw = Date.now() - start;
+    // Round to nearest minute
+    diff = Math.floor(raw / 1000 / 60) * 60;
   }
-  const raw = Date.now() - start;
-  // Round to nearest minute
-  const diff = Math.floor(raw / 1000 / 60) * 60;
   store.set(activeWorklogTrackingDurationAtom, diff);
 }, 1_000);
 
@@ -89,15 +89,28 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
 
 export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => {
   set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
-  set(activeWorklogIdAtom, worklog.id);
+  set(setWorklogAsActiveAtom, worklog.id);
+});
+export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | null) => {
+  const activeWorklog = get(activeWorklogAtom);
+  const activeWorklogTrackingDuration = get(activeWorklogTrackingDurationAtom);
+
+  if (activeWorklog && activeWorklogTrackingDuration > 0) {
+    set(updateWorklogAtom, {
+      ...activeWorklog,
+      timeSpentSeconds: activeWorklog.timeSpentSeconds + activeWorklogTrackingDuration,
+    });
+  }
+
+  set(activeWorklogIdAtom, worklogId);
   set(activeWorklogTrackingDurationAtom, 0);
   set(activeWorklogTrackingStartedAtom, Date.now());
 });
-export const updateWorklogAtom = atom(null, (_get, set, worklog: Worklog) => {
+export const updateWorklogAtom = atom(null, (get, set, worklog: Worklog) => {
   if (worklog.state !== WorklogState.Local) {
     worklog.state = WorklogState.Edited;
   }
-  const currentWorklogs = store.get(worklogsLocalAtom);
+  const currentWorklogs = get(worklogsLocalAtom);
   const exists = currentWorklogs.some(w => w.id === worklog.id);
   if (exists) {
     set(worklogsLocalAtom, worklogs => worklogs.map(w => (w.id === worklog.id ? worklog : w)));
@@ -109,7 +122,7 @@ export const deleteWorklogAtom = atom(null, async (get, set, worklogId: string) 
   const worklogsRemote = get(worklogsRemoteAtom);
   const worklogRemote = worklogsRemote.find(w => w.id === worklogId);
   if (worklogRemote) {
-    await deleteWorklog(worklogRemote);
+    await deleteRemoteWorklog(worklogRemote);
     set(
       worklogsRemoteAtom,
       worklogsRemote.filter(w => w.id !== worklogId)
