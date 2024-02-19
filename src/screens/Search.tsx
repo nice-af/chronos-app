@@ -1,4 +1,4 @@
-import { SearchResults } from 'jira.js/out/version3/models';
+import { Issue, SearchResults } from 'jira.js/out/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -31,7 +31,7 @@ export const Search: FC = () => {
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState<SearchResults>();
+  const [searchResults, setSearchResults] = useState<Issue[]>([]);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const hasCharacters = searchValue.trim().length > 0;
@@ -94,7 +94,7 @@ export const Search: FC = () => {
           </View>
         )}
         {!searchIsLoading &&
-          searchResults?.issues?.map(issue => (
+          searchResults?.map(issue => (
             <SearchResultsEntry
               key={issue.id}
               issue={issue}
@@ -108,7 +108,7 @@ export const Search: FC = () => {
         {hasCharacters && !enoughCharacters && !searchIsLoading && (
           <Text style={styles.errorMessage}>Please enter at least 3 characters</Text>
         )}
-        {enoughCharacters && !searchIsLoading && searchResults?.issues?.length === 0 && (
+        {enoughCharacters && !searchIsLoading && searchResults?.length === 0 && (
           <Text style={styles.errorMessage}>No search results found</Text>
         )}
       </ScrollView>
