@@ -7,7 +7,7 @@ import { lightTheme } from '../styles/theme/theme-light';
 export enum StorageKey {
   AUTH = 'auth',
   SETTINGS = 'settings',
-  LOCAL_WORKLOGS = 'localWorklogs',
+  WORKLOGS_LOCAL = 'worklogsLocal',
 }
 
 export interface AuthModel {
@@ -27,7 +27,7 @@ export interface SettingsModel {
 interface StorageTypes {
   [StorageKey.AUTH]: AuthModel | null;
   [StorageKey.SETTINGS]: SettingsModel;
-  [StorageKey.LOCAL_WORKLOGS]: Worklog[];
+  [StorageKey.WORKLOGS_LOCAL]: Worklog[];
 }
 
 export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
@@ -39,7 +39,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     disableEditingOfPastWorklogs: true,
     theme: lightTheme,
   },
-  [StorageKey.LOCAL_WORKLOGS]: [],
+  [StorageKey.WORKLOGS_LOCAL]: [],
 };
 
 export async function getFromStorage<T extends StorageKey = never>(key: T): Promise<StorageTypes[T]> {

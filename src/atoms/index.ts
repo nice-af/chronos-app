@@ -28,11 +28,21 @@ export const selectedDateAtom = atom(formatDateToYYYYMMDD(new Date()));
 export const currentOverlayAtom = atom<Overlay | null>(null);
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 
-export const worklogsAtom = atom<Worklog[]>([]);
+export const worklogsLocalAtom = atom<Worklog[]>([]);
+export const worklogsRemoteAtom = atom<Worklog[]>([]);
+/**
+ * Local and remote worklogs combined.
+ * Local worklogs are prioritized over remote worklogs.
+ */
+export const worklogsAtom = atom<Worklog[]>(get => {
+  const local = get(worklogsLocalAtom);
+  const remote = get(worklogsRemoteAtom).filter(worklog => !local.some(w => w.id === worklog.id));
+  return [...remote, ...local];
+});
 export const activeWorklogIdAtom = atom<string | null>(null);
 export const activeWorklogAtom = atom(get => {
   const worklogId = get(activeWorklogIdAtom);
-  return get(worklogsAtom).find(worklog => worklog.id === worklogId) ?? null;
+  return get(worklogsRemoteAtom).find(worklog => worklog.id === worklogId) ?? null;
 });
 /**
  * Unix timestamp where the tracking of the active worklog started
@@ -63,33 +73,53 @@ export const worklogsForCurrentDayAtom = atom(get => {
 });
 
 export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
-  const worklogs = get(worklogsForCurrentDayAtom);
-  await syncWorklogs(worklogs);
+  const localWorklogs = get(worklogsLocalAtom);
+  const worklogsToSync = get(worklogsForCurrentDayAtom).filter(w => localWorklogs.find(lw => lw.id === w.id));
+  await syncWorklogs(worklogsToSync);
+
   const userInfo = get(userInfoAtom);
   const updatedWorklogs = await getRemoteWorklogs(userInfo!.accountId!);
-  set(worklogsAtom, updatedWorklogs);
+  set(worklogsRemoteAtom, updatedWorklogs);
+
+  // Remove local worklogs that have been synced
+  set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
+
   return updatedWorklogs;
 });
 
 export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => {
-  set(worklogsAtom, worklogs => [...worklogs, worklog]);
+  set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   set(activeWorklogIdAtom, worklog.id);
 });
 export const updateWorklogAtom = atom(null, (_get, set, worklog: Worklog) => {
   if (worklog.state !== WorklogState.Local) {
     worklog.state = WorklogState.Edited;
   }
-  set(worklogsAtom, worklogs => worklogs.map(w => (w.id === worklog.id ? worklog : w)));
+  const currentWorklogs = store.get(worklogsLocalAtom);
+  const exists = currentWorklogs.some(w => w.id === worklog.id);
+  if (exists) {
+    set(worklogsLocalAtom, worklogs => worklogs.map(w => (w.id === worklog.id ? worklog : w)));
+  } else {
+    set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
+  }
 });
 export const deleteWorklogAtom = atom(null, async (get, set, worklogId: string) => {
-  const worklogs = get(worklogsAtom);
-  const worklogToDelete = worklogs.find(w => w.id === worklogId);
-  if (worklogToDelete) {
+  const worklogsRemote = get(worklogsRemoteAtom);
+  const worklogRemote = worklogsRemote.find(w => w.id === worklogId);
+  if (worklogRemote) {
+    await deleteWorklog(worklogRemote);
     set(
-      worklogsAtom,
-      worklogs.filter(w => w.id !== worklogId)
+      worklogsRemoteAtom,
+      worklogsRemote.filter(w => w.id !== worklogId)
     );
-    await deleteWorklog(worklogToDelete);
+  }
+  const worklogsLocal = get(worklogsLocalAtom);
+  const worklogLocal = worklogsLocal.find(w => w.id === worklogId);
+  if (worklogLocal) {
+    set(
+      worklogsLocalAtom,
+      worklogsLocal.filter(w => w.id !== worklogId)
+    );
   }
 });
 
@@ -111,4 +141,8 @@ store.sub(jiraAuthAtom, () => {
 store.sub(settingsAtom, () => {
   const settings = store.get(settingsAtom);
   setInStorage(StorageKey.SETTINGS, settings);
+});
+store.sub(worklogsLocalAtom, () => {
+  const worklogs = store.get(worklogsLocalAtom);
+  setInStorage(StorageKey.WORKLOGS_LOCAL, worklogs);
 });
