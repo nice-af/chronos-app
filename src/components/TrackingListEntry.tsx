@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
@@ -30,7 +30,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setActiveWorklogId = useSetAtom(activeWorklogIdAtom);
   const activeWorklogId = useAtomValue(activeWorklogIdAtom);
   const setActiveWorklogTrackingStarted = useSetAtom(activeWorklogTrackingStartedAtom);
-  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
+  const [activeWorklogTrackingDuration, setActiveWorklogTrackingDuration] = useAtom(activeWorklogTrackingDurationAtom);
   const updateWorklog = useSetAtom(updateWorklogAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
@@ -82,6 +82,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
               updateWorklog({ ...worklog, timeSpentSeconds: duration });
             }
           } else {
+            setActiveWorklogTrackingDuration(0);
             setActiveWorklogTrackingStarted(Date.now());
             setActiveWorklogId(worklog.id);
           }

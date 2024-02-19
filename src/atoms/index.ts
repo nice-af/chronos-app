@@ -90,6 +90,8 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
 export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => {
   set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   set(activeWorklogIdAtom, worklog.id);
+  set(activeWorklogTrackingDurationAtom, 0);
+  set(activeWorklogTrackingStartedAtom, Date.now());
 });
 export const updateWorklogAtom = atom(null, (_get, set, worklog: Worklog) => {
   if (worklog.state !== WorklogState.Local) {
