@@ -126,8 +126,8 @@ function createStyles(theme: Theme) {
       }),
     },
     submitButtonContainer: {
-      paddingVertical: 16,
-      paddingHorizontal: 12,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
       borderColor: theme.border,
       borderTopWidth: 1,
     },
