@@ -62,8 +62,8 @@ function createStyles(theme: Theme) {
       ...getPadding(12, 16),
     },
     content: {
+      flexBasis: 1,
       flexGrow: 1,
-      flexShrink: 1,
     },
     headlineContainer: {
       display: 'flex',
@@ -80,7 +80,7 @@ function createStyles(theme: Theme) {
       ...typo.headline,
       color: theme.textPrimary,
       marginTop: 8,
-      flex: 1,
+      width: '100%',
     },
     plusIcon: {
       width: 24,
