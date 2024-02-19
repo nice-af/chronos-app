@@ -84,8 +84,6 @@ function createStyles(theme: Theme) {
       flexDirection: 'column',
       alignItems: 'center',
       gap: 10,
-      flexGrow: 0,
-      flexBasis: 92,
       width: 92,
       ...getPadding(11, 16, 6),
       ...Platform.select({
