@@ -159,7 +159,7 @@ export function getIssuesBySearchQuery(query: string) {
   });
 }
 
-export function createLocalWorklog(worklog: Worklog) {
+export function createRemoteWorklog(worklog: Worklog) {
   return jiraClient.issueWorklogs.addWorklog({
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
@@ -168,7 +168,7 @@ export function createLocalWorklog(worklog: Worklog) {
   });
 }
 
-export function updateLocalWorklog(worklog: Worklog) {
+export function updateRemoteWorklog(worklog: Worklog) {
   return jiraClient.issueWorklogs.updateWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
@@ -178,7 +178,7 @@ export function updateLocalWorklog(worklog: Worklog) {
   });
 }
 
-export function deleteWorklog(worklog: Worklog) {
+export function deleteRemoteWorklog(worklog: Worklog) {
   return jiraClient.issueWorklogs.deleteWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
