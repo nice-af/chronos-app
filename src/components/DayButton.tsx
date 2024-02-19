@@ -147,7 +147,7 @@ function createStyles(theme: Theme) {
           top: -1,
           left: -1,
           width: 54,
-          borderRadius: 10,
+          borderRadius: 8,
         },
       }),
     },
