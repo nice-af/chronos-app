@@ -48,6 +48,7 @@ export const AnimateScreenContainer: FC<AnimateScreenContainerProps> = ({
           ],
           zIndex: zIndex,
         },
+        !isRendered && styles.isHidden,
       ]}>
       {isRendered && children}
     </Animated.View>
@@ -62,5 +63,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     overflow: 'hidden',
+  },
+  isHidden: {
+    display: 'none',
+    pointerEvents: 'none',
   },
 });
