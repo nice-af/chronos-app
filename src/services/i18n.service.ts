@@ -1,12 +1,12 @@
-import { useCallback, useMemo } from 'react';
-import { NativeModules } from 'react-native';
-import translationsDE from '../translations/de.json';
-import translationsEN from '../translations/en.json';
-import { pickLocale } from 'locale-matcher';
-import { get } from 'lodash';
+import { Locale as DateFnsLocale } from 'date-fns';
 import deLocale from 'date-fns/locale/de';
 import enLocale from 'date-fns/locale/en-US';
-import { Locale as DateFnsLocale } from 'date-fns';
+import { pickLocale } from 'locale-matcher';
+import { get } from 'lodash';
+import { useCallback, useMemo } from 'react';
+import translationsDE from '../translations/de.json';
+import translationsEN from '../translations/en.json';
+import { requestedLanguages } from './i18n-native.service';
 
 type Leaves<T> = T extends object
   ? {
@@ -38,11 +38,7 @@ const localeToLongDateFormat: { [key in Locale]: string } = {
 };
 
 export function useTranslation() {
-  const locale = pickLocale(
-    NativeModules.SettingsManager.settings.AppleLanguages,
-    Object.values(Locale),
-    Locale.EN
-  ) as Locale;
+  const locale = pickLocale(requestedLanguages, Object.values(Locale), Locale.EN) as Locale;
 
   const tFunc = useCallback(
     (key: TranslationKey) => {

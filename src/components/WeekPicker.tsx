@@ -81,9 +81,9 @@ function createStyles(theme: Theme) {
       ...typo.subheadline,
       color: theme.textSecondary,
       textAlign: 'center',
-      minWidth: 28,
-      marginLeft: -10,
-      marginRight: -10,
+      width: 34,
+      marginLeft: -8,
+      marginRight: -8,
     },
     value: {
       ...typo.headline,
