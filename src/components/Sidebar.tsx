@@ -26,9 +26,7 @@ export const Sidebar: FC = () => {
 
   return (
     <View style={styles.outerContainer}>
-      {Platform.OS === 'macos' && (
-        <NativeView type='sidebar' style={[styles.backgroundView, { height: windowHeight + 52 }]} />
-      )}
+      {Platform.OS === 'macos' && <NativeView type='sidebar' style={styles.backgroundView} />}
       <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
         <WeekPicker />
         {weekDays.map(day => {
