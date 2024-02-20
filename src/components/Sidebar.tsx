@@ -13,6 +13,7 @@ import { DayButton } from './DayButton';
 import { NativeView } from './NativeView';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
+import { useTranslation } from '../services/i18n.service';
 
 export const dayPickerHeight = 56;
 
@@ -37,7 +38,7 @@ export const Sidebar: FC = () => {
           return (
             <DayButton
               key={day.id}
-              dayLabel={day.abbreviation}
+              dayCode={day.code}
               dateString={dateString}
               onPress={() => {
                 setCurrentOverlay(null);

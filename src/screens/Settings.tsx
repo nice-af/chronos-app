@@ -8,6 +8,7 @@ import { Layout } from '../components/Layout';
 import { Toggle } from '../components/Toggle';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { SidebarLayout } from '../const';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -18,14 +19,15 @@ export const Settings: FC = () => {
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
+  const { t } = useTranslation();
 
   return (
     <Layout
       customBackgroundColor={theme.backgroundDrawer}
-      header={{ align: 'left', title: 'Settings', onBackPress: () => setCurrentOverlay(null) }}>
+      header={{ align: 'left', title: t('settings'), onBackPress: () => setCurrentOverlay(null) }}>
       <View style={styles.container}>
         <View style={styles.card}>
-          <Text style={styles.headline}>Sidebar layout</Text>
+          <Text style={styles.headline}>{t('sidebarLayout.settingsTitle')}</Text>
           <View style={styles.cardsButtonContainer}>
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'normal'}
@@ -35,7 +37,7 @@ export const Settings: FC = () => {
                   ? require('../assets/settings/layout-normal-light.png')
                   : require('../assets/settings/layout-normal-dark.png')
               }
-              label='Normal'
+              label={t('sidebarLayout.normal')}
             />
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'compact'}
@@ -45,7 +47,7 @@ export const Settings: FC = () => {
                   ? require('../assets/settings/layout-compact-light.png')
                   : require('../assets/settings/layout-compact-dark.png')
               }
-              label='Compact'
+              label={t('sidebarLayout.compact')}
             />
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'micro'}
@@ -55,15 +57,15 @@ export const Settings: FC = () => {
                   ? require('../assets/settings/layout-micro-light.png')
                   : require('../assets/settings/layout-micro-dark.png')
               }
-              label='Micro'
+              label={t('sidebarLayout.micro')}
             />
           </View>
           <View style={styles.hr} />
-          <Text style={styles.headline}>Working days</Text>
+          <Text style={styles.headline}>{t('weekDays.settingsTitle')}</Text>
           <WorkingDaysSetting />
           <View style={styles.hr} />
           <Toggle
-            label='Hide non working days'
+            label={t('weekDays.hideNonWorkingDays')}
             state={settings.hideNonWorkingDays}
             setState={newState => setSettings(cur => ({ ...cur, hideNonWorkingDays: newState }))}
           />
@@ -71,14 +73,14 @@ export const Settings: FC = () => {
         <View style={styles.card}>
           <Text style={styles.headline}>Worklogs</Text>
           <Toggle
-            label='Disable editing of worklogs from past days'
+            label={t('worklogs.disableEditingOfPastWorklogs')}
             state={settings.disableEditingOfPastWorklogs}
             setState={newState => setSettings(cur => ({ ...cur, disableEditingOfPastWorklogs: newState }))}
           />
         </View>
         <View style={styles.card}>
-          <Text style={styles.headline}>Account</Text>
-          <ButtonDanger label='Logout' onPress={logout} />
+          <Text style={styles.headline}>{t('account.settingsTitle')}</Text>
+          <ButtonDanger label={t('account.logOut')} onPress={logout} />
         </View>
       </View>
     </Layout>

@@ -8,12 +8,13 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { ButtonTransparent } from './ButtonTransparent';
+import { useTranslation } from '../services/i18n.service';
 
 export const WeekPicker: FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
-
+  const { t } = useTranslation();
   const selectedDateParsed = parseDateFromYYYYMMDD(selectedDate);
 
   return (
@@ -36,7 +37,9 @@ export const WeekPicker: FC = () => {
           />
         </ButtonTransparent>
         <View>
-          <Text style={styles.label}>KW</Text>
+          <Text style={styles.label} numberOfLines={1}>
+            {t('calendarWeekShort')}
+          </Text>
           {/* TODO: This is not locale aware, but it's fine for now. */}
           <Text style={styles.value}>{getISOWeek(selectedDateParsed)}</Text>
         </View>
@@ -78,6 +81,9 @@ function createStyles(theme: Theme) {
       ...typo.subheadline,
       color: theme.textSecondary,
       textAlign: 'center',
+      minWidth: 28,
+      marginLeft: -10,
+      marginRight: -10,
     },
     value: {
       ...typo.headline,

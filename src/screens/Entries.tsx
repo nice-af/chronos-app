@@ -17,6 +17,7 @@ import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -33,6 +34,7 @@ export const Entries: FC = () => {
   const todayDateString = formatDateToYYYYMMDD(new Date());
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
   const [isSyncing, setIsSyncing] = useState(false);
+  const { t, dateFnsLocale, longDateFormat } = useTranslation();
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
@@ -69,8 +71,8 @@ export const Entries: FC = () => {
           <View style={styles.titleContainer}>
             {hasChanges && <View style={styles.dot} />}
             <Text style={styles.title}>
-              {isToday ? 'Today, ' : ''}
-              {format(new Date(selectedDate), 'MMMM do')}
+              {isToday ? `${t('today')}, ` : ''}
+              {format(new Date(selectedDate), longDateFormat, { locale: dateFnsLocale })}
             </Text>
           </View>
         ),
@@ -78,15 +80,20 @@ export const Entries: FC = () => {
         onBackPress: undefined,
         position: 'absolute',
       }}>
-      <ScrollView style={styles.entriesContainer}>
-        {worklogsForCurrentDay.map(worklog => (
-          <TrackingListEntry key={worklog.id} worklog={worklog} />
-        ))}
-        {worklogsForCurrentDay.length === 0 && <Text style={styles.errorMessage}>No worklogs for this day yet</Text>}
-      </ScrollView>
+      {worklogsForCurrentDay.length === 0 ? (
+        <View style={styles.errorMessageContainer}>
+          <Text style={styles.errorMessage}>{t('noWorklogs')}</Text>
+        </View>
+      ) : (
+        <ScrollView style={styles.entriesContainer}>
+          {worklogsForCurrentDay.map(worklog => (
+            <TrackingListEntry key={worklog.id} worklog={worklog} />
+          ))}
+        </ScrollView>
+      )}
       {hasChanges && (
         <View style={styles.submitButtonContainer}>
-          <ButtonPrimary label='Sync this day' isLoading={isSyncing} textAlign='center' onPress={() => startSync()} />
+          <ButtonPrimary label={t('syncDay')} isLoading={isSyncing} textAlign='center' onPress={() => startSync()} />
         </View>
       )}
     </Layout>
@@ -131,11 +138,17 @@ function createStyles(theme: Theme) {
       borderColor: theme.border,
       borderTopWidth: 1,
     },
+    errorMessageContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      flexGrow: 1,
+    },
     errorMessage: {
       ...typo.body,
       textAlign: 'center',
       opacity: 0.4,
-      marginTop: 100,
     },
   });
 }

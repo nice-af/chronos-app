@@ -14,6 +14,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { createNewWorklogForIssue } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { useTranslation } from '../services/i18n.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -36,6 +37,7 @@ export const Search: FC = () => {
   const styles = useThemedStyles(createStyles);
   const hasCharacters = searchValue.trim().length > 0;
   const enoughCharacters = searchValue.trim().length >= 3;
+  const { t } = useTranslation();
 
   const debouncedSearch = useMemo(
     () =>
@@ -67,12 +69,12 @@ export const Search: FC = () => {
         align: 'left',
         onBackPress: () => setCurrentOverlay(null),
         position: 'absolute',
-        title: 'Add new worklog',
+        title: t('worklogs.addNewWorklog'),
       }}>
       <View style={styles.inputContainer}>
         <CustomTextInput
           isVisible={currentOverlay === Overlay.Search}
-          placeholder='Search...'
+          placeholder={t('search.placeholder')}
           value={searchValue}
           onChangeText={setSearchValue}
           iconLeft={
@@ -106,10 +108,10 @@ export const Search: FC = () => {
             />
           ))}
         {hasCharacters && !enoughCharacters && !searchIsLoading && (
-          <Text style={styles.errorMessage}>Please enter at least 3 characters</Text>
+          <Text style={styles.errorMessage}>{t('search.error.minLength')}</Text>
         )}
         {enoughCharacters && !searchIsLoading && searchResults?.length === 0 && (
-          <Text style={styles.errorMessage}>No search results found</Text>
+          <Text style={styles.errorMessage}>{t('search.error.noResults')}</Text>
         )}
       </ScrollView>
     </Layout>

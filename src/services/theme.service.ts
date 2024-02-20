@@ -1,6 +1,6 @@
-import { useContext, useMemo } from 'react';
-import { StyleSheet } from 'react-native';
 import { useAtomValue } from 'jotai';
+import { useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 import { themeAtom } from '../atoms';
 import { Theme } from '../styles/theme/theme-types';
 

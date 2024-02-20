@@ -2,15 +2,16 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { settingsAtom, themeAtom, workingDaysAtom } from '../atoms';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { DayId, DayLabel, weekDays } from '../types/global.types';
+import { DayId, weekDays } from '../types/global.types';
 
 interface WorkingDaysSettingProps {
   id: DayId;
-  label: DayLabel;
+  label: string;
 }
 
 const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) => {
@@ -49,11 +50,12 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
 
 export const WorkingDaysSetting: FC = () => {
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
       {weekDays.map(weekDay => (
-        <WorkingDaysSettingButton key={weekDay.id} id={weekDay.id} label={weekDay.abbreviation} />
+        <WorkingDaysSettingButton key={weekDay.id} id={weekDay.id} label={t(`weekDays.${weekDay.code}`)} />
       ))}
     </View>
   );

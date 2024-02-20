@@ -1,0 +1,44 @@
+{
+  "noWorklogs": "No worklogs for this day yet",
+  "syncDay": "Sync this day",
+  "sidebarLayout": {
+    "settingsTitle": "Sidebar layout",
+    "normal": "Normal",
+    "compact": "Compact",
+    "micro": "Micro"
+  },
+  "weekDays": {
+    "settingsTitle": "Working days",
+    "mo": "Mo",
+    "tu": "Tu",
+    "we": "We",
+    "th": "Th",
+    "fr": "Fr",
+    "sa": "Sa",
+    "su": "Su",
+    "hideNonWorkingDays": "Only show working days"
+  },
+  "worklogs": {
+    "editWorklog": "Edit worklog",
+    "addNewWorklog": "Add new worklog",
+    "settingsTitle": "Worklogs",
+    "disableEditingOfPastWorklogs": "Disable the editing of working times from previous days."
+  },
+  "account": {
+    "settingsTitle": "Account",
+    "logOut": "Log out"
+  },
+  "settings": "Settings",
+  "search": {
+    "placeholder": "Search...",
+    "error": {
+      "minLength": "Please enter at least 3 characters.",
+      "noResults": "No results found."
+    }
+  },
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "calendarWeekShort": "Week",
+  "save": "Save",
+  "today": "Today"
+}

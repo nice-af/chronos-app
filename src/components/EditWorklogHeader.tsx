@@ -1,14 +1,15 @@
-import React, { FC, useContext, useState } from 'react';
+import { useAtomValue } from 'jotai';
+import React, { FC, useState } from 'react';
 import { Image, ImageBackground, Platform, StyleSheet, Text, View } from 'react-native';
+import { themeAtom } from '../atoms';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { ButtonDanger } from './ButtonDanger';
 import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
-import { useAtomValue } from 'jotai';
-import { themeAtom } from '../atoms';
-import { ButtonDanger } from './ButtonDanger';
 
 interface EditWorklogHeaderProps {
   onCancelPress: () => void;
@@ -20,14 +21,19 @@ export const EditWorklogHeader: FC<EditWorklogHeaderProps> = ({ onCancelPress, o
   const styles = useThemedStyles(createStyles);
   const [showOther, setShowOther] = useState(false);
   const theme = useAtomValue(themeAtom);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/edit-stripes-bg.png')} resizeMode='repeat' style={styles.stripesBg} />
       <View style={[styles.content, showOther && { justifyContent: 'flex-end' }]}>
-        {!showOther && <Text style={styles.title}>Edit worklog</Text>}
+        {!showOther && (
+          <Text style={styles.title} numberOfLines={1}>
+            {t('worklogs.editWorklog')}
+          </Text>
+        )}
         <View style={styles.buttonsContainer}>
-          {showOther && <ButtonDanger label='Delete' onPress={onDeletePress} />}
+          {showOther && <ButtonDanger label={t('delete')} onPress={onDeletePress} />}
           {!showOther && (
             <ButtonSecondary
               iconRight={
@@ -43,8 +49,8 @@ export const EditWorklogHeader: FC<EditWorklogHeaderProps> = ({ onCancelPress, o
               onPress={() => setShowOther(true)}
             />
           )}
-          <ButtonSecondary label='Cancel' onPress={onCancelPress} />
-          <ButtonPrimary label='Save' onPress={onSavePress} />
+          <ButtonSecondary label={t('cancel')} onPress={onCancelPress} />
+          <ButtonPrimary label={t('save')} onPress={onSavePress} />
         </View>
       </View>
     </View>
@@ -75,6 +81,7 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       justifyContent: 'space-between',
       height: 48,
+      gap: 10,
       ...getPadding(0, 16),
     },
     stripesBg: {
@@ -94,7 +101,7 @@ function createStyles(theme: Theme) {
     title: {
       ...typo.headline,
       color: theme.textPrimary,
-      flexShrink: 0,
+      flexShrink: 1,
       marginTop: 2,
     },
     buttonsContainer: {

@@ -16,20 +16,21 @@ import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { DayLabel, WorklogState, dayLabelToDayIdMap } from '../types/global.types';
+import { DayCode, WorklogState, dayCodeToDayIdMap } from '../types/global.types';
+import { useTranslation } from '../services/i18n.service';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   dateString: string;
-  dayLabel: DayLabel;
+  dayCode: DayCode;
   onPress: () => void;
 }
 
-export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString }) => {
+export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) => {
   const [isHovered, setIsHovered] = useState(false);
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
-  const isWorkingDay = workingDays.includes(dayLabelToDayIdMap[dayLabel]);
+  const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
   const worklogs = useAtomValue(worklogsAtom);
@@ -37,6 +38,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
   const activeWorklogIsThisDay = activeWorklog?.started === dateString;
+  const { t } = useTranslation();
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -93,7 +95,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayLabel, dateString })
             }
           />
         ) : null}
-        <Text style={styles.day}>{dayLabel}</Text>
+        <Text style={styles.day}>{t(`weekDays.${dayCode}`)}</Text>
       </View>
       {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && (
         <Text style={styles.time}>{duration ? formatSecondsToHMM(duration) : '-'}</Text>
