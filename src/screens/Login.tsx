@@ -11,12 +11,14 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { useTranslation } from '../services/i18n.service';
 
 export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
   const userInfo = useAtomValue(userInfoAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
+  const { t } = useTranslation();
 
   return (
     <AnimateScreenContainer isVisible={!userInfo} offScreenLocation='left'>
@@ -41,12 +43,10 @@ export const Login: FC = () => {
                 : require('../assets/login/title-en-dark.png')
             }
           />
-          <Text style={styles.text}>
-            Please click the button below to connect your Jira account with Jira Time Tracker.
-          </Text>
+          <Text style={styles.text}>{t('login.description')}</Text>
           <View style={styles.fixedHeightContainer}>
             {isLoadingOAuth && <LoadingSpinner />}
-            {!isLoadingOAuth && <ButtonPrimary label='Login to Jira' onPress={initOAuth} />}
+            {!isLoadingOAuth && <ButtonPrimary label={t('login.buttonLabel')} onPress={initOAuth} />}
           </View>
         </View>
       </Layout>

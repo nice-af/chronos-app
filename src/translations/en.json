@@ -1,44 +1,48 @@
 {
-  "noWorklogs": "No worklogs for this day yet",
-  "syncDay": "Sync this day",
-  "sidebarLayout": {
-    "settingsTitle": "Sidebar layout",
-    "normal": "Normal",
-    "compact": "Compact",
-    "micro": "Micro"
-  },
-  "weekDays": {
-    "settingsTitle": "Working days",
-    "mo": "Mo",
-    "tu": "Tu",
-    "we": "We",
-    "th": "Th",
-    "fr": "Fr",
-    "sa": "Sa",
-    "su": "Su",
-    "hideNonWorkingDays": "Only show working days"
-  },
-  "worklogs": {
-    "editWorklog": "Edit worklog",
-    "addNewWorklog": "Add new worklog",
-    "settingsTitle": "Worklogs",
-    "disableEditingOfPastWorklogs": "Disable the editing of working times from previous days."
-  },
   "account": {
-    "settingsTitle": "Account",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "settingsTitle": "Account"
   },
-  "settings": "Settings",
+  "calendarWeekShort": "Week",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "login": {
+    "buttonLabel": "Login to Jira",
+    "description": "Please click the button below to connect your Jira account with Jira Time Tracker."
+  },
+  "noWorklogs": "No worklogs for this day yet",
+  "save": "Save",
   "search": {
-    "placeholder": "Search...",
     "error": {
       "minLength": "Please enter at least 3 characters.",
       "noResults": "No results found."
-    }
+    },
+    "placeholder": "Search..."
   },
-  "cancel": "Cancel",
-  "delete": "Delete",
-  "calendarWeekShort": "Week",
-  "save": "Save",
-  "today": "Today"
+  "settings": "Settings",
+  "sidebarLayout": {
+    "compact": "Compact",
+    "micro": "Micro",
+    "normal": "Normal",
+    "settingsTitle": "Sidebar layout"
+  },
+  "syncDay": "Sync this day",
+  "today": "Today",
+  "weekDays": {
+    "fr": "Fr",
+    "hideNonWorkingDays": "Only show working days",
+    "mo": "Mo",
+    "sa": "Sa",
+    "settingsTitle": "Working days",
+    "su": "Su",
+    "th": "Th",
+    "tu": "Tu",
+    "we": "We"
+  },
+  "worklogs": {
+    "addNewWorklog": "Add new worklog",
+    "disableEditingOfPastWorklogs": "Disable the editing of working times from previous days.",
+    "editWorklog": "Edit worklog",
+    "settingsTitle": "Worklogs"
+  }
 }

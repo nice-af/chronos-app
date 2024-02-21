@@ -1,44 +1,48 @@
 {
-  "noWorklogs": "Dieser Tag hat noch keine Arbeitszeiten.",
-  "syncDay": "Diesen Tag synchronisieren",
-  "sidebarLayout": {
-    "settingsTitle": "Seitenleiste",
-    "normal": "Normal",
-    "compact": "Kompakt",
-    "micro": "Winzig"
-  },
-  "weekDays": {
-    "settingsTitle": "Arbeitstage",
-    "mo": "Mo",
-    "tu": "Di",
-    "we": "Mi",
-    "th": "Do",
-    "fr": "Fr",
-    "sa": "Sa",
-    "su": "So",
-    "hideNonWorkingDays": "Nur Arbeitstage anzeigen"
-  },
-  "worklogs": {
-    "editWorklog": "Bearbeiten",
-    "addNewWorklog": "Neue Arbeitszeit hinzufügen",
-    "settingsTitle": "Arbeitszeiten",
-    "disableEditingOfPastWorklogs": "Bearbeiten von Arbeitszeiten vergangener Tage deaktivieren"
-  },
   "account": {
-    "settingsTitle": "Account",
-    "logOut": "Abmelden"
+    "logOut": "Abmelden",
+    "settingsTitle": "Account"
   },
-  "settings": "Einstellungen",
+  "calendarWeekShort": "KW",
+  "cancel": "Abbrechen",
+  "delete": "Löschen",
+  "login": {
+    "buttonLabel": "Mit Jira verbinden",
+    "description": "Bitte klicke auf den Button unten, um dein Jira-Konto mit Jira Time Tracker zu verbinden."
+  },
+  "noWorklogs": "Dieser Tag hat noch keine Arbeitszeiten.",
+  "save": "Speichern",
   "search": {
-    "placeholder": "Suche...",
     "error": {
       "minLength": "Bitte gib mindestens 3 Zeichen ein.",
       "noResults": "Keine Ergebnisse gefunden."
-    }
+    },
+    "placeholder": "Suche..."
   },
-  "cancel": "Abbrechen",
-  "delete": "Löschen",
-  "calendarWeekShort": "KW",
-  "save": "Speichern",
-  "today": "Heute"
+  "settings": "Einstellungen",
+  "sidebarLayout": {
+    "compact": "Kompakt",
+    "micro": "Winzig",
+    "normal": "Normal",
+    "settingsTitle": "Seitenleiste"
+  },
+  "syncDay": "Diesen Tag synchronisieren",
+  "today": "Heute",
+  "weekDays": {
+    "fr": "Fr",
+    "hideNonWorkingDays": "Nur Arbeitstage anzeigen",
+    "mo": "Mo",
+    "sa": "Sa",
+    "settingsTitle": "Arbeitstage",
+    "su": "So",
+    "th": "Do",
+    "tu": "Di",
+    "we": "Mi"
+  },
+  "worklogs": {
+    "addNewWorklog": "Neue Arbeitszeit hinzufügen",
+    "disableEditingOfPastWorklogs": "Bearbeiten von Arbeitszeiten vergangener Tage deaktivieren",
+    "editWorklog": "Bearbeiten",
+    "settingsTitle": "Arbeitszeiten"
+  }
 }
