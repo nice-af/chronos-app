@@ -19,10 +19,8 @@ class EventEmitter {
   
   /// All Events which must be support by React Native.
   lazy var allEvents: [String] = {
-    var allEventNames: [String] = ["statusBarStateChange","statusBarTextChange"]
-    
     // Append all events here
-    
+    var allEventNames: [String] = ["statusBarStateChange","statusBarTextChange","fullscreenChange"]
     return allEventNames
   }()
   

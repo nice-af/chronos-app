@@ -1,8 +1,8 @@
 import { useAppState } from '@react-native-community/hooks';
-import { useAtom, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
 import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { currentOverlayAtom, selectedDateAtom } from '../atoms';
+import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -20,14 +20,19 @@ export const dayPickerHeight = 56;
 export const Sidebar: FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
-  const windowHeight = useWindowDimensions().height;
+  const isFullscreen = useAtomValue(isFullscreenAtom);
   const currentAppState = useAppState();
   const styles = useThemedStyles(createStyles);
 
   return (
     <View style={styles.outerContainer}>
       {Platform.OS === 'macos' && <NativeView type='sidebar' style={styles.backgroundView} />}
-      <View style={[styles.container, currentAppState === 'inactive' ? { opacity: 0.6 } : undefined]}>
+      <View
+        style={[
+          styles.container,
+          currentAppState === 'inactive' && { opacity: 0.6 },
+          !isFullscreen && Platform.OS === 'macos' && { paddingTop: 56 },
+        ]}>
         <WeekPicker />
         {weekDays.map(day => {
           const date = setDateToThisWeekday(parseDateFromYYYYMMDD(selectedDate), day.id);
@@ -85,11 +90,6 @@ function createStyles(theme: Theme) {
       gap: 10,
       width: 92,
       ...getPadding(11, 16, 6),
-      ...Platform.select({
-        macos: {
-          paddingTop: 56,
-        },
-      }),
     },
     today: {
       ...typo.bodyEmphasized,

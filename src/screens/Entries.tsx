@@ -5,6 +5,7 @@ import { Image, NativeModules, Platform, Pressable, ScrollView, StyleSheet, Text
 import {
   activeWorklogAtom,
   currentOverlayAtom,
+  isFullscreenAtom,
   selectedDateAtom,
   syncWorklogsForCurrentDayAtom,
   themeAtom,
@@ -36,6 +37,7 @@ export const Entries: FC = () => {
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
   const [isSyncing, setIsSyncing] = useState(false);
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
+  const isFullscreen = useAtomValue(isFullscreenAtom);
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
@@ -86,7 +88,7 @@ export const Entries: FC = () => {
           <Text style={styles.errorMessage}>{t('noWorklogs')}</Text>
         </View>
       ) : (
-        <ScrollView style={styles.entriesContainer}>
+        <ScrollView style={[styles.entriesContainer, isFullscreen && Platform.OS === 'macos' && { marginTop: 53 }]}>
           {worklogsForCurrentDay.map(worklog => (
             <TrackingListEntry key={worklog.id} worklog={worklog} />
           ))}

@@ -1,13 +1,17 @@
-import { NativeEvent } from './native-event-emitter.service.types';
+import {
+  AddNativeEventListenerParams,
+  RemoveNativeEventListenerParams,
+  SendNativeEventParams,
+} from './native-event-emitter.service.types';
 
-export function sendNativeEvent(name: NativeEvent, data: string) {
+export function sendNativeEvent(params: SendNativeEventParams) {
   console.error('sendNativeEvent is not implemented');
 }
 
-export function addNativeEventListener(name: NativeEvent, callback: (data: string) => void) {
+export function addNativeEventListener(params: AddNativeEventListenerParams) {
   console.error('addNativeEventListener is not implemented');
 }
 
-export function removeNativeEventListener(name: NativeEvent) {
+export function removeNativeEventListener(params: RemoveNativeEventListenerParams) {
   console.error('removeNativeEventListener is not implemented');
 }

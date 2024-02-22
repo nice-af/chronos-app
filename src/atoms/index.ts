@@ -147,6 +147,7 @@ export const workingDaysAtom = atom<DayId[]>(get => get(settingsAtom).workingDay
 export const hideNonWorkingDaysAtom = atom(get => get(settingsAtom).hideNonWorkingDays);
 export const disableEditingOfPastWorklogsAtom = atom(get => get(settingsAtom).disableEditingOfPastWorklogs);
 export const themeAtom = atom<Theme>(get => get(settingsAtom).theme);
+export const isFullscreenAtom = atom(false);
 
 /**
  * Persist changes to AsyncStorage
@@ -167,21 +168,24 @@ store.sub(worklogsLocalAtom, () => {
 store.sub(activeWorklogTrackingDurationAtom, () => {
   const activeWorklog = store.get(activeWorklogAtom);
   if (activeWorklog) {
-    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.RUNNING);
-    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, formatSecondsToHMM(activeWorklog.timeSpentSeconds));
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.RUNNING });
+    sendNativeEvent({
+      name: NativeEvent.STATUS_BAR_TEXT_CHANGE,
+      data: formatSecondsToHMM(activeWorklog.timeSpentSeconds),
+    });
   } else {
-    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.PAUSED);
-    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, '-:--');
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.PAUSED });
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: '-:--' });
   }
 });
 store.sub(activeWorklogAtom, () => {
   const activeWorklog = store.get(activeWorklogAtom);
   const time = activeWorklog?.timeSpentSeconds ?? 0;
   if (activeWorklog) {
-    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.RUNNING);
-    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, formatSecondsToHMM(time));
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.RUNNING });
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: formatSecondsToHMM(time) });
   } else {
-    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.PAUSED);
-    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, '-:--');
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.PAUSED });
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: '-:--' });
   }
 });

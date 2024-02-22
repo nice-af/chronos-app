@@ -1,16 +1,21 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
-import { NativeEvent } from './native-event-emitter.service.types';
+import {
+  AddNativeEventListenerParams,
+  NativeEvent,
+  RemoveNativeEventListenerParams,
+  SendNativeEventParams,
+} from './native-event-emitter.service.types';
 
-export function sendNativeEvent(name: NativeEvent, data: string) {
-  NativeModules.ReactNativeEventEmitter.sendEventFromReact(name, data);
+export function sendNativeEvent(params: SendNativeEventParams) {
+  NativeModules.ReactNativeEventEmitter.sendEventFromReact(params.name, params.data);
 }
 
 const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
 
-export function addNativeEventListener(name: NativeEvent, callback: (data: string) => void) {
-  emitter.addListener(name, callback);
+export function addNativeEventListener(params: AddNativeEventListenerParams) {
+  emitter.addListener(params.name, params.callback);
 }
 
-export function removeNativeEventListener(name: NativeEvent) {
-  emitter.removeAllListeners(name);
+export function removeNativeEventListener(params: RemoveNativeEventListenerParams) {
+  emitter.removeAllListeners(params.name);
 }
