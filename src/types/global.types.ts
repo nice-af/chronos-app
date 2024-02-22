@@ -38,9 +38,9 @@ export interface TrackingEntry {
 }
 
 export enum WorklogState {
-  Local = 'local',
-  Synced = 'synced',
-  Edited = 'edited',
+  LOCAL = 'local',
+  SYNCED = 'synced',
+  EDITED = 'edited',
 }
 
 export interface Worklog {

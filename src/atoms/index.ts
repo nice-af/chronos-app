@@ -3,7 +3,10 @@ import { atom, createStore } from 'jotai';
 import { Overlay, SidebarLayout } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira.service';
+import { sendNativeEvent } from '../services/native-event-emitter.service';
+import { StatusBarState, NativeEvent } from '../services/native-event-emitter.service.types';
 import { AuthModel, SettingsModel, StorageKey, defaultStorageValues, setInStorage } from '../services/storage.service';
+import { formatSecondsToHMM } from '../services/time.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { DayId, Worklog, WorklogState } from '../types/global.types';
@@ -65,7 +68,7 @@ setInterval(() => {
     diff = Math.floor(raw / 1000 / 60) * 60;
   }
   store.set(activeWorklogTrackingDurationAtom, diff);
-}, 1_000);
+}, 10_000);
 
 export const worklogsForCurrentDayAtom = atom(get => {
   const worklogs = get(worklogsAtom);
@@ -107,8 +110,8 @@ export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | 
   set(activeWorklogTrackingStartedAtom, Date.now());
 });
 export const updateWorklogAtom = atom(null, (get, set, worklog: Worklog) => {
-  if (worklog.state !== WorklogState.Local) {
-    worklog.state = WorklogState.Edited;
+  if (worklog.state !== WorklogState.LOCAL) {
+    worklog.state = WorklogState.EDITED;
   }
   const currentWorklogs = get(worklogsLocalAtom);
   const exists = currentWorklogs.some(w => w.id === worklog.id);
@@ -160,4 +163,25 @@ store.sub(settingsAtom, () => {
 store.sub(worklogsLocalAtom, () => {
   const worklogs = store.get(worklogsLocalAtom);
   setInStorage(StorageKey.WORKLOGS_LOCAL, worklogs);
+});
+store.sub(activeWorklogTrackingDurationAtom, () => {
+  const activeWorklog = store.get(activeWorklogAtom);
+  if (activeWorklog) {
+    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.RUNNING);
+    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, formatSecondsToHMM(activeWorklog.timeSpentSeconds));
+  } else {
+    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.PAUSED);
+    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, '-:--');
+  }
+});
+store.sub(activeWorklogAtom, () => {
+  const activeWorklog = store.get(activeWorklogAtom);
+  const time = activeWorklog?.timeSpentSeconds ?? 0;
+  if (activeWorklog) {
+    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.RUNNING);
+    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, formatSecondsToHMM(time));
+  } else {
+    sendNativeEvent(NativeEvent.STATUS_BAR_STATE_CHANGE, StatusBarState.PAUSED);
+    sendNativeEvent(NativeEvent.STATUS_BAR_TEXT_CHANGE, '-:--');
+  }
 });

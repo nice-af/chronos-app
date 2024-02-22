@@ -31,7 +31,7 @@ export const Settings: FC = () => {
           <View style={styles.cardsButtonContainer}>
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'normal'}
-              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Normal }))}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.NORMAL }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-normal-light.png')
@@ -41,7 +41,7 @@ export const Settings: FC = () => {
             />
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'compact'}
-              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Compact }))}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.COMPACT }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-compact-light.png')
@@ -51,7 +51,7 @@ export const Settings: FC = () => {
             />
             <CardsSelectionButton
               isChecked={settings.sidebarLayout === 'micro'}
-              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.Micro }))}
+              onClick={() => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.MICRO }))}
               image={
                 theme.type === 'light'
                   ? require('../assets/settings/layout-micro-light.png')

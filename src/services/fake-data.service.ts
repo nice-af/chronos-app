@@ -9,7 +9,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 2700000,
     comment: 'Build fixen und Änderungen von Taher checken',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52619',
@@ -17,7 +17,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 3600000,
     comment: 'Taher Änderungen checken und Code Cleanup',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52621',
@@ -25,7 +25,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 2700000,
     comment: 'ET Livegang vorbereiten & Livegang',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52618',
@@ -33,7 +33,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 3600000,
     comment: 'WEBSITE23-282 | Breadcrumbs anpassen und paths bug fixen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52622',
@@ -41,7 +41,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 7200000,
     comment: 'WEBSITE23-101 | Add audience select to footer',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52623',
@@ -49,7 +49,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-104 | TrustedShops badge behind menu',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52624',
@@ -57,7 +57,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 4500000,
     comment: 'WEBSITE23-77 | Sorting checken und „Relevantes zuerst“ einfügen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52625',
@@ -65,7 +65,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 1800000,
     comment: 'WEBSITE23-286 | Panel Bug checken und wenn möglich fixen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52614',
@@ -73,7 +73,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 900000,
     comment: 'Byte Club',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52617',
@@ -81,7 +81,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 900000,
     comment: 'Jira Issues checken',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52615',
@@ -89,7 +89,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 1)),
     timeSpentSeconds: 900000,
     comment: 'Umzug Mails checken und Info an Timo',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52731',
@@ -97,7 +97,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 1800000,
     comment: 'Support Taher checkboxen & Formular allgemein',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52733',
@@ -105,7 +105,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-285 | Aufwandseinschätzung',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52734',
@@ -113,7 +113,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 4500000,
     comment: 'WEBSITE23-237 | New eyond filter option for cars',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52735',
@@ -121,7 +121,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 1800000,
     comment: 'Panel labels anpassen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52736',
@@ -129,7 +129,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 1800000,
     comment: 'WEBSITE23-280 | Contact popup Absprache mit Becci',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52737',
@@ -137,7 +137,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 2700000,
     comment: 'WEBSITE23-101 | Add audiences to certificates',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52738',
@@ -145,7 +145,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 2700000,
     comment: 'Fix cms bug in production',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52739',
@@ -153,7 +153,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 3600000,
     comment: 'WEBSITE23-264 | Automatically redirect to correct homepage audience',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52740',
@@ -161,7 +161,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 3600000,
     comment: 'WEBSITE23-265 | Add interactive cards to HeroVideo & fix sal bugs',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52730',
@@ -169,7 +169,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 900000,
     comment: 'Byte Club Daily',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52732',
@@ -177,7 +177,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 2)),
     timeSpentSeconds: 1800000,
     comment: 'Absprache mit Nico von der IT zu Jumpcloud und anderen IT Themen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52785',
@@ -185,7 +185,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 3)),
     timeSpentSeconds: 14400000,
     comment: 'Taher §14 Code Review und QA',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52786',
@@ -193,7 +193,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 3)),
     timeSpentSeconds: 900000,
     comment: 'Support Taher',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52783',
@@ -201,7 +201,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 3)),
     timeSpentSeconds: 3600000,
     comment: 'WEBSITE23-280 | Neue Contact / FAQ collection',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52784',
@@ -209,7 +209,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 3)),
     timeSpentSeconds: 900000,
     comment: 'Byte Club Daily',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52787',
@@ -217,7 +217,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 3)),
     timeSpentSeconds: 2700000,
     comment: 'Aufwände Januar',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52831',
@@ -225,7 +225,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 5400000,
     comment: 'Support / Peer Programming Taher ET',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52835',
@@ -233,7 +233,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 2700000,
     comment: 'Livegang planen/vorbereiten & prod merge',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52832',
@@ -241,7 +241,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 12600000,
     comment: 'WEBSITE23-280 | Neue Contact / FAQ collection',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52834',
@@ -249,7 +249,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 1800000,
     comment: 'Livegang planen/vorbereiten & prod merge',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52830',
@@ -257,7 +257,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 900000,
     comment: 'Byte Club',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52829',
@@ -265,7 +265,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 2700000,
     comment: 'Orcaya Website CMS Absprache',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52833',
@@ -273,7 +273,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 1800000,
     comment: 'ORCAYA Website Checkin',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52836',
@@ -281,7 +281,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 4)),
     timeSpentSeconds: 900000,
     comment: 'Solid Sentry DB Fehler checken',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52967',
@@ -289,7 +289,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 1800000,
     comment: 'EW-65 | Neu Badge und Datum hinzufügen',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52968',
@@ -297,7 +297,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-123 | Remove line breaks in ListOfContents',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52972',
@@ -305,7 +305,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-264 | Adjust audiences order and labels',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52973',
@@ -313,7 +313,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 1800000,
     comment: 'WEBSITE23-267 | Support Taher TrustedShops Widget',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52974',
@@ -321,7 +321,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 9000000,
     comment: 'WEBSITE23-265 | Add text align option and fix SAL transition',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52975',
@@ -329,7 +329,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-290 & WEBSITE23-273 | Code review',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52977',
@@ -337,7 +337,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-273 | Code review',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52978',
@@ -345,7 +345,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-267 | Code review',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52979',
@@ -353,7 +353,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'WEBSITE23-269 | Code review',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52965',
@@ -361,7 +361,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'Byte Club Daily',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52971',
@@ -369,7 +369,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'Absprache mit Sebastian und Flo zur TMH Test E-Mail-Adresse',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52970',
@@ -377,7 +377,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 2700000,
     comment: 'Absprache mit Sebastian und Flo zur Orcaya Webseite',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52966',
@@ -385,7 +385,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 900000,
     comment: 'AWS Billing Checken',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52969',
@@ -393,7 +393,7 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 1800000,
     comment: 'Nexus Checkout',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
   {
     id: '52976',
@@ -401,6 +401,6 @@ export const worklogsFakeData: Worklog[] = [
     started: formatDateToYYYYMMDD(addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), 5)),
     timeSpentSeconds: 1800000,
     comment: 'Solid DB export und Aufbereitung für Import von Guido',
-    state: WorklogState.Synced,
+    state: WorklogState.SYNCED,
   },
 ];

@@ -32,7 +32,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
     setCurrentWorklogToEdit(worklog);
-    setCurrentOverlay(Overlay.EditWorklog);
+    setCurrentOverlay(Overlay.EDIT_WORKLOG);
   });
   const styles = useThemedStyles(createStyles);
 
@@ -53,9 +53,9 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
             <Text
               style={{
                 color:
-                  worklog.state === WorklogState.Synced
+                  worklog.state === WorklogState.SYNCED
                     ? 'lime'
-                    : worklog.state === WorklogState.Edited
+                    : worklog.state === WorklogState.EDITED
                     ? 'yellow'
                     : 'aqua',
               }}>

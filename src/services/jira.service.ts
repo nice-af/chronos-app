@@ -84,7 +84,7 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
         0
       ),
       comment: worklog.comment ? extractTextFromJSON(worklog.comment) : '',
-      state: WorklogState.Synced,
+      state: WorklogState.SYNCED,
     }));
 }
 

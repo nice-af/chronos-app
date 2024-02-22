@@ -45,10 +45,10 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   }
 
   let height = 54;
-  if (sidebarLayout === SidebarLayout.Compact) {
+  if (sidebarLayout === SidebarLayout.COMPACT) {
     height = 44;
   }
-  if (sidebarLayout === SidebarLayout.Micro || !isWorkingDay) {
+  if (sidebarLayout === SidebarLayout.MICRO || !isWorkingDay) {
     height = 28;
   }
 
@@ -62,10 +62,10 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
 
   const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
   const isChecked =
-    worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.Synced);
+    worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.SYNCED);
   const hasChanges =
     activeWorklogIsThisDay ||
-    worklogsForThisDay.some(worklog => worklog.started === dateString && worklog.state !== WorklogState.Synced);
+    worklogsForThisDay.some(worklog => worklog.started === dateString && worklog.state !== WorklogState.SYNCED);
 
   return (
     <Pressable
@@ -97,7 +97,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
         ) : null}
         <Text style={styles.day}>{t(`weekDays.${dayCode}`)}</Text>
       </View>
-      {isWorkingDay && sidebarLayout !== SidebarLayout.Micro && (
+      {isWorkingDay && sidebarLayout !== SidebarLayout.MICRO && (
         <Text style={styles.time}>{duration ? formatSecondsToHMM(duration) : '-'}</Text>
       )}
     </Pressable>

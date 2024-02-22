@@ -22,7 +22,7 @@ export function createNewWorklogForIssue({
     started: started ?? formatDateToYYYYMMDD(new Date()),
     timeSpentSeconds: 0,
     comment: comment ?? '',
-    state: WorklogState.Local,
+    state: WorklogState.LOCAL,
   };
 }
 
@@ -37,10 +37,10 @@ export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
       console.log('skipping worklog with less than 1 minute', worklog);
       continue;
     }
-    if (worklog.state === WorklogState.Local) {
+    if (worklog.state === WorklogState.LOCAL) {
       console.log('creating worklog', worklog);
       await createRemoteWorklog(worklog);
-    } else if (worklog.state === WorklogState.Edited) {
+    } else if (worklog.state === WorklogState.EDITED) {
       console.log('updating worklog', worklog);
       await updateRemoteWorklog(worklog);
     }

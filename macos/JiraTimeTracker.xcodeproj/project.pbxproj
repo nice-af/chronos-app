@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3A31355B2AF708CB00182B14 /* CustomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A31355A2AF708CB00182B14 /* CustomWindow.swift */; };
-		3A4050122B855D44006B1B2B /* MenubarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4050112B855D44006B1B2B /* MenubarManager.swift */; };
-		3A4050142B855E3D006B1B2B /* MenubarManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4050132B855E3D006B1B2B /* MenubarManagerBridge.m */; };
+		3A4050122B855D44006B1B2B /* StatusBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4050112B855D44006B1B2B /* StatusBarManager.swift */; };
+		3A41A1CE2B87AC5500EF67AA /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */; };
+		3A41A1D02B87AC7700EF67AA /* ReactNativeEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1CF2B87AC7700EF67AA /* ReactNativeEventEmitter.m */; };
+		3A41A1D22B87AC9A00EF67AA /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */; };
 		3A4F9E502AE58A4C00227EA8 /* app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */; };
 		3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */; };
 		3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */; };
@@ -22,9 +24,10 @@
 
 /* Begin PBXFileReference section */
 		3A31355A2AF708CB00182B14 /* CustomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindow.swift; sourceTree = "<group>"; };
-		3A4050112B855D44006B1B2B /* MenubarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenubarManager.swift; sourceTree = "<group>"; };
-		3A4050132B855E3D006B1B2B /* MenubarManagerBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenubarManagerBridge.m; sourceTree = "<group>"; };
-		3A4050152B855E85006B1B2B /* MenubarManager-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MenubarManager-Bridging-Header.h"; sourceTree = "<group>"; };
+		3A4050112B855D44006B1B2B /* StatusBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarManager.swift; sourceTree = "<group>"; };
+		3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
+		3A41A1CF2B87AC7700EF67AA /* ReactNativeEventEmitter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeEventEmitter.m; sourceTree = "<group>"; };
+		3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeEventEmitter.swift; sourceTree = "<group>"; };
 		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
@@ -81,9 +84,10 @@
 				3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */,
 				3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */,
 				3A31355A2AF708CB00182B14 /* CustomWindow.swift */,
-				3A4050112B855D44006B1B2B /* MenubarManager.swift */,
-				3A4050152B855E85006B1B2B /* MenubarManager-Bridging-Header.h */,
-				3A4050132B855E3D006B1B2B /* MenubarManagerBridge.m */,
+				3A4050112B855D44006B1B2B /* StatusBarManager.swift */,
+				3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */,
+				3A41A1CF2B87AC7700EF67AA /* ReactNativeEventEmitter.m */,
+				3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */,
 			);
 			path = "JiraTimeTracker-macOS";
 			sourceTree = "<group>";
@@ -280,12 +284,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A4050122B855D44006B1B2B /* MenubarManager.swift in Sources */,
+				3A41A1D02B87AC7700EF67AA /* ReactNativeEventEmitter.m in Sources */,
+				3A4050122B855D44006B1B2B /* StatusBarManager.swift in Sources */,
 				3A31355B2AF708CB00182B14 /* CustomWindow.swift in Sources */,
 				3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */,
-				3A4050142B855E3D006B1B2B /* MenubarManagerBridge.m in Sources */,
+				3A41A1CE2B87AC5500EF67AA /* EventEmitter.swift in Sources */,
 				3AE174CD2AFAE4C100583EDB /* CustomWindowController.swift in Sources */,
 				3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */,
+				3A41A1D22B87AC9A00EF67AA /* ReactNativeEventEmitter.swift in Sources */,
 				3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

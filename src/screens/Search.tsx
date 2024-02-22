@@ -73,7 +73,7 @@ export const Search: FC = () => {
       }}>
       <View style={styles.inputContainer}>
         <CustomTextInput
-          isVisible={currentOverlay === Overlay.Search}
+          isVisible={currentOverlay === Overlay.SEARCH}
           placeholder={t('search.placeholder')}
           value={searchValue}
           onChangeText={setSearchValue}

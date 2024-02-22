@@ -5,7 +5,7 @@ import SwiftUI
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
   var windowController: CustomWindowController
-  var menubarManager: MenubarManager
+  var statusBarManager: StatusBarManager
   
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
@@ -13,15 +13,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
   
   override init() {
-    print("AppDelegate init START")
-    self.windowController = CustomWindowController()
-    self.menubarManager = MenubarManager()
+    let newWindowController  = CustomWindowController()
+    self.windowController = newWindowController
+    self.statusBarManager = StatusBarManager(newWindowController: newWindowController)
     super.init()
-    print("AppDelegate init STOP")
   }
   
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    print("applicationDidFinishLaunching START")
     // Assign the new handler for deep links
     let em = NSAppleEventManager.shared()
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
@@ -48,20 +46,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     windowController.window!.setFrame(frame, display: true)
     windowController.window!.center()
     windowController.window!.makeKeyAndOrderFront(self)
-    
-    // Create MenubarManager to handle the menubar buttom
-    self.menubarManager.setWindowController(newWindowController: windowController)
-    print("applicationDidFinishLaunching STOP")
   }
   
   // Reopen window on dock icon click
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
     windowController.window!.makeKeyAndOrderFront(self)
     return true;
-  }
-  
-  
-  func moveButtonDown(button: NSView) {
-    button.setFrameOrigin(NSMakePoint(button.frame.origin.x, button.frame.origin.y-2.0))
   }
 }

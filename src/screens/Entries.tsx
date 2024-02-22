@@ -22,9 +22,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
-import { setMenubarState, setMenubarText } from '../services/menubar-manager.service';
 import { formatSecondsToHMM } from '../services/time.service';
-import { MenubarState } from '../services/menubar-manager.service.types';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -40,7 +38,7 @@ export const Entries: FC = () => {
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
 
   const hasChanges =
-    activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.Synced);
+    activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
 
   const isToday = selectedDate === todayDateString;
 
@@ -50,22 +48,10 @@ export const Entries: FC = () => {
     setIsSyncing(false);
   }
 
-  useEffect(() => {
-    if (activeWorklog) {
-      console.log('Set text: ', formatSecondsToHMM(activeWorklog.timeSpentSeconds));
-      setMenubarState(MenubarState.Running);
-      setMenubarText(formatSecondsToHMM(activeWorklog.timeSpentSeconds));
-    } else {
-      console.log('Set text: ', '-:--');
-      setMenubarState(MenubarState.Paused);
-      setMenubarText('-:--');
-    }
-  }, [activeWorklog?.timeSpentSeconds]);
-
   const rightElement = (
     <>
       <JumpToTodayButton />
-      <ButtonTransparent onPress={() => setCurrentOverlay(Overlay.Search)}>
+      <ButtonTransparent onPress={() => setCurrentOverlay(Overlay.SEARCH)}>
         <Image
           style={styles.icon}
           source={

@@ -24,16 +24,16 @@ export const Main: FC = () => {
           <View style={styles.entriesContainer}>
             <Entries />
           </View>
-          <AnimateScreenContainer isVisible={currentOverlay === Overlay.Search} offScreenLocation='right' zIndex={2}>
+          <AnimateScreenContainer isVisible={currentOverlay === Overlay.SEARCH} offScreenLocation='right' zIndex={2}>
             <Search />
           </AnimateScreenContainer>
           <AnimateScreenContainer
-            isVisible={currentOverlay === Overlay.EditWorklog}
+            isVisible={currentOverlay === Overlay.EDIT_WORKLOG}
             offScreenLocation='right'
             zIndex={3}>
             <EditWorklog />
           </AnimateScreenContainer>
-          <AnimateScreenContainer isVisible={currentOverlay === Overlay.Settings} offScreenLocation='right' zIndex={4}>
+          <AnimateScreenContainer isVisible={currentOverlay === Overlay.SETTINGS} offScreenLocation='right' zIndex={4}>
             <Settings />
           </AnimateScreenContainer>
         </View>

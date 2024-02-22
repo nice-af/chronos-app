@@ -33,7 +33,7 @@ interface StorageTypes {
 export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
   [StorageKey.AUTH]: null,
   [StorageKey.SETTINGS]: {
-    sidebarLayout: SidebarLayout.Normal,
+    sidebarLayout: SidebarLayout.NORMAL,
     workingDays: [0, 1, 2, 3, 4],
     hideNonWorkingDays: false,
     disableEditingOfPastWorklogs: true,

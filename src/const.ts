@@ -1,13 +1,13 @@
 export enum Overlay {
-  EditWorklog = 'editWorklog',
-  Settings = 'settings',
-  Search = 'search',
+  EDIT_WORKLOG = 'editWorklog',
+  SETTINGS = 'settings',
+  SEARCH = 'search',
 }
 
 export enum SidebarLayout {
-  Normal = 'normal',
-  Compact = 'compact',
-  Micro = 'micro',
+  NORMAL = 'normal',
+  COMPACT = 'compact',
+  MICRO = 'micro',
 }
 
 export const LOADING_SPINNER_SPEED = 200;
