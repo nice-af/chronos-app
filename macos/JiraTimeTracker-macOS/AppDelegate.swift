@@ -27,16 +27,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
     
     let jsCodeLocation: URL
-    #if DEBUG
-      jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-    #else
-      jsCodeLocation = Bundle.main.url(forResource: "main", withExtension: "jsbundle")!
-    #endif
+#if DEBUG
+    jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+#else
+    jsCodeLocation = Bundle.main.url(forResource: "main", withExtension: "jsbundle")!
+#endif
     
     let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "JiraTimeTracker", initialProperties: nil, launchOptions: nil)
     let rootViewController = NSViewController()
     rootViewController.view = rootView
-
+    
     // Create the application window
     self.windowController.window!.contentViewController = rootViewController
     let screen: NSScreen = NSScreen.main!

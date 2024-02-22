@@ -38,7 +38,7 @@ struct JTTStatusItemView: View {
 class JTTDataObserver: ObservableObject {
   @Published var text: String = "INIT";
   @Published var state: MenubarState = MenubarState.paused
-
+  
   public func setText(newText: String) -> Void {
     self.text = newText
   }
