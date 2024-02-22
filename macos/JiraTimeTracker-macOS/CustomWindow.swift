@@ -43,7 +43,8 @@ public class CustomWindow: NSWindow {
       titlebarContainer.setFrameOrigin(NSPoint(x: 0, y: super.frame.size.height - 52))
       
       windowControls.setFrameOrigin(NSPoint(x: 12, y: -16))
-      windowControls.setFrameSize(NSSize(width: super.frame.size.width - 12, height: 52))
+      // windowControls.setFrameSize(NSSize(width: super.frame.size.width - 12, height: 52))
+      windowControls.setFrameSize(NSSize(width: super.frame.size.width, height: 52))
     }
   }
 }

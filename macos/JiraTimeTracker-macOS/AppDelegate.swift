@@ -4,15 +4,24 @@ import SwiftUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-  var windowController: CustomWindowController!
-  var menubarManager: MenubarManager!
+  var windowController: CustomWindowController
+  var menubarManager: MenubarManager
   
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
     return RCTLinkingManager.getUrlEventHandler(event, withReplyEvent: reply)
   }
   
+  override init() {
+    print("AppDelegate init START")
+    self.windowController = CustomWindowController()
+    self.menubarManager = MenubarManager()
+    super.init()
+    print("AppDelegate init STOP")
+  }
+  
   func applicationDidFinishLaunching(_ aNotification: Notification) {
+    print("applicationDidFinishLaunching START")
     // Assign the new handler for deep links
     let em = NSAppleEventManager.shared()
     em.setEventHandler(self, andSelector: #selector(self.getUrl(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
@@ -29,8 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     rootViewController.view = rootView
 
     // Create the application window
-    windowController = CustomWindowController()
-    windowController.window!.contentViewController = rootViewController
+    self.windowController.window!.contentViewController = rootViewController
     let screen: NSScreen = NSScreen.main!
     let midScreenX = screen.frame.midX
     let posScreenY = 200
@@ -42,8 +50,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     windowController.window!.makeKeyAndOrderFront(self)
     
     // Create MenubarManager to handle the menubar buttom
-    self.menubarManager = MenubarManager()
     self.menubarManager.setWindowController(newWindowController: windowController)
+    print("applicationDidFinishLaunching STOP")
   }
   
   // Reopen window on dock icon click
