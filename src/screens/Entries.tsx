@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useState } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { Image, NativeModules, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
   currentOverlayAtom,
@@ -22,6 +22,9 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
+import { setMenubarState, setMenubarText } from '../services/menubar-manager.service';
+import { formatSecondsToHMM } from '../services/time.service';
+import { MenubarState } from '../services/menubar-manager.service.types';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -46,6 +49,18 @@ export const Entries: FC = () => {
     await syncWorklogsForCurrentDay();
     setIsSyncing(false);
   }
+
+  useEffect(() => {
+    if (activeWorklog) {
+      console.log('Set text: ', formatSecondsToHMM(activeWorklog.timeSpentSeconds));
+      setMenubarState(MenubarState.Running);
+      setMenubarText(formatSecondsToHMM(activeWorklog.timeSpentSeconds));
+    } else {
+      console.log('Set text: ', '-:--');
+      setMenubarState(MenubarState.Paused);
+      setMenubarText('-:--');
+    }
+  }, [activeWorklog?.timeSpentSeconds]);
 
   const rightElement = (
     <>

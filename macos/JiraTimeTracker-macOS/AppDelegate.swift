@@ -4,8 +4,8 @@ import SwiftUI
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-  var statusBarItem: NSStatusItem!
-  var windowController : CustomWindowController!
+  var windowController: CustomWindowController!
+  var menubarManager: MenubarManager!
   
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
@@ -27,13 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let rootView = RCTRootView(bundleURL: jsCodeLocation, moduleName: "JiraTimeTracker", initialProperties: nil, launchOptions: nil)
     let rootViewController = NSViewController()
     rootViewController.view = rootView
-    
-    statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(60))
-    if let button = self.statusBarItem.button {
-      button.action = #selector(toggleWindow(_:))
-      button.title = "JTA"
-    }
-    
+
     // Create the application window
     windowController = CustomWindowController()
     windowController.window!.contentViewController = rootViewController
@@ -46,6 +40,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     windowController.window!.setFrame(frame, display: true)
     windowController.window!.center()
     windowController.window!.makeKeyAndOrderFront(self)
+    
+    // Create MenubarManager to handle the menubar buttom
+    self.menubarManager = MenubarManager()
+    self.menubarManager.setWindowController(newWindowController: windowController)
   }
   
   // Reopen window on dock icon click
@@ -57,17 +55,5 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   func moveButtonDown(button: NSView) {
     button.setFrameOrigin(NSMakePoint(button.frame.origin.x, button.frame.origin.y-2.0))
-  }
-  
-  
-  @objc func toggleWindow(_ sender: AnyObject?) {
-    if let button = self.statusBarItem.button {
-      if self.windowController.window!.isMiniaturized {
-        self.windowController.window!.close()
-      } else {
-        self.windowController.window!.display();
-        self.windowController.window!.becomeKey();
-      }
-    }
   }
 }
