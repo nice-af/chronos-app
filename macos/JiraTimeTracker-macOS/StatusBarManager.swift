@@ -5,6 +5,12 @@ enum StatusBarState: String {
   case RUNNING = "running"
 }
 
+struct StateChangeData: Codable {
+  let state: String
+  let issueKey: String?
+  let issueSummary: String?
+}
+
 struct JTTStatusItemView: View {
   @ObservedObject var jttData: JTTDataObserver
   
@@ -71,7 +77,6 @@ class StatusBarManager: NSObject {
     // Adding the status bar view
     newStatusItem.button?.addSubview(subView)
     newStatusItem.button?.frame = subView.frame
-    // newStatusItem.button?.toolTip = "HEEELLLOOOO"
     newStatusItem.button?.action = #selector(toggleWindow(_:))
     
     // StatusItem is stored as a property.
@@ -107,17 +112,24 @@ class StatusBarManager: NSObject {
   }
   
   @objc func setState(notification: NSNotification) -> Void {
-    guard let newState = notification.object as? String else {
+    guard let jsonString = notification.object as? String else {
       print("Notification object is not a string")
       return
     }
-    if (newState == "paused") {
+    let jsonData = jsonString.data(using: .utf8)!
+    let data: StateChangeData = try! JSONDecoder().decode(StateChangeData.self, from: jsonData)
+    
+    if (data.state == "paused") {
       DispatchQueue.main.async {
+        self.statusItem?.button?.toolTip = nil
         self.jttData.setState(newState: StatusBarState.PAUSED)
       }
     }
-    if (newState == "running") {
+    if (data.state == "running") {
       DispatchQueue.main.async {
+        if (data.issueKey != nil && data.issueSummary != nil){
+          self.statusItem?.button?.toolTip = "\((data.issueKey != nil) ? "\(data.issueKey ?? ""):" : "") \(data.issueSummary ?? "")"
+        }
         self.jttData.setState(newState: StatusBarState.RUNNING)
       }
     }

@@ -1,18 +1,18 @@
 import { Version3Models } from 'jira.js';
 import { atom, createStore } from 'jotai';
+import { Appearance } from 'react-native';
 import { Overlay, SidebarLayout } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira.service';
 import { sendNativeEvent } from '../services/native-event-emitter.service';
-import { StatusBarState, NativeEvent } from '../services/native-event-emitter.service.types';
+import { NativeEvent, StatusBarState, StatusBarStateChangeData } from '../services/native-event-emitter.service.types';
 import { AuthModel, SettingsModel, StorageKey, defaultStorageValues, setInStorage } from '../services/storage.service';
 import { formatSecondsToHMM } from '../services/time.service';
 import { syncWorklogs } from '../services/worklog.service';
-import { Theme } from '../styles/theme/theme-types';
-import { DayId, Worklog, WorklogState } from '../types/global.types';
 import { darkTheme } from '../styles/theme/theme-dark';
 import { lightTheme } from '../styles/theme/theme-light';
-import { Appearance } from 'react-native';
+import { Theme } from '../styles/theme/theme-types';
+import { DayId, Worklog, WorklogState } from '../types/global.types';
 
 export const store = createStore();
 
@@ -175,13 +175,23 @@ store.sub(worklogsLocalAtom, () => {
 store.sub(activeWorklogTrackingDurationAtom, () => {
   const activeWorklog = store.get(activeWorklogAtom);
   if (activeWorklog) {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.RUNNING });
+    sendNativeEvent({
+      name: NativeEvent.STATUS_BAR_STATE_CHANGE,
+      data: JSON.stringify({
+        state: StatusBarState.RUNNING,
+        issueKey: activeWorklog.issue.key,
+        issueSummary: activeWorklog.issue.summary,
+      } as StatusBarStateChangeData),
+    });
     sendNativeEvent({
       name: NativeEvent.STATUS_BAR_TEXT_CHANGE,
       data: formatSecondsToHMM(activeWorklog.timeSpentSeconds),
     });
   } else {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.PAUSED });
+    sendNativeEvent({
+      name: NativeEvent.STATUS_BAR_STATE_CHANGE,
+      data: JSON.stringify({ state: StatusBarState.PAUSED } as StatusBarStateChangeData),
+    });
     sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: '-:--' });
   }
 });
@@ -189,10 +199,20 @@ store.sub(activeWorklogAtom, () => {
   const activeWorklog = store.get(activeWorklogAtom);
   const time = activeWorklog?.timeSpentSeconds ?? 0;
   if (activeWorklog) {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.RUNNING });
+    sendNativeEvent({
+      name: NativeEvent.STATUS_BAR_STATE_CHANGE,
+      data: JSON.stringify({
+        state: StatusBarState.RUNNING,
+        issueKey: activeWorklog.issue.key,
+        issueSummary: activeWorklog.issue.summary,
+      } as StatusBarStateChangeData),
+    });
     sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: formatSecondsToHMM(time) });
   } else {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_STATE_CHANGE, data: StatusBarState.PAUSED });
+    sendNativeEvent({
+      name: NativeEvent.STATUS_BAR_STATE_CHANGE,
+      data: JSON.stringify({ state: StatusBarState.PAUSED } as StatusBarStateChangeData),
+    });
     sendNativeEvent({ name: NativeEvent.STATUS_BAR_TEXT_CHANGE, data: '-:--' });
   }
 });

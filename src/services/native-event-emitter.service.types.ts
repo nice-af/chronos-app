@@ -15,6 +15,17 @@ export interface SendNativeEventParams {
   data: string;
 }
 
+export interface StatusBarStateChangeData {
+  state: StatusBarState;
+  issueKey: string;
+  issueSummary: string;
+}
+
+export interface SendNativeEventParams_DEFAULT {
+  name: NativeEvent;
+  data: string;
+}
+
 export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE
   | AddNativeEventListenerParams_STATUS_BAR_TEXT_CHANGE
