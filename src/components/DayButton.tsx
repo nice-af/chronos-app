@@ -76,6 +76,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
         styles.default,
         (isHovered || isSelected) && styles.isHovered,
         pressed && styles.isPressed,
+        Platform.OS === 'windows' && isSelected && styles.isSelected,
         { height: height },
       ]}>
       {Platform.OS !== 'windows' && <View style={[styles.insetBorder, { height: height - 2 }]} />}
@@ -125,6 +126,9 @@ function createStyles(theme: Theme) {
     isPressed: {
       opacity: 0.8,
     },
+    isSelected: {
+      borderColor: theme.blue,
+    },
     insetBorder: {
       position: 'absolute',
       top: 0,
@@ -136,20 +140,21 @@ function createStyles(theme: Theme) {
     },
     selectedBorder: {
       position: 'absolute',
-      borderWidth: 2,
       borderColor: theme.blue,
       ...Platform.select({
         default: {
           top: -3,
           left: -3,
           width: 58,
+          borderWidth: 2,
           borderRadius: 12,
         },
         windows: {
           top: -1,
           left: -1,
           width: 54,
-          borderRadius: 8,
+          borderWidth: 2,
+          borderRadius: 9,
         },
       }),
     },
