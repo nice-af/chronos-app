@@ -10,6 +10,9 @@ import { formatSecondsToHMM } from '../services/time.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { DayId, Worklog, WorklogState } from '../types/global.types';
+import { darkTheme } from '../styles/theme/theme-dark';
+import { lightTheme } from '../styles/theme/theme-light';
+import { Appearance } from 'react-native';
 
 export const store = createStore();
 
@@ -146,7 +149,7 @@ export const sidebarLayoutAtom = atom<SidebarLayout>(get => get(settingsAtom).si
 export const workingDaysAtom = atom<DayId[]>(get => get(settingsAtom).workingDays);
 export const hideNonWorkingDaysAtom = atom(get => get(settingsAtom).hideNonWorkingDays);
 export const disableEditingOfPastWorklogsAtom = atom(get => get(settingsAtom).disableEditingOfPastWorklogs);
-export const themeAtom = atom<Theme>(get => get(settingsAtom).theme);
+export const themeAtom = atom<Theme>(Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme);
 export const isFullscreenAtom = atom(false);
 
 /**
