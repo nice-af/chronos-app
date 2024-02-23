@@ -1,7 +1,6 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import {
   AddNativeEventListenerParams,
-  NativeEvent,
   RemoveNativeEventListenerParams,
   SendNativeEventParams,
 } from './native-event-emitter.service.types';

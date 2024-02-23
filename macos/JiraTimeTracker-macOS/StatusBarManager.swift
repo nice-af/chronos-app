@@ -19,6 +19,9 @@ struct JTTStatusItemView: View {
           .resizable()
           .frame(width: 9, height: 9)
           .position(x: 10.5, y: 11)
+          .onTapGesture {
+            EventEmitter.sharedInstance.dispatch(name: "playPauseClick", body: self.jttData.state == StatusBarState.PAUSED ? "paused" : "running")
+          }
       }
       ZStack(alignment: .center) {
         UnevenRoundedRectangle(cornerRadii: RectangleCornerRadii(bottomTrailing: 6, topTrailing: 6))
@@ -86,7 +89,6 @@ class StatusBarManager: NSObject {
   }
   
   @objc public func toggleWindow(_ sender: AnyObject?) {
-    // EventEmitter.sharedInstance.dispatch(name: "onSessionConnect", body: "THIS IS THE BODY")
     if self.windowController.window!.isVisible {
       self.windowController.window!.close()
     } else {

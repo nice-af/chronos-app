@@ -48,6 +48,7 @@ export const activeWorklogAtom = atom(get => {
   const worklogId = get(activeWorklogIdAtom);
   return get(worklogsAtom).find(worklog => worklog.id === worklogId) ?? null;
 });
+export const lastActiveWorklogIdAtom = atom<string | null>(null);
 /**
  * Unix timestamp where the tracking of the active worklog started
  */
@@ -109,6 +110,9 @@ export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | 
   }
 
   set(activeWorklogIdAtom, worklogId);
+  if (worklogId) {
+    set(lastActiveWorklogIdAtom, worklogId);
+  }
   set(activeWorklogTrackingDurationAtom, 0);
   set(activeWorklogTrackingStartedAtom, Date.now());
 });
