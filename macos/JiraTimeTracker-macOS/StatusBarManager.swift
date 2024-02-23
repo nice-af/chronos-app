@@ -109,7 +109,6 @@ class StatusBarManager: NSObject {
       print("Notification object is not a string")
       return
     }
-    print(newState)
     if (newState == "paused") {
       DispatchQueue.main.async {
         self.jttData.setState(newState: StatusBarState.PAUSED)
