@@ -38,6 +38,11 @@ export const activeWorklogTrackingDurationAtom = atom(0);
  * Tick every 10 seconds to update the current duration
  */
 setInterval(() => {
+  const activeWorklog = store.get(activeWorklogAtom);
+  if (!activeWorklog) {
+    return;
+  }
+
   const start = store.get(activeWorklogTrackingStartedAtom);
   let diff: number;
   if (start === 0) {
