@@ -10,8 +10,17 @@ import { getPadding } from '../styles/utils';
 import { ButtonTransparent } from './ButtonTransparent';
 import { IssueTag } from './IssueTag';
 
+interface SearchResultIssue {
+  id: string;
+  key: string;
+  project: {
+    name: string;
+  };
+  summary: string;
+}
+
 interface SearchResultsEntryProps extends Omit<PressableProps, 'style'> {
-  issue: Issue;
+  issue: SearchResultIssue;
   onPress: () => void;
 }
 
@@ -23,6 +32,7 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
     <View key={issue.id} style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headlineContainer}>
+          {/* TODO actually show project logo here */}
           <IssueTag label={issue.key} project='orcaya' />
           <Image
             style={styles.chevronIcon}
@@ -33,10 +43,10 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
             }
           />
           <Text numberOfLines={1} style={styles.parentIssue}>
-            {issue.fields.project.name}
+            {issue.project.name}
           </Text>
         </View>
-        <Text style={styles.title}>{issue.fields.summary}</Text>
+        <Text style={styles.title}>{issue.summary}</Text>
       </View>
       <ButtonTransparent onPress={onPress}>
         <Image

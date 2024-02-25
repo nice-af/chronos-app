@@ -1,27 +1,26 @@
-import { Issue } from 'jira.js/out/version3/models';
 import { Worklog, WorklogState } from '../types/global.types';
 import { formatDateToYYYYMMDD } from './date.service';
 import { createRemoteWorklog, updateRemoteWorklog } from './jira.service';
 
-export function createNewWorklogForIssue({
+function getLocalId(): string {
+  return `local_${Date.now()}`;
+}
+
+export function createNewLocalWorklog({
   issue,
-  comment,
-  started,
 }: {
-  issue: Issue;
-  comment?: string;
-  started?: string;
+  issue: {
+    id: string;
+    key: string;
+    summary: string;
+  };
 }): Worklog {
   return {
-    id: `local_${Date.now()}`,
-    issue: {
-      id: issue.id,
-      key: issue.key,
-      summary: issue.fields.summary,
-    },
-    started: started ?? formatDateToYYYYMMDD(new Date()),
+    id: getLocalId(),
+    issue,
+    started: formatDateToYYYYMMDD(new Date()),
     timeSpentSeconds: 0,
-    comment: comment ?? '',
+    comment: '',
     state: WorklogState.LOCAL,
   };
 }

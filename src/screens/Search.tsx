@@ -1,20 +1,21 @@
-import { Issue, SearchResults } from 'jira.js/out/version3/models';
+import { Issue } from 'jira.js/out/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { addWorklogAtom, currentOverlayAtom, selectedDateAtom, themeAtom } from '../atoms';
+import { addWorklogAtom, currentOverlayAtom, selectedDateAtom, themeAtom, worklogsAtom } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SearchResultsEntry } from '../components/SearchResultsEntry';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
+import { useTranslation } from '../services/i18n.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
-import { createNewWorklogForIssue } from '../services/worklog.service';
+import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { useTranslation } from '../services/i18n.service';
+import { Worklog } from '../types/global.types';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -38,6 +39,7 @@ export const Search: FC = () => {
   const hasCharacters = searchValue.trim().length > 0;
   const enoughCharacters = searchValue.trim().length >= 3;
   const { t } = useTranslation();
+  const worklogs = useAtomValue(worklogsAtom);
 
   const debouncedSearch = useMemo(
     () =>
@@ -57,10 +59,43 @@ export const Search: FC = () => {
   useEffect(() => {
     const trimmedValue = searchValue.trim();
     if (!trimmedValue || trimmedValue.length < 3) {
+      setSearchResults([]);
       return;
     }
     debouncedSearch(trimmedValue);
   }, [searchValue]);
+
+  /**
+   * List of worklogs that have been worked on most recently.
+   * This allows the user to quickly add a new worklog for an issue they have worked on recently without searching.
+   */
+  const latestWorklogsWorkedOn: Worklog[] = useMemo(() => {
+    let maxWorklogsShown = 10;
+    const latestWorklogs: Worklog[] = [];
+
+    worklogs
+      .sort((a, b) => {
+        if (a.started === b.started) {
+          return b.id.localeCompare(a.id);
+        }
+        return b.started.localeCompare(a.started);
+      })
+      .forEach(worklog => {
+        const alreadyInList = latestWorklogs.some(w => w.issue.key === worklog.issue.key);
+        if (alreadyInList || latestWorklogs.length > maxWorklogsShown) {
+          return;
+        }
+        latestWorklogs.push(worklog);
+      });
+
+    return latestWorklogs;
+  }, [worklogs]);
+
+  const handleOnWorklogStart = (worklog: Worklog) => {
+    setCurrentOverlay(null);
+    setSelectedDate(formatDateToYYYYMMDD(new Date()));
+    addWorklog(worklog);
+  };
 
   return (
     <Layout
@@ -95,24 +130,63 @@ export const Search: FC = () => {
             <LoadingSpinner />
           </View>
         )}
-        {!searchIsLoading &&
-          searchResults?.map(issue => (
-            <SearchResultsEntry
-              key={issue.id}
-              issue={issue}
-              onPress={() => {
-                setCurrentOverlay(null);
-                setSelectedDate(formatDateToYYYYMMDD(new Date()));
-                addWorklog(createNewWorklogForIssue({ issue }));
-              }}
-            />
-          ))}
         {hasCharacters && !enoughCharacters && !searchIsLoading && (
           <Text style={styles.errorMessage}>{t('search.error.minLength')}</Text>
         )}
         {enoughCharacters && !searchIsLoading && searchResults?.length === 0 && (
           <Text style={styles.errorMessage}>{t('search.error.noResults')}</Text>
         )}
+        {!searchIsLoading &&
+          searchResults?.map(issue => (
+            <SearchResultsEntry
+              key={`issue-${issue.id}`}
+              issue={{
+                id: issue.id,
+                key: issue.key,
+                project: {
+                  name: issue.fields.project.name,
+                },
+                summary: issue.fields.summary,
+              }}
+              onPress={() =>
+                handleOnWorklogStart(
+                  createNewLocalWorklog({
+                    issue: {
+                      id: issue.id,
+                      key: issue.key,
+                      summary: issue.fields.summary,
+                    },
+                  })
+                )
+              }
+            />
+          ))}
+        {!hasCharacters &&
+          latestWorklogsWorkedOn.map(worklog => (
+            <SearchResultsEntry
+              key={`worklog-${worklog.id}`}
+              issue={{
+                id: worklog.issue.id,
+                key: worklog.issue.key,
+                project: {
+                  // TODO persist project name in worklog or persist id and get project name some other way
+                  name: '',
+                },
+                summary: worklog.issue.summary,
+              }}
+              onPress={() =>
+                handleOnWorklogStart(
+                  createNewLocalWorklog({
+                    issue: {
+                      id: worklog.issue.id,
+                      key: worklog.issue.key,
+                      summary: worklog.issue.summary,
+                    },
+                  })
+                )
+              }
+            />
+          ))}
       </ScrollView>
     </Layout>
   );
