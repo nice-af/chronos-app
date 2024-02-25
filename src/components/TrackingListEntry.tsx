@@ -64,7 +64,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
           )}
           <IssueTag label={worklog.issue.key} project={'orcaya'} />
           <Text numberOfLines={1} style={styles.title}>
-            {worklog.id} - {worklog.issue.summary}
+            {worklog.issue.summary}
           </Text>
         </View>
         {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
