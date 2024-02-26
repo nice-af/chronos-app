@@ -46,27 +46,19 @@ class JTTDataObserver: ObservableObject {
   @Published var time: Int? = nil;
   @Published var timeString: String = "-:--";
   @Published var state: StatusBarState = StatusBarState.PAUSED
-  
   var timer = Timer()
-  let formatter: DateComponentsFormatter
   
-  init() {
-    self.formatter = DateComponentsFormatter()
-    self.formatter.allowedUnits = [.hour, .minute]
-    self.formatter.unitsStyle = .positional
-    self.formatter.zeroFormattingBehavior = .dropLeading
+  func formatTime(time: Int) -> String {
+    let minutes = time / 60 % 60
+    let hours = time / 3600
+    return String(format: "%d:%02d", hours, minutes)
   }
   
   func startTimer() {
     self.timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
       let newTime = self.time ?? 0 + 60
       self.time = newTime
-      let formattedString = self.formatter.string(from: TimeInterval(newTime)) ?? "-:--"
-      if newTime < 3600 {
-        self.timeString = "0:\(formattedString)"
-      } else {
-        self.timeString =  formattedString
-      }
+      self.timeString = self.formatTime(time: newTime)
     }
   }
   
@@ -87,12 +79,7 @@ class JTTDataObserver: ObservableObject {
     self.state = newState
     if (newState == StatusBarState.RUNNING) {
       self.startTimer()
-      let formattedString = self.formatter.string(from: TimeInterval(self.time ?? 0)) ?? "-:--"
-      if self.time ?? 0 < 3600 {
-        self.timeString = "0:\(formattedString)"
-      } else {
-        self.timeString =  formattedString
-      }
+      self.timeString = self.formatTime(time: self.time ?? 0)
     } else {
       self.stopTimer()
     }
