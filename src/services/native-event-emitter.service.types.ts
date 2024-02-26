@@ -1,6 +1,6 @@
 export enum NativeEvent {
   STATUS_BAR_STATE_CHANGE = 'statusBarStateChange',
-  STATUS_BAR_TEXT_CHANGE = 'statusBarTextChange',
+  STATUS_BAR_TIME_CHANGE = 'statusBarTimeChange',
   FULLSCREEN_CHANGE = 'fullscreenChange',
   PLAY_PAUSE_CLICK = 'playPauseClick',
 }
@@ -28,7 +28,7 @@ export interface SendNativeEventParams_DEFAULT {
 
 export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE
-  | AddNativeEventListenerParams_STATUS_BAR_TEXT_CHANGE
+  | AddNativeEventListenerParams_STATUS_BAR_TIME_CHANGE
   | AddNativeEventListenerParams_FULLSCREEN_CHANGE
   | AddNativeEventListenerParams_PLAY_PAUSE_CLICK;
 
@@ -37,8 +37,8 @@ export interface AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE {
   callback: (data: StatusBarState) => void;
 }
 
-export interface AddNativeEventListenerParams_STATUS_BAR_TEXT_CHANGE {
-  name: NativeEvent.STATUS_BAR_TEXT_CHANGE;
+export interface AddNativeEventListenerParams_STATUS_BAR_TIME_CHANGE {
+  name: NativeEvent.STATUS_BAR_TIME_CHANGE;
   callback: (data: string) => void;
 }
 

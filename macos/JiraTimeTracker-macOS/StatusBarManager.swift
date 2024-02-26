@@ -35,7 +35,7 @@ struct JTTStatusItemView: View {
           .fill(.clear)
           .stroke(.tertiary, lineWidth: 2)
           .frame(width: 43, height: 22)
-        Text(self.jttData.text).font(.system(size: 11, weight: .bold)).tag(2)
+        Text(self.jttData.timeString).font(.system(size: 11, weight: .bold)).tag(2)
       }
       Spacer()
     }
@@ -43,15 +43,59 @@ struct JTTStatusItemView: View {
 }
 
 class JTTDataObserver: ObservableObject {
-  @Published var text: String = "-:--";
+  @Published var time: Int? = nil;
+  @Published var timeString: String = "-:--";
   @Published var state: StatusBarState = StatusBarState.PAUSED
   
-  public func setText(newText: String) -> Void {
-    self.text = newText
+  var timer = Timer()
+  let formatter: DateComponentsFormatter
+  
+  init() {
+    self.formatter = DateComponentsFormatter()
+    self.formatter.allowedUnits = [.hour, .minute]
+    self.formatter.unitsStyle = .positional
+    self.formatter.zeroFormattingBehavior = .dropLeading
+  }
+  
+  func startTimer() {
+    self.timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+      let newTime = self.time ?? 0 + 60
+      self.time = newTime
+      let formattedString = self.formatter.string(from: TimeInterval(newTime)) ?? "-:--"
+      if newTime < 3600 {
+        self.timeString = "0:\(formattedString)"
+      } else {
+        self.timeString =  formattedString
+      }
+    }
+  }
+  
+  func stopTimer() {
+    self.timer.invalidate()
+  }
+  
+  public func setTime(newTime: String) -> Void {
+    if (newTime == "null") {
+      self.time = nil
+      self.timeString = "-:--"
+    } else {
+      self.time = (newTime as NSString) .integerValue
+    }
   }
   
   public func setState(newState: StatusBarState) -> Void {
     self.state = newState
+    if (newState == StatusBarState.RUNNING) {
+      self.startTimer()
+      let formattedString = self.formatter.string(from: TimeInterval(self.time ?? 0)) ?? "-:--"
+      if self.time ?? 0 < 3600 {
+        self.timeString = "0:\(formattedString)"
+      } else {
+        self.timeString =  formattedString
+      }
+    } else {
+      self.stopTimer()
+    }
   }
 }
 
@@ -89,7 +133,7 @@ class StatusBarManager: NSObject {
     self.statusItem = newStatusItem
     
     // Setup event listeners
-    NotificationCenter.default.addObserver(self, selector: #selector(setText), name: NSNotification.Name("statusBarTextChange"), object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(setTime), name: NSNotification.Name("statusBarTimeChange"), object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(setState), name: NSNotification.Name("statusBarStateChange"), object: nil)
   }
   
@@ -101,13 +145,13 @@ class StatusBarManager: NSObject {
     }
   }
   
-  @objc func setText(notification: NSNotification) -> Void {
-    guard let newText = notification.object as? String else {
+  @objc func setTime(notification: NSNotification) -> Void {
+    guard let newTime = notification.object as? String else {
       print("Notification object is not a string")
       return
     }
     DispatchQueue.main.async {
-      self.jttData.setText(newText: newText)
+      self.jttData.setTime(newTime: newTime)
     }
   }
   
