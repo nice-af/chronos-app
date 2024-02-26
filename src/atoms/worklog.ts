@@ -2,9 +2,9 @@ import { atom } from 'jotai';
 import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogState } from '../types/global.types';
-import { store } from '.';
-import { selectedDateAtom } from './navigation';
 import { userInfoAtom } from './auth';
+import { selectedDateAtom } from './navigation';
+import { store } from './store';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 
