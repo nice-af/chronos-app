@@ -1,11 +1,12 @@
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useEffect, useState } from 'react';
-import { Image, NativeModules, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
   currentOverlayAtom,
   isFullscreenAtom,
+  lastActiveWorklogIdAtom,
   selectedDateAtom,
   syncWorklogsForCurrentDayAtom,
   themeAtom,
@@ -23,7 +24,6 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
-import { formatSecondsToHMM } from '../services/time.service';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -38,6 +38,7 @@ export const Entries: FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
   const isFullscreen = useAtomValue(isFullscreenAtom);
+  const test = useAtomValue(lastActiveWorklogIdAtom);
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
