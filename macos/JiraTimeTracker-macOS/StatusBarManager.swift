@@ -19,12 +19,18 @@ struct JTTStatusItemView: View {
       Spacer()
       ZStack(alignment: .center) {
         UnevenRoundedRectangle(cornerRadii: RectangleCornerRadii(topLeading: 5, bottomLeading: 5))
-          .fill(.tertiary)
+          .fill(.foreground)
           .frame(width: 18, height: 20)
+          .opacity(0.25)
         Image(systemName: self.jttData.state == StatusBarState.PAUSED ? "play.fill" : "pause.fill")
           .resizable()
           .frame(width: 9, height: 9)
           .position(x: 10.5, y: 11)
+        Rectangle()
+          .fill(.clear)
+          .contentShape(Rectangle())
+          .frame(width: 18, height: 18)
+          .position(x: 10, y: 11)
           .onTapGesture {
             EventEmitter.sharedInstance.dispatch(name: "playPauseClick", body: self.jttData.state == StatusBarState.PAUSED ? "paused" : "running")
           }
@@ -33,9 +39,10 @@ struct JTTStatusItemView: View {
         UnevenRoundedRectangle(cornerRadii: RectangleCornerRadii(bottomTrailing: 6, topTrailing: 6))
           .inset(by: 2)
           .fill(.clear)
-          .stroke(.tertiary, lineWidth: 2)
+          .stroke(.foreground, lineWidth: 2)
           .frame(width: 43, height: 22)
-        Text(self.jttData.timeString).font(.system(size: 11, weight: .bold)).tag(2)
+          .opacity(0.25)
+        Text(self.jttData.timeString).font(.system(size: 11, weight: .bold))
       }
       Spacer()
     }
