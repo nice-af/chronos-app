@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		314408F323BC7BC8926B0BC9 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8155E311D59FBACD9B923E /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F360B4B8B5AF0C712244B546 /* libPods-JiraTimeTracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC2507D0431456DAAAA37E9 /* libPods-JiraTimeTracker.a */; };
+		E5869405DD2C96B15B578638 /* libPods-JiraTimeTracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F4987A5A59FD4641A0EE8B /* libPods-JiraTimeTracker.a */; };
+		EAB49F305570DAD114870297 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD36D8346DDCCB0822CFD09 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,20 +30,20 @@
 		00E356EE1AD99517003FC87E /* JiraTimeTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JiraTimeTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* JiraTimeTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JiraTimeTrackerTests.m; sourceTree = "<group>"; };
+		069825259BF26BF95B42A748 /* Pods-JiraTimeTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker.debug.xcconfig"; sourceTree = "<group>"; };
+		0DD36D8346DDCCB0822CFD09 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker-JiraTimeTrackerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* JiraTimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiraTimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = JiraTimeTracker/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = JiraTimeTracker/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = JiraTimeTracker/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = JiraTimeTracker/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = JiraTimeTracker/main.m; sourceTree = "<group>"; };
-		1D92DF9F9E1767A44582F135 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5AA6F478C0E0830E4E3C29D5 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		67EED4AF937CB3F59B04C850 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
+		771E58045692A38FDA48F9AF /* Pods-JiraTimeTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = JiraTimeTracker/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9658A6CDC3704108294377C8 /* Pods-JiraTimeTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker.debug.xcconfig"; sourceTree = "<group>"; };
-		AAC2507D0431456DAAAA37E9 /* libPods-JiraTimeTracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE8155E311D59FBACD9B923E /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker-JiraTimeTrackerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ECB118223A29F2775B32F307 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
+		B6F4987A5A59FD4641A0EE8B /* libPods-JiraTimeTracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FBAE9E6A12484FAE8A8343CA /* Pods-JiraTimeTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				314408F323BC7BC8926B0BC9 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a in Frameworks */,
+				EAB49F305570DAD114870297 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F360B4B8B5AF0C712244B546 /* libPods-JiraTimeTracker.a in Frameworks */,
+				E5869405DD2C96B15B578638 /* libPods-JiraTimeTracker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				AAC2507D0431456DAAAA37E9 /* libPods-JiraTimeTracker.a */,
-				DE8155E311D59FBACD9B923E /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */,
+				B6F4987A5A59FD4641A0EE8B /* libPods-JiraTimeTracker.a */,
+				0DD36D8346DDCCB0822CFD09 /* libPods-JiraTimeTracker-JiraTimeTrackerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,10 +140,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9658A6CDC3704108294377C8 /* Pods-JiraTimeTracker.debug.xcconfig */,
-				FBAE9E6A12484FAE8A8343CA /* Pods-JiraTimeTracker.release.xcconfig */,
-				1D92DF9F9E1767A44582F135 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */,
-				ECB118223A29F2775B32F307 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */,
+				069825259BF26BF95B42A748 /* Pods-JiraTimeTracker.debug.xcconfig */,
+				771E58045692A38FDA48F9AF /* Pods-JiraTimeTracker.release.xcconfig */,
+				5AA6F478C0E0830E4E3C29D5 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */,
+				67EED4AF937CB3F59B04C850 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -155,12 +155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "JiraTimeTrackerTests" */;
 			buildPhases = (
-				F4671F0CEF1D852E1F85BFA7 /* [CP] Check Pods Manifest.lock */,
+				E1FBA13611B50F6F7ED4F99D /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				83F9E246C9005097EA515225 /* [CP] Embed Pods Frameworks */,
-				45C1C426CD0D4B4D563B892E /* [CP] Copy Pods Resources */,
+				A9EEA460059780D0B42AB699 /* [CP] Embed Pods Frameworks */,
+				91E9EF002DE4DD26FCBC1F2B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +176,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "JiraTimeTracker" */;
 			buildPhases = (
-				10B0F882434474EC542D3A3B /* [CP] Check Pods Manifest.lock */,
+				C305E241B588ABD9D6F2D193 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3EF717FEC3C71E1291E56BC8 /* [CP] Embed Pods Frameworks */,
-				5032C6B204A1EDEA13D4B632 /* [CP] Copy Pods Resources */,
+				E356949D68B6C66E943CAC8C /* [CP] Embed Pods Frameworks */,
+				1C0A0B53EF8C555DFD98D7CA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -266,7 +266,58 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		10B0F882434474EC542D3A3B /* [CP] Check Pods Manifest.lock */ = {
+		1C0A0B53EF8C555DFD98D7CA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		91E9EF002DE4DD26FCBC1F2B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A9EEA460059780D0B42AB699 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C305E241B588ABD9D6F2D193 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -288,75 +339,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3EF717FEC3C71E1291E56BC8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		45C1C426CD0D4B4D563B892E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5032C6B204A1EDEA13D4B632 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		83F9E246C9005097EA515225 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-JiraTimeTrackerTests/Pods-JiraTimeTracker-JiraTimeTrackerTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F4671F0CEF1D852E1F85BFA7 /* [CP] Check Pods Manifest.lock */ = {
+		E1FBA13611B50F6F7ED4F99D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,6 +359,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E356949D68B6C66E943CAC8C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker/Pods-JiraTimeTracker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -430,7 +430,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1D92DF9F9E1767A44582F135 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */;
+			baseConfigurationReference = 5AA6F478C0E0830E4E3C29D5 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -457,7 +457,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ECB118223A29F2775B32F307 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */;
+			baseConfigurationReference = 67EED4AF937CB3F59B04C850 /* Pods-JiraTimeTracker-JiraTimeTrackerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -481,7 +481,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9658A6CDC3704108294377C8 /* Pods-JiraTimeTracker.debug.xcconfig */;
+			baseConfigurationReference = 069825259BF26BF95B42A748 /* Pods-JiraTimeTracker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -508,7 +508,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBAE9E6A12484FAE8A8343CA /* Pods-JiraTimeTracker.release.xcconfig */;
+			baseConfigurationReference = 771E58045692A38FDA48F9AF /* Pods-JiraTimeTracker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
