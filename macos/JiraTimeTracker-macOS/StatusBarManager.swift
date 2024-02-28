@@ -132,10 +132,11 @@ class StatusBarManager: NSObject {
   }
   
   @objc public func toggleWindow(_ sender: AnyObject?) {
-    if self.windowController.window!.isVisible {
+    if self.windowController.window!.isKeyWindow {
       self.windowController.window!.close()
     } else {
       self.windowController.window!.makeKeyAndOrderFront(self)
+      NSApplication.shared.activate(ignoringOtherApps: true)
     }
   }
   
