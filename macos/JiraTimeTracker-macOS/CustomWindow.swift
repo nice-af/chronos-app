@@ -15,6 +15,7 @@ public class CustomWindow: NSWindow {
     
     // Add titlebar accessory for larger drag area
     self.addTitlebarAccessoryViewController(titlebarAccessory)
+    self.collectionBehavior = [.fullScreenAuxiliary, .moveToActiveSpace]
   }
   
   public override func layoutIfNeeded() {
