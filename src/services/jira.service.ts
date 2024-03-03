@@ -5,7 +5,7 @@ import ms from 'ms';
 import { Alert } from 'react-native';
 import { jiraAuthAtom, store } from '../atoms';
 import { Worklog, WorklogState } from '../types/global.types';
-import { extractTextFromJSON } from './atlassian-document-format.service';
+import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
 
@@ -83,7 +83,7 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
           acc + ms(curr.replace('m', 'min').replace('1d', '8h').replace('2d', '16h').replace('3d', '24h')) / 1_000,
         0
       ),
-      comment: worklog.comment ? extractTextFromJSON(worklog.comment) : '',
+      comment: worklog.comment ? convertAdfToMd(worklog.comment) : '',
       state: WorklogState.SYNCED,
     }));
 }
@@ -229,7 +229,7 @@ export function createRemoteWorklog(worklog: Worklog) {
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
     timeSpentSeconds: worklog.timeSpentSeconds,
-    comment: worklog.comment,
+    comment: convertMdToAdf(worklog.comment),
   });
 }
 
@@ -239,7 +239,7 @@ export function updateRemoteWorklog(worklog: Worklog) {
     id: worklog.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
     timeSpentSeconds: worklog.timeSpentSeconds,
-    comment: worklog.comment,
+    comment: convertMdToAdf(worklog.comment),
   });
 }
 
