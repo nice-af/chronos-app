@@ -109,6 +109,8 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
       startAt: currentIssue,
     });
 
+    console.log(issuesCall);
+
     for (const issue of issuesCall.issues ?? []) {
       // Get worklogs for each issue
       if (issue.fields.worklog?.total && issue.fields.worklog?.total < (issue.fields.worklog?.maxResults ?? 0)) {
@@ -213,15 +215,6 @@ export async function getIssuesBySearchQuery(query: string) {
   });
 
   return issues;
-}
-/**
- * Gets all issues that match a given search query
- */
-export function getIssuesSuggestionsBySearchQuery(query: string) {
-  return jiraClient.issueSearch.getIssuePickerResource({
-    query,
-    showSubTasks: true,
-  });
 }
 
 export function createRemoteWorklog(worklog: Worklog) {
