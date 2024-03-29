@@ -16,7 +16,7 @@ import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
-import { IssueTag } from './IssueTag';
+import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
@@ -62,7 +62,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
               [{worklog.state.substring(0, 1).toUpperCase()}]
             </Text>
           )}
-          <IssueTag label={worklog.issue.key} project={'orcaya'} />
+          <IssueKeyTag issueKey={worklog.issue.key} />
           <Text numberOfLines={1} style={styles.title}>
             {worklog.issue.summary}
           </Text>

@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
-import { Issue, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
+import { Issue, Worklog as JiraWorklog, Project as JiraProject } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { Alert } from 'react-native';
 import { jiraAuthAtom, store } from '../atoms';
@@ -8,6 +8,8 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
+import { upsertProjectAtom } from '../atoms/project';
+import { createNewLocalProject, loadAvatarForProject } from './project.service';
 
 // TODO: Use a more lightweight client
 
@@ -104,7 +106,7 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
   for (let currentIssue = 0; currentIssue < totalIssues; issuesFailsafe++) {
     const issuesCall = await jiraClient.issueSearch.searchForIssuesUsingJqlPost({
       jql: jqlQuery,
-      fields: ['summary', 'worklog'],
+      fields: ['summary', 'worklog', 'project'],
       maxResults: maxIssuesResults,
       startAt: currentIssue,
     });
@@ -136,6 +138,12 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
             throw new Error('Too many worklogs calls');
           }
         }
+      }
+
+      if (issue.fields.project) {
+        const project = createNewLocalProject(issue.fields.project as JiraProject);
+        store.set(upsertProjectAtom, project);
+        loadAvatarForProject(project);
       }
     }
 
@@ -213,6 +221,15 @@ export async function getIssuesBySearchQuery(query: string) {
       issues.push(issue);
     }
   });
+
+  // Add all projects to local projects atom
+  issues
+    .map(issue => issue.fields.project as JiraProject)
+    .map(project => createNewLocalProject(project))
+    .forEach(project => {
+      store.set(upsertProjectAtom, project);
+      loadAvatarForProject(project);
+    });
 
   return issues;
 }
