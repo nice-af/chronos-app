@@ -4,7 +4,7 @@ import { StorageKey, setInStorage } from '../services/storage.service';
 import { jiraAuthAtom } from './auth';
 import { settingsAtom } from './setting';
 import { store } from './store';
-import { activeWorklogAtom, activeWorklogTrackingDurationAtom, worklogsLocalAtom } from './worklog';
+import { activeWorklogAtom, worklogsLocalAtom } from './worklog';
 
 /**
  * Persist changes to AsyncStorage
@@ -26,17 +26,6 @@ store.sub(worklogsLocalAtom, () => {
 /**
  * Communicate with status bar widget
  */
-store.sub(activeWorklogTrackingDurationAtom, () => {
-  const activeWorklog = store.get(activeWorklogAtom);
-  if (activeWorklog) {
-    sendNativeEvent({
-      name: NativeEvent.STATUS_BAR_TIME_CHANGE,
-      data: activeWorklog.timeSpentSeconds.toString(),
-    });
-  } else {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TIME_CHANGE, data: 'null' });
-  }
-});
 store.sub(activeWorklogAtom, () => {
   const activeWorklog = store.get(activeWorklogAtom);
   const time = activeWorklog?.timeSpentSeconds ?? 0;

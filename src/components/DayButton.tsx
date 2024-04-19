@@ -3,7 +3,6 @@ import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
-  activeWorklogTrackingDurationAtom,
   hideNonWorkingDaysAtom,
   selectedDateAtom,
   sidebarLayoutAtom,
@@ -36,8 +35,6 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const worklogs = useAtomValue(worklogsAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
-  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
-  const activeWorklogIsThisDay = activeWorklog?.started === dateString;
   const { t } = useTranslation();
 
   if (hideNonWorkingDays && !isWorkingDay) {
@@ -55,17 +52,14 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   let duration = worklogs
     .filter(worklog => worklog.started === dateString)
     .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
-  if (activeWorklogIsThisDay) {
-    duration += activeWorklogTrackingDuration;
-  }
   const isSelected = selectedDate === dateString;
 
   const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
   const isChecked =
     worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.SYNCED);
-  const hasChanges =
-    activeWorklogIsThisDay ||
-    worklogsForThisDay.some(worklog => worklog.started === dateString && worklog.state !== WorklogState.SYNCED);
+  const hasChanges = worklogsForThisDay.some(
+    worklog => worklog.started === dateString && worklog.state !== WorklogState.SYNCED
+  );
 
   return (
     <Pressable

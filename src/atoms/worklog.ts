@@ -29,13 +29,11 @@ export const lastActiveWorklogIdAtom = atom<string | null>(null);
  * Unix timestamp where the tracking of the active worklog started
  */
 const activeWorklogTrackingStartedAtom = atom(0);
-/**
- * Duration in seconds of the currently running worklog
- */
-export const activeWorklogTrackingDurationAtom = atom(0);
 
+// TODO @florianmrz we need to run the below logic once upon the app being focussed / opened again
+// TODO @florianmrz this will mark the active worklog as edited when started and stopped within the same minute (minutes displayed in the UI are rounded to full minutes) which might be confusing to the user
 /**
- * Tick every 10 seconds to update the current duration
+ * Tick every few seconds to update the current duration
  */
 setInterval(() => {
   const activeWorklog = store.get(activeWorklogAtom);
@@ -44,16 +42,21 @@ setInterval(() => {
   }
 
   const start = store.get(activeWorklogTrackingStartedAtom);
+  const now = Date.now();
   let diff: number;
   if (start === 0) {
     diff = 0;
   } else {
-    const raw = Date.now() - start;
-    // Round to nearest minute
-    diff = Math.floor(raw / 1000 / 60) * 60;
+    diff = Math.floor((now - start) / 1000);
   }
-  store.set(activeWorklogTrackingDurationAtom, diff);
-}, 10_000);
+  if (diff > 0) {
+    store.set(updateWorklogAtom, {
+      ...activeWorklog,
+      timeSpentSeconds: activeWorklog.timeSpentSeconds + diff,
+    });
+    store.set(activeWorklogTrackingStartedAtom, now);
+  }
+}, 3_000);
 
 export const worklogsForCurrentDayAtom = atom(get => {
   const worklogs = get(worklogsAtom);
@@ -81,12 +84,15 @@ export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => 
 });
 export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | null) => {
   const activeWorklog = get(activeWorklogAtom);
-  const activeWorklogTrackingDuration = get(activeWorklogTrackingDurationAtom);
+  const activeWorklogTrackingStarted = get(activeWorklogTrackingStartedAtom);
 
-  if (activeWorklog && activeWorklogTrackingDuration > 0) {
+  if (activeWorklog && activeWorklogTrackingStarted > 0) {
+    const activeWorklogDuration = Math.floor((Date.now() - activeWorklogTrackingStarted) / 1000);
+    const newTimeSpent = activeWorklog.timeSpentSeconds + activeWorklogDuration;
+    const roundedToFullMinute = Math.floor(newTimeSpent / 60) * 60;
     set(updateWorklogAtom, {
       ...activeWorklog,
-      timeSpentSeconds: activeWorklog.timeSpentSeconds + activeWorklogTrackingDuration,
+      timeSpentSeconds: roundedToFullMinute,
     });
   }
 
@@ -94,7 +100,6 @@ export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | 
   if (worklogId) {
     set(lastActiveWorklogIdAtom, worklogId);
   }
-  set(activeWorklogTrackingDurationAtom, 0);
   set(activeWorklogTrackingStartedAtom, Date.now());
 });
 export const updateWorklogAtom = atom(null, (get, set, worklog: Worklog) => {

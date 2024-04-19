@@ -2,13 +2,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import {
-  activeWorklogAtom,
-  activeWorklogTrackingDurationAtom,
-  currentOverlayAtom,
-  currentWorklogToEditAtom,
-  setWorklogAsActiveAtom,
-} from '../atoms';
+import { activeWorklogAtom, currentOverlayAtom, currentWorklogToEditAtom, setWorklogAsActiveAtom } from '../atoms';
 import { Overlay } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -28,7 +22,6 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
-  const activeWorklogTrackingDuration = useAtomValue(activeWorklogTrackingDurationAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const { onPress } = useDoublePress(() => {
     setCurrentWorklogToEdit(worklog);
@@ -37,11 +30,6 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const styles = useThemedStyles(createStyles);
 
   const isActiveWorklog = activeWorklog?.id === worklog.id;
-
-  let duration = worklog.timeSpentSeconds;
-  if (isActiveWorklog) {
-    duration = worklog.timeSpentSeconds + activeWorklogTrackingDuration;
-  }
 
   return (
     <Pressable
@@ -56,8 +44,8 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
                   worklog.state === WorklogState.SYNCED
                     ? 'lime'
                     : worklog.state === WorklogState.EDITED
-                    ? 'yellow'
-                    : 'aqua',
+                      ? 'yellow'
+                      : 'aqua',
               }}>
               [{worklog.state.substring(0, 1).toUpperCase()}]
             </Text>
@@ -70,7 +58,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
       </View>
       <PlayPauseButton
-        duration={duration}
+        duration={worklog.timeSpentSeconds}
         isRunning={isActiveWorklog}
         onPress={() => {
           if (isActiveWorklog) {
