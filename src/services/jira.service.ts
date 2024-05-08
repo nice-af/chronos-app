@@ -111,8 +111,6 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
       startAt: currentIssue,
     });
 
-    console.log(issuesCall);
-
     for (const issue of issuesCall.issues ?? []) {
       // Get worklogs for each issue
       if (issue.fields.worklog?.total && issue.fields.worklog?.total < (issue.fields.worklog?.maxResults ?? 0)) {
