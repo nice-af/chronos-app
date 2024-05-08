@@ -62,8 +62,10 @@ class JTTDataObserver: ObservableObject {
   }
   
   func startTimer() {
+    var previousTime = (self.time ?? 0)
     self.timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-      let newTime = self.time ?? 0 + 60
+      let newTime = previousTime + 60
+      previousTime = newTime
       self.time = newTime
       self.timeString = self.formatTime(time: newTime)
     }
