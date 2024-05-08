@@ -24,11 +24,11 @@ export async function loadAvatarForProject(project: Project) {
   if (project.avatar) {
     return;
   }
-  const avatarUrl = project._avatarUrl;
+  const avatarUrl = project._avatarUrl + '?format=png';
   const imageRes = await axios.get(avatarUrl, {
     responseType: 'arraybuffer',
     headers: { Authorization: `Bearer ${store.get(jiraAuthAtom)!.accessToken}` },
   });
   const base64 = Buffer.from(imageRes.data, 'binary').toString('base64');
-  store.set(upsertProjectAtom, { ...project, avatar: `data:image/jpeg;charset=utf-8;base64,${base64}` });
+  store.set(upsertProjectAtom, { ...project, avatar: `data:image/png;charset=utf-8;base64,${base64}` });
 }
