@@ -10,5 +10,22 @@ export function convertAdfToMd(adf: Document) {
 export function convertMdToAdf(markdown: string): Document {
   const transformer = new MarkdownTransformer(defaultSchema);
   const topLevelNode = transformer.parse(markdown);
-  return { ...(topLevelNode.toJSON() as Document), version: 1 };
+  const commentData = topLevelNode.toJSON() as Document;
+
+  // The ADF MarkdownTransformer sometimes adds a localId attribute with a null value
+  // This is not valid ADF and will cause the API to return a 400 error
+  if (commentData.content) {
+    commentData.content.forEach(content => {
+      if (content.attrs && content.attrs.localId === null) {
+        delete content.attrs.localId;
+      }
+      // Remove attrs if empty
+      if (content.attrs && Object.keys(content.attrs).length === 0) {
+        delete content.attrs;
+      }
+    });
+  }
+
+  console.log({ ...commentData, version: 1 });
+  return { ...commentData, version: 1 };
 }
