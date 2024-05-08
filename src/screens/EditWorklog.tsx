@@ -10,7 +10,7 @@ import {
 } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
-import { IssueTag } from '../components/IssueTag';
+import { IssueKeyTag } from '../components/IssueKeyTag';
 import { Layout } from '../components/Layout';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service';
@@ -67,7 +67,7 @@ export const EditWorklog: FC = () => {
         align: 'left',
         title: (
           <View style={styles.headerContainer}>
-            <IssueTag label={currentWorklogToEdit.issue.key} project={'orcaya'} />
+            <IssueKeyTag issueKey={currentWorklogToEdit.issue.key} />
             <Text numberOfLines={1} style={styles.title}>
               {currentWorklogToEdit.issue.summary}
             </Text>

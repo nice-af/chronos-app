@@ -1,4 +1,3 @@
-import { Issue } from 'jira.js/out/version3/models';
 import { useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { Image, PressableProps, StyleSheet, Text, View } from 'react-native';
@@ -8,7 +7,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { ButtonTransparent } from './ButtonTransparent';
-import { IssueTag } from './IssueTag';
+import { IssueKeyTag } from './IssueKeyTag';
 
 interface SearchResultIssue {
   id: string;
@@ -32,8 +31,7 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
     <View key={issue.id} style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headlineContainer}>
-          {/* TODO actually show project logo here */}
-          <IssueTag label={issue.key} project='orcaya' />
+          <IssueKeyTag issueKey={issue.key} />
           <Image
             style={styles.chevronIcon}
             source={

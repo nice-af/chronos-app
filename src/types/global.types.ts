@@ -1,5 +1,4 @@
 export type Layout = 'normal' | 'compact' | 'micro';
-export type Project = 'tmh' | 'orcaya' | 'solid';
 export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DayCode = 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa' | 'su';
 
@@ -26,17 +25,6 @@ export const weekDays: {
   { id: 6, code: 'su' },
 ];
 
-export interface TrackingEntry {
-  id: number;
-  date: Date;
-  project: Project;
-  tag: string;
-  title: string;
-  description?: string;
-  // Tracked duration in hours
-  duration: number;
-}
-
 export enum WorklogState {
   LOCAL = 'local',
   SYNCED = 'synced',
@@ -54,4 +42,21 @@ export interface Worklog {
   timeSpentSeconds: number;
   comment: string;
   state: WorklogState;
+}
+
+export interface Project {
+  id: string;
+  /**
+   * This is an internal property that should not be accessed directly.
+   * It's used to initially load the avatar of the project.
+   *
+   * @internal
+   */
+  _avatarUrl: string;
+  /**
+   * Base64 encoded image or `null` if avatar was not loaded yet
+   */
+  avatar: string | null;
+  key: string;
+  name: string;
 }

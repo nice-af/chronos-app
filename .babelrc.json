@@ -1,15 +1,6 @@
 {
-  "presets": [["module:metro-react-native-babel-preset"]],
-  "plugins": [
-    "module:react-native-dotenv",
-    "jotai/babel/plugin-react-refresh",
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "runtime": "automatic"
-      }
-    ]
-  ],
+  "presets": [["module:metro-react-native-babel-preset", { "useTransformReactJSXExperimental": true }]],
+  "plugins": ["module:react-native-dotenv", "jotai/babel/plugin-react-refresh"],
   "env": {
     "production": {
       "plugins": ["transform-remove-console"]

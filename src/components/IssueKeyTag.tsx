@@ -2,10 +2,12 @@ import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { themeAtom } from '../atoms';
+import { projectsAtom, themeAtom } from '../atoms';
+import { getProjectByIssueKey } from '../services/project.service';
+import { useThemedStyles } from '../services/theme.service';
+import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { Project } from '../types/global.types';
 
 function hashStr(str: string) {
   let hash = 0;
@@ -16,16 +18,15 @@ function hashStr(str: string) {
   return hash;
 }
 
-interface IssueTagProps extends Omit<PressableProps, 'style'> {
-  label: string;
-  project: Project;
+interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
+  issueKey: string;
   onPress?: () => void;
   style?: ViewStyle;
 }
 
-// TODO @AdrianFahrbach should we rename this to `IssueKey(Tag)` since it would be clearer that this is about the issue key? There are actually issue tags in Jira.
-export const IssueTag: FC<IssueTagProps> = ({ onPress, label, project, ...props }) => {
+export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
+  const styles = useThemedStyles(createStyles);
   const tagThemes: Record<string, { text: TextStyle; bg: ViewStyle }> = useMemo(
     () => ({
       red: {
@@ -84,49 +85,65 @@ export const IssueTag: FC<IssueTagProps> = ({ onPress, label, project, ...props 
     [theme.type]
   );
   const tagThemesKeys = Object.keys(tagThemes);
-  const currentTheme = tagThemes[tagThemesKeys[hashStr(label) % tagThemesKeys.length]];
+  const currentTheme = tagThemes[tagThemesKeys[hashStr(issueKey) % tagThemesKeys.length]];
+  const projects = useAtomValue(projectsAtom);
+
+  // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
+  const project = useMemo(() => getProjectByIssueKey(issueKey), [issueKey, projects]);
 
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [styles.default, pressed && styles.isSelected, props.style]}>
-      {project === 'tmh' && <Image style={styles.logo} source={require('../assets/logo-tmh.png')} />}
-      {project === 'orcaya' && <Image style={styles.logo} source={require('../assets/logo-orcaya.png')} />}
-      {project === 'solid' && <Image style={styles.logo} source={require('../assets/logo-solid.png')} />}
+      {project?.avatar ? (
+        <Image
+          style={styles.logo}
+          source={{
+            uri: project.avatar,
+            width: 18,
+            height: 18,
+          }}
+        />
+      ) : (
+        <View style={styles.logo} />
+      )}
       <View style={[styles.labelContainer, currentTheme.bg]}>
-        <Text style={[styles.label, currentTheme.text]}>{label}</Text>
+        <Text style={[styles.label, currentTheme.text]}>{issueKey}</Text>
       </View>
     </Pressable>
   );
 };
 
-const styles = StyleSheet.create({
-  default: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: 20,
-    backgroundColor: 'transparent',
-    textAlign: 'center',
-  },
-  isSelected: {
-    opacity: 0.75,
-  },
-  logo: {
-    width: 20,
-    height: 20,
-    marginRight: 2,
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  labelContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    ...getPadding(3, 5),
-    height: 20,
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
-  },
-  label: {
-    ...typo.subheadlineEmphasized,
-  },
-});
+function createStyles(theme: Theme) {
+  return StyleSheet.create({
+    default: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      height: 20,
+      backgroundColor: 'transparent',
+      textAlign: 'center',
+    },
+    isSelected: {
+      opacity: 0.75,
+    },
+    logo: {
+      width: 20,
+      height: 20,
+      marginRight: 2,
+      borderTopLeftRadius: 5,
+      borderBottomLeftRadius: 5,
+      backgroundColor: theme.surfaceButtonBase,
+    },
+    labelContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'row',
+      ...getPadding(3, 5),
+      height: 20,
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5,
+    },
+    label: {
+      ...typo.subheadlineEmphasized,
+    },
+  });
+}
