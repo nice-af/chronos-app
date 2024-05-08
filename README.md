@@ -13,5 +13,5 @@ The reason for that is that multiple caches have to be cleared and some of those
 To fix this issue, run the following command:
 
 ```bash
-npm run fix-repo
+npm run clear-cache
 ```

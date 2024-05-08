@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		030F0AF7AE6669826A1048F4 /* libPods-JiraTimeTracker-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A18321FFD873F9476E0474 /* libPods-JiraTimeTracker-macOS.a */; };
 		3A31355B2AF708CB00182B14 /* CustomWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A31355A2AF708CB00182B14 /* CustomWindow.swift */; };
 		3A4050122B855D44006B1B2B /* StatusBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4050112B855D44006B1B2B /* StatusBarManager.swift */; };
 		3A41A1CE2B87AC5500EF67AA /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */; };
@@ -20,6 +19,7 @@
 		3AE174CD2AFAE4C100583EDB /* CustomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */; };
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
+		EE14A26560F9AA3364E8AE0A /* libPods-JiraTimeTracker-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 545479ED2773D1325ABC3A50 /* libPods-JiraTimeTracker-macOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,10 +43,10 @@
 		514201542437B4B40078DB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		514201592437B4B40078DB4F /* JiraTimeTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JiraTimeTracker.entitlements; sourceTree = "<group>"; };
-		C14B02371D806E6B31AAC8AF /* Pods-JiraTimeTracker-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		E7A18321FFD873F9476E0474 /* libPods-JiraTimeTracker-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		545479ED2773D1325ABC3A50 /* libPods-JiraTimeTracker-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JiraTimeTracker-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81E8526ECD118ED86625F2B3 /* Pods-JiraTimeTracker-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.debug.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CFB8C7E3E8AADB0F776BD210 /* Pods-JiraTimeTracker-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F6E7257D2E543B4AF8A2589E /* Pods-JiraTimeTracker-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JiraTimeTracker-macOS.release.xcconfig"; path = "Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				030F0AF7AE6669826A1048F4 /* libPods-JiraTimeTracker-macOS.a in Frameworks */,
+				EE14A26560F9AA3364E8AE0A /* libPods-JiraTimeTracker-macOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E7A18321FFD873F9476E0474 /* libPods-JiraTimeTracker-macOS.a */,
+				545479ED2773D1325ABC3A50 /* libPods-JiraTimeTracker-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -127,8 +127,8 @@
 		AF2DC7B052CAD083535585F1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C14B02371D806E6B31AAC8AF /* Pods-JiraTimeTracker-macOS.debug.xcconfig */,
-				F6E7257D2E543B4AF8A2589E /* Pods-JiraTimeTracker-macOS.release.xcconfig */,
+				81E8526ECD118ED86625F2B3 /* Pods-JiraTimeTracker-macOS.debug.xcconfig */,
+				CFB8C7E3E8AADB0F776BD210 /* Pods-JiraTimeTracker-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -140,13 +140,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "JiraTimeTracker-macOS" */;
 			buildPhases = (
-				03135A170723DC266055ED41 /* [CP] Check Pods Manifest.lock */,
+				30EF660B504732B9FD57F08D /* [CP] Check Pods Manifest.lock */,
 				381D8A6F24576A6C00465D17 /* Start Packager */,
 				514201452437B4B30078DB4F /* Sources */,
 				514201462437B4B30078DB4F /* Frameworks */,
 				514201472437B4B30078DB4F /* Resources */,
 				381D8A6E24576A4E00465D17 /* Bundle React Native code and images */,
-				F5485F18016E04B5434B97D3 /* [CP] Copy Pods Resources */,
+				0D70C33A1AE8E30D3326D74E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -207,7 +207,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		03135A170723DC266055ED41 /* [CP] Check Pods Manifest.lock */ = {
+		0D70C33A1AE8E30D3326D74E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/RCTI18nStrings.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNCAsyncStorage_resources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCTI18nStrings.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		30EF660B504732B9FD57F08D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,26 +285,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native-macos/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native-macos/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 		};
-		F5485F18016E04B5434B97D3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNCAsyncStorage_resources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JiraTimeTracker-macOS/Pods-JiraTimeTracker-macOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -321,14 +321,14 @@
 /* Begin XCBuildConfiguration section */
 		5142015B2437B4B40078DB4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C14B02371D806E6B31AAC8AF /* Pods-JiraTimeTracker-macOS.debug.xcconfig */;
+			baseConfigurationReference = 81E8526ECD118ED86625F2B3 /* Pods-JiraTimeTracker-macOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "JiraTimeTracker-macOS/JiraTimeTracker-macOS.entitlements";
-				CURRENT_PROJECT_VERSION = 240508;
+				CURRENT_PROJECT_VERSION = 240509;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
@@ -339,7 +339,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -357,14 +357,14 @@
 		};
 		5142015C2437B4B40078DB4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6E7257D2E543B4AF8A2589E /* Pods-JiraTimeTracker-macOS.release.xcconfig */;
+			baseConfigurationReference = CFB8C7E3E8AADB0F776BD210 /* Pods-JiraTimeTracker-macOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "JiraTimeTracker-macOS/JiraTimeTracker-macOS.entitlements";
-				CURRENT_PROJECT_VERSION = 240508;
+				CURRENT_PROJECT_VERSION = 240509;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -376,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -395,7 +395,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -455,11 +455,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = false;
@@ -471,7 +467,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -526,11 +522,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
