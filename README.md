@@ -9,7 +9,8 @@ You can join the beta by following the instructions [here](https://testflight.ap
 ### Debug starting issues
 
 Sometimes the dev environment will not start after updating packages or other external dependencies.
-A good try to fix this is to do a hard clean install and build using this command:
+The reason for that is that multiple caches have to be cleared and some of those don't get cleared automatically.
+To fix this issue, run the following command:
 
 ```bash
 npm run fix-repo
