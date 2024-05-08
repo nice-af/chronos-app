@@ -26,6 +26,5 @@ export function convertMdToAdf(markdown: string): Document {
     });
   }
 
-  console.log({ ...commentData, version: 1 });
   return { ...commentData, version: 1 };
 }

@@ -9,9 +9,6 @@ export const WorklogStateWatcher: FC = () => {
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
 
   function handlePlayPauseClick(currentState: StatusBarState) {
-    console.log('currentState', currentState);
-    console.log('StatusBarState.PAUSED', StatusBarState.PAUSED.toString());
-    console.log('lastActiveWorklogId', lastActiveWorklogId);
     if (currentState === StatusBarState.PAUSED.toString()) {
       setWorklogAsActive(lastActiveWorklogId);
     } else {
