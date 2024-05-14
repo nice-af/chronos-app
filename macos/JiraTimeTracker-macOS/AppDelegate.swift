@@ -7,6 +7,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var windowController: CustomWindowController
   var statusBarManager: StatusBarManager
   
+  // The action for the help menu
+  @IBAction func openGitHubURL(_ sender: AnyObject) {
+    let url = URL(string: "https://github.com/AdrianFahrbach/JiraTimeTracker")
+    NSWorkspace.shared.open(url!)
+  }
+  
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
     return RCTLinkingManager.getUrlEventHandler(event, withReplyEvent: reply)
