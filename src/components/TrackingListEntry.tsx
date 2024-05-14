@@ -1,9 +1,17 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
-import { activeWorklogAtom, currentOverlayAtom, currentWorklogToEditAtom, setWorklogAsActiveAtom } from '../atoms';
+import {
+  activeWorklogAtom,
+  currentOverlayAtom,
+  currentWorklogToEditAtom,
+  deleteWorklogAtom,
+  setWorklogAsActiveAtom,
+} from '../atoms';
 import { Overlay } from '../const';
+import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -23,17 +31,34 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
-  const { onPress } = useDoublePress(() => {
-    setCurrentWorklogToEdit(worklog);
-    setCurrentOverlay(Overlay.EDIT_WORKLOG);
-  });
+  const deleteWorklog = useSetAtom(deleteWorklogAtom);
+  const { t } = useTranslation();
+  const ref = useRef(null);
+  const { onPress: onDoublePress } = useDoublePress(editWorklog);
   const styles = useThemedStyles(createStyles);
 
-  const isActiveWorklog = activeWorklog?.id === worklog.id;
+  function editWorklog() {
+    setCurrentWorklogToEdit(worklog);
+    setCurrentOverlay(Overlay.EDIT_WORKLOG);
+  }
 
+  const isActiveWorklog = activeWorklog?.id === worklog.id;
   return (
     <Pressable
-      onPress={onPress}
+      ref={ref}
+      onPress={e => {
+        if (isRightClick(e)) {
+          showContextualMenu(
+            [
+              { name: t('worklogs.editWorklog'), onClick: editWorklog },
+              { name: t('delete'), onClick: async () => await deleteWorklog(worklog.id) },
+            ],
+            ref.current
+          );
+        } else {
+          onDoublePress();
+        }
+      }}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
