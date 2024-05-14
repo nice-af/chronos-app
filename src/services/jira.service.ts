@@ -1,14 +1,14 @@
 import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
-import { Issue, Worklog as JiraWorklog, Project as JiraProject } from 'jira.js/out/version3/models';
+import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { Alert } from 'react-native';
 import { jiraAuthAtom, store } from '../atoms';
+import { upsertProjectAtom } from '../atoms/project';
 import { Worklog, WorklogState } from '../types/global.types';
 import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { refreshAccessToken } from './auth.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
-import { upsertProjectAtom } from '../atoms/project';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 
 // TODO: Use a more lightweight client

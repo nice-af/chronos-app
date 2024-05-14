@@ -28,6 +28,7 @@
   },
   "syncDay": "Diesen Tag synchronisieren",
   "today": "Heute",
+  "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "weekDays": {
     "fr": "Fr",
     "hideNonWorkingDays": "Nur Arbeitstage anzeigen",

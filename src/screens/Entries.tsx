@@ -6,7 +6,6 @@ import {
   activeWorklogAtom,
   currentOverlayAtom,
   isFullscreenAtom,
-  lastActiveWorklogIdAtom,
   selectedDateAtom,
   syncWorklogsForCurrentDayAtom,
   themeAtom,
@@ -18,12 +17,13 @@ import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
 import { Overlay } from '../const';
-import { formatDateToYYYYMMDD } from '../services/date.service';
+import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
+import ms from 'ms';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -38,12 +38,11 @@ export const Entries: FC = () => {
   const [isSyncing, setIsSyncing] = useState(false);
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
   const isFullscreen = useAtomValue(isFullscreenAtom);
-  const test = useAtomValue(lastActiveWorklogIdAtom);
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
-
   const isToday = selectedDate === todayDateString;
+  const isOlderThan4Weeks = parseDateFromYYYYMMDD(selectedDate) < new Date(new Date().getTime() - ms('4w'));
 
   async function startSync() {
     setIsSyncing(true);
@@ -86,7 +85,7 @@ export const Entries: FC = () => {
       }}>
       {worklogsForCurrentDay.length === 0 ? (
         <View style={styles.errorMessageContainer}>
-          <Text style={styles.errorMessage}>{t('noWorklogs')}</Text>
+          <Text style={styles.errorMessage}>{t(isOlderThan4Weeks ? 'worklogOlderThen4Weeks' : 'noWorklogs')}</Text>
         </View>
       ) : (
         <ScrollView style={[styles.entriesContainer, isFullscreen && Platform.OS === 'macos' && { marginTop: 53 }]}>
@@ -153,6 +152,7 @@ function createStyles(theme: Theme) {
       ...typo.body,
       textAlign: 'center',
       opacity: 0.4,
+      maxWidth: 300,
     },
   });
 }
