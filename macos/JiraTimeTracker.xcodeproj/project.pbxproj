@@ -328,7 +328,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "JiraTimeTracker-macOS/JiraTimeTracker-macOS.entitlements";
-				CURRENT_PROJECT_VERSION = 240509;
+				CURRENT_PROJECT_VERSION = 240515;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
@@ -339,7 +339,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.1.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -364,7 +364,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "JiraTimeTracker-macOS/JiraTimeTracker-macOS.entitlements";
-				CURRENT_PROJECT_VERSION = 240509;
+				CURRENT_PROJECT_VERSION = 240515;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -376,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.9;
+				MARKETING_VERSION = 0.1.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
