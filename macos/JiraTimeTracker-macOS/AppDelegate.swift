@@ -7,10 +7,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   var windowController: CustomWindowController
   var statusBarManager: StatusBarManager
   
-  // The action for the help menu
+  // The actions for the menubar items
   @IBAction func openGitHubURL(_ sender: AnyObject) {
     let url = URL(string: "https://github.com/AdrianFahrbach/JiraTimeTracker")
     NSWorkspace.shared.open(url!)
+  }
+  @IBAction func closeOverlay(_ sender: AnyObject) {
+    // The shortcut for this action is handled in the CustomWindow class, because the escape key is reserved
+    EventEmitter.sharedInstance.dispatch(name: "closeOverlay", body: "")
+  }
+  @IBAction func createNewWorklog(_ sender: AnyObject) {
+    EventEmitter.sharedInstance.dispatch(name: "createNewWorklog", body: "")
   }
   
   // The new event handler for deep links

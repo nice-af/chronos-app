@@ -23,6 +23,16 @@ public class CustomWindow: NSWindow {
     super.layoutIfNeeded()
   }
   
+  // We need to listen to the escape key shortcut here because it is reserved as cancelAction
+  // That means that is usually closes native modals/overlays. Ours aren't native and therefore don't work with that.
+  override public func keyDown(with event: NSEvent) {
+    if (Int(event.keyCode) == 53) {
+      EventEmitter.sharedInstance.dispatch(name: "closeOverlay", body: "")
+    } else {
+      super.keyDown(with: event)
+    }
+  }
+  
   public func enterFullscreen() {
     self.buttonsShouldBeMoved = false
     self.removeTitlebarAccessoryViewController(at: 0)

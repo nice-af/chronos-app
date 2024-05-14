@@ -3,6 +3,8 @@ export enum NativeEvent {
   STATUS_BAR_TIME_CHANGE = 'statusBarTimeChange',
   FULLSCREEN_CHANGE = 'fullscreenChange',
   PLAY_PAUSE_CLICK = 'playPauseClick',
+  CLOSE_OVERLAY = 'closeOverlay',
+  CREATE_NEW_WORKLOG = 'createNewWorklog',
 }
 
 export enum StatusBarState {
@@ -30,7 +32,8 @@ export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE
   | AddNativeEventListenerParams_STATUS_BAR_TIME_CHANGE
   | AddNativeEventListenerParams_FULLSCREEN_CHANGE
-  | AddNativeEventListenerParams_PLAY_PAUSE_CLICK;
+  | AddNativeEventListenerParams_PLAY_PAUSE_CLICK
+  | AddNativeEventListenerParams_DEFAULT;
 
 export interface AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE {
   name: NativeEvent.STATUS_BAR_STATE_CHANGE;
@@ -50,6 +53,11 @@ export interface AddNativeEventListenerParams_FULLSCREEN_CHANGE {
 export interface AddNativeEventListenerParams_PLAY_PAUSE_CLICK {
   name: NativeEvent.PLAY_PAUSE_CLICK;
   callback: (data: StatusBarState) => void;
+}
+
+export interface AddNativeEventListenerParams_DEFAULT {
+  name: NativeEvent.CLOSE_OVERLAY | NativeEvent.CREATE_NEW_WORKLOG;
+  callback: () => void;
 }
 
 export interface RemoveNativeEventListenerParams {

@@ -286,6 +286,27 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Worklog" id="yIK-UK-igq" userLabel="Worklog">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Worklog" systemMenu="help" id="s7D-sV-7cb">
+                                    <items>
+                                        <menuItem title="Create new worklog" keyEquivalent="n" id="tj1-38-dHe" userLabel="Create new worklog">
+                                            <connections>
+                                                <action selector="createNewWorklog:" target="Ady-hI-5gd" id="B2V-lI-mFT"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Close overlay" id="A3s-xH-BX7" userLabel="Close overlay">
+                                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="closeOverlay:" target="Ady-hI-5gd" id="gAu-Y5-rag"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
