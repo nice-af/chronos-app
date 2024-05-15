@@ -47,6 +47,8 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       if (Platform.OS === 'macos') {
         removeNativeEventListener({ name: NativeEvent.FULLSCREEN_CHANGE });
+        removeNativeEventListener({ name: NativeEvent.CREATE_NEW_WORKLOG });
+        removeNativeEventListener({ name: NativeEvent.CLOSE_OVERLAY });
       }
     };
   }, []);
