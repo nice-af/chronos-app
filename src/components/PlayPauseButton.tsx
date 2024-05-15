@@ -8,6 +8,7 @@ import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {
   duration: number;

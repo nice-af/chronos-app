@@ -7,11 +7,14 @@ import {
   currentOverlayAtom,
   currentWorklogToEditAtom,
   deleteWorklogAtom,
+  selectedDateAtom,
   setWorklogAsActiveAtom,
 } from '../atoms';
 import { Overlay } from '../const';
 import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
+import { useModal } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -27,11 +30,13 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 }
 
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
+  const selectedDate = useAtomValue(selectedDateAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const deleteWorklog = useSetAtom(deleteWorklogAtom);
+  const { getModalConfirmation } = useModal();
   const { t } = useTranslation();
   const ref = useRef(null);
   const { onPress: onDoublePress } = useDoublePress(editWorklog);
@@ -40,6 +45,37 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   function editWorklog() {
     setCurrentWorklogToEdit(worklog);
     setCurrentOverlay(Overlay.EDIT_WORKLOG);
+  }
+
+  async function handlePlayPause() {
+    if (isActiveWorklog) {
+      setWorklogAsActive(null);
+      return;
+    }
+    const todayDateString = formatDateToYYYYMMDD(new Date());
+    if (todayDateString === selectedDate) {
+      setWorklogAsActive(worklog.id);
+      return;
+    }
+
+    const isInFuture = new Date(selectedDate) > new Date(todayDateString);
+    let isConfirmed = false;
+    if (isInFuture) {
+      isConfirmed = await getModalConfirmation({
+        icon: 'timer-warning',
+        headline: t('modals.startTimerInFutureHeadline'),
+        text: t('modals.startTimerInFutureText'),
+      });
+    } else {
+      isConfirmed = await getModalConfirmation({
+        icon: 'timer-warning',
+        headline: t('modals.startTimerInPastHeadline'),
+        text: t('modals.startTimerInPastText'),
+      });
+    }
+    if (isConfirmed) {
+      setWorklogAsActive(worklog.id);
+    }
   }
 
   const isActiveWorklog = activeWorklog?.id === worklog.id;
@@ -82,17 +118,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         </View>
         {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
       </View>
-      <PlayPauseButton
-        duration={worklog.timeSpentSeconds}
-        isRunning={isActiveWorklog}
-        onPress={() => {
-          if (isActiveWorklog) {
-            setWorklogAsActive(null);
-          } else {
-            setWorklogAsActive(worklog.id);
-          }
-        }}
-      />
+      <PlayPauseButton duration={worklog.timeSpentSeconds} isRunning={isActiveWorklog} onPress={handlePlayPause} />
     </Pressable>
   );
 };

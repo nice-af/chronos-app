@@ -15,9 +15,9 @@ const App: FC = () => {
     <Suspense fallback={<Text>Loading...</Text>}>
       <Provider store={store}>
         <Modal
-          icon='timer-warning'
-          headline='You are trying to start a timer on a passed day'
-          text='Are you sure that you want to continue? Otherwise the timer won’t be started.'
+        // icon='timer-warning'
+        // headline='You are trying to start a timer on a passed day'
+        // text='Are you sure that you want to continue? Otherwise the timer won’t be started.'
         />
         <WorklogStateWatcher />
         <ColorSchemeWatcher />

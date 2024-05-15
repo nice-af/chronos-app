@@ -45,5 +45,11 @@
     "disableEditingOfPastWorklogs": "Bearbeiten von Arbeitszeiten vergangener Tage deaktivieren",
     "editWorklog": "Bearbeiten",
     "settingsTitle": "Arbeitszeiten"
+  },
+  "modals": {
+    "startTimerInFutureHeadline": "Du bist dabei, einen Timer in der Zukunft zu starten",
+    "startTimerInFutureText": "Dies wird einen Arbeitsprotokoll in der Zukunft ändern. Bist du sicher, dass du fortfahren möchten?",
+    "startTimerInPastHeadline": "Du bist dabei, einen Timer in der Vergangenheit zu starten",
+    "startTimerInPastText": "Dies wird einen Arbeitsprotokoll in der Vergangenheit ändern. Bist du sicher, dass du fortfahren möchten?"
   }
 }

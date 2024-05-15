@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
+import ms from 'ms';
 import React, { FC, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
@@ -23,7 +24,6 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
-import ms from 'ms';
 
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
@@ -96,7 +96,7 @@ export const Entries: FC = () => {
       )}
       {hasChanges && (
         <View style={styles.submitButtonContainer}>
-          <ButtonPrimary label={t('syncDay')} isLoading={isSyncing} textAlign='center' onPress={() => startSync()} />
+          <ButtonPrimary label={t('syncDay')} isLoading={isSyncing} onPress={() => startSync()} />
         </View>
       )}
     </Layout>

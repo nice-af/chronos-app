@@ -1,68 +1,122 @@
-import React, { FC } from 'react';
-import { Image, ImageSourcePropType, Platform, StyleSheet, Text, View } from 'react-native';
+import { useAtomValue } from 'jotai';
+import React, { FC, useEffect, useRef } from 'react';
+import { Animated, Easing, Image, ImageSourcePropType, Platform, StyleSheet, Text, View } from 'react-native';
+import { themeAtom } from '../atoms';
+import { modalDataAtom, modalVisibleAtom } from '../atoms/modal';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { ButtonSecondary } from './ButtonSecondary';
 import { ButtonPrimary } from './ButtonPrimary';
-import { useAtomValue } from 'jotai';
-import { themeAtom } from '../atoms';
-
-interface ModalProps {
-  headline: string;
-  text: string;
-  icon?: 'timer-warning';
-}
+import { ButtonSecondary } from './ButtonSecondary';
 
 const iconTimerWarningLight: ImageSourcePropType = require('../assets/modal-icons/timer-warning-light.png');
 const iconTimerWarningDark: ImageSourcePropType = require('../assets/modal-icons/timer-warning-dark.png');
 
-export const Modal: FC<ModalProps> = ({ headline, text, icon }) => {
+export const Modal: FC = () => {
+  const data = useAtomValue(modalDataAtom);
+  const isVisible = useAtomValue(modalVisibleAtom);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
+  const animBackground = useRef(new Animated.Value(0)).current;
+  const animJump = useRef(new Animated.Value(0)).current;
   let iconSource: ImageSourcePropType | null = null;
 
-  if (icon === 'timer-warning') {
+  useEffect(() => {
+    Animated.timing(animBackground, {
+      toValue: isVisible ? 1 : 0,
+      duration: 150,
+      useNativeDriver: true,
+      easing: Easing.ease,
+    }).start();
+    Animated.timing(animJump, {
+      toValue: isVisible ? 1 : 0,
+      duration: 150,
+      useNativeDriver: true,
+      easing: Easing.bezier(0.57, 1.66, 0.45, 0.915),
+    }).start();
+  }, [isVisible]);
+
+  if (!data) {
+    return null;
+  }
+
+  if (data.icon === 'timer-warning') {
     iconSource = theme.type === 'light' ? iconTimerWarningLight : iconTimerWarningDark;
   }
 
   return (
-    <View style={styles.backdropContainer}>
-      <View style={styles.contentContainer}>
+    <View style={[styles.container, { pointerEvents: isVisible ? undefined : 'none' }]}>
+      <Animated.View
+        style={[
+          styles.backdropContainer,
+          {
+            opacity: animBackground.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+          },
+        ]}
+      />
+      <Animated.View
+        style={[
+          styles.contentContainer,
+          {
+            opacity: animBackground.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+            transform: [
+              {
+                scale: animJump.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.9, 1],
+                }),
+              },
+            ],
+          },
+        ]}>
         {Platform.OS !== 'windows' && <View style={styles.insetBorder} />}
         <View style={styles.content}>
           {iconSource && <Image style={styles.icon} source={iconSource} />}
-          <Text style={styles.headline}>{headline}</Text>
-          <Text style={styles.text}>{text}</Text>
+          <Text style={styles.headline}>{data.headline}</Text>
+          <Text style={styles.text}>{data.text}</Text>
           <View style={styles.buttonsContainer}>
-            <ButtonSecondary label='Cancel' onPress={() => {}} style={{ flexBasis: 100, flexGrow: 1 }} />
-            <ButtonPrimary label='Continue' onPress={() => {}} style={{ flexBasis: 100, flexGrow: 1 }} />
+            <ButtonSecondary label='Cancel' onPress={data.onCancel} style={{ flexBasis: 100, flexGrow: 1 }} />
+            <ButtonPrimary label='Continue' onPress={data.onConfirm} style={{ flexBasis: 100, flexGrow: 1 }} />
           </View>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 };
 
 function createStyles(theme: Theme) {
   return StyleSheet.create({
-    backdropContainer: {
+    container: {
       position: 'absolute',
       top: 0,
       left: 0,
-      zIndex: 998,
+      zIndex: 997,
       width: '100%',
       height: '100%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    backdropContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      zIndex: 997,
+      width: '100%',
+      height: '100%',
       backgroundColor: theme.backdrop,
-      borderRadius: theme.buttonBorderRadius,
-      ...getPadding(8, 12),
     },
     contentContainer: {
+      width: '100%',
       maxWidth: 330,
+      zIndex: 998,
       backgroundColor: theme.background,
       borderWidth: 1,
       borderColor: theme.border,
