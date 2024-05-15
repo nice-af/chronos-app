@@ -11,6 +11,6 @@ export const settingsAtom = atom<SettingsModel>(defaultStorageValues[StorageKey.
 export const sidebarLayoutAtom = atom<SidebarLayout>(get => get(settingsAtom).sidebarLayout);
 export const workingDaysAtom = atom<DayId[]>(get => get(settingsAtom).workingDays);
 export const hideNonWorkingDaysAtom = atom(get => get(settingsAtom).hideNonWorkingDays);
-export const disableEditingOfPastWorklogsAtom = atom(get => get(settingsAtom).disableEditingOfPastWorklogs);
+export const disableEditingOfPastWorklogsAtom = atom(get => get(settingsAtom).warningWhenEditingOtherDays);
 export const themeAtom = atom<Theme>(Appearance.getColorScheme() === 'dark' ? darkTheme : lightTheme);
 export const isFullscreenAtom = atom(false);

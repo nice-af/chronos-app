@@ -42,7 +42,7 @@
   "worklogOlderThen4Weeks": "For technical reasons, we do not support working times that are more than 4 weeks in the past.",
   "worklogs": {
     "addNewWorklog": "Add new worklog",
-    "disableEditingOfPastWorklogs": "Disable the editing of working times from previous days.",
+    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
     "editWorklog": "Edit worklog",
     "settingsTitle": "Worklogs"
   },

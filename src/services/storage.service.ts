@@ -20,7 +20,7 @@ export interface SettingsModel {
   sidebarLayout: SidebarLayout;
   workingDays: DayId[];
   hideNonWorkingDays: boolean;
-  disableEditingOfPastWorklogs: boolean;
+  warningWhenEditingOtherDays: boolean;
   theme: Theme;
 }
 
@@ -36,15 +36,27 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     sidebarLayout: SidebarLayout.NORMAL,
     workingDays: [0, 1, 2, 3, 4],
     hideNonWorkingDays: false,
-    disableEditingOfPastWorklogs: true,
+    warningWhenEditingOtherDays: true,
     theme: lightTheme,
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
 };
 
 export async function getFromStorage<T extends StorageKey = never>(key: T): Promise<StorageTypes[T]> {
-  const value = await AsyncStorage.getItem(key);
-  return value ? JSON.parse(value) : defaultStorageValues[key];
+  const storedValuesString = await AsyncStorage.getItem(key);
+  const defaultValues = defaultStorageValues[key];
+  let newValues = storedValuesString ? JSON.parse(storedValuesString) : defaultValues;
+
+  // We sometimes add new settings or remove old ones, so we need to make sure that the stored settings are up to date
+  if (key === StorageKey.SETTINGS && defaultValues) {
+    const defaultKeys = Object.keys(defaultValues);
+    newValues = {
+      ...defaultValues,
+      ...Object.fromEntries(Object.entries(newValues).filter(([key]) => defaultKeys.includes(key))),
+    };
+  }
+
+  return newValues;
 }
 
 export async function setInStorage<T extends StorageKey = never>(key: T, value: StorageTypes[T]) {

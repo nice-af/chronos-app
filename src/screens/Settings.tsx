@@ -73,9 +73,9 @@ export const Settings: FC = () => {
         <View style={styles.card}>
           <Text style={styles.headline}>Worklogs</Text>
           <Toggle
-            label={t('worklogs.disableEditingOfPastWorklogs')}
-            state={settings.disableEditingOfPastWorklogs}
-            setState={newState => setSettings(cur => ({ ...cur, disableEditingOfPastWorklogs: newState }))}
+            label={t('worklogs.warningWhenEditingOtherDays')}
+            state={settings.warningWhenEditingOtherDays}
+            setState={newState => setSettings(cur => ({ ...cur, warningWhenEditingOtherDays: newState }))}
           />
         </View>
         <View style={styles.card}>

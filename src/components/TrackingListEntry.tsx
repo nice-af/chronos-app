@@ -1,4 +1,4 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useRef } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
@@ -9,6 +9,7 @@ import {
   deleteWorklogAtom,
   selectedDateAtom,
   setWorklogAsActiveAtom,
+  settingsAtom,
 } from '../atoms';
 import { Overlay } from '../const';
 import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
@@ -31,6 +32,7 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
   const selectedDate = useAtomValue(selectedDateAtom);
+  const settings = useAtomValue(settingsAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
@@ -52,6 +54,12 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
       setWorklogAsActive(null);
       return;
     }
+
+    if (!settings.warningWhenEditingOtherDays) {
+      setWorklogAsActive(worklog.id);
+      return;
+    }
+
     const todayDateString = formatDateToYYYYMMDD(new Date());
     if (todayDateString === selectedDate) {
       setWorklogAsActive(worklog.id);
