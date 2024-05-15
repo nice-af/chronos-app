@@ -19,11 +19,15 @@ interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {
 
 export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, duration, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [enableAnimation, setEnableAnimation] = useState(false);
   const animBounce = useRef(new Animated.Value(0)).current;
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
 
   useEffect(() => {
+    if (!enableAnimation) {
+      return;
+    }
     Animated.timing(animBounce, {
       toValue: isRunning ? 1 : 0,
       duration: 350,
@@ -32,12 +36,19 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
     }).start();
   }, [isRunning]);
 
+  function outputRangeToStatic<T>([a, b]: [T, T]) {
+    return isRunning ? b : a;
+  }
+
   return (
     <View>
       <Pressable
         onHoverIn={() => setIsHovered(true)}
         onHoverOut={() => setIsHovered(false)}
-        onPress={() => onPress()}
+        onPress={() => {
+          setEnableAnimation(true);
+          onPress();
+        }}
         style={[styles.pressable, isHovered && styles.isHovered, props.style]}>
         <Animated.Image
           style={[
@@ -45,16 +56,20 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
             {
               transform: [
                 {
-                  rotate: animBounce.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0deg', '45deg'],
-                  }),
+                  rotate: !enableAnimation
+                    ? outputRangeToStatic(['0deg', '45deg'])
+                    : animBounce.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '45deg'],
+                      }),
                 },
                 {
-                  scale: animBounce.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 0],
-                  }),
+                  scale: !enableAnimation
+                    ? outputRangeToStatic([1, 0])
+                    : animBounce.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0],
+                      }),
                 },
               ],
             },
@@ -71,20 +86,27 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
             {
               transform: [
                 {
-                  rotate: animBounce.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['-45deg', '0deg'],
-                  }),
+                  rotate: !enableAnimation
+                    ? outputRangeToStatic(['-45deg', '0deg'])
+                    : animBounce.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['-45deg', '0deg'],
+                      }),
                 },
                 {
-                  scale: animBounce,
+                  scale: !enableAnimation ? outputRangeToStatic([0, 1]) : animBounce,
                 },
               ],
             },
           ]}
           source={require('../assets/icons/pause-green.png')}
         />
-        <Animated.View style={[styles.buttonFill, { transform: [{ scale: animBounce }] }]} />
+        <Animated.View
+          style={[
+            styles.buttonFill,
+            { transform: [{ scale: !enableAnimation ? outputRangeToStatic([0, 1]) : animBounce }] },
+          ]}
+        />
       </Pressable>
       <Text style={[styles.duration, { color: isRunning ? theme.green : theme.textSecondary }]}>
         {formatSecondsToHMM(duration)}
