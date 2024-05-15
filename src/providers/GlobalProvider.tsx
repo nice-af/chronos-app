@@ -13,7 +13,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const jiraAuth = useAtomValue(jiraAuthAtom);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
-  const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
+  const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
 
   useEffect(() => {
     setIsLoading(true);

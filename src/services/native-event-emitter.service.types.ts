@@ -5,6 +5,7 @@ export enum NativeEvent {
   PLAY_PAUSE_CLICK = 'playPauseClick',
   CLOSE_OVERLAY = 'closeOverlay',
   CREATE_NEW_WORKLOG = 'createNewWorklog',
+  RESET_WORKLOGS_FOR_SELECTED_DATE = 'resetWorklogsForSelectedDate',
 }
 
 export enum StatusBarState {
@@ -56,7 +57,7 @@ export interface AddNativeEventListenerParams_PLAY_PAUSE_CLICK {
 }
 
 export interface AddNativeEventListenerParams_DEFAULT {
-  name: NativeEvent.CLOSE_OVERLAY | NativeEvent.CREATE_NEW_WORKLOG;
+  name: NativeEvent.CLOSE_OVERLAY | NativeEvent.CREATE_NEW_WORKLOG | NativeEvent.RESET_WORKLOGS_FOR_SELECTED_DATE;
   callback: () => void;
 }
 

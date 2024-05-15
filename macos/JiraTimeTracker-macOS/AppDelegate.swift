@@ -19,6 +19,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @IBAction func createNewWorklog(_ sender: AnyObject) {
     EventEmitter.sharedInstance.dispatch(name: "createNewWorklog", body: "")
   }
+  @IBAction func resetWorklogsForSelectedDate(_ sender: AnyObject) {
+    EventEmitter.sharedInstance.dispatch(name: "resetWorklogsForSelectedDate", body: "")
+  }
   
   // The new event handler for deep links
   @objc public func getUrl(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) -> Void {
