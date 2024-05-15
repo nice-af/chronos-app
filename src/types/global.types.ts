@@ -1,3 +1,6 @@
+import { ReactNode } from 'react';
+import { ViewStyle } from 'react-native';
+
 export type Layout = 'normal' | 'compact' | 'micro';
 export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DayCode = 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa' | 'su';
@@ -59,4 +62,11 @@ export interface Project {
   avatar: string | null;
   key: string;
   name: string;
+}
+
+export interface CustomButtonProps {
+  label?: string;
+  onPress: () => void;
+  style?: ViewStyle;
+  iconRight?: ReactNode;
 }

@@ -1,28 +1,18 @@
-import React, { FC, ReactNode, useState } from 'react';
-import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Pressable, PressableProps, StyleSheet, Text } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { CustomButtonProps } from '../types/global.types';
 import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
 
-interface ButtonPrimaryProps extends Omit<PressableProps, 'style'> {
-  label: string;
-  onPress: () => void;
-  style?: ViewStyle;
-  iconRight?: ReactNode;
-  textAlign?: 'left' | 'center' | 'right';
-  isLoading?: boolean;
-}
+type ButtonPrimaryProps = Omit<PressableProps, 'style'> &
+  CustomButtonProps & {
+    isLoading?: boolean;
+  };
 
-export const ButtonPrimary: FC<ButtonPrimaryProps> = ({
-  onPress,
-  label,
-  iconRight,
-  isLoading,
-  textAlign,
-  ...props
-}) => {
+export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, iconRight, isLoading, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 
@@ -38,7 +28,7 @@ export const ButtonPrimary: FC<ButtonPrimaryProps> = ({
         props.style,
       ]}>
       {isLoading && <LoadingSpinnerSmall style={styles.loadingSpinner} />}
-      <Text style={[styles.label, isLoading && styles.labelIsHidden, { textAlign: textAlign }]}>{label}</Text>
+      <Text style={[styles.label, isLoading && styles.labelIsHidden]}>{label}</Text>
       {iconRight}
     </Pressable>
   );
@@ -65,6 +55,7 @@ function createStyles(theme: Theme) {
     label: {
       ...typo.bodyEmphasized,
       color: theme.textButton,
+      textAlign: 'center',
     },
     labelIsHidden: {
       opacity: 0,

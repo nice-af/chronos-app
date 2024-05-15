@@ -1,7 +1,7 @@
 import { useAppState } from '@react-native-community/hooks';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
-import { Platform, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -13,7 +13,6 @@ import { DayButton } from './DayButton';
 import { NativeView } from './NativeView';
 import { SettingsButton } from './SettingsButton';
 import { WeekPicker } from './WeekPicker';
-import { useTranslation } from '../services/i18n.service';
 
 export const dayPickerHeight = 56;
 

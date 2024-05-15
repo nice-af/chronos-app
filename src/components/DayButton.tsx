@@ -34,7 +34,6 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const theme = useAtomValue(themeAtom);
   const worklogs = useAtomValue(worklogsAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
-  const activeWorklog = useAtomValue(activeWorklogAtom);
   const { t } = useTranslation();
 
   if (hideNonWorkingDays && !isWorkingDay) {

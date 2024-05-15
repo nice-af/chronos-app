@@ -31,7 +31,7 @@ const baseColors = {
   pink: '#FF375F',
   gray: '#98989D',
   brown: '#AC8E68',
-};
+} satisfies Partial<Theme>;
 
 const windowColors = {
   ...Platform.select({
@@ -54,8 +54,10 @@ const windowColors = {
       surfaceBorder: PlatformColor('CardBackgroundFillColorDefaultBrush'),
     },
   }),
+  backdrop: 'rgba(0,0,0,0.3)',
   borderSolid: '#111',
-};
+  borderInset: 'rgba(255,255,255,0.1)',
+} satisfies Partial<Theme>;
 
 const buttonColors = {
   buttonBase: baseColors.blue,
@@ -102,7 +104,7 @@ const buttonColors = {
   }),
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
-};
+} satisfies Partial<Theme>;
 
 export const darkTheme: Theme = {
   type: 'dark',

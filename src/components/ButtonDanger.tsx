@@ -1,16 +1,12 @@
-import React, { FC, ReactNode, useState } from 'react';
-import { Pressable, PressableProps, StyleSheet, Text, ViewStyle } from 'react-native';
+import React, { FC, useState } from 'react';
+import { Pressable, PressableProps, StyleSheet, Text } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { CustomButtonProps } from '../types/global.types';
 
-interface ButtonDangerProps extends Omit<PressableProps, 'style'> {
-  label: string;
-  onPress: () => void;
-  style?: ViewStyle;
-  iconRight?: ReactNode;
-}
+type ButtonDangerProps = Omit<PressableProps, 'style'> & CustomButtonProps;
 
 export const ButtonDanger: FC<ButtonDangerProps> = ({ onPress, label, iconRight, ...props }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -55,6 +51,7 @@ function createStyles(theme: Theme) {
       ...typo.bodyEmphasized,
       color: theme.textButton,
       lineHeight: 16,
+      textAlign: 'center',
     },
   });
 }
