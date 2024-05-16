@@ -307,11 +307,11 @@ Gw
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Selected day" id="0aK-yR-xXL" userLabel="Selected day">
+                            <menuItem title="Day" id="0aK-yR-xXL" userLabel="Day">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Selected day" systemMenu="help" id="CNL-Ts-YXd">
+                                <menu key="submenu" title="Day" systemMenu="help" id="CNL-Ts-YXd">
                                     <items>
-                                        <menuItem title="Reset local worklogs" id="vpK-Zt-Xhj">
+                                        <menuItem title="Reset worklogs of selected day" id="vpK-Zt-Xhj" userLabel="Reset changes to worklogs of selected day">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="resetWorklogsForSelectedDate:" target="Ady-hI-5gd" id="abs-Xg-wUa"/>
