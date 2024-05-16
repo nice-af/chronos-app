@@ -7,14 +7,19 @@ import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { CustomTextInput } from './CustomTextInput';
+import { typo } from '../styles/typo';
 
 export interface TrackingReminderTimeSettingsProps {}
 
 export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps> = () => {
   const styles = useThemedStyles(createStyles);
   const [settings, setSettings] = useAtom(settingsAtom);
-  const [reminderHour, setReminderHour] = useState(settings.trackingReminderTime[0].toString().padStart(2, '0'));
-  const [reminderMinute, setReminderMinute] = useState(settings.trackingReminderTime[1].toString().padStart(2, '0'));
+  const [reminderHour, setReminderHour] = useState(
+    (settings.trackingReminderTime.hour ?? 18).toString().padStart(2, '0')
+  );
+  const [reminderMinute, setReminderMinute] = useState(
+    (settings.trackingReminderTime.minute ?? 30).toString().padStart(2, '0')
+  );
   const currentOverlay = useAtomValue(currentOverlayAtom);
   const { t } = useTranslation();
 
@@ -23,7 +28,7 @@ export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps>
     const newMinute = Math.min(Math.max(parseInt(reminderMinute === '' ? '0' : reminderMinute), 0), 59);
     setSettings(cur => ({
       ...cur,
-      trackingReminderTime: [newHour, newMinute],
+      trackingReminderTime: { hour: newHour, minute: newMinute },
     }));
     setReminderHour(newHour.toString().padStart(2, '0'));
     setReminderMinute(newMinute.toString().padStart(2, '0'));
@@ -41,7 +46,7 @@ export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps>
 
   return (
     <View style={styles.container}>
-      <Text>{t('notifications.trackingReminderTime')}</Text>
+      <Text style={styles.text}>{t('notifications.trackingReminderTime')}</Text>
       <View style={styles.inputsContainer}>
         <CustomTextInput
           isVisible={currentOverlay === Overlay.SETTINGS}
@@ -74,6 +79,9 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       justifyContent: 'space-between',
       marginTop: 16,
+    },
+    text: {
+      ...typo.body,
     },
     inputsContainer: {
       display: 'flex',

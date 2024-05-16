@@ -22,7 +22,7 @@ export interface SettingsModel {
   hideNonWorkingDays: boolean;
   warningWhenEditingOtherDays: boolean;
   enableTrackingReminder: boolean;
-  trackingReminderTime: [number, number];
+  trackingReminderTime: { hour: number; minute: number };
   theme: Theme;
 }
 
@@ -40,7 +40,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     hideNonWorkingDays: false,
     warningWhenEditingOtherDays: true,
     enableTrackingReminder: false,
-    trackingReminderTime: [18, 30],
+    trackingReminderTime: { hour: 18, minute: 30 },
     theme: lightTheme,
   },
   [StorageKey.WORKLOGS_LOCAL]: [],

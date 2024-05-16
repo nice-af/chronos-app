@@ -18,6 +18,7 @@
   },
   "notifications": {
     "enableTrackingReminder": "Arbeitszeiten Erinnerung aktivieren",
+    "noPermission": "Es scheint, dass Jira Time Tracker nicht die notwendigen Berechtigungen hat, um dir Benachrichtigungen zu senden. Gehe zu Systemeinstellungen > Mitteilungen und aktiviere Benachrichtigungen für Jira Time Tracker.",
     "settingsTitle": "Benachrichtigungen",
     "trackingReminderHeadline": "Arbeitszeiten Erinnerung",
     "trackingReminderNoTimesText": "Du hast heute noch keine Arbeitszeiten abgeschickt.",

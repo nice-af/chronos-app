@@ -8,6 +8,7 @@ import { Modal } from './src/components/Modal';
 import { WorklogStateWatcher } from './src/components/WorklogStateWatcher';
 import { GlobalProvider } from './src/providers/GlobalProvider';
 import { Main } from './src/screens/Main';
+import { NotificationWatcher } from './src/components/NotificationWatcher';
 
 const App: FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: FC = () => {
       <Provider store={store}>
         <Modal />
         <WorklogStateWatcher />
+        <NotificationWatcher />
         <ColorSchemeWatcher />
         <GlobalProvider>
           <Main />

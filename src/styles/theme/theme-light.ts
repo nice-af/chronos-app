@@ -17,6 +17,7 @@ const baseColors = {
   }),
   textButton: '#ffffff',
   red: '#ff3b30',
+  redTransparent: 'rgba(255,59,48,0.1)',
   orange: '#ff9500',
   yellow: '#ffcc00',
   green: '#28cd41',

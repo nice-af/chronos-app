@@ -5,6 +5,7 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { userInfoAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { store } from './store';
+import ms from 'ms';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 
@@ -56,7 +57,7 @@ setInterval(() => {
     });
     store.set(activeWorklogTrackingStartedAtom, now);
   }
-}, 3_000);
+}, ms('3s'));
 
 export const worklogsForCurrentDayAtom = atom(get => {
   const worklogs = get(worklogsAtom);

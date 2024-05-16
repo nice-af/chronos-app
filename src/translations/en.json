@@ -18,6 +18,7 @@
   },
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
+    "noPermission": "It seems like Jira Time Tracker doesn't have the necessary permissions to send you notifications. Go to System Settings > Notifications and enable notifications for Jira Time Tracker.",
     "settingsTitle": "Notifications",
     "trackingReminderHeadline": "Tracking reminder",
     "trackingReminderNoTimesText": "You did not submit your worklogs for today yet.",

@@ -28,7 +28,10 @@ class EventEmitter {
       "closeOverlay",
       "closeModal",
       "createNewWorklog",
-      "resetWorklogsForSelectedDate"
+      "resetWorklogsForSelectedDate",
+      "sendNotification",
+      "requestNotificationPermission",
+      "checkNotificationPermission",
     ]
     return allEventNames
   }()

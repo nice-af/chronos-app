@@ -37,7 +37,7 @@ const bodyEmphasized: TextStyle = {
 
 const callout: TextStyle = {
   fontSize: 12,
-  lineHeight: 15,
+  lineHeight: 17,
   fontWeight: '400',
 };
 

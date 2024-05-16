@@ -7,6 +7,9 @@ export enum NativeEvent {
   CLOSE_MODAL = 'closeModal',
   CREATE_NEW_WORKLOG = 'createNewWorklog',
   RESET_WORKLOGS_FOR_SELECTED_DATE = 'resetWorklogsForSelectedDate',
+  SEND_NOTIFICATION = 'sendNotification',
+  REQUEST_NOTIFICATION_PERMISSION = 'requestNotificationPermission',
+  CHECK_NOTIFICATION_PERMISSION = 'checkNotificationPermission',
 }
 
 export enum StatusBarState {
@@ -35,6 +38,7 @@ export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_STATUS_BAR_TIME_CHANGE
   | AddNativeEventListenerParams_FULLSCREEN_CHANGE
   | AddNativeEventListenerParams_PLAY_PAUSE_CLICK
+  | AddNativeEventListenerParams_CHECK_NOTIFICATION_PERMISSION
   | AddNativeEventListenerParams_DEFAULT;
 
 export interface AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE {
@@ -55,6 +59,11 @@ export interface AddNativeEventListenerParams_FULLSCREEN_CHANGE {
 export interface AddNativeEventListenerParams_PLAY_PAUSE_CLICK {
   name: NativeEvent.PLAY_PAUSE_CLICK;
   callback: (data: StatusBarState) => void;
+}
+
+export interface AddNativeEventListenerParams_CHECK_NOTIFICATION_PERMISSION {
+  name: NativeEvent.CHECK_NOTIFICATION_PERMISSION;
+  callback: (data: 'granted' | 'denied') => void;
 }
 
 export interface AddNativeEventListenerParams_DEFAULT {

@@ -9,6 +9,7 @@ export interface Theme {
   textTertiary: string | OpaqueColorValue;
   textButton: string | OpaqueColorValue;
   red: string | OpaqueColorValue;
+  redTransparent: string | OpaqueColorValue;
   orange: string | OpaqueColorValue;
   yellow: string | OpaqueColorValue;
   green: string | OpaqueColorValue;

@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { currentOverlayAtom, logoutAtom, settingsAtom, themeAtom } from '../atoms';
 import { ButtonDanger } from '../components/ButtonDanger';
@@ -10,17 +10,48 @@ import { TrackingReminderTimeSettings } from '../components/TrackingReminderTime
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { SidebarLayout } from '../const';
 import { useTranslation } from '../services/i18n.service';
+import {
+  addNativeEventListener,
+  removeNativeEventListener,
+  sendNativeEvent,
+} from '../services/native-event-emitter.service';
+import { NativeEvent } from '../services/native-event-emitter.service.types';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import ms from 'ms';
 
 export const Settings: FC = () => {
   const logout = useSetAtom(logoutAtom);
   const [settings, setSettings] = useAtom(settingsAtom);
+  const [hasNotificationPermission, setHasNotificationPermission] = useState(true);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (Platform.OS === 'macos' && settings.enableTrackingReminder) {
+      addNativeEventListener({
+        name: NativeEvent.CHECK_NOTIFICATION_PERMISSION,
+        callback: data => setHasNotificationPermission(data === 'granted'),
+      });
+      sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: '' });
+
+      // Check frequently if the user has missing permissions
+      if (!hasNotificationPermission) {
+        const intervalId = setInterval(() => {
+          sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: '' });
+        }, ms('3s'));
+        return () => {
+          clearInterval(intervalId);
+          removeNativeEventListener({ name: NativeEvent.CHECK_NOTIFICATION_PERMISSION });
+        };
+      }
+
+      return () => removeNativeEventListener({ name: NativeEvent.CHECK_NOTIFICATION_PERMISSION });
+    }
+  }, [settings.enableTrackingReminder, hasNotificationPermission]);
 
   return (
     <Layout
@@ -87,6 +118,11 @@ export const Settings: FC = () => {
             setState={newState => setSettings(cur => ({ ...cur, enableTrackingReminder: newState }))}
           />
           {settings.enableTrackingReminder && <TrackingReminderTimeSettings />}
+          {settings.enableTrackingReminder && !hasNotificationPermission && (
+            <View style={styles.errorMessageContainer}>
+              <Text style={styles.errorMessageText}>{t('notifications.noPermission')}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.card}>
           <Text style={styles.headline}>{t('account.settingsTitle')}</Text>
@@ -135,6 +171,18 @@ function createStyles(theme: Theme) {
       height: 1,
       backgroundColor: theme.surfaceBorder,
       marginVertical: 12,
+    },
+    errorMessageContainer: {
+      backgroundColor: theme.redTransparent,
+      marginTop: 10,
+      padding: 10,
+      borderWidth: 1,
+      borderColor: theme.red,
+      borderRadius: 5,
+    },
+    errorMessageText: {
+      ...typo.callout,
+      color: theme.textPrimary,
     },
   });
 }
