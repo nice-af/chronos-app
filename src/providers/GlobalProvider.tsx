@@ -1,17 +1,19 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { currentOverlayAtom, isFullscreenAtom, jiraAuthAtom } from '../atoms';
+import { modalVisibleAtom } from '../atoms/modal';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { Overlay } from '../const';
 import { Login } from '../screens/Login';
 import { initialize } from '../services/global.service';
 import { addNativeEventListener, removeNativeEventListener } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
-import { Overlay } from '../const';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const jiraAuth = useAtomValue(jiraAuthAtom);
+  const setModalVisible = useSetAtom(modalVisibleAtom);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
 
@@ -24,23 +26,17 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     if (Platform.OS === 'macos') {
       addNativeEventListener({
         name: NativeEvent.FULLSCREEN_CHANGE,
-        callback: eventBody => {
-          setIsFullscreen(eventBody === 'true');
-        },
+        callback: eventBody => setIsFullscreen(eventBody === 'true'),
       });
 
       addNativeEventListener({
         name: NativeEvent.CREATE_NEW_WORKLOG,
-        callback: () => {
-          setCurrentOverlay(Overlay.SEARCH);
-        },
+        callback: () => setCurrentOverlay(Overlay.SEARCH),
       });
 
       addNativeEventListener({
         name: NativeEvent.CLOSE_OVERLAY,
-        callback: () => {
-          setCurrentOverlay(null);
-        },
+        callback: () => setCurrentOverlay(null),
       });
     }
 

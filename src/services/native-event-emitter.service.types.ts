@@ -4,6 +4,7 @@ export enum NativeEvent {
   FULLSCREEN_CHANGE = 'fullscreenChange',
   PLAY_PAUSE_CLICK = 'playPauseClick',
   CLOSE_OVERLAY = 'closeOverlay',
+  CLOSE_MODAL = 'closeModal',
   CREATE_NEW_WORKLOG = 'createNewWorklog',
   RESET_WORKLOGS_FOR_SELECTED_DATE = 'resetWorklogsForSelectedDate',
 }
@@ -57,7 +58,11 @@ export interface AddNativeEventListenerParams_PLAY_PAUSE_CLICK {
 }
 
 export interface AddNativeEventListenerParams_DEFAULT {
-  name: NativeEvent.CLOSE_OVERLAY | NativeEvent.CREATE_NEW_WORKLOG | NativeEvent.RESET_WORKLOGS_FOR_SELECTED_DATE;
+  name:
+    | NativeEvent.CLOSE_OVERLAY
+    | NativeEvent.CLOSE_MODAL
+    | NativeEvent.CREATE_NEW_WORKLOG
+    | NativeEvent.RESET_WORKLOGS_FOR_SELECTED_DATE;
   callback: () => void;
 }
 

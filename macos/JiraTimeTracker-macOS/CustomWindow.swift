@@ -28,6 +28,7 @@ public class CustomWindow: NSWindow {
   override public func keyDown(with event: NSEvent) {
     if (Int(event.keyCode) == 53) {
       EventEmitter.sharedInstance.dispatch(name: "closeOverlay", body: "")
+      EventEmitter.sharedInstance.dispatch(name: "closeModal", body: "")
     } else {
       super.keyDown(with: event)
     }

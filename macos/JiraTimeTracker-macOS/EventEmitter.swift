@@ -26,6 +26,7 @@ class EventEmitter {
       "fullscreenChange",
       "playPauseClick",
       "closeOverlay",
+      "closeModal",
       "createNewWorklog",
       "resetWorklogsForSelectedDate"
     ]
