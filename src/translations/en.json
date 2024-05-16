@@ -10,6 +10,20 @@
     "buttonLabel": "Login to Jira",
     "description": "Please click the button below to connect your Jira account with Jira Time Tracker."
   },
+  "modals": {
+    "startTimerInFutureHeadline": "You are about to start a timer in the future",
+    "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
+    "startTimerInPastHeadline": "You are about to start a timer in the past",
+    "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
+  },
+  "notifications": {
+    "enableTrackingReminder": "Enable tracking reminder",
+    "settingsTitle": "Notifications",
+    "trackingReminderHeadline": "Tracking reminder",
+    "trackingReminderNoTimesText": "You did not submit your worklogs for today yet.",
+    "trackingReminderTime": "Time of the tracking reminder",
+    "trackingReminderUnpublishedTimesText": "You have unpublished worklogs for today."
+  },
   "noWorklogs": "No worklogs for this day yet",
   "save": "Save",
   "search": {
@@ -42,14 +56,8 @@
   "worklogOlderThen4Weeks": "For technical reasons, we do not support working times that are more than 4 weeks in the past.",
   "worklogs": {
     "addNewWorklog": "Add new worklog",
-    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
     "editWorklog": "Edit worklog",
-    "settingsTitle": "Worklogs"
-  },
-  "modals": {
-    "startTimerInFutureHeadline": "You are about to start a timer in the future",
-    "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
-    "startTimerInPastHeadline": "You are about to start a timer in the past",
-    "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
+    "settingsTitle": "Worklogs",
+    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
   }
 }

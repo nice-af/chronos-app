@@ -1,11 +1,12 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { currentOverlayAtom, logoutAtom, settingsAtom, themeAtom } from '../atoms';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
 import { Toggle } from '../components/Toggle';
+import { TrackingReminderTimeSettings } from '../components/TrackingReminderTimeSettings';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
 import { SidebarLayout } from '../const';
 import { useTranslation } from '../services/i18n.service';
@@ -25,7 +26,7 @@ export const Settings: FC = () => {
     <Layout
       customBackgroundColor={theme.backgroundDrawer}
       header={{ align: 'left', title: t('settings'), onBackPress: () => setCurrentOverlay(null) }}>
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.card}>
           <Text style={styles.headline}>{t('sidebarLayout.settingsTitle')}</Text>
           <View style={styles.cardsButtonContainer}>
@@ -71,7 +72,7 @@ export const Settings: FC = () => {
           />
         </View>
         <View style={styles.card}>
-          <Text style={styles.headline}>Worklogs</Text>
+          <Text style={styles.headline}>{t('worklogs.settingsTitle')}</Text>
           <Toggle
             label={t('worklogs.warningWhenEditingOtherDays')}
             state={settings.warningWhenEditingOtherDays}
@@ -79,10 +80,19 @@ export const Settings: FC = () => {
           />
         </View>
         <View style={styles.card}>
+          <Text style={styles.headline}>{t('notifications.settingsTitle')}</Text>
+          <Toggle
+            label={t('notifications.enableTrackingReminder')}
+            state={settings.enableTrackingReminder}
+            setState={newState => setSettings(cur => ({ ...cur, enableTrackingReminder: newState }))}
+          />
+          {settings.enableTrackingReminder && <TrackingReminderTimeSettings />}
+        </View>
+        <View style={styles.card}>
           <Text style={styles.headline}>{t('account.settingsTitle')}</Text>
           <ButtonDanger label={t('account.logOut')} onPress={logout} />
         </View>
-      </View>
+      </ScrollView>
     </Layout>
   );
 };

@@ -14,6 +14,8 @@ interface CustomTextInputProps {
   numberOfLines?: number;
   placeholder?: string;
   iconLeft?: ReactNode;
+  maxLength?: number;
+  onBlur?: () => void;
 }
 
 export const CustomTextInput: FC<CustomTextInputProps> = ({
@@ -25,6 +27,8 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
   numberOfLines,
   placeholder,
   iconLeft,
+  maxLength,
+  onBlur,
 }) => {
   const inputRef = useRef<TextInput>(null);
   const showPlaceholder = !value || (value === '' && !!placeholder);
@@ -50,6 +54,8 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
         value={value}
         multiline={multiline}
         numberOfLines={numberOfLines}
+        maxLength={maxLength}
+        onBlur={onBlur}
       />
       {iconLeft && <View style={styles.iconContainer}>{iconLeft}</View>}
       {showPlaceholder && (

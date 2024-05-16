@@ -10,6 +10,20 @@
     "buttonLabel": "Mit Jira verbinden",
     "description": "Bitte klicke auf den Button unten, um dein Jira-Konto mit Jira Time Tracker zu verbinden."
   },
+  "modals": {
+    "startTimerInFutureHeadline": "Du bist dabei, einen Timer in der Zukunft zu starten",
+    "startTimerInFutureText": "Dies wird einen Arbeitsprotokoll in der Zukunft ändern. Bist du sicher, dass du fortfahren möchten?",
+    "startTimerInPastHeadline": "Du bist dabei, einen Timer in der Vergangenheit zu starten",
+    "startTimerInPastText": "Dies wird einen Arbeitsprotokoll in der Vergangenheit ändern. Bist du sicher, dass du fortfahren möchten?"
+  },
+  "notifications": {
+    "enableTrackingReminder": "Arbeitszeiten Erinnerung aktivieren",
+    "settingsTitle": "Benachrichtigungen",
+    "trackingReminderHeadline": "Arbeitszeiten Erinnerung",
+    "trackingReminderNoTimesText": "Du hast heute noch keine Arbeitszeiten abgeschickt.",
+    "trackingReminderTime": "Uhrzeit der Erinnerung",
+    "trackingReminderUnpublishedTimesText": "Du hast Arbeitszeiten, die noch nicht abgeschickt wurden."
+  },
   "noWorklogs": "Dieser Tag hat noch keine Arbeitszeiten.",
   "save": "Speichern",
   "search": {
@@ -28,7 +42,6 @@
   },
   "syncDay": "Diesen Tag synchronisieren",
   "today": "Heute",
-  "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "weekDays": {
     "fr": "Fr",
     "hideNonWorkingDays": "Nur Arbeitstage anzeigen",
@@ -40,16 +53,11 @@
     "tu": "Di",
     "we": "Mi"
   },
+  "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
-    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind",
     "editWorklog": "Bearbeiten",
-    "settingsTitle": "Arbeitszeiten"
-  },
-  "modals": {
-    "startTimerInFutureHeadline": "Du bist dabei, einen Timer in der Zukunft zu starten",
-    "startTimerInFutureText": "Dies wird einen Arbeitsprotokoll in der Zukunft ändern. Bist du sicher, dass du fortfahren möchten?",
-    "startTimerInPastHeadline": "Du bist dabei, einen Timer in der Vergangenheit zu starten",
-    "startTimerInPastText": "Dies wird einen Arbeitsprotokoll in der Vergangenheit ändern. Bist du sicher, dass du fortfahren möchten?"
+    "settingsTitle": "Arbeitszeiten",
+    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind"
   }
 }
