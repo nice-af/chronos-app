@@ -153,7 +153,7 @@ function createStyles(theme: Theme) {
       backgroundColor: theme.surface,
       borderColor: theme.surfaceBorder,
       borderWidth: 1,
-      borderRadius: 5,
+      borderRadius: 6,
     },
     headline: {
       ...typo.headline,
@@ -178,7 +178,7 @@ function createStyles(theme: Theme) {
       padding: 10,
       borderWidth: 1,
       borderColor: theme.red,
-      borderRadius: 5,
+      borderRadius: 6,
     },
     errorMessageText: {
       ...typo.callout,

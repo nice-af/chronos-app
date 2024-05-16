@@ -123,7 +123,7 @@ function createStyles(theme: Theme) {
       alignSelf: 'center',
       width: 34,
       height: 34,
-      borderRadius: 5,
+      borderRadius: 6,
       ...getPadding(9, 15),
       overflow: 'visible',
       margin: -3,
