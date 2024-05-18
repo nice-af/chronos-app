@@ -2,7 +2,14 @@ import { Issue } from 'jira.js/out/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { addWorklogAtom, currentOverlayAtom, selectedDateAtom, themeAtom, worklogsAtom } from '../atoms';
+import {
+  addWorklogAtom,
+  currentOverlayAtom,
+  currentWorklogToEditAtom,
+  selectedDateAtom,
+  themeAtom,
+  worklogsAtom,
+} from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
@@ -31,6 +38,7 @@ export const Search: FC = () => {
   const setSelectedDate = useSetAtom(selectedDateAtom);
   const addWorklog = useSetAtom(addWorklogAtom);
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
+  const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const [searchValue, setSearchValue] = useState('');
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<Issue[]>([]);
@@ -92,9 +100,10 @@ export const Search: FC = () => {
   }, [worklogs]);
 
   const handleOnWorklogStart = (worklog: Worklog) => {
-    setCurrentOverlay(null);
     setSelectedDate(formatDateToYYYYMMDD(new Date()));
     addWorklog(worklog);
+    setCurrentWorklogToEdit(worklog);
+    setCurrentOverlay(Overlay.EDIT_WORKLOG);
   };
 
   return (
