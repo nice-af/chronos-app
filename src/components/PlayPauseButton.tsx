@@ -8,7 +8,6 @@ import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { formatDateToYYYYMMDD } from '../services/date.service';
 
 interface PlayPauseButtonProps extends Omit<PressableProps, 'style'> {
   duration: number;
@@ -25,12 +24,9 @@ export const PlayPauseButton: FC<PlayPauseButtonProps> = ({ onPress, isRunning, 
   const theme = useAtomValue(themeAtom);
 
   useEffect(() => {
-    if (!enableAnimation) {
-      return;
-    }
     Animated.timing(animBounce, {
       toValue: isRunning ? 1 : 0,
-      duration: 350,
+      duration: enableAnimation ? 350 : 0,
       useNativeDriver: true,
       easing: Easing.bezier(0.57, 1.66, 0.45, 0.915),
     }).start();
