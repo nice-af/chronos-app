@@ -34,13 +34,15 @@ export enum WorklogState {
   EDITED = 'edited',
 }
 
+export interface IssueBase {
+  id: string;
+  key: string;
+  summary: string;
+}
+
 export interface Worklog {
   id: string;
-  issue: {
-    id: string;
-    key: string;
-    summary: string;
-  };
+  issue: IssueBase;
   started: string;
   timeSpentSeconds: number;
   comment: string;

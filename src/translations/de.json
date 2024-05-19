@@ -11,9 +11,11 @@
     "description": "Bitte klicke auf den Button unten, um dein Jira-Konto mit Jira Time Tracker zu verbinden."
   },
   "modals": {
-    "startTimerInFutureHeadline": "Du bist dabei, einen Timer in der Zukunft zu starten",
+    "cancel": "Abbrechen",
+    "continue": "Fortfahren",
+    "startTimerInFutureHeadline": "Du bist dabei, einen Timer an einem zukünftigen Tag zu starten",
     "startTimerInFutureText": "Dies wird einen Arbeitsprotokoll in der Zukunft ändern. Bist du sicher, dass du fortfahren möchten?",
-    "startTimerInPastHeadline": "Du bist dabei, einen Timer in der Vergangenheit zu starten",
+    "startTimerInPastHeadline": "Du bist dabei, einen Timer an einem vergangenen Tag zu starten",
     "startTimerInPastText": "Dies wird einen Arbeitsprotokoll in der Vergangenheit ändern. Bist du sicher, dass du fortfahren möchten?"
   },
   "notifications": {

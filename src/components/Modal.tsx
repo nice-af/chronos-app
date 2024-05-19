@@ -9,6 +9,7 @@ import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
+import { useTranslation } from '../services/i18n.service';
 
 const iconTimerWarningLight: ImageSourcePropType = require('../assets/modal-icons/timer-warning-light.png');
 const iconTimerWarningDark: ImageSourcePropType = require('../assets/modal-icons/timer-warning-dark.png');
@@ -18,6 +19,7 @@ export const Modal: FC = () => {
   const isVisible = useAtomValue(modalVisibleAtom);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
+  const { t } = useTranslation();
   const animBackground = useRef(new Animated.Value(0)).current;
   const animJump = useRef(new Animated.Value(0)).current;
   let iconSource: ImageSourcePropType | null = null;
@@ -82,8 +84,16 @@ export const Modal: FC = () => {
           <Text style={styles.headline}>{data.headline}</Text>
           <Text style={styles.text}>{data.text}</Text>
           <View style={styles.buttonsContainer}>
-            <ButtonSecondary label='Cancel' onPress={data.onCancel} style={{ flexBasis: 100, flexGrow: 1 }} />
-            <ButtonPrimary label='Continue' onPress={data.onConfirm} style={{ flexBasis: 100, flexGrow: 1 }} />
+            <ButtonSecondary
+              label={t('modals.cancel')}
+              onPress={data.onCancel}
+              style={{ flexBasis: 100, flexGrow: 1 }}
+            />
+            <ButtonPrimary
+              label={t('modals.continue')}
+              onPress={data.onConfirm}
+              style={{ flexBasis: 100, flexGrow: 1 }}
+            />
           </View>
         </View>
       </Animated.View>

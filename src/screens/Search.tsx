@@ -15,14 +15,16 @@ import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SearchResultsEntry } from '../components/SearchResultsEntry';
 import { Overlay } from '../const';
-import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { Worklog } from '../types/global.types';
+import { IssueBase, Worklog } from '../types/global.types';
+import { useModal } from '../services/modal.service';
+import { format } from 'date-fns';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -35,7 +37,7 @@ const debounce = (func: Function, delay: number) => {
 };
 
 export const Search: FC = () => {
-  const setSelectedDate = useSetAtom(selectedDateAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
   const addWorklog = useSetAtom(addWorklogAtom);
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
@@ -48,6 +50,7 @@ export const Search: FC = () => {
   const enoughCharacters = searchValue.trim().length >= 3;
   const { t } = useTranslation();
   const worklogs = useAtomValue(worklogsAtom);
+  const { getModalConfirmation } = useModal();
 
   const debouncedSearch = useMemo(
     () =>
@@ -99,13 +102,30 @@ export const Search: FC = () => {
     return latestWorklogs;
   }, [worklogs]);
 
-  const handleOnWorklogStart = (worklog: Worklog) => {
-    setSelectedDate(formatDateToYYYYMMDD(new Date()));
+  async function handleOnWorklogStart(issueBase: IssueBase) {
+    if (formatDateToYYYYMMDD(new Date()) !== selectedDate) {
+      const confirmed = await getModalConfirmation({
+        icon: 'timer-warning',
+        headline: t('modals.startTimerInPastHeadline'),
+        text: t('modals.startTimerInPastText'),
+      });
+      if (!confirmed) {
+        return;
+      }
+    }
+    const worklog = createNewLocalWorklog({
+      issue: {
+        id: issueBase.id,
+        key: issueBase.key,
+        summary: issueBase.summary,
+      },
+      started: selectedDate,
+    });
     addWorklog(worklog);
     setCurrentWorklogToEdit(worklog);
     setCurrentOverlay([Overlay.SEARCH, Overlay.EDIT_WORKLOG]);
     setTimeout(() => setCurrentOverlay([Overlay.EDIT_WORKLOG]), 500);
-  };
+  }
 
   return (
     <Layout
@@ -158,17 +178,7 @@ export const Search: FC = () => {
                 },
                 summary: issue.fields.summary,
               }}
-              onPress={() =>
-                handleOnWorklogStart(
-                  createNewLocalWorklog({
-                    issue: {
-                      id: issue.id,
-                      key: issue.key,
-                      summary: issue.fields.summary,
-                    },
-                  })
-                )
-              }
+              onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
             />
           ))}
         {!hasCharacters &&
@@ -185,15 +195,11 @@ export const Search: FC = () => {
                 summary: worklog.issue.summary,
               }}
               onPress={() =>
-                handleOnWorklogStart(
-                  createNewLocalWorklog({
-                    issue: {
-                      id: worklog.issue.id,
-                      key: worklog.issue.key,
-                      summary: worklog.issue.summary,
-                    },
-                  })
-                )
+                handleOnWorklogStart({
+                  id: worklog.issue.id,
+                  key: worklog.issue.key,
+                  summary: worklog.issue.summary,
+                })
               }
             />
           ))}

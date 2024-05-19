@@ -21,9 +21,11 @@ export function useModal() {
       setModalData({
         ...modalData,
         onConfirm: () => {
+          setModalVisible(false);
           resolve(true);
         },
         onCancel: () => {
+          setModalVisible(false);
           resolve(false);
         },
       });
