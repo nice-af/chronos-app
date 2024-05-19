@@ -6,17 +6,18 @@ import { LOADING_SPINNER_SPEED } from '../const';
 
 interface LoadingSpinnerProps {
   style?: ViewStyle;
+  forcedTheme?: 'light' | 'dark';
 }
 
-export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style }) => {
+export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme }) => {
   const theme = useAtomValue(themeAtom);
   const [activeElement, setActiveElement] = useState(0);
 
   const { image, opacityInactive } = useMemo(() => {
-    if (theme.type === 'light') {
-      return { image: require('../assets/loading-spinner-element-light.png'), opacityInactive: 0.15 };
+    if ((forcedTheme ?? theme.type) === 'light') {
+      return { image: require('../assets/loading-spinner/loading-spinner-element-light.png'), opacityInactive: 0.15 };
     } else {
-      return { image: require('../assets/loading-spinner-element-dark.png'), opacityInactive: 0.12 };
+      return { image: require('../assets/loading-spinner/loading-spinner-element-dark.png'), opacityInactive: 0.12 };
     }
   }, [theme]);
 

@@ -10,9 +10,17 @@ import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
 type ButtonPrimaryProps = Omit<PressableProps, 'style'> &
   CustomButtonProps & {
     isLoading?: boolean;
+    isDisabled?: boolean;
   };
 
-export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, iconRight, isLoading, ...props }) => {
+export const ButtonPrimary: FC<ButtonPrimaryProps> = ({
+  onPress,
+  label,
+  iconRight,
+  isLoading,
+  isDisabled,
+  ...props
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 
@@ -20,14 +28,14 @@ export const ButtonPrimary: FC<ButtonPrimaryProps> = ({ onPress, label, iconRigh
     <Pressable
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
-      onPress={isLoading ? undefined : onPress}
+      onPress={isLoading || isDisabled ? undefined : onPress}
       style={({ pressed }) => [
         styles.pressable,
         isHovered && styles.isHovered,
         pressed && styles.isActive,
         props.style,
       ]}>
-      {isLoading && <LoadingSpinnerSmall style={styles.loadingSpinner} />}
+      {isLoading && <LoadingSpinnerSmall style={styles.loadingSpinner} forcedTheme='dark' />}
       <Text style={[styles.label, isLoading && styles.labelIsHidden]}>{label}</Text>
       {iconRight}
     </Pressable>
