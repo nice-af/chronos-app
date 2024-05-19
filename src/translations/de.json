@@ -56,6 +56,7 @@
     "tu": "Di",
     "we": "Mi"
   },
+  "submittingWorklogs": "Arbeitszeiten werden abgeschickt",
   "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
