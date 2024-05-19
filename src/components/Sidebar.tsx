@@ -1,7 +1,7 @@
 import { useAppState } from '@react-native-community/hooks';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native-macos';
 import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -24,13 +24,13 @@ export const Sidebar: FC = () => {
   const styles = useThemedStyles(createStyles);
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={styles.outerContainer} allowsVibrancy>
       {Platform.OS === 'macos' && <NativeView type='sidebar' style={styles.backgroundView} />}
-      <View
-        style={[
+      <ScrollView
+        contentContainerStyle={[
           styles.container,
           currentAppState === 'inactive' && { opacity: 0.6 },
-          !isFullscreen && Platform.OS === 'macos' && { paddingTop: 56 },
+          !isFullscreen && Platform.OS === 'macos' && { paddingTop: 0, paddingBottom: 16 },
         ]}>
         <WeekPicker />
         {weekDays.map(day => {
@@ -50,7 +50,7 @@ export const Sidebar: FC = () => {
           );
         })}
         <SettingsButton />
-      </View>
+      </ScrollView>
     </View>
   );
 };

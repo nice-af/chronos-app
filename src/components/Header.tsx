@@ -24,7 +24,7 @@ export const Header: FC<HeaderProps> = ({ title, align, onBackPress, rightElemen
 
   return (
     <View style={[styles.container, position === 'absolute' && styles.containerAbsolute]}>
-      {Platform.OS === 'macos' && <NativeView type='toolbar' style={styles.backgroundView} />}
+      {Platform.OS === 'macos' && <NativeView type='toolbar' style={styles.backgroundView} isDraggable />}
       <View style={[styles.content, align === 'center' && styles.isCentered]}>
         {onBackPress && (
           <ButtonTransparent

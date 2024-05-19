@@ -15,11 +15,16 @@ public class CustomWindow: NSWindow {
     
     // Add titlebar accessory for larger drag area
     self.addTitlebarAccessoryViewController(titlebarAccessory)
-    self.collectionBehavior = [.fullScreenAuxiliary, .moveToActiveSpace]
+    
+    // Define behaviour when focusing throug the menubar
+    self.collectionBehavior = [.moveToActiveSpace]
+    
+    // Hide original traffic light buttons
+    setOriginalTrafficLightButtonsVisibility(isVisible: false)
   }
   
   public override func layoutIfNeeded() {
-    self.setupButtons()
+    self.moveOriginalButtons()
     super.layoutIfNeeded()
   }
   
@@ -37,25 +42,33 @@ public class CustomWindow: NSWindow {
   public func enterFullscreen() {
     self.buttonsShouldBeMoved = false
     self.removeTitlebarAccessoryViewController(at: 0)
+    setOriginalTrafficLightButtonsVisibility(isVisible: true)
   }
   
   public func exitFullscreen() {
     self.buttonsShouldBeMoved = true
     self.addTitlebarAccessoryViewController(titlebarAccessory)
+    setOriginalTrafficLightButtonsVisibility(isVisible: false)
   }
   
-  public func setupButtons() {
+  private func setOriginalTrafficLightButtonsVisibility(isVisible: Bool) {
+    if let closeButton = standardWindowButton(.closeButton),
+       let minimizeButton = standardWindowButton(.miniaturizeButton),
+       let zoomButton = standardWindowButton(.zoomButton) {
+      // Buttons can't be completely transparent since they automatically get disabled then
+      closeButton.alphaValue = isVisible ? 1 : 0.0000001
+      minimizeButton.alphaValue = isVisible ? 1 : 0.0000001
+      zoomButton.alphaValue = isVisible ? 1 : 0.0000001
+    }
+  }
+  
+  public func moveOriginalButtons() {
     if (buttonsShouldBeMoved) {
       let windowControls = super.standardWindowButton(.closeButton)!.superview!
       let titlebarContainer = windowControls.superview!
-      // windowControls.layer?.backgroundColor = CGColor(red: 255, green: 0, blue: 0, alpha: 1)
-      // titlebarContainer.layer?.backgroundColor = CGColor(red: 0, green: 255, blue: 0, alpha: 1)
-      
       titlebarContainer.setFrameSize(NSSize(width: super.frame.size.width, height: 52))
       titlebarContainer.setFrameOrigin(NSPoint(x: 0, y: super.frame.size.height - 52))
-      
       windowControls.setFrameOrigin(NSPoint(x: 12, y: -16))
-      // windowControls.setFrameSize(NSSize(width: super.frame.size.width - 12, height: 52))
       windowControls.setFrameSize(NSSize(width: super.frame.size.width, height: 52))
     }
   }
