@@ -60,6 +60,7 @@
   "worklogs": {
     "addNewWorklog": "Add new worklog",
     "editWorklog": "Edit worklog",
+    "resetChanges": "Reset changes",
     "settingsTitle": "Worklogs",
     "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
   }

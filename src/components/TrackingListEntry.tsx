@@ -10,6 +10,7 @@ import {
   selectedDateAtom,
   setWorklogAsActiveAtom,
   settingsAtom,
+  worklogsLocalAtom,
 } from '../atoms';
 import { Overlay } from '../const';
 import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
@@ -24,6 +25,7 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
+import { set } from 'lodash';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklog: Worklog;
@@ -34,6 +36,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const selectedDate = useAtomValue(selectedDateAtom);
   const settings = useAtomValue(settingsAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
+  const setLocalWorklogs = useSetAtom(worklogsLocalAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
@@ -86,19 +89,24 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
     }
   }
 
+  const contextualMenuItems = [
+    { name: t('worklogs.editWorklog'), onClick: editWorklog },
+    { name: t('delete'), onClick: async () => await deleteWorklog(worklog.id) },
+  ];
+  if (worklog.state === WorklogState.EDITED) {
+    contextualMenuItems.push({
+      name: t('worklogs.resetChanges'),
+      onClick: () => setLocalWorklogs(prev => prev.filter(localWorklog => localWorklog.id !== worklog.id)),
+    });
+  }
+
   const isActiveWorklog = activeWorklog?.id === worklog.id;
   return (
     <Pressable
       ref={ref}
       onPress={e => {
         if (isRightClick(e)) {
-          showContextualMenu(
-            [
-              { name: t('worklogs.editWorklog'), onClick: editWorklog },
-              { name: t('delete'), onClick: async () => await deleteWorklog(worklog.id) },
-            ],
-            ref.current
-          );
+          showContextualMenu(contextualMenuItems, ref.current);
         } else {
           onDoublePress();
         }

@@ -60,6 +60,7 @@
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
     "editWorklog": "Bearbeiten",
+    "resetChanges": "Änderungen zurücksetzen",
     "settingsTitle": "Arbeitszeiten",
     "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind"
   }
