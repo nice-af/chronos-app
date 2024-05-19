@@ -13,7 +13,7 @@ import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueKeyTag } from '../components/IssueKeyTag';
 import { Layout } from '../components/Layout';
 import { useThemedStyles } from '../services/theme.service';
-import { formatSecondsToHMM, parseHMMToSeconds } from '../services/time.service';
+import { formatSecondsToHMM, parseDurationStringToSeconds } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
@@ -43,7 +43,7 @@ export const EditWorklog: FC = () => {
   const handleOnSaveClick = async () => {
     // TODO @florianmrz use `immer` or similar
     const newWorklog = JSON.parse(JSON.stringify(currentWorklogToEdit));
-    const parsed = parseHMMToSeconds(timeSpentInputValue);
+    const parsed = parseDurationStringToSeconds(timeSpentInputValue);
     if (parsed !== null) {
       newWorklog.timeSpentSeconds = parsed;
     }
@@ -58,6 +58,11 @@ export const EditWorklog: FC = () => {
   const handleOnDeleteClick = async () => {
     await deleteWorklog(currentWorklogToEdit.id);
     setCurrentOverlay(null);
+  };
+
+  const cleanupInputValue = () => {
+    const parsed = parseDurationStringToSeconds(timeSpentInputValue);
+    setTimeSpentInputValue(formatSecondsToHMM(parsed, true));
   };
 
   return (
@@ -85,6 +90,7 @@ export const EditWorklog: FC = () => {
           isVisible={!!currentWorklogToEdit}
           value={timeSpentInputValue}
           onChangeText={newText => setTimeSpentInputValue(newText)}
+          onBlur={cleanupInputValue}
           style={styles.timeInput}
         />
         <CustomTextInput
@@ -126,7 +132,10 @@ function createStyles(theme: Theme) {
       width: 90,
       height: 42,
       fontSize: 20,
-      lineHeight: 26,
+      lineHeight: 24,
+      paddingLeft: 0,
+      paddingRight: 0,
+      textAlign: 'center',
     },
     descriptionInput: {
       width: '100%',

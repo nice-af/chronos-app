@@ -35,7 +35,5 @@ export function convertMdToAdf(markdown: string): Document {
   // This is not valid ADF and will cause the API to return a 400 error
   removeLocalIdIfNull(commentData);
 
-  console.log({ ...commentData, version: 1 });
-
   return { ...commentData, version: 1 };
 }
