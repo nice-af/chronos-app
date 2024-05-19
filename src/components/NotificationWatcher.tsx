@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import ms from 'ms';
 import { FC, useEffect } from 'react';
-import { settingsAtom, store, worklogsAtom, worklogsLocalAtom } from '../atoms';
+import { settingsAtom, store, worklogsAtom } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { sendNativeEvent } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
@@ -17,11 +17,11 @@ export const NotificationWatcher: FC = () => {
     }
 
     const intervalId = setInterval(() => {
-      console.log('Checking for notification');
       const now = new Date();
       if (
         enableTrackingReminder &&
-        workingDays.includes(now.getDay() as DayId) &&
+        // The first day of the week is Sunday with getDay but Monday with the DayId enum
+        workingDays.includes(((now.getDay() + 6) % 7) as DayId) &&
         now.getHours() === trackingReminderTime.hour &&
         now.getMinutes() === trackingReminderTime.minute
       ) {
@@ -50,7 +50,7 @@ export const NotificationWatcher: FC = () => {
     }, ms('1m'));
 
     return () => clearInterval(intervalId);
-  }, [enableTrackingReminder, trackingReminderTime]);
+  }, [enableTrackingReminder, trackingReminderTime, workingDays]);
 
   return null;
 };

@@ -110,10 +110,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let currentDate = Date()
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
+        formatter.dateFormat = "yyyy-MM-dd_HH-mm"
         let dateString = formatter.string(from: currentDate)
-        let id = "JiraTimeTrackerReminder_dateString"
-        
+        let id = "JiraTimeTrackerReminder_" + dateString
+
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
         self.un.add (request) { (error) in
