@@ -31,7 +31,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 
       addNativeEventListener({
         name: NativeEvent.CREATE_NEW_WORKLOG,
-        callback: () => setCurrentOverlay(Overlay.SEARCH),
+        callback: () => setCurrentOverlay([Overlay.SEARCH]),
       });
 
       addNativeEventListener({

@@ -12,7 +12,7 @@ export const SettingsButton: FC = () => {
   const theme = useAtomValue(themeAtom);
   const rotation = useRef(new Animated.Value(0)).current;
 
-  const showSettingsScreen = currentOverlay === Overlay.SETTINGS;
+  const showSettingsScreen = currentOverlay && currentOverlay.includes(Overlay.SETTINGS);
 
   useEffect(() => {
     Animated.timing(rotation, {
@@ -28,7 +28,7 @@ export const SettingsButton: FC = () => {
       style={({ pressed }) => [styles.pressable, isHovered && { opacity: 0.8 }, pressed && { opacity: 0.7 }]}
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
-      onPress={() => (showSettingsScreen ? setCurrentOverlay(null) : setCurrentOverlay(Overlay.SETTINGS))}>
+      onPress={() => (showSettingsScreen ? setCurrentOverlay(null) : setCurrentOverlay([Overlay.SETTINGS]))}>
       <Animated.Image
         style={[
           styles.cog,

@@ -53,7 +53,7 @@ export const Entries: FC = () => {
   const rightElement = (
     <>
       <JumpToTodayButton />
-      <ButtonTransparent onPress={() => setCurrentOverlay(Overlay.SEARCH)}>
+      <ButtonTransparent onPress={() => setCurrentOverlay([Overlay.SEARCH])}>
         <Image
           style={styles.icon}
           source={

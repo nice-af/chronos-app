@@ -46,7 +46,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
 
   function editWorklog() {
     setCurrentWorklogToEdit(worklog);
-    setCurrentOverlay(Overlay.EDIT_WORKLOG);
+    setCurrentOverlay([Overlay.EDIT_WORKLOG]);
   }
 
   async function handlePlayPause() {

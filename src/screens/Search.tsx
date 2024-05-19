@@ -103,7 +103,8 @@ export const Search: FC = () => {
     setSelectedDate(formatDateToYYYYMMDD(new Date()));
     addWorklog(worklog);
     setCurrentWorklogToEdit(worklog);
-    setCurrentOverlay(Overlay.EDIT_WORKLOG);
+    setCurrentOverlay([Overlay.SEARCH, Overlay.EDIT_WORKLOG]);
+    setTimeout(() => setCurrentOverlay([Overlay.EDIT_WORKLOG]), 500);
   };
 
   return (
@@ -117,7 +118,7 @@ export const Search: FC = () => {
       }}>
       <View style={styles.inputContainer}>
         <CustomTextInput
-          isVisible={currentOverlay === Overlay.SEARCH}
+          isVisible={!!currentOverlay && currentOverlay.includes(Overlay.SEARCH)}
           placeholder={t('search.placeholder')}
           value={searchValue}
           onChangeText={setSearchValue}
