@@ -78,6 +78,9 @@ export const useAuthRequest = () => {
   }, []);
 
   async function handleDeepLink(event: { url: string }) {
+    if (!event.url.startsWith(JIRA_REDIRECT_URI)) {
+      return;
+    }
     setIsLoading(true);
     const { code: urlCode, state: urlState } = getUrlParams(event.url);
     try {

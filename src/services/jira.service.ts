@@ -257,3 +257,13 @@ export function deleteRemoteWorklog(worklog: Worklog) {
     id: worklog.id,
   });
 }
+
+export function getIssueByKey(issueKey: string) {
+  return jiraClient.issueSearch
+    .searchForIssuesUsingJqlPost({
+      jql: `key = "${issueKey.toUpperCase()}"`,
+      fields: ['summary', 'id'],
+      maxResults: 1,
+    })
+    .then(res => res.issues?.[0]);
+}

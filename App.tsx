@@ -10,6 +10,7 @@ import { TrafficLights } from './src/components/TrafficLights';
 import { WorklogStateWatcher } from './src/watchers/WorklogStateWatcher';
 import { GlobalProvider } from './src/providers/GlobalProvider';
 import { Main } from './src/screens/Main';
+import { WorklogDeepLinkWatcher } from './src/watchers/WorklogDeepLinkWatcher';
 
 const App: FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: FC = () => {
         {Platform.OS === 'macos' && <TrafficLights />}
         <Modal />
         <WorklogStateWatcher />
+        <WorklogDeepLinkWatcher />
         <NotificationWatcher />
         <ColorSchemeWatcher />
         <GlobalProvider>
