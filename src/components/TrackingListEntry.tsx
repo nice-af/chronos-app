@@ -101,6 +101,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   }
 
   const isActiveWorklog = activeWorklog?.id === worklog.id;
+
   return (
     <Pressable
       ref={ref}

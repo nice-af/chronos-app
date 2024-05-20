@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { currentOverlayAtom, logoutAtom, settingsAtom, themeAtom } from '../atoms';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { currentOverlayAtom, jiraAuthAtom, logoutAtom, settingsAtom, themeAtom, userInfoAtom } from '../atoms';
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
@@ -24,6 +24,9 @@ import ms from 'ms';
 export const Settings: FC = () => {
   const logout = useSetAtom(logoutAtom);
   const [settings, setSettings] = useAtom(settingsAtom);
+  const userInfo = useAtomValue(userInfoAtom);
+  const workspaceName = useAtomValue(jiraAuthAtom)?.workspaceName;
+  const avatarUrl = userInfo?.avatarUrls?.['48x48'];
   const [hasNotificationPermission, setHasNotificationPermission] = useState(true);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const styles = useThemedStyles(createStyles);
@@ -126,7 +129,20 @@ export const Settings: FC = () => {
         </View>
         <View style={styles.card}>
           <Text style={styles.headline}>{t('account.settingsTitle')}</Text>
-          <ButtonDanger label={t('account.logOut')} onPress={logout} />
+          <View style={styles.accountContainer}>
+            <Image source={{ uri: avatarUrl, width: 48, height: 48 }} style={styles.avatar} />
+            <View style={styles.accountInfo}>
+              <Text numberOfLines={1} lineBreakMode='clip' style={styles.username}>
+                {userInfo?.displayName}
+              </Text>
+              {workspaceName && (
+                <Text numberOfLines={1} lineBreakMode='clip' style={styles.workspaceName}>
+                  {workspaceName}
+                </Text>
+              )}
+            </View>
+            <ButtonDanger label={t('account.logOut')} onPress={logout} />
+          </View>
         </View>
       </ScrollView>
     </Layout>
@@ -149,6 +165,7 @@ function createStyles(theme: Theme) {
       }),
     },
     card: {
+      position: 'relative',
       padding: 10,
       backgroundColor: theme.surface,
       borderColor: theme.surfaceBorder,
@@ -183,6 +200,32 @@ function createStyles(theme: Theme) {
     errorMessageText: {
       ...typo.callout,
       color: theme.textPrimary,
+    },
+    accountContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      gap: 10,
+      width: '100%',
+    },
+    accountInfo: {
+      flexBasis: '100%',
+      flexShrink: 1,
+    },
+    username: {
+      ...typo.calloutEmphasized,
+      color: theme.textPrimary,
+    },
+    workspaceName: {
+      ...typo.callout,
+      color: theme.textSecondary,
+    },
+    avatar: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      marginTop: 1,
     },
   });
 }

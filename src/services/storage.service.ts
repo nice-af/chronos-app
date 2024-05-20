@@ -14,6 +14,7 @@ export interface AuthModel {
   accessToken: string;
   refreshToken: string;
   cloudId: string;
+  workspaceName: string;
 }
 
 export interface SettingsModel {

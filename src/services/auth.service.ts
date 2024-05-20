@@ -51,9 +51,9 @@ export async function refreshAccessToken(refreshToken: string): Promise<GetOauth
 }
 
 /**
- * Get correct cloud id to connect to
+ * Get info about the workspace, mainly the correct cloud id to connect to
  */
-async function getCloudId(accessToken: string): Promise<string | null> {
+async function getWorkspaceInfo(accessToken: string): Promise<{ id: string; name: string } | null> {
   return await fetch('https://api.atlassian.com/oauth/token/accessible-resources', {
     method: 'GET',
     headers: {
@@ -63,7 +63,7 @@ async function getCloudId(accessToken: string): Promise<string | null> {
   })
     .then(response => response.json() as Promise<GetAccessibleResourcesResponse>)
     // TODO @florianmrz how do we handle multiple resources?
-    .then(resources => resources[0]?.id);
+    .then(resources => ({ id: resources[0]?.id, name: resources[0]?.name }));
 }
 
 export const useAuthRequest = () => {
@@ -86,13 +86,13 @@ export const useAuthRequest = () => {
       }
       const oAuthResponse = await getOAuthToken(urlCode);
       const { access_token: accessToken, refresh_token: refreshToken } = oAuthResponse;
-      const cloudId = await getCloudId(oAuthResponse.access_token);
+      const workspace = await getWorkspaceInfo(oAuthResponse.access_token);
 
-      if (!cloudId) {
+      if (!workspace) {
         // TODO better wording - when does this actually happen? (e.g. when the user has no Jira account?)
         throw new Error('Could not find a valid resource to connect to. Please try again.');
       }
-      await initialize({ accessToken, refreshToken, cloudId });
+      await initialize({ accessToken, refreshToken, cloudId: workspace.id, workspaceName: workspace.name });
     } catch (error) {
       Alert.alert((error as Error).message);
       return;
