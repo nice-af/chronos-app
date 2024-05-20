@@ -46,7 +46,7 @@ class XCode extends Plugin {
     // Update the MARKETING_VERSION and CURRENT_PROJECT_VERSION in the xcodeproj file
     let xcodeprojFile = fs.readFileSync('./macos/JiraTimeTracker.xcodeproj/project.pbxproj', 'utf8');
     xcodeprojFile = xcodeprojFile
-      .replace(/MARKETING_VERSION = ".*";/g, `MARKETING_VERSION = "${version}";`)
+      .replace(/MARKETING_VERSION = [0-9]+\.[0-9]+\.[0-9]+;/g, `MARKETING_VERSION = "${version}";`)
       .replace(/CURRENT_PROJECT_VERSION = .*;/g, `CURRENT_PROJECT_VERSION = ${newBuildNumber};`);
     fs.writeFileSync('./macos/JiraTimeTracker.xcodeproj/project.pbxproj', xcodeprojFile);
   }
