@@ -49,7 +49,7 @@ export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps>
       <Text style={styles.text}>{t('notifications.trackingReminderTime')}</Text>
       <View style={styles.inputsContainer}>
         <CustomTextInput
-          isVisible={currentOverlay === Overlay.SETTINGS}
+          isVisible={!!currentOverlay && currentOverlay.includes(Overlay.SETTINGS)}
           value={reminderHour}
           onChangeText={newText => setReminderHour(cleanInputString(newText, 'h'))}
           maxLength={2}
@@ -58,7 +58,7 @@ export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps>
         />
         <Text>:</Text>
         <CustomTextInput
-          isVisible={currentOverlay === Overlay.SETTINGS}
+          isVisible={!!currentOverlay && currentOverlay.includes(Overlay.SETTINGS)}
           value={reminderMinute}
           onChangeText={newText => setReminderMinute(cleanInputString(newText, 'm'))}
           maxLength={2}
