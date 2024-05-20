@@ -1,10 +1,10 @@
 {
   "git": {
-    "commit": false,
+    "commit": true,
     "commitMessage": "🏷 release: v${version}"
   },
   "github": {
-    "release": false
+    "release": true
   },
   "npm": {
     "publish": false
