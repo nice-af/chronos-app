@@ -10,6 +10,7 @@ import { useTranslation } from '../services/i18n.service';
 import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
 import { LoadingBar } from './LoadingBar';
 import { typo } from '../styles/typo';
+import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
 
 interface EntriesFooterProps {
   dayHasChanges: boolean;
@@ -21,10 +22,10 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [progress, setProgress] = useState(0);
   const { t } = useTranslation();
-  const containerPosition = useRef(new Animated.Value(0)).current; // 0 is not visible, 1 is visible
+  const isVisible = dayHasChanges;
+  const containerPosition = useRef(new Animated.Value(isSyncing ? 0 : isVisible ? 28 : 88)).current; // 0 is not visible, 1 is visible
   const buttonVisibility = useRef(new Animated.Value(0)).current;
   const loadingVisibility = useRef(new Animated.Value(0)).current;
-  const isVisible = dayHasChanges;
 
   async function startSync() {
     setIsSyncing(true);

@@ -6,14 +6,17 @@ import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { CustomButtonProps } from '../types/global.types';
 import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
+import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
 
 type LoadingBarProps = ViewProps & {
   progress: number;
 };
 
 export const LoadingBar: FC<LoadingBarProps> = ({ progress, ...props }) => {
-  const progressAnim = useRef(new Animated.Value(0)).current;
   const styles = useThemedStyles(createStyles);
+  const progressAnim = useRef(new Animated.Value(0)).current;
+  const loadingSpinnerAnim = useRef(new Animated.Value(1)).current;
+  const [showCheckmark, setShowCheckmark] = useState(false);
 
   useEffect(() => {
     Animated.timing(progressAnim, {
@@ -21,12 +24,24 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progress, ...props }) => {
       duration: 100,
       useNativeDriver: true,
     }).start();
+
+    if (progress === 1 || progress === 0) {
+      Animated.timing(loadingSpinnerAnim, {
+        toValue: progress === 1 ? 0 : 1,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+      setTimeout(() => setShowCheckmark(progress === 1), 100);
+    }
   }, [progress]);
 
   return (
     <View style={styles.container}>
       <View style={styles.spinnerBg} />
-      <LoadingSpinnerSmall style={styles.spinner} />
+      {showCheckmark && <AnimatedCheckmarkIcon style={styles.checkmark} />}
+      <Animated.View style={[styles.spinnerContainer, { opacity: loadingSpinnerAnim }]}>
+        <LoadingSpinnerSmall />
+      </Animated.View>
       <View {...props} style={[styles.barContainer, props.style]}>
         <Animated.View style={[styles.progress, { transform: [{ scaleX: progressAnim }] }]} />
       </View>
@@ -58,11 +73,21 @@ function createStyles(theme: Theme) {
       transformOrigin: 'left',
       backgroundColor: theme.textPrimary,
     },
-    spinner: {
+    spinnerContainer: {
       position: 'absolute',
       top: '50%',
       left: '50%',
       margin: -11,
+      zIndex: 3,
+    },
+    checkmark: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      marginTop: -6.5,
+      marginRight: -3,
+      marginBottom: -6.5,
+      marginLeft: -3,
       zIndex: 3,
     },
     spinnerBg: {
