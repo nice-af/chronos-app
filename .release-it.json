@@ -1,0 +1,15 @@
+{
+  "git": {
+    "commit": false,
+    "commitMessage": "🏷 release: v${version}"
+  },
+  "github": {
+    "release": false
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "./scripts/release-it/xcode.mjs": {}
+  }
+}

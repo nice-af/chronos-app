@@ -22,7 +22,8 @@
     "macos": "react-native run-macos",
     "start": "react-native start",
     "test": "jest",
-    "windows": "react-native run-windows"
+    "windows": "react-native run-windows",
+    "release": "release-it"
   },
   "jest": {
     "preset": "react-native"
@@ -63,12 +64,13 @@
     "@types/react-test-renderer": "^18.3.0",
     "babel-jest": "^29.7.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "eslint": "^9.2.0",
+    "eslint": "^8.0.0",
     "jest": "^29.7.0",
     "metro-config": "^0.80.9",
     "metro-react-native-babel-preset": "0.77.0",
     "prettier": "^3.2.5",
     "react-test-renderer": "18.2.0",
+    "release-it": "^17.3.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.4.5"
   },

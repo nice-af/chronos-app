@@ -5,6 +5,7 @@
 !*.scss
 !*.css
 !*.js
+!*.mjs
 !*.jsx
 !*.json
 !*.yml
