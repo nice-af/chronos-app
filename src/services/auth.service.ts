@@ -89,8 +89,7 @@ export const useAuthRequest = () => {
       const workspace = await getWorkspaceInfo(oAuthResponse.access_token);
 
       if (!workspace) {
-        // TODO better wording - when does this actually happen? (e.g. when the user has no Jira account?)
-        throw new Error('Could not find a valid resource to connect to. Please try again.');
+        throw new Error('Could not access the selected workspace. Please try again.');
       }
       await initialize({ accessToken, refreshToken, cloudId: workspace.id, workspaceName: workspace.name });
     } catch (error) {
