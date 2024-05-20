@@ -1,7 +1,17 @@
 {
   "name": "jira-time-tracker",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.1.13",
+  "contributors": [
+    {
+      "name": "Adrian Fahrbach",
+      "email": "adrianfahrbach@me.com",
+      "url": "https://adrianfahrbach.com/"
+    },
+    {
+      "name": "Florian Merz",
+      "email": "florian.merz@mail.de"
+    }
+  ],
   "scripts": {
     "android": "react-native run-android",
     "build:macos": "xcodebuild -workspace macos/JiraTimeTracker.xcworkspace -scheme JiraTimeTracker-macOS-prod -config Release",
