@@ -8,7 +8,7 @@ import { store } from './store';
 import ms from 'ms';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
-
+export const syncProgressAtom = atom<number | null>(null);
 export const worklogsLocalAtom = atom<Worklog[]>([]);
 export const worklogsRemoteAtom = atom<Worklog[]>([]);
 /**
@@ -65,17 +65,24 @@ export const worklogsForCurrentDayAtom = atom(get => {
 });
 
 export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
+  store.set(syncProgressAtom, 0);
   const localWorklogs = get(worklogsLocalAtom);
-  const worklogsToSync = get(worklogsForCurrentDayAtom).filter(w => localWorklogs.find(lw => lw.id === w.id));
-  await syncWorklogs(worklogsToSync);
+  const worklogsToSync = get(worklogsForCurrentDayAtom)
+    .filter(w => localWorklogs.find(lw => lw.id === w.id))
+    .filter(worklog => worklog.timeSpentSeconds >= 60);
+  const progressSteps = worklogsToSync.length + 3; // +1 for the user info and +2 for the remote worklogs
+  const progressPerStep = 1 / progressSteps;
+  await syncWorklogs(worklogsToSync, progressPerStep);
 
   const userInfo = get(userInfoAtom);
+  store.set(syncProgressAtom, 1 - progressPerStep * 2);
   const updatedWorklogs = await getRemoteWorklogs(userInfo!.accountId!);
+  store.set(syncProgressAtom, 1);
   set(worklogsRemoteAtom, updatedWorklogs);
 
   // Remove local worklogs that have been synced
   set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
-
+  setTimeout(() => store.set(syncProgressAtom, null), 1500);
   return updatedWorklogs;
 });
 

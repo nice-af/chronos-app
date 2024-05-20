@@ -1,19 +1,18 @@
 import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
 import ms from 'ms';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
   currentOverlayAtom,
   isFullscreenAtom,
   selectedDateAtom,
-  syncWorklogsForCurrentDayAtom,
   themeAtom,
   worklogsForCurrentDayAtom,
 } from '../atoms';
-import { ButtonPrimary } from '../components/ButtonPrimary';
 import { ButtonTransparent } from '../components/ButtonTransparent';
+import { EntriesFooter } from '../components/EntriesFooter';
 import { JumpToTodayButton } from '../components/JumpToTodayButton';
 import { Layout } from '../components/Layout';
 import { TrackingListEntry } from '../components/TrackingListEntry';
@@ -28,14 +27,12 @@ import { WorklogState } from '../types/global.types';
 export const Entries: FC = () => {
   const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
-  const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const todayDateString = formatDateToYYYYMMDD(new Date());
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
-  const [isSyncing, setIsSyncing] = useState(false);
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
   const isFullscreen = useAtomValue(isFullscreenAtom);
 
@@ -43,12 +40,6 @@ export const Entries: FC = () => {
     activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
   const isToday = selectedDate === todayDateString;
   const isOlderThan4Weeks = parseDateFromYYYYMMDD(selectedDate) < new Date(new Date().getTime() - ms('4w'));
-
-  async function startSync() {
-    setIsSyncing(true);
-    await syncWorklogsForCurrentDay();
-    setIsSyncing(false);
-  }
 
   const rightElement = (
     <>
@@ -92,13 +83,10 @@ export const Entries: FC = () => {
           {worklogsForCurrentDay.map(worklog => (
             <TrackingListEntry key={worklog.id} worklog={worklog} />
           ))}
+          {hasChanges && <View style={{ height: 60 }} />}
         </ScrollView>
       )}
-      {hasChanges && (
-        <View style={styles.submitButtonContainer}>
-          <ButtonPrimary label={t('syncDay')} isLoading={isSyncing} onPress={() => startSync()} />
-        </View>
-      )}
+      <EntriesFooter dayHasChanges={hasChanges} />
     </Layout>
   );
 };
@@ -134,12 +122,6 @@ function createStyles(theme: Theme) {
           marginBottom: 6,
         },
       }),
-    },
-    submitButtonContainer: {
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      borderColor: theme.border,
-      borderTopWidth: 1,
     },
     errorMessageContainer: {
       display: 'flex',

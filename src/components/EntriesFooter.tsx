@@ -1,16 +1,13 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
-import { activeWorklogAtom, syncWorklogsForCurrentDayAtom } from '../atoms';
-import { formatDateToYYYYMMDD } from '../services/date.service';
+import React, { FC, useEffect, useRef } from 'react';
+import { Animated, Easing, StyleSheet, Text } from 'react-native';
+import { syncProgressAtom, syncWorklogsForCurrentDayAtom } from '../atoms';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
-import { ButtonPrimary } from './ButtonPrimary';
-import { useTranslation } from '../services/i18n.service';
-import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
-import { LoadingBar } from './LoadingBar';
 import { typo } from '../styles/typo';
-import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
+import { ButtonPrimary } from './ButtonPrimary';
+import { LoadingBar } from './LoadingBar';
 
 interface EntriesFooterProps {
   dayHasChanges: boolean;
@@ -19,8 +16,8 @@ interface EntriesFooterProps {
 export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
   const styles = useThemedStyles(createStyles);
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const progress = useAtomValue(syncProgressAtom);
+  const isSyncing = progress !== null;
   const { t } = useTranslation();
   const isVisible = dayHasChanges;
   const containerPosition = useRef(new Animated.Value(isSyncing ? 0 : isVisible ? 28 : 88)).current; // 0 is not visible, 1 is visible
@@ -28,17 +25,7 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   const loadingVisibility = useRef(new Animated.Value(0)).current;
 
   async function startSync() {
-    setIsSyncing(true);
-    console.log('syncing...');
-    [0, 0.25, 0.5, 0.75, 1].forEach((progress, i) => {
-      setTimeout(() => {
-        setProgress(progress);
-      }, i * 1000);
-    });
-
-    setTimeout(() => setIsSyncing(false), 5500);
-    // await syncWorklogsForCurrentDay();
-    // setIsSyncing(false);
+    await syncWorklogsForCurrentDay();
   }
 
   useEffect(() => {
@@ -52,6 +39,7 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
     Animated.timing(buttonVisibility, {
       toValue: isSyncing ? 0 : 1,
       duration: 250,
+      delay: isSyncing ? 0 : 250,
       useNativeDriver: true,
       easing: Easing.inOut(Easing.quad),
     }).start();
@@ -65,13 +53,17 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   }, [isVisible, isSyncing]);
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ translateY: containerPosition }] }]}>
+    <Animated.View
+      style={[
+        styles.container,
+        { pointerEvents: isVisible ? undefined : 'none', transform: [{ translateY: containerPosition }] },
+      ]}>
       <Animated.View style={[styles.buttonContainer, { opacity: buttonVisibility }]}>
         <ButtonPrimary label={isSyncing ? 'sync' : t('syncDay')} isDisabled={isSyncing} onPress={startSync} />
       </Animated.View>
       <Animated.View style={[styles.loadingContainer, { opacity: loadingVisibility }]}>
         <Text style={styles.loadingText}>{t('submittingWorklogs')}</Text>
-        <LoadingBar progress={progress} />
+        <LoadingBar progress={progress ?? 0} />
       </Animated.View>
     </Animated.View>
   );
@@ -80,11 +72,16 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
 function createStyles(theme: Theme) {
   return StyleSheet.create({
     container: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: 86,
       paddingVertical: 12,
       paddingHorizontal: 16,
       borderColor: theme.border,
       borderTopWidth: 1,
-      height: 86,
+      backgroundColor: theme.background,
     },
     buttonContainer: {
       position: 'absolute',

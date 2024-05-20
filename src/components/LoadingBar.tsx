@@ -1,12 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Animated, Pressable, PressableProps, StyleSheet, Text, View, ViewProps } from 'react-native';
+import { Animated, StyleSheet, View, ViewProps } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
-import { typo } from '../styles/typo';
-import { getPadding } from '../styles/utils';
-import { CustomButtonProps } from '../types/global.types';
-import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
 import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
+import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
 
 type LoadingBarProps = ViewProps & {
   progress: number;
@@ -29,9 +26,10 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progress, ...props }) => {
       Animated.timing(loadingSpinnerAnim, {
         toValue: progress === 1 ? 0 : 1,
         duration: 100,
+        delay: progress === 0 ? 100 : 0,
         useNativeDriver: true,
       }).start();
-      setTimeout(() => setShowCheckmark(progress === 1), 100);
+      setTimeout(() => setShowCheckmark(progress === 1), 300);
     }
   }, [progress]);
 
