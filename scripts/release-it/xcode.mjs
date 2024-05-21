@@ -20,15 +20,15 @@ class XCode extends Plugin {
     const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\t<string>(.*)<\/string>/)?.[1];
 
     // The buildNumber should be in the format YYMMDD.
-    // If there already is a build number for today, we add a "-1" to it
+    // If there already is a build number for today, we add a ".1" to it
     // If there already is a build number with a suffix, we increment the number
     let newBuildNumber = buildNumber;
     if (currentBuildNumber === buildNumber) {
-      newBuildNumber = `${buildNumber}-1`;
+      newBuildNumber = `${buildNumber}.1`;
     } else if (currentBuildNumber?.startsWith(buildNumber)) {
       const suffix = currentBuildNumber.slice(buildNumber.length);
       const suffixNumber = parseInt(suffix);
-      newBuildNumber = `${buildNumber}-${suffixNumber + 1}`;
+      newBuildNumber = `${buildNumber}.${suffixNumber + 1}`;
     }
 
     // Update the CFBundleShortVersionString and CFBundleVersion in the Info.plist file
