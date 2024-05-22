@@ -6,7 +6,10 @@ import {
 } from './native-event-emitter.service.types';
 
 export function sendNativeEvent(params: SendNativeEventParams) {
-  NativeModules.ReactNativeEventEmitter.sendEventFromReact(params.name, params.data);
+  NativeModules.ReactNativeEventEmitter.sendEventFromReact(
+    params.name,
+    typeof params.data === 'string' ? params.data : JSON.stringify(params.data)
+  );
 }
 
 const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);

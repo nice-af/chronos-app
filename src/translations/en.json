@@ -43,8 +43,14 @@
     "normal": "Normal",
     "settingsTitle": "Sidebar layout"
   },
-  "syncDay": "Sync this day",
   "submittingWorklogs": "Submitting worklogs",
+  "syncDay": "Sync this day",
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "settingsTitle": "Theme",
+    "system": "System"
+  },
   "today": "Today",
   "weekDays": {
     "fr": "Fr",

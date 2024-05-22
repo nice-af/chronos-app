@@ -43,7 +43,14 @@
     "normal": "Normal",
     "settingsTitle": "Seitenleiste"
   },
+  "submittingWorklogs": "Arbeitszeiten werden abgeschickt",
   "syncDay": "Diesen Tag synchronisieren",
+  "theme": {
+    "dark": "Dunkel",
+    "light": "Hell",
+    "settingsTitle": "Theme",
+    "system": "System"
+  },
   "today": "Heute",
   "weekDays": {
     "fr": "Fr",
@@ -56,7 +63,6 @@
     "tu": "Di",
     "we": "Mi"
   },
-  "submittingWorklogs": "Arbeitszeiten werden abgeschickt",
   "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",

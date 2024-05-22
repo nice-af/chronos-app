@@ -32,18 +32,18 @@ export const NotificationWatcher: FC = () => {
         if (worklogs.length === 0) {
           sendNativeEvent({
             name: NativeEvent.SEND_NOTIFICATION,
-            data: JSON.stringify({
+            data: {
               title: t('notifications.trackingReminderHeadline'),
               message: t('notifications.trackingReminderNoTimesText'),
-            }),
+            },
           });
         } else if (hasPublishedWorklogs) {
           sendNativeEvent({
             name: NativeEvent.SEND_NOTIFICATION,
-            data: JSON.stringify({
+            data: {
               title: t('notifications.trackingReminderHeadline'),
               message: t('notifications.trackingReminderUnpublishedTimesText'),
-            }),
+            },
           });
         }
       }

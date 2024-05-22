@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DayId, Worklog } from '../types/global.types';
 import { SidebarLayout } from '../const';
-import { Theme } from '../styles/theme/theme-types';
-import { lightTheme } from '../styles/theme/theme-light';
+import { DayId, Worklog } from '../types/global.types';
 
 export enum StorageKey {
   AUTH = 'auth',
@@ -17,6 +15,8 @@ export interface AuthModel {
   workspaceName: string;
 }
 
+export type ThemeKey = 'light' | 'dark' | 'system';
+
 export interface SettingsModel {
   sidebarLayout: SidebarLayout;
   workingDays: DayId[];
@@ -24,7 +24,7 @@ export interface SettingsModel {
   warningWhenEditingOtherDays: boolean;
   enableTrackingReminder: boolean;
   trackingReminderTime: { hour: number; minute: number };
-  theme: Theme;
+  themeKey: ThemeKey;
 }
 
 interface StorageTypes {
@@ -42,7 +42,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     warningWhenEditingOtherDays: true,
     enableTrackingReminder: false,
     trackingReminderTime: { hour: 18, minute: 30 },
-    theme: lightTheme,
+    themeKey: 'system',
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
 };
@@ -57,7 +57,7 @@ export async function getFromStorage<T extends StorageKey = never>(key: T): Prom
     const defaultKeys = Object.keys(defaultValues);
     newValues = {
       ...defaultValues,
-      ...Object.fromEntries(Object.entries(newValues).filter(([key]) => defaultKeys.includes(key))),
+      ...Object.fromEntries(Object.entries(newValues).filter(([entryKey]) => defaultKeys.includes(entryKey))),
     };
   }
 

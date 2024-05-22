@@ -1,3 +1,5 @@
+import { ThemeKey } from './storage.service';
+
 export enum NativeEvent {
   STATUS_BAR_STATE_CHANGE = 'statusBarStateChange',
   STATUS_BAR_TIME_CHANGE = 'statusBarTimeChange',
@@ -10,6 +12,7 @@ export enum NativeEvent {
   SEND_NOTIFICATION = 'sendNotification',
   REQUEST_NOTIFICATION_PERMISSION = 'requestNotificationPermission',
   CHECK_NOTIFICATION_PERMISSION = 'checkNotificationPermission',
+  THEME_CHANGED = 'themeChanged',
 }
 
 export enum StatusBarState {
@@ -17,21 +20,59 @@ export enum StatusBarState {
   PAUSED = 'paused',
 }
 
-export interface SendNativeEventParams {
-  name: NativeEvent;
-  data: string;
+/**
+ * Send event types
+ */
+
+export type SendNativeEventParams =
+  | SendNativeEventParams_DEFAULT
+  | SendNativeEventParams_STATUS_BAR_STATE_CHANGE
+  | SendNativeEventParams_STATUS_BAR_TIME_CHANGE
+  | SendNativeEventParams_SEND_NOTIFICATION
+  | SendNativeEventParams_THEME_CHANGED;
+
+export interface SendNativeEventParams_DEFAULT {
+  name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION;
+  data: null;
 }
 
-export interface StatusBarStateChangeData {
-  state: StatusBarState;
+export type StatusBarStateChangeData = StatusBarStateChangeDataRunning | StatusBarStateChangeDataPause;
+export interface StatusBarStateChangeDataRunning {
+  state: StatusBarState.RUNNING;
   issueKey: string;
   issueSummary: string;
 }
 
-export interface SendNativeEventParams_DEFAULT {
-  name: NativeEvent;
-  data: string;
+export interface StatusBarStateChangeDataPause {
+  state: StatusBarState.PAUSED;
 }
+
+export interface SendNativeEventParams_STATUS_BAR_STATE_CHANGE {
+  name: NativeEvent.STATUS_BAR_STATE_CHANGE;
+  data: StatusBarStateChangeData;
+}
+
+export interface SendNativeEventParams_STATUS_BAR_TIME_CHANGE {
+  name: NativeEvent.STATUS_BAR_TIME_CHANGE;
+  data: string | null;
+}
+
+export interface SendNativeEventParams_SEND_NOTIFICATION {
+  name: NativeEvent.SEND_NOTIFICATION;
+  data: {
+    title: string;
+    message: string;
+  };
+}
+
+export interface SendNativeEventParams_THEME_CHANGED {
+  name: NativeEvent.THEME_CHANGED;
+  data: Omit<ThemeKey, 'system'>;
+}
+
+/**
+ * Add event listener types
+ */
 
 export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE
@@ -74,6 +115,10 @@ export interface AddNativeEventListenerParams_DEFAULT {
     | NativeEvent.RESET_WORKLOGS_FOR_SELECTED_DATE;
   callback: () => void;
 }
+
+/**
+ * Remove event listener types
+ */
 
 export interface RemoveNativeEventListenerParams {
   name: NativeEvent;

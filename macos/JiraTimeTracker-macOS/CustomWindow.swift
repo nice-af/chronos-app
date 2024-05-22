@@ -19,6 +19,9 @@ public class CustomWindow: NSWindow {
     // Define behaviour when focusing throug the menubar
     self.collectionBehavior = [.moveToActiveSpace]
     
+    // Listen to themeChanged event
+    NotificationCenter.default.addObserver(self, selector: #selector(changeWindowTheme), name: NSNotification.Name("themeChanged"), object: nil)
+    
     // Hide original traffic light buttons
     setOriginalTrafficLightButtonsVisibility(isVisible: false)
   }
@@ -36,6 +39,17 @@ public class CustomWindow: NSWindow {
       EventEmitter.sharedInstance.dispatch(name: "closeModal", body: "")
     } else {
       super.keyDown(with: event)
+    }
+  }
+  
+  // Adjust the theme of the window
+  @objc func changeWindowTheme(notification: NSNotification) -> Void {
+    guard let themeKey = notification.object as? String else {
+      print("New theme key is not a string")
+      return
+    }
+    DispatchQueue.main.async {
+      self.appearance = NSAppearance(named: themeKey == "light" ? .aqua : .darkAqua)
     }
   }
   

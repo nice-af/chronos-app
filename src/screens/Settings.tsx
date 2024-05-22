@@ -1,4 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import ms from 'ms';
 import React, { FC, useEffect, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { currentOverlayAtom, jiraAuthAtom, logoutAtom, settingsAtom, themeAtom, userInfoAtom } from '../atoms';
@@ -19,7 +20,6 @@ import { NativeEvent } from '../services/native-event-emitter.service.types';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import ms from 'ms';
 
 export const Settings: FC = () => {
   const logout = useSetAtom(logoutAtom);
@@ -39,12 +39,12 @@ export const Settings: FC = () => {
         name: NativeEvent.CHECK_NOTIFICATION_PERMISSION,
         callback: data => setHasNotificationPermission(data === 'granted'),
       });
-      sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: '' });
+      sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: null });
 
       // Check frequently if the user has missing permissions
       if (!hasNotificationPermission) {
         const intervalId = setInterval(() => {
-          sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: '' });
+          sendNativeEvent({ name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION, data: null });
         }, ms('3s'));
         return () => {
           clearInterval(intervalId);
@@ -62,6 +62,32 @@ export const Settings: FC = () => {
       header={{ align: 'left', title: t('settings'), onBackPress: () => setCurrentOverlay(null) }}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.card}>
+          {Platform.OS === 'macos' && (
+            <>
+              <Text style={styles.headline}>{t('theme.settingsTitle')}</Text>
+              <View style={styles.cardsButtonContainer}>
+                <CardsSelectionButton
+                  isChecked={settings.themeKey === 'light'}
+                  onClick={() => setSettings(cur => ({ ...cur, themeKey: 'light' }))}
+                  image={require('../assets/settings/theme-light.png')}
+                  label={t('theme.light')}
+                />
+                <CardsSelectionButton
+                  isChecked={settings.themeKey === 'dark'}
+                  onClick={() => setSettings(cur => ({ ...cur, themeKey: 'dark' }))}
+                  image={require('../assets/settings/theme-dark.png')}
+                  label={t('theme.dark')}
+                />
+                <CardsSelectionButton
+                  isChecked={settings.themeKey === 'system'}
+                  onClick={() => setSettings(cur => ({ ...cur, themeKey: 'system' }))}
+                  image={require('../assets/settings/theme-system.png')}
+                  label={t('theme.system')}
+                />
+              </View>
+            </>
+          )}
+          <View style={styles.hr} />
           <Text style={styles.headline}>{t('sidebarLayout.settingsTitle')}</Text>
           <View style={styles.cardsButtonContainer}>
             <CardsSelectionButton

@@ -33,17 +33,17 @@ store.sub(activeWorklogAtom, () => {
     sendNativeEvent({ name: NativeEvent.STATUS_BAR_TIME_CHANGE, data: time.toString() });
     sendNativeEvent({
       name: NativeEvent.STATUS_BAR_STATE_CHANGE,
-      data: JSON.stringify({
+      data: {
         state: StatusBarState.RUNNING,
         issueKey: activeWorklog.issue.key,
         issueSummary: activeWorklog.issue.summary,
-      } as StatusBarStateChangeData),
+      },
     });
   } else {
-    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TIME_CHANGE, data: 'null' });
+    sendNativeEvent({ name: NativeEvent.STATUS_BAR_TIME_CHANGE, data: null });
     sendNativeEvent({
       name: NativeEvent.STATUS_BAR_STATE_CHANGE,
-      data: JSON.stringify({ state: StatusBarState.PAUSED } as StatusBarStateChangeData),
+      data: { state: StatusBarState.PAUSED },
     });
   }
 });

@@ -84,8 +84,8 @@
 				3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */,
 				3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */,
 				3AD966452AE3F686003C5B78 /* JiraTimeTracker-macOS-Bridging-Header.h */,
-				3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */,
 				3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */,
+				3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */,
 				3A31355A2AF708CB00182B14 /* CustomWindow.swift */,
 				3A4050112B855D44006B1B2B /* StatusBarManager.swift */,
 				3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */,
@@ -339,7 +339,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = "0.1.14";
+				MARKETING_VERSION = 0.1.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -376,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = "0.1.14";
+				MARKETING_VERSION = 0.1.14;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
