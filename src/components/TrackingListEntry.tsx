@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useRef } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
@@ -25,7 +25,6 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
-import { set } from 'lodash';
 
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklog: Worklog;

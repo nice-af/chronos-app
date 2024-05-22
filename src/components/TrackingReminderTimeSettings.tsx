@@ -6,8 +6,8 @@ import { Overlay } from '../const';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
-import { CustomTextInput } from './CustomTextInput';
 import { typo } from '../styles/typo';
+import { CustomTextInput } from './CustomTextInput';
 
 export interface TrackingReminderTimeSettingsProps {}
 

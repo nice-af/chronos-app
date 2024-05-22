@@ -3,13 +3,13 @@ import React, { FC, useEffect, useRef } from 'react';
 import { Animated, Easing, Image, ImageSourcePropType, Platform, StyleSheet, Text, View } from 'react-native';
 import { themeAtom } from '../atoms';
 import { modalDataAtom, modalVisibleAtom } from '../atoms/modal';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
-import { useTranslation } from '../services/i18n.service';
 
 const iconTimerWarningLight: ImageSourcePropType = require('../assets/modal-icons/timer-warning-light.png');
 const iconTimerWarningDark: ImageSourcePropType = require('../assets/modal-icons/timer-warning-dark.png');

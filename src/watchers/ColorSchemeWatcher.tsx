@@ -2,11 +2,11 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { settingsAtom, themeAtom } from '../atoms';
-import { darkTheme } from '../styles/theme/theme-dark';
-import { lightTheme } from '../styles/theme/theme-light';
 import { sendNativeEvent } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
 import { ThemeKey } from '../services/storage.service';
+import { darkTheme } from '../styles/theme/theme-dark';
+import { lightTheme } from '../styles/theme/theme-light';
 
 export const ColorSchemeWatcher: FC = () => {
   const colorScheme = useColorScheme();

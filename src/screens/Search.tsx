@@ -15,16 +15,15 @@ import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SearchResultsEntry } from '../components/SearchResultsEntry';
 import { Overlay } from '../const';
+import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
 import { getIssuesBySearchQuery } from '../services/jira.service';
+import { useModal } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { IssueBase, Worklog } from '../types/global.types';
-import { useModal } from '../services/modal.service';
-import { format } from 'date-fns';
-import { formatDateToYYYYMMDD } from '../services/date.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;

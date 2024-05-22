@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Animated, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import { Animated, StyleSheet, View, ViewProps } from 'react-native';
 import { themeAtom } from '../atoms';
 import { LOADING_SPINNER_SPEED } from '../const';
 

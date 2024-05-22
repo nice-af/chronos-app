@@ -2,7 +2,6 @@ import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
-  activeWorklogAtom,
   hideNonWorkingDaysAtom,
   selectedDateAtom,
   sidebarLayoutAtom,
@@ -11,12 +10,12 @@ import {
   worklogsAtom,
 } from '../atoms';
 import { SidebarLayout } from '../const';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { DayCode, WorklogState, dayCodeToDayIdMap } from '../types/global.types';
-import { useTranslation } from '../services/i18n.service';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   dateString: string;

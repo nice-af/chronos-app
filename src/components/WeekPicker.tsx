@@ -4,11 +4,11 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { selectedDateAtom, themeAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from '../services/date.service';
+import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { ButtonTransparent } from './ButtonTransparent';
-import { useTranslation } from '../services/i18n.service';
 
 export const WeekPicker: FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);

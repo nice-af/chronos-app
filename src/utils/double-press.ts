@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export function useDoublePress(onDoublePress: () => void) {
   let delayTime = 300;
