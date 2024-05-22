@@ -225,7 +225,6 @@ function createStyles(theme: Theme) {
       width: 24,
       height: 24,
       borderRadius: 12,
-      marginTop: 1,
     },
   });
 }
