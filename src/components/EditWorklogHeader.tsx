@@ -89,6 +89,7 @@ function createStyles(theme: Theme) {
       left: 0,
       width: '100%',
       height: 48,
+      opacity: theme.type === 'light' ? 0.75 : 1,
       ...Platform.select({
         default: {
           top: 0,

@@ -41,7 +41,7 @@ const windowColors = {
       backgroundDark: '#f0f0f0',
       backgroundLogin: '#ffffff',
       backgroundDrawer: '#ffffff',
-      border: 'rgba(0,0,0,0.08)',
+      border: 'rgba(0,0,0,0.15)',
       surface: '#fbfbfb',
       surfaceBorder: '#e3e3e3',
     },
