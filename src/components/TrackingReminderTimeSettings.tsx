@@ -4,15 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { currentOverlayAtom, settingsAtom } from '../atoms';
 import { Overlay } from '../const';
 import { useTranslation } from '../services/i18n.service';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { CustomTextInput } from './CustomTextInput';
 
 export interface TrackingReminderTimeSettingsProps {}
 
 export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps> = () => {
-  const styles = useThemedStyles(createStyles);
   const [settings, setSettings] = useAtom(settingsAtom);
   const [reminderHour, setReminderHour] = useState(
     (settings.trackingReminderTime.hour ?? 18).toString().padStart(2, '0')
@@ -70,34 +67,32 @@ export const TrackingReminderTimeSettings: FC<TrackingReminderTimeSettingsProps>
   );
 };
 
-function createStyles(theme: Theme) {
-  return StyleSheet.create({
-    container: {
-      display: 'flex',
-      flexDirection: 'row',
-      gap: 12,
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginTop: 16,
-    },
-    text: {
-      ...typo.body,
-    },
-    inputsContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      gap: 2,
-      alignItems: 'center',
-    },
-    timeInput: {
-      width: 46,
-      height: 36,
-      fontSize: 16,
-      lineHeight: 16,
-      paddingLeft: 0,
-      paddingRight: 0,
-      textAlign: 'center',
-      verticalAlign: 'middle',
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
+  text: {
+    ...typo.body,
+  },
+  inputsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 2,
+    alignItems: 'center',
+  },
+  timeInput: {
+    width: 46,
+    height: 36,
+    fontSize: 16,
+    lineHeight: 16,
+    paddingLeft: 0,
+    paddingRight: 0,
+    textAlign: 'center',
+    verticalAlign: 'middle',
+  },
+});

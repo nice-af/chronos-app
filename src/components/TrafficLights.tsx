@@ -3,8 +3,6 @@ import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from 'react-native';
 import { isFullscreenAtom, themeAtom } from '../atoms';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
 
 interface TrafficLightButtonProps {
   normalIcon: ImageSourcePropType;
@@ -21,8 +19,6 @@ const TrafficLightButton: FC<TrafficLightButtonProps> = ({
   appIsActive,
   isHovered,
 }) => {
-  const styles = useThemedStyles(createStyles);
-
   return (
     <View style={styles.button}>
       <Image style={[styles.icon, { opacity: isHovered ? 1 : 0 }]} source={hoverIcon} />
@@ -38,7 +34,6 @@ const TrafficLightButton: FC<TrafficLightButtonProps> = ({
  * The buttons here are therefore only for visuals and placed underneath the original ones.
  */
 export const TrafficLights: FC = () => {
-  const styles = useThemedStyles(createStyles);
   const currentAppState = useAppState();
   const appIsActive = currentAppState === 'active';
   const theme = useAtomValue(themeAtom);
@@ -87,32 +82,30 @@ export const TrafficLights: FC = () => {
   );
 };
 
-function createStyles(theme: Theme) {
-  return StyleSheet.create({
-    container: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      zIndex: 9999999,
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'row',
-      gap: 8,
-      padding: 2,
-      margin: 18,
-    },
-    button: {
-      position: 'relative',
-      width: 12,
-      height: 12,
-      borderRadius: 6,
-    },
-    icon: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: 12,
-      height: 12,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 9999999,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    padding: 2,
+    margin: 18,
+  },
+  button: {
+    position: 'relative',
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  icon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 12,
+    height: 12,
+  },
+});

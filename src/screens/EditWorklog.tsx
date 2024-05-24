@@ -12,9 +12,7 @@ import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueKeyTag } from '../components/IssueKeyTag';
 import { Layout } from '../components/Layout';
-import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM, parseDurationStringToSeconds } from '../services/time.service';
-import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 
 export const EditWorklog: FC = () => {
@@ -27,7 +25,6 @@ export const EditWorklog: FC = () => {
   );
   const [descriptionValue, setDescriptionValue] = useState(currentWorklogToEdit?.comment ?? '');
   const theme = useAtomValue(themeAtom);
-  const styles = useThemedStyles(createStyles);
 
   useEffect(() => {
     if (currentWorklogToEdit) {
@@ -106,40 +103,38 @@ export const EditWorklog: FC = () => {
   );
 };
 
-function createStyles(theme: Theme) {
-  return StyleSheet.create({
-    headerContainer: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      justifyContent: 'flex-start',
-      padding: 16,
-      gap: 16,
-    },
-    title: {
-      ...typo.headline,
-      flex: 1,
-      marginLeft: 8,
-      marginTop: 2,
-    },
-    timeInput: {
-      width: 90,
-      height: 42,
-      fontSize: 20,
-      lineHeight: 24,
-      paddingLeft: 0,
-      paddingRight: 0,
-      textAlign: 'center',
-    },
-    descriptionInput: {
-      width: '100%',
-      height: 100,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  headerContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    padding: 16,
+    gap: 16,
+  },
+  title: {
+    ...typo.headline,
+    flex: 1,
+    marginLeft: 8,
+    marginTop: 2,
+  },
+  timeInput: {
+    width: 90,
+    height: 42,
+    fontSize: 20,
+    lineHeight: 24,
+    paddingLeft: 0,
+    paddingRight: 0,
+    textAlign: 'center',
+  },
+  descriptionInput: {
+    width: '100%',
+    height: 100,
+  },
+});
