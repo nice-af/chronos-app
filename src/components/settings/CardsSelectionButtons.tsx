@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
-import { typo } from '../styles/typo';
+import { useThemedStyles } from '../../services/theme.service';
+import { Theme } from '../../styles/theme/theme-types';
+import { typo } from '../../styles/typo';
 
 interface CardsSelectionButtonProps {
   image: ImageSourcePropType;
@@ -11,7 +11,7 @@ interface CardsSelectionButtonProps {
   onClick: () => void;
 }
 
-export const CardsSelectionButton: FC<CardsSelectionButtonProps> = ({ isChecked, onClick, image, label }) => {
+const CardsSelectionButton: FC<CardsSelectionButtonProps> = ({ isChecked, onClick, image, label }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const styles = useThemedStyles(createStyles);
@@ -41,8 +41,30 @@ export const CardsSelectionButton: FC<CardsSelectionButtonProps> = ({ isChecked,
   );
 };
 
+interface CardsSelectionButtonsProps {
+  options: CardsSelectionButtonProps[];
+}
+
+export const CardsSelectionButtons: FC<CardsSelectionButtonsProps> = ({ options }) => {
+  const styles = useThemedStyles(createStyles);
+
+  return (
+    <View style={styles.cardsContainer}>
+      {options.map((option, index) => (
+        <CardsSelectionButton key={index} {...option} />
+      ))}
+    </View>
+  );
+};
+
 function createStyles(theme: Theme) {
   return StyleSheet.create({
+    cardsContainer: {
+      display: 'flex',
+      gap: 10,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+    },
     pressableContainer: {
       display: 'flex',
       flexDirection: 'column',
