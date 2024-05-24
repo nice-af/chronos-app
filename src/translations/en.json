@@ -33,8 +33,10 @@
     "description": "Please click the button below to connect your Jira account with Jira Time Tracker."
   },
   "modals": {
-    "cancel": "Abbrechen",
-    "continue": "Fortfahren",
+    "accountLogoutHeadline": "You are about to remove an account",
+    "accountLogoutText": "Are you sure you want to log out?",
+    "cancel": "Cancel",
+    "continue": "Continue",
     "startTimerInFutureHeadline": "You are about to start a timer in the future",
     "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
     "startTimerInPastHeadline": "You are about to start a timer in the past",

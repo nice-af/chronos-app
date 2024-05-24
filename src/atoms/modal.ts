@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 
 export type ModalData = {
-  icon?: 'timer-warning';
+  icon?: 'timer-warning' | 'account-warning';
   headline: string;
   text: string;
   onConfirm: () => void;

@@ -33,6 +33,8 @@
     "description": "Bitte klicke auf den Button unten, um dein Jira-Konto mit Jira Time Tracker zu verbinden."
   },
   "modals": {
+    "accountLogoutHeadline": "Du bist dabei einen Account zu entfernen",
+    "accountLogoutText": "Bist du sicher, dass du dich abmelden möchtest?",
     "cancel": "Abbrechen",
     "continue": "Fortfahren",
     "startTimerInFutureHeadline": "Du bist dabei, einen Timer an einem zukünftigen Tag zu starten",

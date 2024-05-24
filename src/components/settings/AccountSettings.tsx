@@ -10,6 +10,7 @@ import { typo } from '../../styles/typo';
 import { ButtonDanger } from '../ButtonDanger';
 import { ButtonSecondary } from '../ButtonSecondary';
 import { getPadding } from '../../styles/utils';
+import { useModal } from '../../services/modal.service';
 
 interface AccountRowProps {
   avatarUrl?: string;
@@ -24,6 +25,18 @@ const AccountRow: FC<AccountRowProps> = ({ avatarUrl, accountName, workspaceName
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const { t } = useTranslation();
+  const { getModalConfirmation } = useModal();
+
+  async function handleLogout() {
+    const confirmed = await getModalConfirmation({
+      icon: 'account-warning',
+      headline: t('modals.accountLogoutHeadline'),
+      text: t('modals.accountLogoutText'),
+    });
+    if (confirmed) {
+      logout();
+    }
+  }
 
   const starEmptyIcon =
     themeType === 'dark'
@@ -54,7 +67,7 @@ const AccountRow: FC<AccountRowProps> = ({ avatarUrl, accountName, workspaceName
         onPress={onSetPrimary}
         style={{ ...getPadding(6) }}
       />
-      <ButtonDanger label={t('account.logOut')} onPress={logout} />
+      <ButtonDanger label={t('account.logOut')} onPress={handleLogout} />
     </View>
   );
 };

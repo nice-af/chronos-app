@@ -11,9 +11,6 @@ import { getPadding } from '../styles/utils';
 import { ButtonPrimary } from './ButtonPrimary';
 import { ButtonSecondary } from './ButtonSecondary';
 
-const iconTimerWarningLight: ImageSourcePropType = require('../assets/modal-icons/timer-warning-light.png');
-const iconTimerWarningDark: ImageSourcePropType = require('../assets/modal-icons/timer-warning-dark.png');
-
 export const Modal: FC = () => {
   const data = useAtomValue(modalDataAtom);
   const isVisible = useAtomValue(modalVisibleAtom);
@@ -44,7 +41,15 @@ export const Modal: FC = () => {
   }
 
   if (data.icon === 'timer-warning') {
-    iconSource = theme.type === 'light' ? iconTimerWarningLight : iconTimerWarningDark;
+    iconSource =
+      theme.type === 'light'
+        ? require('../assets/modal-icons/timer-warning-light.png')
+        : require('../assets/modal-icons/timer-warning-dark.png');
+  } else if (data.icon === 'account-warning') {
+    iconSource =
+      theme.type === 'light'
+        ? require('../assets/modal-icons/account-warning-light.png')
+        : require('../assets/modal-icons/account-warning-dark.png');
   }
 
   return (
