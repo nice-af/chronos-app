@@ -68,6 +68,7 @@ function createStyles(theme: Theme) {
       gap: 6,
       flexDirection: 'row',
       alignItems: 'flex-start',
+      marginBottom: 10,
     },
     pressable: {
       width: 34,

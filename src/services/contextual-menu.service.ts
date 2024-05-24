@@ -1,4 +1,4 @@
-import { ActionSheetIOS, ActionSheetIOSOptions, GestureResponderEvent } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 
 interface MenuItem {
   name: string;
@@ -10,11 +10,6 @@ export function isRightClick(e: GestureResponderEvent) {
 }
 
 export function showContextualMenu(menuItems: MenuItem[], target: React.ReactNode) {
-  const options: ActionSheetIOSOptions = {
-    options: menuItems.map(item => item.name),
-  };
-
-  ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {
-    menuItems[buttonIndex].onClick();
-  });
+  // TODO: Implement showContextualMenu for windows
+  return;
 }

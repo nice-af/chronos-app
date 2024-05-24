@@ -1,7 +1,8 @@
 {
   "account": {
     "logOut": "Log out",
-    "settingsTitle": "Account"
+    "settingsTitle": "Account",
+    "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar"
   },
   "calendarWeekShort": "Week",
   "cancel": "Cancel",
@@ -17,6 +18,25 @@
     "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
     "startTimerInPastHeadline": "You are about to start a timer in the past",
     "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
+  },
+  "issueTag": {
+    "settingsTitle": "Issue tags",
+    "icon": {
+      "label": "Visible tag icons",
+      "options": {
+        "none": "None",
+        "issue": "Issue icon",
+        "workspace": "Workspace logo",
+        "workspaceAndIssue": "Workspace logo and issue icon"
+      }
+    },
+    "color": {
+      "label": "Tag color is based on",
+      "options": {
+        "issue": "Issue key",
+        "workspace": "Workspace color"
+      }
+    }
   },
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
@@ -69,6 +89,7 @@
     "editWorklog": "Edit worklog",
     "resetChanges": "Reset changes",
     "settingsTitle": "Worklogs",
-    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
+    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
+    "onlyCountPrimaryAccountWorklogs": "Only count the working time of the primary account in the sidebar"
   }
 }

@@ -6,6 +6,7 @@ import { currentOverlayAtom, jiraAuthAtom, logoutAtom, settingsAtom, themeAtom, 
 import { ButtonDanger } from '../components/ButtonDanger';
 import { CardsSelectionButton } from '../components/CardsSelectionButton';
 import { Layout } from '../components/Layout';
+import { Select } from '../components/Select';
 import { Toggle } from '../components/Toggle';
 import { TrackingReminderTimeSettings } from '../components/TrackingReminderTimeSettings';
 import { WorkingDaysSetting } from '../components/WorkingDaysSetting';
@@ -17,6 +18,7 @@ import {
   sendNativeEvent,
 } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
+import { IssueTagColorOption, IssueTagIconOption } from '../services/storage.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -55,6 +57,18 @@ export const Settings: FC = () => {
       return () => removeNativeEventListener({ name: NativeEvent.CHECK_NOTIFICATION_PERMISSION });
     }
   }, [settings.enableTrackingReminder, hasNotificationPermission]);
+
+  const issueTagIconOptions: { label: string; value: IssueTagIconOption }[] = [
+    { label: t('issueTag.icon.options.none'), value: 'none' },
+    { label: t('issueTag.icon.options.issue'), value: 'issue' },
+    { label: t('issueTag.icon.options.workspace'), value: 'workspace' },
+    { label: t('issueTag.icon.options.workspaceAndIssue'), value: 'workspaceAndIssue' },
+  ];
+
+  const issueTagColorOptions: { label: string; value: IssueTagColorOption }[] = [
+    { label: t('issueTag.color.options.issue'), value: 'issue' },
+    { label: t('issueTag.color.options.workspace'), value: 'workspace' },
+  ];
 
   return (
     <Layout
@@ -122,15 +136,35 @@ export const Settings: FC = () => {
             />
           </View>
           <View style={styles.hr} />
+          <Text style={styles.headline}>{t('issueTag.settingsTitle')}</Text>
+          <View style={[styles.rowContainer, { marginBottom: 10 }]}>
+            <Text style={styles.label}>{t('issueTag.icon.label')}</Text>
+            <Select<IssueTagIconOption>
+              options={issueTagIconOptions}
+              value={settings.issueTagIcon}
+              onChange={newState => setSettings(cur => ({ ...cur, issueTagIcon: newState }))}
+            />
+          </View>
+          <View style={styles.rowContainer}>
+            <Text style={styles.label}>{t('issueTag.color.label')}</Text>
+            <Select<IssueTagColorOption>
+              options={issueTagColorOptions}
+              value={settings.issueTagColor}
+              onChange={newState => setSettings(cur => ({ ...cur, issueTagColor: newState }))}
+            />
+          </View>
+        </View>
+
+        <View style={styles.card}>
           <Text style={styles.headline}>{t('weekDays.settingsTitle')}</Text>
           <WorkingDaysSetting />
-          <View style={styles.hr} />
           <Toggle
             label={t('weekDays.hideNonWorkingDays')}
             state={settings.hideNonWorkingDays}
             setState={newState => setSettings(cur => ({ ...cur, hideNonWorkingDays: newState }))}
           />
         </View>
+
         <View style={styles.card}>
           <Text style={styles.headline}>{t('worklogs.settingsTitle')}</Text>
           <Toggle
@@ -138,7 +172,14 @@ export const Settings: FC = () => {
             state={settings.warningWhenEditingOtherDays}
             setState={newState => setSettings(cur => ({ ...cur, warningWhenEditingOtherDays: newState }))}
           />
+          <View style={styles.hr} />
+          <Toggle
+            label={t('worklogs.onlyCountPrimaryAccountWorklogs')}
+            state={settings.onlyCountPrimaryAccountWorklogs}
+            setState={newState => setSettings(cur => ({ ...cur, onlyCountPrimaryAccountWorklogs: newState }))}
+          />
         </View>
+
         <View style={styles.card}>
           <Text style={styles.headline}>{t('notifications.settingsTitle')}</Text>
           <Toggle
@@ -153,9 +194,10 @@ export const Settings: FC = () => {
             </View>
           )}
         </View>
+
         <View style={styles.card}>
           <Text style={styles.headline}>{t('account.settingsTitle')}</Text>
-          <View style={styles.accountContainer}>
+          <View style={styles.rowContainer}>
             <Image source={{ uri: avatarUrl, width: 48, height: 48 }} style={styles.avatar} />
             <View style={styles.accountInfo}>
               <Text numberOfLines={1} lineBreakMode='clip' style={styles.username}>
@@ -193,6 +235,7 @@ function createStyles(theme: Theme) {
     card: {
       position: 'relative',
       padding: 10,
+      maxWidth: 420,
       backgroundColor: theme.surface,
       borderColor: theme.surfaceBorder,
       borderWidth: 1,
@@ -203,6 +246,7 @@ function createStyles(theme: Theme) {
       color: theme.textPrimary,
       marginBottom: 12,
     },
+    label: { ...typo.body },
     cardsButtonContainer: {
       display: 'flex',
       gap: 10,
@@ -227,17 +271,18 @@ function createStyles(theme: Theme) {
       ...typo.callout,
       color: theme.textPrimary,
     },
-    accountContainer: {
+    rowContainer: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
       gap: 10,
       width: '100%',
     },
     accountInfo: {
       flexBasis: '100%',
       flexShrink: 1,
+      flexGrow: 1,
     },
     username: {
       ...typo.calloutEmphasized,

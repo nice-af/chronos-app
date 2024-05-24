@@ -1,7 +1,27 @@
 {
   "account": {
     "logOut": "Abmelden",
-    "settingsTitle": "Account"
+    "settingsTitle": "Account",
+    "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen"
+  },
+  "issueTag": {
+    "settingsTitle": "Issue Tags",
+    "icon": {
+      "label": "Tag Icons",
+      "options": {
+        "none": "Keinen Icon anzeigen",
+        "issue": "Icon des Issues",
+        "workspace": "Logo des Workspace",
+        "workspaceAndIssue": "Workspace Logo und Issue Icon"
+      }
+    },
+    "color": {
+      "label": "Tag Farbe basiert auf",
+      "options": {
+        "issue": "Issue Key",
+        "workspace": "Workspace"
+      }
+    }
   },
   "calendarWeekShort": "KW",
   "cancel": "Abbrechen",
@@ -69,6 +89,7 @@
     "editWorklog": "Bearbeiten",
     "resetChanges": "Änderungen zurücksetzen",
     "settingsTitle": "Arbeitszeiten",
-    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind"
+    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind",
+    "onlyCountPrimaryAccountWorklogs": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen"
   }
 }
