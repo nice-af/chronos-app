@@ -16,7 +16,7 @@ export interface AuthModel {
 }
 
 export type ThemeKey = 'light' | 'dark' | 'system';
-export type IssueTagIconOption = 'none' | 'issue' | 'workspace' | 'workspaceAndIssue';
+export type IssueTagIconOption = 'none' | 'project' | 'workspace' | 'workspaceAndProject';
 export type IssueTagColorOption = 'issue' | 'workspace';
 
 export interface SettingsModel {
@@ -49,7 +49,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     trackingReminderTime: { hour: 18, minute: 30 },
     themeKey: 'system',
     onlyCountPrimaryAccountWorklogs: false,
-    issueTagIcon: 'issue',
+    issueTagIcon: 'project',
     issueTagColor: 'issue',
   },
   [StorageKey.WORKLOGS_LOCAL]: [],

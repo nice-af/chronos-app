@@ -1,12 +1,32 @@
 {
   "account": {
     "logOut": "Log out",
-    "settingsTitle": "Account",
-    "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar"
+    "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar",
+    "settingsTitle": "Account"
   },
   "calendarWeekShort": "Week",
   "cancel": "Cancel",
   "delete": "Delete",
+  "issueTag": {
+    "color": {
+      "label": "Tag color is based on",
+      "options": {
+        "issue": "Issue key",
+        "workspace": "Workspace color"
+      }
+    },
+    "icon": {
+      "label": "Visible tag icons",
+      "options": {
+        "none": "None",
+        "project": "Project icon",
+        "workspace": "Workspace logo",
+        "workspaceAndProject": "Workspace logo and issue icon"
+      }
+    },
+    "preview": "Preview:",
+    "settingsTitle": "Issue tags"
+  },
   "login": {
     "buttonLabel": "Login to Jira",
     "description": "Please click the button below to connect your Jira account with Jira Time Tracker."
@@ -18,25 +38,6 @@
     "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
     "startTimerInPastHeadline": "You are about to start a timer in the past",
     "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
-  },
-  "issueTag": {
-    "settingsTitle": "Issue tags",
-    "icon": {
-      "label": "Visible tag icons",
-      "options": {
-        "none": "None",
-        "issue": "Issue icon",
-        "workspace": "Workspace logo",
-        "workspaceAndIssue": "Workspace logo and issue icon"
-      }
-    },
-    "color": {
-      "label": "Tag color is based on",
-      "options": {
-        "issue": "Issue key",
-        "workspace": "Workspace color"
-      }
-    }
   },
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
@@ -87,9 +88,9 @@
   "worklogs": {
     "addNewWorklog": "Add new worklog",
     "editWorklog": "Edit worklog",
+    "onlyCountPrimaryAccountWorklogs": "Only count the working time of the primary account in the sidebar",
     "resetChanges": "Reset changes",
     "settingsTitle": "Worklogs",
-    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
-    "onlyCountPrimaryAccountWorklogs": "Only count the working time of the primary account in the sidebar"
+    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
   }
 }

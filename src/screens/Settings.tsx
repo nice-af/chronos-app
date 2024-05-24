@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 import { currentOverlayAtom, themeAtom } from '../atoms';
 import { Layout } from '../components/Layout';
 import { AccountSettings } from '../components/settings/AccountSettings';
-import { IssueTagSettings } from '../components/settings/IssueTagSettings';
+import { IssueTagsSettings } from '../components/settings/IssueTagsSettings';
 import { LayoutAndThemeSettings } from '../components/settings/LayoutAndThemeSettings';
 import { NotificationSettings } from '../components/settings/NotificationSettings';
 import { WorkingDaysSetting } from '../components/settings/WorkingDaysSettings';
@@ -25,7 +25,7 @@ export const Settings: FC = () => {
       header={{ align: 'left', title: t('settings'), onBackPress: () => setCurrentOverlay(null) }}>
       <ScrollView contentContainerStyle={styles.container}>
         <LayoutAndThemeSettings />
-        <IssueTagSettings />
+        <IssueTagsSettings />
         <WorkingDaysSetting />
         <WorklogSettings />
         <NotificationSettings />

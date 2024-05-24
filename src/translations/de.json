@@ -1,31 +1,32 @@
 {
   "account": {
     "logOut": "Abmelden",
-    "settingsTitle": "Account",
-    "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen"
+    "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
+    "settingsTitle": "Account"
   },
+  "calendarWeekShort": "KW",
+  "cancel": "Abbrechen",
+  "delete": "Löschen",
   "issueTag": {
-    "settingsTitle": "Issue Tags",
-    "icon": {
-      "label": "Tag Icons",
-      "options": {
-        "none": "Keinen Icon anzeigen",
-        "issue": "Icon des Issues",
-        "workspace": "Logo des Workspace",
-        "workspaceAndIssue": "Workspace Logo und Issue Icon"
-      }
-    },
     "color": {
       "label": "Tag Farbe basiert auf",
       "options": {
         "issue": "Issue Key",
         "workspace": "Workspace"
       }
-    }
+    },
+    "icon": {
+      "label": "Tag Icons",
+      "options": {
+        "none": "Keinen Icon anzeigen",
+        "project": "Icon des Projekts",
+        "workspace": "Logo des Workspace",
+        "workspaceAndProject": "Workspace Logo und Projekt Icon"
+      }
+    },
+    "preview": "Vorschau:",
+    "settingsTitle": "Issue Tags"
   },
-  "calendarWeekShort": "KW",
-  "cancel": "Abbrechen",
-  "delete": "Löschen",
   "login": {
     "buttonLabel": "Mit Jira verbinden",
     "description": "Bitte klicke auf den Button unten, um dein Jira-Konto mit Jira Time Tracker zu verbinden."
@@ -87,9 +88,9 @@
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
     "editWorklog": "Bearbeiten",
+    "onlyCountPrimaryAccountWorklogs": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
     "resetChanges": "Änderungen zurücksetzen",
     "settingsTitle": "Arbeitszeiten",
-    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind",
-    "onlyCountPrimaryAccountWorklogs": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen"
+    "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind"
   }
 }
