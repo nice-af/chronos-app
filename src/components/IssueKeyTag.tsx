@@ -98,8 +98,8 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, onPress, ...props 
           style={styles.logo}
           source={{
             uri: project.avatar,
-            width: 18,
-            height: 18,
+            width: 48,
+            height: 48,
           }}
         />
       ) : (

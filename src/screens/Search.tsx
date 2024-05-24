@@ -24,6 +24,7 @@ import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { IssueBase, Worklog } from '../types/global.types';
+import { Tabs } from '../components/Tabs';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -126,6 +127,8 @@ export const Search: FC = () => {
     setTimeout(() => setCurrentOverlay([Overlay.EDIT_WORKLOG]), 500);
   }
 
+  const hasTabs = true;
+
   return (
     <Layout
       customBackgroundColor={theme.backgroundDrawer}
@@ -135,7 +138,7 @@ export const Search: FC = () => {
         position: 'absolute',
         title: t('worklogs.addNewWorklog'),
       }}>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, !hasTabs && styles.inputContainerWithoutTabs]}>
         <CustomTextInput
           isVisible={!!currentOverlay && currentOverlay.includes(Overlay.SEARCH)}
           placeholder={t('search.placeholder')}
@@ -153,6 +156,7 @@ export const Search: FC = () => {
           }
         />
       </View>
+      {hasTabs && <Tabs tabs={placeholderTabs} />}
       <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
         {searchIsLoading && (
           <View style={styles.loadingSpinnerContainer}>
@@ -207,6 +211,13 @@ export const Search: FC = () => {
   );
 };
 
+const placeholderTabs = [
+  { label: 'Orcaya', imageSrc: require('../assets/logo-orcaya.png') },
+  { label: 'The Mobility House', imageSrc: require('../assets/logo-tmh.png') },
+  { label: 'Solid', imageSrc: require('../assets/logo-solid.png') },
+  { label: 'Super langer Workspace-Name zum Testen', imageSrc: require('../assets/logo-orcaya.png') },
+];
+
 function createStyles(theme: Theme) {
   return StyleSheet.create({
     inputContainer: {
@@ -223,6 +234,8 @@ function createStyles(theme: Theme) {
           marginTop: 44,
         },
       }),
+    },
+    inputContainerWithoutTabs: {
       borderColor: theme.border,
       borderBottomWidth: 1,
     },
