@@ -63,7 +63,8 @@ function createStyles(theme: Theme) {
       paddingLeft: 7,
     },
     isSmall: {
-      paddingVertical: 5,
+      paddingTop: 5,
+      paddingBottom: 5,
     },
     isHovered: {
       backgroundColor: theme.secondaryButtonHover,
