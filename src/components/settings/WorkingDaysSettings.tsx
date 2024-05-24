@@ -45,6 +45,7 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
         isHovered && { backgroundColor: isChecked ? theme.buttonHover : theme.surfaceButtonHover },
         pressed && { backgroundColor: isChecked ? theme.buttonActive : theme.surfaceButtonActive },
       ]}>
+      <View style={styles.borderInset} />
       <Text style={isChecked ? styles.labelChecked : styles.label}>{label}</Text>
     </Pressable>
   );
@@ -83,8 +84,20 @@ function createStyles(theme: Theme) {
       marginBottom: 10,
     },
     pressable: {
+      position: 'relative',
       width: 34,
+      height: 30,
       ...getPadding(7, 8, 9),
+      borderRadius: 6,
+    },
+    borderInset: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: 34,
+      height: 30,
+      borderWidth: 1,
+      borderColor: theme.borderInset,
       borderRadius: 6,
     },
     labelChecked: {
