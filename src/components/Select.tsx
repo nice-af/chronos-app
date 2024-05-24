@@ -36,6 +36,7 @@ export function Select<T extends OptionValue>({ options, value, onChange }: Sele
       label={options.find(option => option.value === value)?.label}
       isSmall
       ref={ref}
+      style={{ flexShrink: 1 }}
       iconRight={
         <Image
           source={

@@ -36,7 +36,7 @@ export const ButtonSecondary: FC<ButtonSecondaryProps> = forwardRef<View, Button
             {label}
           </Text>
         )}
-        {iconRight}
+        {iconRight && <View style={styles.icon}>{iconRight}</View>}
       </Pressable>
     );
   }
@@ -45,7 +45,6 @@ export const ButtonSecondary: FC<ButtonSecondaryProps> = forwardRef<View, Button
 function createStyles(theme: Theme) {
   return StyleSheet.create({
     pressable: {
-      flexShrink: 1,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -78,6 +77,9 @@ function createStyles(theme: Theme) {
       lineHeight: 16,
       textAlign: 'center',
       flexShrink: 1,
+    },
+    icon: {
+      pointerEvents: 'none',
     },
   });
 }
