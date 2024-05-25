@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -48,17 +48,10 @@ export const Tabs: FC<TabsProps> = ({ tabs }) => {
           const isFirst = index === 0;
           const isLast = index === tabs.length - 1;
           return (
-            <>
-              <Tab
-                key={index + tab.label}
-                {...tab}
-                isActive={isActive}
-                isFirst={isFirst}
-                isLast={isLast}
-                onPress={() => setActiveTab(index)}
-              />
+            <Fragment key={index + tab.label}>
+              <Tab {...tab} isActive={isActive} isFirst={isFirst} isLast={isLast} onPress={() => setActiveTab(index)} />
               {!isActive && !previousIsActive && !isLast && <View style={styles.spacer} />}
-            </>
+            </Fragment>
           );
         })}
       </ScrollView>
