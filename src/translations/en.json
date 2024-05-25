@@ -34,7 +34,7 @@
   },
   "modals": {
     "accountLogoutHeadline": "You are about to remove an account",
-    "accountLogoutText": "Are you sure you want to log out?",
+    "accountLogoutText": "Unsynchronized working times of the account will be deleted. Are you sure you want to continue?",
     "cancel": "Cancel",
     "continue": "Continue",
     "startTimerInFutureHeadline": "You are about to start a timer in the future",
@@ -91,15 +91,15 @@
   "worklogs": {
     "addNewWorklog": "Add new worklog",
     "editWorklog": "Edit worklog",
+    "resetChanges": "Reset changes",
+    "settingsTitle": "Worklogs",
+    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
     "workingTimeCountMethod": {
       "label": "Working time in the sidebar",
       "options": {
         "all": "All accounts combined",
         "onlyPrimary": "Only primary account time"
       }
-    },
-    "resetChanges": "Reset changes",
-    "settingsTitle": "Worklogs",
-    "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
+    }
   }
 }
