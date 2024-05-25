@@ -91,7 +91,13 @@
   "worklogs": {
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
     "editWorklog": "Bearbeiten",
-    "onlyCountPrimaryAccountWorklogs": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
+    "workingTimeCountMethod": {
+      "label": "Arbeitszeiten in der Seitenleiste",
+      "options": {
+        "all": "Alle Accounts kombinieren",
+        "onlyPrimary": "Nur Zeit des primären Account"
+      }
+    },
     "resetChanges": "Änderungen zurücksetzen",
     "settingsTitle": "Arbeitszeiten",
     "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind"

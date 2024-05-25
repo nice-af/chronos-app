@@ -91,7 +91,13 @@
   "worklogs": {
     "addNewWorklog": "Add new worklog",
     "editWorklog": "Edit worklog",
-    "onlyCountPrimaryAccountWorklogs": "Only count the working time of the primary account in the sidebar",
+    "workingTimeCountMethod": {
+      "label": "Working time in the sidebar",
+      "options": {
+        "all": "All accounts combined",
+        "onlyPrimary": "Only primary account time"
+      }
+    },
     "resetChanges": "Reset changes",
     "settingsTitle": "Worklogs",
     "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days"
