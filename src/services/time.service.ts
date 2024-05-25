@@ -22,6 +22,9 @@ export function parseDurationStringToSeconds(input: string): number {
     const minutes = Math.round((minutesDecimal / 10) * 60);
     input = `${hours}h ${minutes}m`;
   }
+  if ((input.length === 1 || input.length === 2) && !isNaN(Number(input))) {
+    input = `${input}h`;
+  }
   const result = parseDuration(input);
   // We need to divide by 1000 because parseDuration returns milliseconds
   return result ? Math.round(result / 1000) : 0;
