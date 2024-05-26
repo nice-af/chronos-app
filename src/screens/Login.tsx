@@ -1,12 +1,12 @@
 import { useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
-import { themeAtom, userInfoAtom } from '../atoms';
+import { jiraAccountsAtom, themeAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
-import { useAuthRequest } from '../services/auth.service';
+import { useAuthRequest } from '../services/jira-auth.service';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -15,13 +15,13 @@ import { getPadding } from '../styles/utils';
 
 export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
-  const userInfo = useAtomValue(userInfoAtom);
+  const jiraAccounts = useAtomValue(jiraAccountsAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
 
   return (
-    <AnimateScreenContainer isVisible={!userInfo} offScreenLocation='left'>
+    <AnimateScreenContainer isVisible={!jiraAccounts || jiraAccounts.length === 0} offScreenLocation='left'>
       <Layout
         customBackgroundColor={theme.backgroundLogin}
         header={Platform.OS !== 'windows' && { align: 'center', title: 'Login' }}>

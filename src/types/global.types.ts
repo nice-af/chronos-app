@@ -47,6 +47,7 @@ export interface Worklog {
   timeSpentSeconds: number;
   comment: string;
   state: WorklogState;
+  accountId: string;
 }
 
 export interface Project {
@@ -64,6 +65,7 @@ export interface Project {
   avatar: string | null;
   key: string;
   name: string;
+  accountId: string;
 }
 
 export interface CustomButtonProps {

@@ -1,7 +1,7 @@
 import { store, syncProgressAtom } from '../atoms';
 import { Worklog, WorklogState } from '../types/global.types';
 import { DateString } from './date.service';
-import { createRemoteWorklog, updateRemoteWorklog } from './jira.service';
+import { createRemoteWorklog, updateRemoteWorklog } from './jira-worklogs.service';
 
 function getLocalId(): string {
   return `local_${Date.now()}`;
@@ -13,7 +13,15 @@ export interface IssueBase {
   summary: string;
 }
 
-export function createNewLocalWorklog({ issue, started }: { issue: IssueBase; started: DateString }): Worklog {
+export function createNewLocalWorklog({
+  issue,
+  started,
+  accountId,
+}: {
+  issue: IssueBase;
+  started: DateString;
+  accountId: string;
+}): Worklog {
   return {
     id: getLocalId(),
     issue,
@@ -21,6 +29,7 @@ export function createNewLocalWorklog({ issue, started }: { issue: IssueBase; st
     timeSpentSeconds: 0,
     comment: '',
     state: WorklogState.LOCAL,
+    accountId,
   };
 }
 

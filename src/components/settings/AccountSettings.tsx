@@ -1,16 +1,16 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { jiraAuthAtom, logoutAtom, themeAtom, userInfoAtom } from '../../atoms';
+import { jiraAccountsAtom, logoutAtom, themeAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
+import { useModal } from '../../services/modal.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
+import { getPadding } from '../../styles/utils';
 import { ButtonDanger } from '../ButtonDanger';
 import { ButtonSecondary } from '../ButtonSecondary';
-import { getPadding } from '../../styles/utils';
-import { useModal } from '../../services/modal.service';
 
 interface AccountRowProps {
   avatarUrl?: string;
@@ -73,31 +73,34 @@ const AccountRow: FC<AccountRowProps> = ({ avatarUrl, accountName, workspaceName
 };
 
 export const AccountSettings: FC = () => {
-  const userInfo = useAtomValue(userInfoAtom);
-  const workspaceName = useAtomValue(jiraAuthAtom)?.workspaceName;
-  const avatarUrl = userInfo?.avatarUrls?.['48x48'];
+  const [jiraAccounts, setJiraAccounts] = useAtom(jiraAccountsAtom);
   const styles = useThemedStyles(createStyles);
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { t } = useTranslation();
-  const [primaryAccountIndex, setPrimaryAccountIndex] = useState(0);
+  const [primaryAccountIndex, setPrimaryAccountIndex] = useState(
+    jiraAccounts.find(jiraAccount => jiraAccount.isPrimary)?.accountId
+  );
+
+  function handleSetPrimary(accountId: string) {
+    setPrimaryAccountIndex(accountId);
+    setJiraAccounts(
+      jiraAccounts.map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.accountId === accountId }))
+    );
+  }
 
   return (
     <View style={settingsStyles.card}>
       <Text style={settingsStyles.headline}>{t('account.settingsTitle')}</Text>
-      <AccountRow
-        isPrimary={primaryAccountIndex === 0}
-        onSetPrimary={() => setPrimaryAccountIndex(0)}
-        avatarUrl={avatarUrl}
-        accountName={userInfo?.displayName}
-        workspaceName={workspaceName}
-      />
-      <AccountRow
-        isPrimary={primaryAccountIndex === 1}
-        onSetPrimary={() => setPrimaryAccountIndex(1)}
-        avatarUrl={avatarUrl}
-        accountName={userInfo?.displayName}
-        workspaceName={workspaceName}
-      />
+      {jiraAccounts.map(jiraAccount => (
+        <AccountRow
+          key={jiraAccount.accountId}
+          isPrimary={primaryAccountIndex === jiraAccount.accountId}
+          onSetPrimary={() => handleSetPrimary(jiraAccount.accountId)}
+          avatarUrl={jiraAccount.avatarUrl}
+          accountName={jiraAccount.name}
+          workspaceName={jiraAccount.workspaceName}
+        />
+      ))}
       <View style={styles.buttonContainer}>
         <ButtonSecondary label={t('account.addNewAccount')} onPress={() => {}} />
       </View>

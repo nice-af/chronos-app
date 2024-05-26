@@ -6,6 +6,7 @@ import {
   addWorklogAtom,
   currentOverlayAtom,
   currentWorklogToEditAtom,
+  jiraAccountsAtom,
   selectedDateAtom,
   themeAtom,
   worklogsAtom,
@@ -14,17 +15,17 @@ import { CustomTextInput } from '../components/CustomTextInput';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SearchResultsEntry } from '../components/SearchResultsEntry';
+import { Tabs } from '../components/Tabs';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
-import { getIssuesBySearchQuery } from '../services/jira.service';
+import { getIssuesBySearchQuery } from '../services/jira-issues.service';
 import { useModal } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { IssueBase, Worklog } from '../types/global.types';
-import { Tabs } from '../components/Tabs';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -39,9 +40,13 @@ const debounce = (func: Function, delay: number) => {
 export const Search: FC = () => {
   const selectedDate = useAtomValue(selectedDateAtom);
   const addWorklog = useSetAtom(addWorklogAtom);
+  const jiraAccounts = useAtomValue(jiraAccountsAtom);
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const [searchValue, setSearchValue] = useState('');
+  const [accountId, setAccountId] = useState(
+    jiraAccounts.find(acc => acc.isPrimary)?.accountId || jiraAccounts[0]?.accountId
+  );
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<Issue[]>([]);
   const theme = useAtomValue(themeAtom);
@@ -54,10 +59,10 @@ export const Search: FC = () => {
 
   const debouncedSearch = useMemo(
     () =>
-      debounce(async (query: string) => {
+      debounce(async (query: string, searchAccountId: string) => {
         setSearchIsLoading(true);
         try {
-          setSearchResults(await getIssuesBySearchQuery(query));
+          setSearchResults(await getIssuesBySearchQuery(query, searchAccountId));
         } catch (e) {
           console.error('Error while searching', e);
         } finally {
@@ -73,8 +78,8 @@ export const Search: FC = () => {
       setSearchResults([]);
       return;
     }
-    debouncedSearch(trimmedValue);
-  }, [searchValue]);
+    debouncedSearch(trimmedValue, accountId);
+  }, [searchValue, accountId]);
 
   /**
    * List of worklogs that have been worked on most recently.
@@ -120,6 +125,7 @@ export const Search: FC = () => {
         summary: issueBase.summary,
       },
       started: selectedDate,
+      accountId,
     });
     addWorklog(worklog);
     setCurrentWorklogToEdit(worklog);
@@ -127,7 +133,12 @@ export const Search: FC = () => {
     setTimeout(() => setCurrentOverlay([Overlay.EDIT_WORKLOG]), 500);
   }
 
-  const hasTabs = true;
+  const tabs = jiraAccounts.map(jiraAccount => ({
+    label: jiraAccount.workspaceName,
+    imageSrc: jiraAccount.workspaceAvatarUrl ? { uri: jiraAccount.workspaceAvatarUrl } : undefined,
+    onPress: () => setAccountId(jiraAccount.accountId),
+  }));
+  const hasTabs = tabs.length > 1;
 
   return (
     <Layout
@@ -156,7 +167,7 @@ export const Search: FC = () => {
           }
         />
       </View>
-      {hasTabs && <Tabs tabs={placeholderTabs} />}
+      {hasTabs && <Tabs tabs={tabs} />}
       <ScrollView style={styles.entriesContainer} removeClippedSubviews={false}>
         {searchIsLoading && (
           <View style={styles.loadingSpinnerContainer}>
@@ -180,6 +191,7 @@ export const Search: FC = () => {
                   name: issue.fields.project.name,
                 },
                 summary: issue.fields.summary,
+                accountId,
               }}
               onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
             />
@@ -196,6 +208,7 @@ export const Search: FC = () => {
                   name: '',
                 },
                 summary: worklog.issue.summary,
+                accountId,
               }}
               onPress={() =>
                 handleOnWorklogStart({

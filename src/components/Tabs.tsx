@@ -7,14 +7,14 @@ import { border } from 'polished';
 
 interface TabData {
   label: string;
-  imageSrc: ImageSourcePropType;
+  imageSrc?: ImageSourcePropType;
+  onPress: () => void;
 }
 
 interface TabProps extends TabData {
   isActive: boolean;
   isFirst: boolean;
   isLast: boolean;
-  onPress: () => void;
 }
 
 const Tab: FC<TabProps> = ({ label, imageSrc, isActive, isFirst, isLast, onPress }) => {

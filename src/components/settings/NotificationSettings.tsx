@@ -1,8 +1,8 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import ms from 'ms';
 import React, { FC, useEffect, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { jiraAuthAtom, logoutAtom, settingsAtom, userInfoAtom } from '../../atoms';
+import { settingsAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import {
   addNativeEventListener,

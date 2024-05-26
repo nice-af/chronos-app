@@ -1,19 +1,33 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Version3Client } from 'jira.js';
 import { SidebarLayout } from '../const';
 import { DayId, Worklog } from '../types/global.types';
 
 export enum StorageKey {
-  AUTH = 'auth',
+  ACCOUNTS = 'accounts',
+  AUTHS = 'auths',
   SETTINGS = 'settings',
   WORKLOGS_LOCAL = 'worklogsLocal',
 }
 
-export interface AuthModel {
+export interface JiraAccountModel {
+  accountId: string;
+  name?: string;
+  avatarUrl?: string;
+  workspaceName: string;
+  workspaceAvatarUrl?: string;
+  isPrimary: boolean;
+}
+
+export interface JiraAuthModel {
   accessToken: string;
   refreshToken: string;
   cloudId: string;
-  workspaceName: string;
 }
+
+export type JiraAccountsAtom = JiraAccountModel[];
+export type JiraAuthsAtom = Record<string, JiraAuthModel>;
+export type JiraClientsAtom = Record<string, Version3Client>;
 
 export type ThemeKey = 'light' | 'dark' | 'system';
 export type IssueTagIconOption = 'none' | 'project' | 'workspace' | 'workspaceAndProject';
@@ -34,13 +48,15 @@ export interface SettingsModel {
 }
 
 interface StorageTypes {
-  [StorageKey.AUTH]: AuthModel | null;
+  [StorageKey.ACCOUNTS]: JiraAccountsAtom;
+  [StorageKey.AUTHS]: JiraAuthsAtom;
   [StorageKey.SETTINGS]: SettingsModel;
   [StorageKey.WORKLOGS_LOCAL]: Worklog[];
 }
 
 export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
-  [StorageKey.AUTH]: null,
+  [StorageKey.ACCOUNTS]: [],
+  [StorageKey.AUTHS]: {},
   [StorageKey.SETTINGS]: {
     sidebarLayout: SidebarLayout.NORMAL,
     workingDays: [0, 1, 2, 3, 4],

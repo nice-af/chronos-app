@@ -1,7 +1,7 @@
 import { sendNativeEvent } from '../services/native-event-emitter.service';
-import { NativeEvent, StatusBarState, StatusBarStateChangeData } from '../services/native-event-emitter.service.types';
+import { NativeEvent, StatusBarState } from '../services/native-event-emitter.service.types';
 import { StorageKey, setInStorage } from '../services/storage.service';
-import { jiraAuthAtom } from './auth';
+import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
 import { settingsAtom } from './setting';
 import { store } from './store';
 import { activeWorklogAtom, worklogsLocalAtom } from './worklog';
@@ -9,10 +9,14 @@ import { activeWorklogAtom, worklogsLocalAtom } from './worklog';
 /**
  * Persist changes to AsyncStorage
  */
-store.sub(jiraAuthAtom, () => {
-  const jiraAuth = store.get(jiraAuthAtom);
+store.sub(jiraAccountsAtom, () => {
+  const jiraAccounts = store.get(jiraAccountsAtom);
+  setInStorage(StorageKey.ACCOUNTS, jiraAccounts);
+});
+store.sub(jiraAuthsAtom, () => {
+  const jiraAuths = store.get(jiraAuthsAtom);
   // TODO @florianmrz is it secure to store the token in AsyncStorage?
-  setInStorage(StorageKey.AUTH, jiraAuth);
+  setInStorage(StorageKey.AUTHS, jiraAuths);
 });
 store.sub(settingsAtom, () => {
   const settings = store.get(settingsAtom);

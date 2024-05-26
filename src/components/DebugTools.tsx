@@ -1,8 +1,9 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { currentOverlayAtom, userInfoAtom } from '../atoms';
+import { currentOverlayAtom, jiraAccountsAtom, jiraAuthsAtom } from '../atoms';
 import { getPadding } from '../styles/utils';
+import { StorageKey, getFromStorage } from '../services/storage.service';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;
@@ -25,7 +26,8 @@ export const DebugToolsTab: FC<DebugToolsTabProps> = ({ defaultExpanded, title, 
 
 export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const userInfo = useAtomValue(userInfoAtom);
+  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const jiraAuths = useAtomValue(jiraAuthsAtom);
   const currentOverlay = useAtomValue(currentOverlayAtom);
 
   if (!expanded) {
@@ -41,8 +43,17 @@ export const DebugTools: FC = () => {
           <Text style={styles.xButtonTitle}>X</Text>
         </Pressable>
         <ScrollView>
-          <DebugToolsTab title='userInfo'>
-            <Text>{JSON.stringify(userInfo, null, 2)}</Text>
+          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.ACCOUNTS))}>
+            <Text style={styles.tabTitle}>Log accounts storage</Text>
+          </Pressable>
+          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.AUTHS))}>
+            <Text style={styles.tabTitle}>Log auths storage</Text>
+          </Pressable>
+          <DebugToolsTab title='jiraAccounts'>
+            <Text>{JSON.stringify(jiraAccounts, null, 2)}</Text>
+          </DebugToolsTab>
+          <DebugToolsTab title='jiraAuths'>
+            <Text>{JSON.stringify(jiraAuths, null, 2)}</Text>
           </DebugToolsTab>
           <DebugToolsTab title='currentOverlay'>
             <Text>{JSON.stringify({ currentOverlay }, null, 2)}</Text>

@@ -16,6 +16,7 @@ interface SearchResultIssue {
     name: string;
   };
   summary: string;
+  accountId: string;
 }
 
 interface SearchResultsEntryProps extends Omit<PressableProps, 'style'> {
@@ -31,7 +32,7 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
     <View key={issue.id} style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headlineContainer}>
-          <IssueKeyTag issueKey={issue.key} />
+          <IssueKeyTag issueKey={issue.key} accountId={issue.accountId} />
           <Image
             style={styles.chevronIcon}
             source={

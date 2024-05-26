@@ -20,6 +20,7 @@ function hashStr(str: string) {
 
 interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
   issueKey: string;
+  accountId: string;
   onPress?: () => void;
   style?: ViewStyle;
 }
@@ -40,7 +41,7 @@ const tagThemesKeys = [
   'brown',
 ] as const;
 
-export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, onPress, ...props }) => {
+export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const { issueTagIcon, issueTagColor } = useAtomValue(settingsAtom);
@@ -108,7 +109,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, onPress, ...props 
   const projects = useAtomValue(projectsAtom);
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
-  const project = useMemo(() => getProjectByIssueKey(issueKey), [issueKey, projects]);
+  const project = useMemo(() => getProjectByIssueKey(issueKey, accountId), [issueKey, accountId, projects]);
   const hasProjectIcon = issueTagIcon === 'project' || issueTagIcon === 'workspaceAndProject';
 
   const workspaceImageSrc = require('../assets/logo-orcaya.png');

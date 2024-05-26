@@ -2,9 +2,13 @@ import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
-import { GetAccessibleResourcesResponse, GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
+import { jiraAccountsAtom, jiraAuthsAtom, jiraClientsAtom, store, worklogsRemoteAtom } from '../atoms';
+import { GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
-import { initialize } from './global.service';
+import { createJiraClient } from './jira-client.service';
+import { requestUserInfo, requestWorkspaceInfo } from './jira-info.service';
+import { getRemoteWorklogs } from './jira-worklogs.service';
+import { JiraAccountModel, JiraAuthModel } from './storage.service';
 
 const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
   if ('error' in res) {
@@ -51,21 +55,8 @@ export async function refreshAccessToken(refreshToken: string): Promise<GetOauth
 }
 
 /**
- * Get info about the workspace, mainly the correct cloud id to connect to
+ * A hook to handle the OAuth flow.
  */
-async function getWorkspaceInfo(accessToken: string): Promise<{ id: string; name: string } | null> {
-  return await fetch('https://api.atlassian.com/oauth/token/accessible-resources', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-    .then(response => response.json() as Promise<GetAccessibleResourcesResponse>)
-    // TODO @florianmrz how do we handle multiple resources?
-    .then(resources => ({ id: resources[0]?.id, name: resources[0]?.name }));
-}
-
 export const useAuthRequest = () => {
   const state = useRef<string>();
   const [isLoading, setIsLoading] = useState(false);
@@ -87,14 +78,24 @@ export const useAuthRequest = () => {
       if (state.current !== urlState || !urlCode) {
         throw new Error('An error occured while authenticating. Maybe your session timed out? Please try again.');
       }
-      const oAuthResponse = await getOAuthToken(urlCode);
-      const { access_token: accessToken, refresh_token: refreshToken } = oAuthResponse;
-      const workspace = await getWorkspaceInfo(oAuthResponse.access_token);
+      const { access_token: accessToken, refresh_token: refreshToken } = await getOAuthToken(urlCode);
+      const { jiraAccount, jiraAuth, worklogs } = await initializeJiraAccount(accessToken, refreshToken);
 
-      if (!workspace) {
-        throw new Error('Could not access the selected workspace. Please try again.');
+      const newJiraAuths = store.get(jiraAuthsAtom);
+      newJiraAuths[jiraAccount.accountId] = jiraAuth;
+      store.set(jiraAuthsAtom, { ...newJiraAuths });
+
+      const newJiraAccounts = store.get(jiraAccountsAtom);
+      if (newJiraAccounts.length === 0) {
+        jiraAccount.isPrimary = true;
       }
-      await initialize({ accessToken, refreshToken, cloudId: workspace.id, workspaceName: workspace.name });
+      store.set(jiraAccountsAtom, [
+        ...newJiraAccounts.filter(account => account.accountId !== jiraAccount.accountId),
+        jiraAccount,
+      ]);
+
+      const worklogsRemote = store.get(worklogsRemoteAtom);
+      store.set(worklogsRemoteAtom, worklogsRemote.concat(worklogs));
     } catch (error) {
       Alert.alert((error as Error).message);
       return;
@@ -155,3 +156,44 @@ export const useAuthRequest = () => {
     initOAuth,
   };
 };
+
+/**
+ * Makes all the necessary calls to initialize the Jira account
+ */
+export async function initializeJiraAccount(accessToken: string, refreshToken: string) {
+  const workspace = await requestWorkspaceInfo(accessToken);
+  if (!workspace) {
+    throw new Error('Could not access the selected workspace. Please try again.');
+  }
+  const userInfo = await requestUserInfo(accessToken, workspace.id);
+  if (!userInfo) {
+    throw new Error('Could not get user info. Please try again.');
+  }
+  const jiraAccount: JiraAccountModel = {
+    accountId: userInfo.accountId,
+    name: userInfo.displayName,
+    avatarUrl: userInfo.avatarUrls?.['48x48'],
+    workspaceName: workspace.name,
+    workspaceAvatarUrl: workspace.avatarUrl,
+    isPrimary: false,
+  };
+  const jiraAuth: JiraAuthModel = {
+    accessToken,
+    refreshToken,
+    cloudId: workspace.id,
+  };
+  const jiraClient = createJiraClient(jiraAuth, userInfo.accountId);
+  const worklogs = await getRemoteWorklogs(userInfo.accountId);
+  return { jiraAccount, jiraAuth, jiraClient, worklogs };
+}
+
+/**
+ * Returns the Jira client for the given account ID
+ */
+export function getJiraClient(accountId: string) {
+  const jiraClients = store.get(jiraClientsAtom);
+  if (!jiraClients[accountId]) {
+    throw new Error(`No Jira client for account ${accountId}`);
+  }
+  return jiraClients[accountId];
+}

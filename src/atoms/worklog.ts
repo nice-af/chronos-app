@@ -1,11 +1,13 @@
 import { atom } from 'jotai';
-import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira.service';
+import ms from 'ms';
+import { requestAccountData } from '../services/jira-info.service';
+import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira-worklogs.service';
+import { JiraAccountsAtom } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogState } from '../types/global.types';
-import { userInfoAtom } from './auth';
+import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { store } from './store';
-import ms from 'ms';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 export const syncProgressAtom = atom<number | null>(null);
@@ -65,25 +67,42 @@ export const worklogsForCurrentDayAtom = atom(get => {
 });
 
 export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
+  const jiraAccounts = store.get(jiraAccountsAtom);
+  const jiraAuths = store.get(jiraAuthsAtom);
   store.set(syncProgressAtom, 0);
   const localWorklogs = get(worklogsLocalAtom);
   const worklogsToSync = get(worklogsForCurrentDayAtom)
     .filter(w => localWorklogs.find(lw => lw.id === w.id))
     .filter(worklog => worklog.timeSpentSeconds >= 60);
-  const progressSteps = worklogsToSync.length + 3; // +1 for the user info and +2 for the remote worklogs
-  const progressPerStep = 1 / progressSteps;
+
+  // Each worklog equals one progress step
+  const progressStepsSync = worklogsToSync.length;
+  // Each account has 3 progress steps: 1 to get user info and 2 to get worklogs
+  const progressStepsAccountsLoop = jiraAccounts.length * 3;
+  const progressPerStep = 1 / (progressStepsSync + progressStepsAccountsLoop);
   await syncWorklogs(worklogsToSync, progressPerStep);
 
-  const userInfo = get(userInfoAtom);
-  store.set(syncProgressAtom, 1 - progressPerStep * 2);
-  const updatedWorklogs = await getRemoteWorklogs(userInfo!.accountId!);
-  store.set(syncProgressAtom, 1);
-  set(worklogsRemoteAtom, updatedWorklogs);
+  const newAccountsData: JiraAccountsAtom = [];
+  const primaryAccountId = jiraAccounts.find(account => account.isPrimary)?.accountId;
+  const newWorklogsRemote: Worklog[] = [];
+  for (let i = 0; i < jiraAccounts.length; i++) {
+    const jiraAccount = jiraAccounts[i];
+    const auth = jiraAuths[jiraAccount.accountId];
+    newAccountsData.push(await requestAccountData(auth.accessToken));
+    store.set(syncProgressAtom, progressPerStep * (progressStepsSync + i + 1));
+    newWorklogsRemote.push(...(await getRemoteWorklogs(jiraAccount.accountId)));
+    store.set(syncProgressAtom, progressPerStep * (progressStepsSync + progressStepsAccountsLoop + i + 1));
+  }
+  store.set(
+    jiraAccountsAtom,
+    newAccountsData.map(account => ({ ...account, isPrimary: account.accountId === primaryAccountId }))
+  );
+  console.log('newWorklogsRemote', newWorklogsRemote);
+  store.set(worklogsRemoteAtom, newWorklogsRemote);
 
   // Remove local worklogs that have been synced
   set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
   setTimeout(() => store.set(syncProgressAtom, null), 1500);
-  return updatedWorklogs;
 });
 
 export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => {
