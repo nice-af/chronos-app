@@ -8,7 +8,8 @@ import {
 export function sendNativeEvent(params: SendNativeEventParams) {
   NativeModules.ReactNativeEventEmitter.sendEventFromReact(
     params.name,
-    typeof params.data === 'string' ? params.data : JSON.stringify(params.data)
+    // We have to pass a string to the native side, so we need pass null as 'null' and stringify objects
+    params.data === null ? 'null' : typeof params.data === 'string' ? params.data : JSON.stringify(params.data)
   );
 }
 
