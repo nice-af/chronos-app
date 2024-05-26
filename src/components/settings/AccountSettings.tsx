@@ -11,6 +11,7 @@ import { typo } from '../../styles/typo';
 import { getPadding } from '../../styles/utils';
 import { ButtonDanger } from '../ButtonDanger';
 import { ButtonSecondary } from '../ButtonSecondary';
+import { useAuthRequest } from '../../services/jira-auth.service';
 
 interface AccountRowProps {
   avatarUrl?: string;
@@ -77,6 +78,7 @@ export const AccountSettings: FC = () => {
   const styles = useThemedStyles(createStyles);
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { t } = useTranslation();
+  const { initOAuth } = useAuthRequest();
   const [primaryAccountIndex, setPrimaryAccountIndex] = useState(
     jiraAccounts.find(jiraAccount => jiraAccount.isPrimary)?.accountId
   );
@@ -102,7 +104,7 @@ export const AccountSettings: FC = () => {
         />
       ))}
       <View style={styles.buttonContainer}>
-        <ButtonSecondary label={t('account.addNewAccount')} onPress={() => {}} />
+        <ButtonSecondary label={t('account.addNewAccount')} onPress={initOAuth} />
       </View>
     </View>
   );

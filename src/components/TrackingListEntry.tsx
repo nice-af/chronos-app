@@ -127,7 +127,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
               [{worklog.state.substring(0, 1).toUpperCase()}]
             </Text>
           )}
-          <IssueKeyTag issueKey={worklog.issue.key} />
+          <IssueKeyTag issueKey={worklog.issue.key} accountId={worklog.accountId} />
           <Text numberOfLines={1} style={styles.title}>
             {worklog.issue.summary}
           </Text>

@@ -6,9 +6,9 @@ import { jiraAccountsAtom, jiraAuthsAtom, jiraClientsAtom, store, worklogsRemote
 import { GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
 import { getUrlParams } from '../utils/url';
 import { createJiraClient } from './jira-client.service';
-import { requestUserInfo, requestWorkspaceInfo } from './jira-info.service';
+import { requestAccountData } from './jira-info.service';
 import { getRemoteWorklogs } from './jira-worklogs.service';
-import { JiraAccountModel, JiraAuthModel } from './storage.service';
+import { JiraAuthModel } from './storage.service';
 
 const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
   if ('error' in res) {
@@ -160,23 +160,11 @@ export const useAuthRequest = () => {
 /**
  * Makes all the necessary calls to initialize the Jira account
  */
-export async function initializeJiraAccount(accessToken: string, refreshToken: string) {
-  const workspace = await requestWorkspaceInfo(accessToken);
-  if (!workspace) {
-    throw new Error('Could not access the selected workspace. Please try again.');
-  }
-  const userInfo = await requestUserInfo(accessToken, workspace.id);
-  if (!userInfo) {
-    throw new Error('Could not get user info. Please try again.');
-  }
-  const jiraAccount: JiraAccountModel = {
-    accountId: userInfo.accountId,
-    name: userInfo.displayName,
-    avatarUrl: userInfo.avatarUrls?.['48x48'],
-    workspaceName: workspace.name,
-    workspaceAvatarUrl: workspace.avatarUrl,
-    isPrimary: false,
-  };
+export async function initializeJiraAccount(initialAccessToken: string, initialRefreshToken: string) {
+  const { workspace, userInfo, jiraAccount, accessToken, refreshToken } = await requestAccountData(
+    initialAccessToken,
+    initialRefreshToken
+  );
   const jiraAuth: JiraAuthModel = {
     accessToken,
     refreshToken,

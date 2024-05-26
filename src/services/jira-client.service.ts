@@ -24,7 +24,7 @@ export function createJiraClient(jiraAuth: JiraAuthModel, accountId: string): Ve
  * Injects the access token into the request.
  * We need to do this for every request because the access token might have change.
  */
-function addAccessTokenToRequest(config: any, jiraAuth: JiraAuthModel) {
+export function addAccessTokenToRequest(config: any, jiraAuth: JiraAuthModel) {
   config.baseURL = `https://api.atlassian.com/ex/jira/${jiraAuth?.cloudId}`;
   if (jiraAuth?.accessToken) {
     config.headers.Authorization = `Bearer ${jiraAuth!.accessToken}`;
@@ -33,9 +33,15 @@ function addAccessTokenToRequest(config: any, jiraAuth: JiraAuthModel) {
 }
 
 /**
- * Refreshes the access token if it has expired and retries the request
+ * Refreshes the access token if it has expired and retries the request.
+ * Stores the new tokens in the auths object.
  */
-async function handleAxiosError(axiosInstance: AxiosInstance, error: any, jiraAuth: JiraAuthModel, accountId: string) {
+export async function handleAxiosError(
+  axiosInstance: AxiosInstance,
+  error: any,
+  jiraAuth: JiraAuthModel,
+  accountId: string
+) {
   const status = error.response ? error.response.status : null;
 
   if (status === 401) {

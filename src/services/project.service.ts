@@ -27,7 +27,10 @@ export async function loadAvatarForProject(project: Project) {
   }
 
   const auth = store.get(jiraAuthsAtom)?.[project.accountId];
-
+  if (!auth) {
+    // No auth for this account found. Maybe it isn't initialized yet
+    return;
+  }
   const avatarUrl = project._avatarUrl + '?format=png';
   const imageRes = await axios.get(avatarUrl, {
     responseType: 'arraybuffer',

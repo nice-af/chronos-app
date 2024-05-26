@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { projectsAtom, settingsAtom, themeAtom } from '../atoms';
+import { jiraAccountsAtom, projectsAtom, settingsAtom, themeAtom } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -43,6 +43,8 @@ const tagThemesKeys = [
 
 export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
+  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const projects = useAtomValue(projectsAtom);
   const styles = useThemedStyles(createStyles);
   const { issueTagIcon, issueTagColor } = useAtomValue(settingsAtom);
   const tagThemes: Record<(typeof tagThemesKeys)[number], { text: TextStyle; bg: ViewStyle }> = useMemo(
@@ -103,16 +105,30 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
     [theme.type]
   );
 
+  // The placeholder is used to display the component in the settings screen.
+  const isPlaceholder = issueKey === 'placeholder';
+  if (isPlaceholder) {
+    issueKey = 'PROJ-123';
+  }
+
   // TODO: This is a placeholder for the settings. Replace it with the actual workspace color.
   const currentTheme =
     issueTagColor === 'workspace' ? tagThemes.blue : tagThemes[tagThemesKeys[hashStr(issueKey) % tagThemesKeys.length]];
-  const projects = useAtomValue(projectsAtom);
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
-  const project = useMemo(() => getProjectByIssueKey(issueKey, accountId), [issueKey, accountId, projects]);
+  const project = useMemo(
+    () => (isPlaceholder ? null : getProjectByIssueKey(issueKey, accountId)),
+    [issueKey, accountId, projects, isPlaceholder]
+  );
   const hasProjectIcon = issueTagIcon === 'project' || issueTagIcon === 'workspaceAndProject';
+  const projectImageSrc = isPlaceholder
+    ? require('../assets/placeholder-project-icon.png')
+    : project
+      ? { uri: project.avatar, width: 48, height: 48 }
+      : undefined;
 
-  const workspaceImageSrc = require('../assets/logo-orcaya.png');
+  const workspaceImage = jiraAccounts.find(account => account.accountId === accountId)?.workspaceAvatarUrl;
+  const workspaceImageSrc = workspaceImage ? { uri: workspaceImage } : undefined;
   const hasWorkspaceIcon = issueTagIcon === 'workspace' || issueTagIcon === 'workspaceAndProject';
 
   return (
@@ -120,11 +136,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
       {hasWorkspaceIcon &&
         (workspaceImageSrc ? <Image style={styles.logo} source={workspaceImageSrc} /> : <View style={styles.logo} />)}
       {hasProjectIcon &&
-        (project?.avatar ? (
-          <Image style={styles.logo} source={{ uri: project.avatar, width: 48, height: 48 }} />
-        ) : (
-          <View style={styles.logo} />
-        ))}
+        (projectImageSrc ? <Image style={styles.logo} source={projectImageSrc} /> : <View style={styles.logo} />)}
       <View style={[styles.labelContainer, currentTheme.bg]}>
         <Text style={[styles.label, currentTheme.text]}>{issueKey}</Text>
       </View>
@@ -138,6 +150,7 @@ function createStyles(theme: Theme) {
       display: 'flex',
       alignItems: 'center',
       flexDirection: 'row',
+      gap: 2,
       height: 20,
       backgroundColor: 'transparent',
       textAlign: 'center',
@@ -150,7 +163,6 @@ function createStyles(theme: Theme) {
     logo: {
       width: 20,
       height: 20,
-      marginRight: 2,
       backgroundColor: theme.surfaceButtonBase,
     },
     labelContainer: {

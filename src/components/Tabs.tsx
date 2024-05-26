@@ -3,11 +3,11 @@ import { Image, ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, Vi
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { getPadding } from '../styles/utils';
-import { border } from 'polished';
 
-interface TabData {
+export interface TabData {
   label: string;
-  imageSrc?: ImageSourcePropType;
+  workspaceImageSrc?: string;
+  userImageSrc?: string;
   onPress: () => void;
 }
 
@@ -17,14 +17,19 @@ interface TabProps extends TabData {
   isLast: boolean;
 }
 
-const Tab: FC<TabProps> = ({ label, imageSrc, isActive, isFirst, isLast, onPress }) => {
+const Tab: FC<TabProps> = ({ label, workspaceImageSrc, userImageSrc, isActive, isFirst, isLast, onPress }) => {
   const styles = useThemedStyles(createStyles);
 
   return (
     <Pressable
       style={[styles.tab, isActive && styles.tabActive, isFirst && styles.tabFirst, isLast && styles.tabLast]}
       onPress={onPress}>
-      <Image style={styles.logo} source={imageSrc} />
+      {(workspaceImageSrc || userImageSrc) && (
+        <View style={styles.logosContainer}>
+          {workspaceImageSrc && <Image style={styles.logo} source={{ uri: workspaceImageSrc }} />}
+          {userImageSrc && <Image style={styles.logo} source={{ uri: userImageSrc }} />}
+        </View>
+      )}
       <Text>{label}</Text>
     </Pressable>
   );
@@ -86,7 +91,7 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       justifyContent: 'center',
       borderColor: 'transparent',
-      gap: 4,
+      gap: 6,
       ...getPadding(6, 16),
     },
     tabActive: {
@@ -114,11 +119,16 @@ function createStyles(theme: Theme) {
       height: 20,
       backgroundColor: theme.border,
     },
+    logosContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 2,
+      borderRadius: 5,
+      overflow: 'hidden',
+    },
     logo: {
       width: 20,
       height: 20,
-      marginRight: 2,
-      borderRadius: 5,
       backgroundColor: theme.surfaceButtonBase,
     },
   });

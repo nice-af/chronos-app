@@ -69,7 +69,7 @@ export const EditWorklog: FC = () => {
         align: 'left',
         title: (
           <View style={styles.headerContainer}>
-            <IssueKeyTag issueKey={currentWorklogToEdit.issue.key} />
+            <IssueKeyTag issueKey={currentWorklogToEdit.issue.key} accountId={currentWorklogToEdit.accountId} />
             <Text numberOfLines={1} style={styles.title}>
               {currentWorklogToEdit.issue.summary}
             </Text>

@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import ms from 'ms';
 import { requestAccountData } from '../services/jira-info.service';
 import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira-worklogs.service';
-import { JiraAccountsAtom } from '../services/storage.service';
+import { JiraAccountsAtom, JiraAuthsAtom } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogState } from '../types/global.types';
 import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
@@ -85,19 +85,26 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
   const newAccountsData: JiraAccountsAtom = [];
   const primaryAccountId = jiraAccounts.find(account => account.isPrimary)?.accountId;
   const newWorklogsRemote: Worklog[] = [];
+  const newAuths: JiraAuthsAtom = {};
   for (let i = 0; i < jiraAccounts.length; i++) {
     const jiraAccount = jiraAccounts[i];
     const auth = jiraAuths[jiraAccount.accountId];
-    newAccountsData.push(await requestAccountData(auth.accessToken));
+    const {
+      jiraAccount: newJiraAccount,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    } = await requestAccountData(auth.accessToken, auth.refreshToken);
+    newAuths[jiraAccount.accountId] = { ...auth, accessToken: newAccessToken, refreshToken: newRefreshToken };
+    newAccountsData.push(newJiraAccount);
     store.set(syncProgressAtom, progressPerStep * (progressStepsSync + i + 1));
     newWorklogsRemote.push(...(await getRemoteWorklogs(jiraAccount.accountId)));
     store.set(syncProgressAtom, progressPerStep * (progressStepsSync + progressStepsAccountsLoop + i + 1));
   }
+  store.set(jiraAuthsAtom, newAuths);
   store.set(
     jiraAccountsAtom,
     newAccountsData.map(account => ({ ...account, isPrimary: account.accountId === primaryAccountId }))
   );
-  console.log('newWorklogsRemote', newWorklogsRemote);
   store.set(worklogsRemoteAtom, newWorklogsRemote);
 
   // Remove local worklogs that have been synced

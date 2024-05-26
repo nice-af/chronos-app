@@ -15,7 +15,7 @@ import { CustomTextInput } from '../components/CustomTextInput';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { SearchResultsEntry } from '../components/SearchResultsEntry';
-import { Tabs } from '../components/Tabs';
+import { TabData, Tabs } from '../components/Tabs';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
@@ -133,11 +133,20 @@ export const Search: FC = () => {
     setTimeout(() => setCurrentOverlay([Overlay.EDIT_WORKLOG]), 500);
   }
 
-  const tabs = jiraAccounts.map(jiraAccount => ({
-    label: jiraAccount.workspaceName,
-    imageSrc: jiraAccount.workspaceAvatarUrl ? { uri: jiraAccount.workspaceAvatarUrl } : undefined,
-    onPress: () => setAccountId(jiraAccount.accountId),
-  }));
+  const tabs: TabData[] = useMemo(
+    () =>
+      jiraAccounts.map(jiraAccount => ({
+        label: jiraAccount.workspaceName,
+        workspaceImageSrc: jiraAccount.workspaceAvatarUrl,
+        userImageSrc: jiraAccounts.some(
+          acc => acc.workspaceName === jiraAccount.workspaceName && acc.accountId !== jiraAccount.accountId
+        )
+          ? jiraAccount.avatarUrl
+          : undefined,
+        onPress: () => setAccountId(jiraAccount.accountId),
+      })),
+    [jiraAccounts]
+  );
   const hasTabs = tabs.length > 1;
 
   return (
@@ -223,13 +232,6 @@ export const Search: FC = () => {
     </Layout>
   );
 };
-
-const placeholderTabs = [
-  { label: 'Orcaya', imageSrc: require('../assets/logo-orcaya.png') },
-  { label: 'The Mobility House', imageSrc: require('../assets/logo-tmh.png') },
-  { label: 'Solid', imageSrc: require('../assets/logo-solid.png') },
-  { label: 'Super langer Workspace-Name zum Testen', imageSrc: require('../assets/logo-orcaya.png') },
-];
 
 function createStyles(theme: Theme) {
   return StyleSheet.create({
