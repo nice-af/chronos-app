@@ -7,11 +7,15 @@ import {
   worklogsLocalAtom,
   worklogsRemoteAtom,
 } from '../atoms';
+import { migrateUp_0_1_14 } from '../migrations/v0.1.14';
 import { Worklog } from '../types/global.types';
 import { initializeJiraAccount } from './jira-auth.service';
 import { JiraAccountsAtom, JiraClientsAtom, StorageKey, getFromStorage } from './storage.service';
 
 export async function initialize() {
+  // Migrate old account data
+  await migrateUp_0_1_14();
+
   const auths = await getFromStorage(StorageKey.AUTHS);
   store.set(jiraAuthsAtom, auths ?? {});
 
