@@ -18,10 +18,18 @@ interface AccountRowProps {
   accountName?: string;
   workspaceName?: string;
   isPrimary: boolean;
+  showPrimaryButton: boolean;
   onSetPrimary: () => void;
 }
 
-const AccountRow: FC<AccountRowProps> = ({ avatarUrl, accountName, workspaceName, isPrimary, onSetPrimary }) => {
+const AccountRow: FC<AccountRowProps> = ({
+  avatarUrl,
+  accountName,
+  workspaceName,
+  isPrimary,
+  showPrimaryButton,
+  onSetPrimary,
+}) => {
   const logout = useSetAtom(logoutAtom);
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
@@ -63,11 +71,13 @@ const AccountRow: FC<AccountRowProps> = ({ avatarUrl, accountName, workspaceName
           </Text>
         )}
       </View>
-      <ButtonSecondary
-        iconRight={<Image source={isPrimary ? starFilledIcon : starEmptyIcon} />}
-        onPress={onSetPrimary}
-        style={{ ...getPadding(6) }}
-      />
+      {showPrimaryButton && (
+        <ButtonSecondary
+          iconRight={<Image source={isPrimary ? starFilledIcon : starEmptyIcon} />}
+          onPress={onSetPrimary}
+          style={{ ...getPadding(6) }}
+        />
+      )}
       <ButtonDanger label={t('account.logOut')} onPress={handleLogout} />
     </View>
   );
@@ -98,6 +108,7 @@ export const AccountSettings: FC = () => {
           key={jiraAccount.accountId}
           isPrimary={primaryAccountIndex === jiraAccount.accountId}
           onSetPrimary={() => handleSetPrimary(jiraAccount.accountId)}
+          showPrimaryButton={jiraAccounts.length > 1}
           avatarUrl={jiraAccount.avatarUrl}
           accountName={jiraAccount.name}
           workspaceName={jiraAccount.workspaceName}

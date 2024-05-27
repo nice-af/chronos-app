@@ -96,6 +96,7 @@
     "warningWhenEditingOtherDays": "Show warning when editing worklogs from other days",
     "workingTimeCountMethod": {
       "label": "Working time in the sidebar",
+      "note": "Only relevant with multiple accounts",
       "options": {
         "all": "All accounts combined",
         "onlyPrimary": "Only primary account time"

@@ -1,7 +1,7 @@
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { settingsAtom } from '../../atoms';
+import { jiraAccountsAtom, settingsAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
@@ -12,6 +12,7 @@ import { Select } from '../Select';
 export const WorklogSettings: FC = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
   const settingsStyles = useThemedStyles(createSettingsStyles);
+  const jiraAccounts = useAtomValue(jiraAccountsAtom);
   const { t } = useTranslation();
 
   const workingTimeCountMethodOptions: { label: string; value: WorkingTimeCountMethod }[] = [
@@ -29,7 +30,12 @@ export const WorklogSettings: FC = () => {
       />
       <View style={settingsStyles.hr} />
       <View style={styles.rowContainer}>
-        <Text style={settingsStyles.label}>{t('worklogs.workingTimeCountMethod.label')}</Text>
+        <View>
+          <Text style={settingsStyles.label}>{t('worklogs.workingTimeCountMethod.label')}</Text>
+          {jiraAccounts.length < 2 && (
+            <Text style={settingsStyles.note}>{t('worklogs.workingTimeCountMethod.note')}</Text>
+          )}
+        </View>
         <Select<WorkingTimeCountMethod>
           options={workingTimeCountMethodOptions}
           value={settings.workingTimeCountMethod}

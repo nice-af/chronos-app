@@ -96,6 +96,7 @@
     "warningWhenEditingOtherDays": "Warnung beim Bearbeiten von Tagen, die nicht heute sind",
     "workingTimeCountMethod": {
       "label": "Arbeitszeiten in der Seitenleiste",
+      "note": "Nur mit mehreren Accounts relevant",
       "options": {
         "all": "Alle Accounts kombinieren",
         "onlyPrimary": "Nur Zeit des primären Account"

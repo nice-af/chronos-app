@@ -31,7 +31,8 @@ export function createSettingsStyles(theme: Theme) {
       color: theme.textPrimary,
       marginBottom: 12,
     },
-    label: { ...typo.body },
+    label: { ...typo.body, color: theme.textPrimary },
+    note: { ...typo.callout, color: theme.textSecondary },
     hr: {
       width: '100%',
       height: 1,
