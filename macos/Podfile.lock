@@ -1,5 +1,6 @@
 PODS:
   - boost (1.83.0)
+  - ColorThiefSwift (0.5.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.26)
   - FBReactNativeSpec (0.73.26):
@@ -1022,6 +1023,7 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native-macos/third-party-podspecs/boost.podspec`)
+  - ColorThiefSwift (>= 0.5.0)
   - DoubleConversion (from `../node_modules/react-native-macos/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native-macos/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native-macos/React/FBReactNativeSpec`)
@@ -1073,6 +1075,10 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - SocketRocket (from `../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec`)
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
+
+SPEC REPOS:
+  trunk:
+    - ColorThiefSwift
 
 EXTERNAL SOURCES:
   boost:
@@ -1178,6 +1184,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 0686b6af8cbd638c784fea5afb789be66699823c
+  ColorThiefSwift: 7acc83d164abe22da0cf90b13ce7d036efcb0ba4
   DoubleConversion: ca54355f8932558971f6643521d62b9bc8231cee
   FBLazyVector: f2fd8ccbc5c6e1d264e6bc0a084eedfca106cd66
   FBReactNativeSpec: 43d099e6a5c817c5406dd4bb26d71de52493d2de
@@ -1228,6 +1235,6 @@ SPEC CHECKSUMS:
   SocketRocket: f6c6249082c011e6de2de60ed641ef8bbe0cfac9
   Yoga: d916f14a1d3e918bbae9506ae15daf239134f709
 
-PODFILE CHECKSUM: d0323afbe1c4a9fd83604ff577b31034c0d475e4
+PODFILE CHECKSUM: e0c23269fe4e81ec19eb8a56856689a6a4298946
 
 COCOAPODS: 1.15.2

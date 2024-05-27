@@ -6,6 +6,8 @@ prepare_react_native_project!
 target 'JiraTimeTracker-macOS' do
   platform :macos, '10.15'
   use_native_modules!
+  
+  pod 'ColorThiefSwift', '>= 0.5.0'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -17,6 +19,7 @@ target 'JiraTimeTracker-macOS' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
 
   post_install do |installer|
     react_native_post_install(installer)

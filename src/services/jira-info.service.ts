@@ -1,13 +1,14 @@
 import axios, { AxiosInstance } from 'axios';
 import { Version3Models } from 'jira.js';
 import { atom } from 'jotai';
+import { setLightness } from 'polished';
+import getLuminance from 'polished/lib/color/getLuminance';
 import { Alert } from 'react-native';
 import { store } from '../atoms';
 import { JiraResource } from '../types/auth.types';
 import { refreshAccessToken } from './jira-auth.service';
+import { getPrimaryColorFromImage } from './native-get-primary-color.service';
 import { JiraAccountModel } from './storage.service';
-import getLuminance from 'polished/lib/color/getLuminance';
-import { setLightness } from 'polished';
 
 /**
  * We need to temporarily store the tokens while we fetch the account data.
@@ -56,30 +57,25 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
     response => response,
     async error => handleAxiosError(axiosInstance, error)
   );
-  console.log(1);
   const workspace = await requestWorkspaceInfo(axiosInstance);
   if (!workspace) {
     throw new Error('Could not access the selected workspace. Please try again.');
   }
-  console.log(2);
   const userInfo = await requestUserInfo(axiosInstance, workspace.id);
   if (!userInfo) {
     throw new Error('Could not get user info. Please try again.');
   }
-  console.log(3);
   const tokens = store.get(temporaryTokensAtom);
   if (!tokens) {
     throw new Error('Could not get tokens. Please try again.');
   }
-  console.log(4);
   const newAccessToken = tokens.accessToken;
   const newRefreshToken = tokens.refreshToken;
   store.set(temporaryTokensAtom, null);
 
-  console.log(newAccessToken);
-  console.log(workspace.id);
+  const primaryColor = await getPrimaryColorFromImage(workspace.avatarUrl);
+  const defaultLuminance = getLuminance(primaryColor);
 
-  const defaultLuminance = getLuminance('#000');
   return {
     workspace,
     userInfo,
@@ -90,8 +86,8 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
       workspaceName: workspace.name,
       workspaceAvatarUrl: workspace.avatarUrl,
       workspaceColors: {
-        light: setLightness(Math.min(defaultLuminance, 0.65), '#000'),
-        dark: setLightness(Math.max(defaultLuminance, 0.35), '#000'),
+        light: setLightness(Math.min(defaultLuminance, 0.65), primaryColor),
+        dark: setLightness(Math.max(defaultLuminance, 0.35), primaryColor),
       },
       isPrimary: false,
     },

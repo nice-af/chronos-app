@@ -13,6 +13,8 @@
 		3A41A1D02B87AC7700EF67AA /* ReactNativeEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1CF2B87AC7700EF67AA /* ReactNativeEventEmitter.m */; };
 		3A41A1D22B87AC9A00EF67AA /* ReactNativeEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */; };
 		3A4F9E502AE58A4C00227EA8 /* app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */; };
+		3A60F2722C04E0B5001BBA9C /* ReactNativeImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A60F2712C04E0B5001BBA9C /* ReactNativeImageColors.swift */; };
+		3A60F2742C04E264001BBA9C /* ReactNativeImageColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A60F2732C04E264001BBA9C /* ReactNativeImageColors.m */; };
 		3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */; };
 		3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */; };
 		3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */; };
@@ -30,6 +32,8 @@
 		3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeEventEmitter.swift; sourceTree = "<group>"; };
 		3A41A1D32B8814FC00EF67AA /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
+		3A60F2712C04E0B5001BBA9C /* ReactNativeImageColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeImageColors.swift; sourceTree = "<group>"; };
+		3A60F2732C04E264001BBA9C /* ReactNativeImageColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeImageColors.m; sourceTree = "<group>"; };
 		3A6139672B881A0000ED1E60 /* JiraTimeTracker-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JiraTimeTracker-macOS.entitlements"; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 				3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */,
 				3A41A1CF2B87AC7700EF67AA /* ReactNativeEventEmitter.m */,
 				3A41A1D12B87AC9A00EF67AA /* ReactNativeEventEmitter.swift */,
+				3A60F2732C04E264001BBA9C /* ReactNativeImageColors.m */,
+				3A60F2712C04E0B5001BBA9C /* ReactNativeImageColors.swift */,
 			);
 			path = "JiraTimeTracker-macOS";
 			sourceTree = "<group>";
@@ -295,8 +301,10 @@
 				3A41A1D02B87AC7700EF67AA /* ReactNativeEventEmitter.m in Sources */,
 				3A4050122B855D44006B1B2B /* StatusBarManager.swift in Sources */,
 				3A31355B2AF708CB00182B14 /* CustomWindow.swift in Sources */,
+				3A60F2722C04E0B5001BBA9C /* ReactNativeImageColors.swift in Sources */,
 				3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */,
 				3A41A1CE2B87AC5500EF67AA /* EventEmitter.swift in Sources */,
+				3A60F2742C04E264001BBA9C /* ReactNativeImageColors.m in Sources */,
 				3AE174CD2AFAE4C100583EDB /* CustomWindowController.swift in Sources */,
 				3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */,
 				3A41A1D22B87AC9A00EF67AA /* ReactNativeEventEmitter.swift in Sources */,
