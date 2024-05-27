@@ -44,6 +44,7 @@ const tagThemesKeys = [
 export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
   const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const thisJiraAccount = jiraAccounts.find(account => account.accountId === accountId);
   const projects = useAtomValue(projectsAtom);
   const styles = useThemedStyles(createStyles);
   const { issueTagIcon, issueTagColor } = useAtomValue(settingsAtom);
@@ -113,7 +114,14 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
 
   // TODO: This is a placeholder for the settings. Replace it with the actual workspace color.
   const currentTheme =
-    issueTagColor === 'workspace' ? tagThemes.blue : tagThemes[tagThemesKeys[hashStr(issueKey) % tagThemesKeys.length]];
+    issueTagColor === 'workspace' && thisJiraAccount
+      ? {
+          text: { color: thisJiraAccount?.workspaceColors[theme.type ?? 'dark'] },
+          bg: {
+            backgroundColor: transparentize(0.75, thisJiraAccount?.workspaceColors[theme.type ?? 'dark']),
+          },
+        }
+      : tagThemes[tagThemesKeys[hashStr(issueKey) % tagThemesKeys.length]];
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
   const project = useMemo(
@@ -127,7 +135,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
       ? { uri: project.avatar, width: 48, height: 48 }
       : undefined;
 
-  const workspaceImage = jiraAccounts.find(account => account.accountId === accountId)?.workspaceAvatarUrl;
+  const workspaceImage = thisJiraAccount?.workspaceAvatarUrl;
   const workspaceImageSrc = workspaceImage ? { uri: workspaceImage } : undefined;
   const hasWorkspaceIcon = issueTagIcon === 'workspace' || issueTagIcon === 'workspaceAndProject';
 

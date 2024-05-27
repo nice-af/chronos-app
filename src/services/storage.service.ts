@@ -16,6 +16,7 @@ export interface JiraAccountModel {
   avatarUrl?: string;
   workspaceName: string;
   workspaceAvatarUrl?: string;
+  workspaceColors: { light: string; dark: string };
   isPrimary: boolean;
 }
 
