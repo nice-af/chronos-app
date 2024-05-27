@@ -1,9 +1,11 @@
 import { useAtomValue } from 'jotai';
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   hideNonWorkingDaysAtom,
+  jiraAccountsAtom,
   selectedDateAtom,
+  settingsAtom,
   sidebarLayoutAtom,
   themeAtom,
   workingDaysAtom,
@@ -28,12 +30,18 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
+  const primaryJiraAccountId = useAtomValue(jiraAccountsAtom).find(account => account.isPrimary)?.accountId;
+  const { workingTimeCountMethod } = useAtomValue(settingsAtom);
   const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
   const worklogs = useAtomValue(worklogsAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
   const { t } = useTranslation();
+  const worklogsForThisDay = useMemo(
+    () => (hideNonWorkingDays && !isWorkingDay ? [] : worklogs.filter(worklog => worklog.started === dateString)),
+    [worklogs, dateString, hideNonWorkingDays, isWorkingDay]
+  );
 
   if (hideNonWorkingDays && !isWorkingDay) {
     return null;
@@ -47,17 +55,15 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
     height = 28;
   }
 
-  let duration = worklogs
-    .filter(worklog => worklog.started === dateString)
-    .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
   const isSelected = selectedDate === dateString;
-
-  const worklogsForThisDay = worklogs.filter(worklog => worklog.started === dateString);
   const isChecked =
     worklogsForThisDay.length > 0 && worklogsForThisDay.every(worklog => worklog.state === WorklogState.SYNCED);
   const hasChanges = worklogsForThisDay.some(
     worklog => worklog.started === dateString && worklog.state !== WorklogState.SYNCED
   );
+  const duration = worklogsForThisDay
+    .filter(worklog => workingTimeCountMethod === 'all' || worklog.accountId === primaryJiraAccountId)
+    .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
 
   return (
     <Pressable
