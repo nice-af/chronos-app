@@ -7,6 +7,7 @@ import {
   currentOverlayAtom,
   currentWorklogToEditAtom,
   deleteWorklogAtom,
+  jiraAccountsAtom,
   selectedDateAtom,
   setWorklogAsActiveAtom,
   settingsAtom,
@@ -40,6 +41,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const deleteWorklog = useSetAtom(deleteWorklogAtom);
+  const primaryJiraAccountId = useAtomValue(jiraAccountsAtom).find(account => account.isPrimary)?.accountId;
   const { getModalConfirmation } = useModal();
   const { t } = useTranslation();
   const ref = useRef(null);
@@ -134,7 +136,12 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         </View>
         {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
       </View>
-      <PlayPauseButton duration={worklog.timeSpentSeconds} isRunning={isActiveWorklog} onPress={handlePlayPause} />
+      <PlayPauseButton
+        duration={worklog.timeSpentSeconds}
+        isRunning={isActiveWorklog}
+        onPress={handlePlayPause}
+        isPrimaryWorklog={worklog.accountId === primaryJiraAccountId}
+      />
     </Pressable>
   );
 };

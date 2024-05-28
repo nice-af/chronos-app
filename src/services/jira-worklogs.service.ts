@@ -7,6 +7,7 @@ import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.serv
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
 import { getJiraClient } from './jira-auth.service';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
+import { parseDurationStringToSeconds } from './time.service';
 
 /**
  * Converts Jira worklogs to our custom format
@@ -22,12 +23,10 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
         summary: issue.fields.summary,
       },
       started: formatDateToYYYYMMDD(new Date(worklog.started ?? 0)),
-      timeSpentSeconds: (worklog.timeSpent ?? '').split(' ').reduce(
-        (acc: number, curr: string) =>
-          // TODO: This is a hacky way to convert the Jira time format to ms
-          acc + ms(curr.replace('m', 'min').replace('1d', '8h').replace('2d', '16h').replace('3d', '24h')) / 1_000,
-        0
-      ),
+      timeSpentSeconds: (worklog.timeSpent ?? '').split(' ').reduce((acc: number, curr: string) => {
+        console.log(curr, parseDurationStringToSeconds(curr), parseDurationStringToSeconds(curr) / 60 / 60);
+        return acc + parseDurationStringToSeconds(curr);
+      }, 0),
       comment: worklog.comment ? convertAdfToMd(worklog.comment) : '',
       state: WorklogState.SYNCED,
       accountId: accountId,
