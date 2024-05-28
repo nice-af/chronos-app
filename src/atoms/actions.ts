@@ -3,6 +3,8 @@ import { jiraAccountsAtom, jiraAuthsAtom, jiraClientsAtom } from './auth';
 import { projectsProtectedAtom } from './project';
 import { store } from './store';
 import { worklogsLocalAtom, worklogsLocalBackupsAtom, worklogsRemoteAtom } from './worklog';
+import { JiraAccountsAtom, JiraAuthsAtom } from '../services/storage.service';
+import { Worklog } from '../types/global.types';
 
 /**
  * Logs the user out but keeps local worklogs
@@ -39,17 +41,19 @@ export async function logout(accountId: string) {
 
 /**
  * We don't want our storage to grow indefinitely, so we need to clean it up from time to time.
+ * This only cleans the given data and does not save or store anything, but rather returns the cleaned data.
  * This function is called when the app starts and does the following:
  * - Removes auths that do not have a corresponding account
  * - Removes all local worklogs that are older than 60 days
  * - Removes all backup worklogs that are older than 60 days
  * - Limits the maximum number of projects to 250 by removing the first ones in the array
  */
-export function storageCleanup() {
-  let jiraAuths = store.get(jiraAuthsAtom);
-  let jiraAccounts = store.get(jiraAccountsAtom);
-  let worklogsLocal = store.get(worklogsLocalAtom);
-  let worklogsLocalBackups = store.get(worklogsLocalBackupsAtom);
+export function storageCleanup(
+  jiraAccounts: JiraAccountsAtom,
+  jiraAuths: JiraAuthsAtom,
+  worklogsLocal: Worklog[],
+  worklogsLocalBackups: Worklog[]
+) {
   const now = Date.now();
 
   // Clean auths
@@ -58,7 +62,6 @@ export function storageCleanup() {
     const hasUnlinkedAuths = Object.keys(jiraAuths).some(authId => !accountIds.includes(authId));
     if (hasUnlinkedAuths) {
       const newAuths = Object.fromEntries(Object.entries(jiraAuths).filter(([authId]) => accountIds.includes(authId)));
-      store.set(jiraAuthsAtom, newAuths);
       jiraAuths = newAuths;
     }
   }
@@ -70,7 +73,6 @@ export function storageCleanup() {
       return now - date < ms('60d');
     });
     if (worklogsLocalFiltered.length !== worklogsLocal.length) {
-      store.set(worklogsLocalBackupsAtom, worklogsLocalFiltered);
       worklogsLocal = worklogsLocalFiltered;
     }
   }
@@ -82,7 +84,6 @@ export function storageCleanup() {
       return now - date < ms('60d');
     });
     if (worklogsLocalBackupsFiltered.length !== worklogsLocalBackups.length) {
-      store.set(worklogsLocalBackupsAtom, worklogsLocalBackupsFiltered);
       worklogsLocalBackups = worklogsLocalBackupsFiltered;
     }
   }
@@ -95,7 +96,6 @@ export function storageCleanup() {
 
   return {
     jiraAuths,
-    jiraAccounts,
     worklogsLocal,
     worklogsLocalBackups,
   };
