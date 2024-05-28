@@ -97,5 +97,6 @@ export function storageCleanup() {
     jiraAuths,
     jiraAccounts,
     worklogsLocal,
+    worklogsLocalBackups,
   };
 }

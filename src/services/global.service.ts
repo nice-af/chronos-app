@@ -20,7 +20,7 @@ export async function initialize() {
   // Clear storage from old data
   // We already read and write to stirage in the cleanup function,
   // so we get the data from there instead of accessing the store again
-  const { jiraAuths, jiraAccounts, worklogsLocal } = storageCleanup();
+  const { jiraAuths, jiraAccounts, worklogsLocal, worklogsLocalBackups } = storageCleanup();
   const settings = await getFromStorage(StorageKey.SETTINGS);
 
   store.set(jiraAuthsAtom, jiraAuths ?? {});

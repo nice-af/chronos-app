@@ -50,6 +50,11 @@ export const Modal: FC = () => {
       theme.type === 'light'
         ? require('../assets/modal-icons/account-warning-light.png')
         : require('../assets/modal-icons/account-warning-dark.png');
+  } else if (data.icon === 'recover-worklogs') {
+    iconSource =
+      theme.type === 'light'
+        ? require('../assets/modal-icons/recover-worklogs-light.png')
+        : require('../assets/modal-icons/recover-worklogs-dark.png');
   }
 
   return (
@@ -90,14 +95,14 @@ export const Modal: FC = () => {
           <Text style={styles.text}>{data.text}</Text>
           <View style={styles.buttonsContainer}>
             <ButtonSecondary
-              label={t('modals.cancel')}
+              label={data.cancelButtonLabel ?? t('modals.cancel')}
               onPress={data.onCancel}
-              style={{ flexBasis: 100, flexGrow: 1 }}
+              style={{ flexBasis: 100, flexGrow: 1, paddingLeft: 10, paddingRight: 10 }}
             />
             <ButtonPrimary
-              label={t('modals.continue')}
+              label={data.confirmButtonLabel ?? t('modals.continue')}
               onPress={data.onConfirm}
-              style={{ flexBasis: 100, flexGrow: 1 }}
+              style={{ flexBasis: 100, flexGrow: 1, paddingLeft: 10, paddingRight: 10 }}
             />
           </View>
         </View>

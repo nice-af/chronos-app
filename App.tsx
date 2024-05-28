@@ -11,6 +11,7 @@ import { WorklogStateWatcher } from './src/watchers/WorklogStateWatcher';
 import { GlobalProvider } from './src/providers/GlobalProvider';
 import { Main } from './src/screens/Main';
 import { WorklogDeepLinkWatcher } from './src/watchers/WorklogDeepLinkWatcher';
+import { WorklogBackupsWatcher } from './src/watchers/WorklogBackupsWatcher';
 
 const App: FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: FC = () => {
         <Modal />
         <WorklogStateWatcher />
         <WorklogDeepLinkWatcher />
+        <WorklogBackupsWatcher />
         <NotificationWatcher />
         <ColorSchemeWatcher />
         <GlobalProvider>
