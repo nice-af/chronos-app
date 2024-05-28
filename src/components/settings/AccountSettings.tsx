@@ -93,7 +93,9 @@ export const AccountSettings: FC = () => {
   function handleSetPrimary(accountId: string) {
     setPrimaryAccountIndex(accountId);
     setJiraAccounts(
-      jiraAccounts.map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.accountId === accountId }))
+      jiraAccounts
+        .map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.accountId === accountId }))
+        .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary))
     );
   }
 
