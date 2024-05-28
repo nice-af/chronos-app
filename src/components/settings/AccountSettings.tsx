@@ -13,6 +13,7 @@ import { typo } from '../../styles/typo';
 import { getPadding } from '../../styles/utils';
 import { ButtonDanger } from '../ButtonDanger';
 import { ButtonSecondary } from '../ButtonSecondary';
+import { LoadingSpinnerSmall } from '../LoadingSpinnerSmall';
 
 interface AccountRowProps {
   jiraAccount: JiraAccountModel;
@@ -84,7 +85,7 @@ export const AccountSettings: FC = () => {
   const styles = useThemedStyles(createStyles);
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { t } = useTranslation();
-  const { initOAuth } = useAuthRequest();
+  const { initOAuth, isLoading } = useAuthRequest();
   const [primaryAccountIndex, setPrimaryAccountIndex] = useState(
     jiraAccounts.find(jiraAccount => jiraAccount.isPrimary)?.accountId
   );
@@ -108,9 +109,16 @@ export const AccountSettings: FC = () => {
           jiraAccount={jiraAccount}
         />
       ))}
-      <View style={styles.buttonContainer}>
-        <ButtonSecondary label={t('account.addNewAccount')} onPress={initOAuth} />
-      </View>
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <LoadingSpinnerSmall />
+          <Text style={styles.loadingText}>{t('account.addingNewAccount')}</Text>
+        </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <ButtonSecondary label={t('account.addNewAccount')} onPress={initOAuth} />
+        </View>
+      )}
     </View>
   );
 };
@@ -146,6 +154,18 @@ function createStyles(theme: Theme) {
     },
     buttonContainer: {
       marginTop: 8,
+    },
+    loadingContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+      marginTop: 14,
+      marginBottom: 4,
+    },
+    loadingText: {
+      ...typo.body,
+      color: theme.textPrimary,
     },
   });
 }

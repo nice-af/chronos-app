@@ -1,5 +1,6 @@
 {
   "account": {
+    "addingNewAccount": "Adding new account",
     "addNewAccount": "Add new account",
     "logOut": "Log out",
     "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar",

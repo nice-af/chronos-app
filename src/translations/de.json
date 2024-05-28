@@ -1,5 +1,6 @@
 {
   "account": {
+    "addingNewAccount": "Neuer Account wird hinzugefügt",
     "addNewAccount": "Weiteren Account hinzufügen",
     "logOut": "Abmelden",
     "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
