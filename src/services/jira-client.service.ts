@@ -1,9 +1,17 @@
 import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
 import { Alert } from 'react-native';
-import { jiraAuthsAtom, jiraClientsAtom, store } from '../atoms';
+import {
+  jiraAccountsAtom,
+  jiraAuthsAtom,
+  jiraClientsAtom,
+  store,
+  worklogsLocalAtom,
+  worklogsLocalBackupsAtom,
+} from '../atoms';
 import { refreshAccessToken } from '../services/jira-auth.service';
 import { JiraAuthModel } from '../services/storage.service';
+import { Worklog } from '../types/global.types';
 
 export function createJiraClient(jiraAuth: JiraAuthModel, accountId: string): Version3Client {
   const jiraClient = new Version3Client({ host: 'https://example.com' });
@@ -63,10 +71,26 @@ export async function handleAxiosError(
     } catch (err) {
       if ((err as Error).message === 'refresh_token is invalid') {
         // Refresh token has expired after 90 days, user needs to re-authenticate
-        Alert.alert('Your session has expired!', 'Please log in again.');
+        const jiraAccount = store.get(jiraAccountsAtom).find(account => account.accountId === accountId);
+        Alert.alert(
+          'Your session has expired!',
+          `Please log in again as ${jiraAccount?.name} on the ${jiraAccount?.workspaceName} workspace.`
+        );
 
-        // Remove the accountId from the auths object
-        // TODO: Add a way to re-authenticate
+        // Remove the accountId from the auths object and store local worklogs of account in backup storage
+        const localWorklogs = store.get(worklogsLocalAtom);
+        const newBackupWorklogs: Worklog[] = [];
+        store.set(
+          worklogsLocalAtom,
+          localWorklogs.filter(worklog => {
+            if (worklog.accountId === accountId) {
+              newBackupWorklogs.push(worklog);
+              return false;
+            }
+            return true;
+          })
+        );
+        store.set(worklogsLocalBackupsAtom, cur => [...cur, ...newBackupWorklogs]);
         delete jiraAuths[accountId];
         store.set(jiraAuthsAtom, { ...jiraAuths });
       } else {

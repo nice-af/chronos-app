@@ -112,7 +112,6 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
     issueKey = 'PROJ-123';
   }
 
-  // TODO: This is a placeholder for the settings. Replace it with the actual workspace color.
   const currentTheme =
     issueTagColor === 'workspace' && thisJiraAccount
       ? {

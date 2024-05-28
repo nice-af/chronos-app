@@ -15,7 +15,6 @@ import { WorklogBackupsWatcher } from './src/watchers/WorklogBackupsWatcher';
 
 const App: FC = () => {
   return (
-    // TODO @AdrianFahrbach make pretty
     <Suspense fallback={<Text>Loading...</Text>}>
       <Provider store={store}>
         {Platform.OS === 'macos' && <TrafficLights />}

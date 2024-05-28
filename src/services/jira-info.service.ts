@@ -4,7 +4,7 @@ import { atom } from 'jotai';
 import { setLightness } from 'polished';
 import getLuminance from 'polished/lib/color/getLuminance';
 import { Alert } from 'react-native';
-import { store } from '../atoms';
+import { jiraAccountsAtom, store } from '../atoms';
 import { JiraResource } from '../types/auth.types';
 import { refreshAccessToken } from './jira-auth.service';
 import { getPrimaryColorFromImage } from './native-get-primary-color.service';
@@ -129,7 +129,7 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any)
     } catch (err) {
       if ((err as Error).message === 'refresh_token is invalid') {
         // Refresh token has expired after 90 days, user needs to re-authenticate
-        Alert.alert('Your session has expired!', 'Please log in again.');
+        Alert.alert('Your session has expired!', 'Please try to log in again.');
         store.set(temporaryTokensAtom, null);
       } else {
         // Rethrow unexpected errors
