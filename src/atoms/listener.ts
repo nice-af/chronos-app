@@ -1,7 +1,7 @@
 import { sendNativeEvent } from '../services/native-event-emitter.service';
 import { NativeEvent, StatusBarState } from '../services/native-event-emitter.service.types';
 import { StorageKey, setInStorage } from '../services/storage.service';
-import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
+import { jiraAccountsAtom, jiraAuthsAtom, primaryJiraAccountIdAtom } from './auth';
 import { settingsAtom } from './setting';
 import { store } from './store';
 import { activeWorklogAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from './worklog';
@@ -11,6 +11,7 @@ import { activeWorklogAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from '
  */
 store.sub(jiraAccountsAtom, () => {
   const jiraAccounts = store.get(jiraAccountsAtom);
+  store.set(primaryJiraAccountIdAtom, jiraAccounts.find(a => a.isPrimary)?.accountId ?? '');
   setInStorage(StorageKey.ACCOUNTS, jiraAccounts);
 });
 store.sub(jiraAuthsAtom, () => {

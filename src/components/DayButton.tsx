@@ -4,6 +4,7 @@ import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } fr
 import {
   hideNonWorkingDaysAtom,
   jiraAccountsAtom,
+  primaryJiraAccountIdAtom,
   selectedDateAtom,
   settingsAtom,
   sidebarLayoutAtom,
@@ -30,7 +31,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
-  const primaryJiraAccountId = useAtomValue(jiraAccountsAtom).find(account => account.isPrimary)?.accountId;
+  const primaryJiraAccountId = useAtomValue(primaryJiraAccountIdAtom);
   const { workingTimeCountMethod } = useAtomValue(settingsAtom);
   const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
   const styles = useThemedStyles(createStyles);

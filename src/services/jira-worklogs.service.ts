@@ -23,10 +23,9 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
         summary: issue.fields.summary,
       },
       started: formatDateToYYYYMMDD(new Date(worklog.started ?? 0)),
-      timeSpentSeconds: (worklog.timeSpent ?? '').split(' ').reduce((acc: number, curr: string) => {
-        console.log(curr, parseDurationStringToSeconds(curr), parseDurationStringToSeconds(curr) / 60 / 60);
-        return acc + parseDurationStringToSeconds(curr);
-      }, 0),
+      timeSpentSeconds: (worklog.timeSpent ?? '')
+        .split(' ')
+        .reduce((acc: number, curr: string) => acc + parseDurationStringToSeconds(curr), 0),
       comment: worklog.comment ? convertAdfToMd(worklog.comment) : '',
       state: WorklogState.SYNCED,
       accountId: accountId,

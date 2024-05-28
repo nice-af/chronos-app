@@ -5,7 +5,7 @@ import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira-worklog
 import { JiraAccountsAtom, JiraAuthsAtom } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogState } from '../types/global.types';
-import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
+import { jiraAccountsAtom, jiraAuthsAtom, primaryJiraAccountIdAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { store } from './store';
 
@@ -84,7 +84,7 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
   await syncWorklogs(worklogsToSync, progressPerStep);
 
   const newAccountsData: JiraAccountsAtom = [];
-  const primaryAccountId = jiraAccounts.find(account => account.isPrimary)?.accountId;
+  const primaryJiraAccountId = store.get(primaryJiraAccountIdAtom);
   const newWorklogsRemote: Worklog[] = [];
   const newAuths: JiraAuthsAtom = {};
   for (let i = 0; i < jiraAccounts.length; i++) {
@@ -104,7 +104,7 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
   store.set(jiraAuthsAtom, newAuths);
   store.set(
     jiraAccountsAtom,
-    newAccountsData.map(account => ({ ...account, isPrimary: account.accountId === primaryAccountId }))
+    newAccountsData.map(account => ({ ...account, isPrimary: account.accountId === primaryJiraAccountId }))
   );
   store.set(worklogsRemoteAtom, newWorklogsRemote);
 

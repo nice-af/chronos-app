@@ -7,7 +7,7 @@ import {
   currentOverlayAtom,
   currentWorklogToEditAtom,
   deleteWorklogAtom,
-  jiraAccountsAtom,
+  primaryJiraAccountIdAtom,
   selectedDateAtom,
   setWorklogAsActiveAtom,
   settingsAtom,
@@ -26,7 +26,6 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
-
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklog: Worklog;
   isSelected?: boolean;
@@ -41,7 +40,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const deleteWorklog = useSetAtom(deleteWorklogAtom);
-  const primaryJiraAccountId = useAtomValue(jiraAccountsAtom).find(account => account.isPrimary)?.accountId;
+  const primaryJiraAccountId = useAtomValue(primaryJiraAccountIdAtom);
   const { getModalConfirmation } = useModal();
   const { t } = useTranslation();
   const ref = useRef(null);

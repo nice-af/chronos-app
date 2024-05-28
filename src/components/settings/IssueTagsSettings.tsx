@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, settingsAtom } from '../../atoms';
+import { primaryJiraAccountIdAtom, settingsAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { IssueTagColorOption, IssueTagIconOption } from '../../services/storage.service';
 import { useThemedStyles } from '../../services/theme.service';
@@ -12,8 +12,7 @@ import { Select } from '../Select';
 export const IssueTagsSettings: FC = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
   const settingsStyles = useThemedStyles(createSettingsStyles);
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
-  const primaryJiraAccount = jiraAccounts.find(account => account.isPrimary) ?? jiraAccounts[0];
+  const primaryJiraAccountId = useAtomValue(primaryJiraAccountIdAtom);
   const { t } = useTranslation();
 
   const issueTagIconOptions: { label: string; value: IssueTagIconOption }[] = [
@@ -33,7 +32,7 @@ export const IssueTagsSettings: FC = () => {
       <Text style={settingsStyles.headline}>{t('issueTag.settingsTitle')}</Text>
       <View style={[styles.rowContainer, { marginBottom: 10 }]}>
         <Text style={settingsStyles.label}>{t('issueTag.preview')}</Text>
-        <IssueKeyTag issueKey='placeholder' accountId={primaryJiraAccount.accountId} />
+        <IssueKeyTag issueKey='placeholder' accountId={primaryJiraAccountId} />
       </View>
       <View style={[styles.rowContainer, { marginBottom: 10 }]}>
         <Text style={settingsStyles.label}>{t('issueTag.icon.label')}</Text>
