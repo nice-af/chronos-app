@@ -132,7 +132,7 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any)
         Alert.alert('Your session has expired!', 'Please log in again.');
         store.set(temporaryTokensAtom, null);
       } else {
-        // Retrow unexpected errors
+        // Rethrow unexpected errors
         throw err;
       }
     }

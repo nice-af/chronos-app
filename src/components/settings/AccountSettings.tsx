@@ -1,9 +1,11 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, logoutAtom, themeAtom } from '../../atoms';
+import { jiraAccountsAtom, logout, themeAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
+import { useAuthRequest } from '../../services/jira-auth.service';
 import { useModal } from '../../services/modal.service';
+import { JiraAccountModel } from '../../services/storage.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
@@ -11,26 +13,20 @@ import { typo } from '../../styles/typo';
 import { getPadding } from '../../styles/utils';
 import { ButtonDanger } from '../ButtonDanger';
 import { ButtonSecondary } from '../ButtonSecondary';
-import { useAuthRequest } from '../../services/jira-auth.service';
 
 interface AccountRowProps {
-  avatarUrl?: string;
-  accountName?: string;
-  workspaceName?: string;
+  jiraAccount: JiraAccountModel;
   isPrimary: boolean;
   showPrimaryButton: boolean;
   onSetPrimary: () => void;
 }
 
 const AccountRow: FC<AccountRowProps> = ({
-  avatarUrl,
-  accountName,
-  workspaceName,
+  jiraAccount: { accountId, name, avatarUrl, workspaceName },
   isPrimary,
   showPrimaryButton,
   onSetPrimary,
 }) => {
-  const logout = useSetAtom(logoutAtom);
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const { t } = useTranslation();
@@ -43,7 +39,7 @@ const AccountRow: FC<AccountRowProps> = ({
       text: t('modals.accountLogoutText'),
     });
     if (confirmed) {
-      logout();
+      logout(accountId);
     }
   }
 
@@ -60,9 +56,9 @@ const AccountRow: FC<AccountRowProps> = ({
     <View style={styles.rowContainer}>
       <Image source={{ uri: avatarUrl, width: 48, height: 48 }} style={styles.avatar} />
       <View style={styles.accountInfo}>
-        {accountName && (
+        {name && (
           <Text numberOfLines={1} lineBreakMode='clip' style={styles.username}>
-            {accountName}
+            {name}
           </Text>
         )}
         {workspaceName && (
@@ -109,9 +105,7 @@ export const AccountSettings: FC = () => {
           isPrimary={primaryAccountIndex === jiraAccount.accountId}
           onSetPrimary={() => handleSetPrimary(jiraAccount.accountId)}
           showPrimaryButton={jiraAccounts.length > 1}
-          avatarUrl={jiraAccount.avatarUrl}
-          accountName={jiraAccount.name}
-          workspaceName={jiraAccount.workspaceName}
+          jiraAccount={jiraAccount}
         />
       ))}
       <View style={styles.buttonContainer}>

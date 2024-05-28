@@ -8,6 +8,7 @@ export enum StorageKey {
   AUTHS = 'auths',
   SETTINGS = 'settings',
   WORKLOGS_LOCAL = 'worklogsLocal',
+  WORKLOGS_LOCAL_BACKUPS = 'worklogsLocalBackups',
 }
 
 export interface JiraAccountModel {
@@ -53,6 +54,7 @@ interface StorageTypes {
   [StorageKey.AUTHS]: JiraAuthsAtom;
   [StorageKey.SETTINGS]: SettingsModel;
   [StorageKey.WORKLOGS_LOCAL]: Worklog[];
+  [StorageKey.WORKLOGS_LOCAL_BACKUPS]: Worklog[];
 }
 
 export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
@@ -71,6 +73,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
     issueTagColor: 'issue',
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
+  [StorageKey.WORKLOGS_LOCAL_BACKUPS]: [],
 };
 
 export async function getFromStorage<T extends StorageKey = never>(key: T): Promise<StorageTypes[T]> {

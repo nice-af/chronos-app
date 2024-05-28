@@ -13,6 +13,7 @@ export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 export const syncProgressAtom = atom<number | null>(null);
 export const worklogsLocalAtom = atom<Worklog[]>([]);
 export const worklogsRemoteAtom = atom<Worklog[]>([]);
+export const worklogsLocalBackupsAtom = atom<Worklog[]>([]);
 /**
  * Local and remote worklogs combined.
  * Local worklogs are prioritized over remote worklogs.

@@ -70,7 +70,7 @@ export async function handleAxiosError(
         delete jiraAuths[accountId];
         store.set(jiraAuthsAtom, { ...jiraAuths });
       } else {
-        // Retrow unexpected errors
+        // Rethrow unexpected errors
         throw err;
       }
     }

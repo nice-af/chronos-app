@@ -4,7 +4,7 @@ import { StorageKey, setInStorage } from '../services/storage.service';
 import { jiraAccountsAtom, jiraAuthsAtom } from './auth';
 import { settingsAtom } from './setting';
 import { store } from './store';
-import { activeWorklogAtom, worklogsLocalAtom } from './worklog';
+import { activeWorklogAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from './worklog';
 
 /**
  * Persist changes to AsyncStorage
@@ -25,6 +25,10 @@ store.sub(settingsAtom, () => {
 store.sub(worklogsLocalAtom, () => {
   const worklogs = store.get(worklogsLocalAtom);
   setInStorage(StorageKey.WORKLOGS_LOCAL, worklogs);
+});
+store.sub(worklogsLocalBackupsAtom, () => {
+  const backupWorklogs = store.get(worklogsLocalBackupsAtom);
+  setInStorage(StorageKey.WORKLOGS_LOCAL_BACKUPS, backupWorklogs);
 });
 
 /**

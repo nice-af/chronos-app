@@ -3,6 +3,7 @@ import {
   jiraAuthsAtom,
   jiraClientsAtom,
   settingsAtom,
+  storageCleanup,
   store,
   worklogsLocalAtom,
   worklogsRemoteAtom,
@@ -16,25 +17,25 @@ export async function initialize() {
   // Migrate old account data
   await migrateUp_0_1_14();
 
-  const auths = await getFromStorage(StorageKey.AUTHS);
-  store.set(jiraAuthsAtom, auths ?? {});
-
+  // Clear storage from old data
+  // We already read and write to stirage in the cleanup function,
+  // so we get the data from there instead of accessing the store again
+  const { jiraAuths, jiraAccounts, worklogsLocal } = storageCleanup();
   const settings = await getFromStorage(StorageKey.SETTINGS);
-  store.set(settingsAtom, settings);
 
-  const worklogsLocal = await getFromStorage(StorageKey.WORKLOGS_LOCAL);
+  store.set(jiraAuthsAtom, jiraAuths ?? {});
+  store.set(settingsAtom, settings);
   store.set(worklogsLocalAtom, worklogsLocal);
 
-  const accounts = await getFromStorage(StorageKey.ACCOUNTS);
-  if (accounts === null) {
+  if (jiraAccounts === null) {
     store.set(jiraAccountsAtom, []);
   } else {
     const newAccountsData: JiraAccountsAtom = [];
     const newJiraClients: JiraClientsAtom = {};
     const newWorklogs: Worklog[] = [];
 
-    for (const account of accounts) {
-      const auth = auths[account.accountId];
+    for (const account of jiraAccounts) {
+      const auth = jiraAuths[account.accountId];
       if (!auth) {
         // We don't have auth for this account, so we have to remove it
         // TODO: Add a way to re-authenticate
