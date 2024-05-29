@@ -1,6 +1,7 @@
+import { useAtom } from 'jotai';
 import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { logout } from '../../atoms';
+import { jiraAccountsAtom, logout } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useModal } from '../../services/modal.service';
 import { JiraAccountModel } from '../../services/storage.service';
@@ -16,10 +17,10 @@ interface AccountSettingsOptionsProps {
 }
 
 export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAccount }) => {
-  const { accountId, workspaceName } = jiraAccount;
-  const [customWorkspaceName, setCustomWorkspaceName] = useState(workspaceName);
-  const [customColorValue, setCustomColorValue] = useState('');
-  const [workspaceColor, setWorkspaceColor] = useState<ColorOption>('custom');
+  const { accountId, workspaceDisplayName, workspaceColor, customWorkspaceColor } = jiraAccount;
+  const [jiraAccounts, setJiraAccounts] = useAtom(jiraAccountsAtom);
+  const [customWorkspaceName, setCustomWorkspaceName] = useState(workspaceDisplayName);
+  const [customWorkspaceColorValue, setCustomWorkspaceColorValue] = useState(customWorkspaceColor ?? '0B84FF');
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
   const { getModalConfirmation } = useModal();
@@ -35,11 +36,38 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAc
     }
   }
 
+  function updateJiraAccountValue(changes: Partial<JiraAccountModel>) {
+    const newJiraAccounts = jiraAccounts.map(account => {
+      if (account.accountId === accountId) {
+        return { ...account, ...changes };
+      }
+      return account;
+    });
+    setJiraAccounts(newJiraAccounts);
+  }
+
+  function updateWorkspaceDisplayName() {
+    updateJiraAccountValue({ workspaceDisplayName: customWorkspaceName });
+  }
+
+  function updateWorkspaceColor(newColor: ColorOption) {
+    updateJiraAccountValue({ workspaceColor: newColor });
+  }
+
+  function updateWorkspaceCustomColor() {
+    // Make sure that the custom color is a valid hex color
+    const hexColorRegex = /^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    if (!hexColorRegex.test(customWorkspaceColorValue)) {
+      return;
+    }
+    updateJiraAccountValue({ customWorkspaceColor: `#${customWorkspaceColorValue}` });
+  }
+
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.label}>{t('workspace.color')}</Text>
-        <ColorSelector selectedColor={workspaceColor} setSelectedColor={setWorkspaceColor} />
+        <ColorSelector selectedColor={workspaceColor} setSelectedColor={updateWorkspaceColor} />
       </View>
       <View style={styles.inputsContainer}>
         <CustomTextInput
@@ -48,15 +76,17 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAc
           numberOfLines={1}
           onChangeText={newText => setCustomWorkspaceName(newText)}
           containerStyle={[styles.input, { flexGrow: 1 }]}
+          onBlur={updateWorkspaceDisplayName}
         />
         <CustomTextInput
           label={t('workspace.customColor')}
-          value={customColorValue}
+          value={customWorkspaceColorValue}
           numberOfLines={1}
-          onChangeText={newText => setCustomColorValue(newText)}
+          onChangeText={newText => setCustomWorkspaceColorValue(newText.replace('#', ''))}
           containerStyle={[styles.input, { flexBasis: 92, flexGrow: 0 }]}
           visiblePrefix='#'
           maxLength={6}
+          onBlur={updateWorkspaceCustomColor}
         />
       </View>
       <View style={styles.buttonContainer}>

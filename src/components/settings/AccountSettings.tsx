@@ -22,7 +22,7 @@ interface AccountRowProps {
 }
 
 const AccountRow: FC<AccountRowProps> = ({ jiraAccount, isPrimary, showPrimaryButton, onSetPrimary }) => {
-  const { name, avatarUrl, workspaceName } = jiraAccount;
+  const { name, avatarUrl, workspaceDisplayName } = jiraAccount;
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const [showSettings, setShowSettings] = useState(false);
@@ -59,9 +59,9 @@ const AccountRow: FC<AccountRowProps> = ({ jiraAccount, isPrimary, showPrimaryBu
               {name}
             </Text>
           )}
-          {workspaceName && (
+          {workspaceDisplayName && (
             <Text numberOfLines={1} lineBreakMode='clip' style={styles.workspaceName}>
-              {workspaceName}
+              {workspaceDisplayName}
             </Text>
           )}
         </View>

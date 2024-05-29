@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Version3Client } from 'jira.js';
 import { SidebarLayout } from '../const';
 import { DayId, Worklog } from '../types/global.types';
+import { ColorOption } from '../components/settings/ColorSelector';
 
 export enum StorageKey {
   ACCOUNTS = 'accounts',
@@ -16,8 +17,10 @@ export interface JiraAccountModel {
   name?: string;
   avatarUrl?: string;
   workspaceName: string;
+  workspaceDisplayName: string;
   workspaceAvatarUrl?: string;
-  workspaceColors: { light: string; dark: string };
+  workspaceColor: ColorOption;
+  customWorkspaceColor?: string;
   isPrimary: boolean;
 }
 

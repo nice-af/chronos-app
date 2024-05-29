@@ -1,13 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
 import { Version3Models } from 'jira.js';
 import { atom } from 'jotai';
-import { setLightness } from 'polished';
-import getLuminance from 'polished/lib/color/getLuminance';
 import { Alert } from 'react-native';
-import { jiraAccountsAtom, store } from '../atoms';
+import { store } from '../atoms';
+import { colorKeys } from '../styles/theme/theme-types';
 import { JiraResource } from '../types/auth.types';
 import { refreshAccessToken } from './jira-auth.service';
-import { getPrimaryColorFromImage } from './native-get-primary-color.service';
 import { JiraAccountModel } from './storage.service';
 
 /**
@@ -76,9 +74,6 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
   const newRefreshToken = tokens.refreshToken;
   store.set(temporaryTokensAtom, null);
 
-  const primaryColor = await getPrimaryColorFromImage(workspace.avatarUrl);
-  const defaultLuminance = getLuminance(primaryColor);
-
   return {
     workspace,
     userInfo,
@@ -87,11 +82,9 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
       name: userInfo.displayName,
       avatarUrl: userInfo.avatarUrls?.['48x48'],
       workspaceName: workspace.name,
+      workspaceDisplayName: workspace.name,
       workspaceAvatarUrl: workspace.avatarUrl,
-      workspaceColors: {
-        light: setLightness(Math.min(defaultLuminance, 0.65), primaryColor),
-        dark: setLightness(Math.max(defaultLuminance, 0.45), primaryColor),
-      },
+      workspaceColor: colorKeys[Math.floor(Math.random() * colorKeys.length)],
       isPrimary: false,
     },
     accessToken: newAccessToken,

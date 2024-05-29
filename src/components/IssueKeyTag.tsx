@@ -5,7 +5,7 @@ import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, Vi
 import { jiraAccountsAtom, projectsAtom, settingsAtom, themeAtom } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
 import { useThemedStyles } from '../services/theme.service';
-import { Theme, colorKeys } from '../styles/theme/theme-types';
+import { ColorKeys, Theme, colorKeys } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
@@ -26,7 +26,7 @@ interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
 }
 
 type IssueKeyTagTheme = { text: TextStyle; bg: ViewStyle };
-type IssueKeyTagThemes = Record<(typeof colorKeys)[number], IssueKeyTagTheme>;
+type IssueKeyTagThemes = Record<ColorKeys, IssueKeyTagTheme>;
 
 export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
@@ -100,15 +100,21 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
     issueKey = 'PROJ-123';
   }
 
-  const currentTheme: IssueKeyTagTheme =
-    issueTagColor === 'workspace' && thisJiraAccount
-      ? {
-          text: { color: thisJiraAccount?.workspaceColors[theme.type ?? 'dark'] },
-          bg: {
-            backgroundColor: transparentize(0.75, thisJiraAccount?.workspaceColors[theme.type ?? 'dark']),
-          },
-        }
-      : tagThemes[colorKeys[hashStr(issueKey) % colorKeys.length]];
+  // Assign tag color theme
+  const currentTheme: IssueKeyTagTheme = useMemo(() => {
+    let newTheme = tagThemes[colorKeys[hashStr(issueKey) % colorKeys.length]];
+    if (thisJiraAccount && issueTagColor === 'workspace') {
+      if (thisJiraAccount.workspaceColor === 'custom' && thisJiraAccount.customWorkspaceColor) {
+        newTheme = {
+          text: { color: thisJiraAccount.customWorkspaceColor },
+          bg: { backgroundColor: transparentize(0.75, thisJiraAccount.customWorkspaceColor) },
+        };
+      } else if (thisJiraAccount.workspaceColor !== 'custom') {
+        newTheme = tagThemes[thisJiraAccount.workspaceColor as ColorKeys];
+      }
+    }
+    return newTheme;
+  }, [issueKey, thisJiraAccount?.workspaceColor, thisJiraAccount?.customWorkspaceColor, issueTagColor]);
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
   const project = useMemo(

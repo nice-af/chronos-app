@@ -136,7 +136,7 @@ export const Search: FC = () => {
   const tabs: TabData[] = useMemo(
     () =>
       jiraAccounts.map(jiraAccount => ({
-        label: jiraAccount.workspaceName,
+        label: jiraAccount.workspaceDisplayName,
         workspaceImageSrc: jiraAccount.workspaceAvatarUrl,
         userImageSrc: jiraAccounts.some(
           acc => acc.workspaceName === jiraAccount.workspaceName && acc.accountId !== jiraAccount.accountId
