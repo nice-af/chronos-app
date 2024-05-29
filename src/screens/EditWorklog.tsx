@@ -1,13 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {
-  currentOverlayAtom,
-  currentWorklogToEditAtom,
-  deleteWorklogAtom,
-  themeAtom,
-  updateWorklogAtom,
-} from '../atoms';
+import { currentOverlayAtom, currentWorklogToEditAtom, themeAtom, updateWorklog } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueKeyTag } from '../components/IssueKeyTag';
@@ -16,8 +10,6 @@ import { formatSecondsToHMM, parseDurationStringToSeconds } from '../services/ti
 import { typo } from '../styles/typo';
 
 export const EditWorklog: FC = () => {
-  const updateWorklog = useSetAtom(updateWorklogAtom);
-  const deleteWorklog = useSetAtom(deleteWorklogAtom);
   const currentWorklogToEdit = useAtomValue(currentWorklogToEditAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const [timeSpentInputValue, setTimeSpentInputValue] = useState(
@@ -69,7 +61,7 @@ export const EditWorklog: FC = () => {
         align: 'left',
         title: (
           <View style={styles.headerContainer}>
-            <IssueKeyTag issueKey={currentWorklogToEdit.issue.key} accountId={currentWorklogToEdit.accountId} />
+            <IssueKeyTag issueKey={currentWorklogToEdit.issue.key} uuid={currentWorklogToEdit.uuid} />
             <Text numberOfLines={1} style={styles.title}>
               {currentWorklogToEdit.issue.summary}
             </Text>
@@ -138,3 +130,6 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
+function deleteWorklog(id: string) {
+  throw new Error('Function not implemented.');
+}

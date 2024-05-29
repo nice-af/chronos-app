@@ -78,3 +78,4 @@ export const colorKeys = [
   'brown',
 ] as const;
 export type ColorKey = (typeof colorKeys)[number];
+export type ColorOption = ColorKey | 'custom';

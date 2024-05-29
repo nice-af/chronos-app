@@ -2,11 +2,11 @@ import axios, { AxiosInstance } from 'axios';
 import { Version3Models } from 'jira.js';
 import { atom } from 'jotai';
 import { Alert } from 'react-native';
-import { store } from '../atoms';
+import { loginsAtom, store } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
-import { JiraResource } from '../types/auth.types';
+import { LoginModel } from '../types/accounts.types';
+import { JiraResource } from '../types/jira.types';
 import { refreshAccessToken } from './jira-auth.service';
-import { JiraAccountModel } from './storage.service';
 
 /**
  * We need to temporarily store the tokens while we fetch the account data.
@@ -17,13 +17,20 @@ export const temporaryTokensAtom = atom<{ accessToken: string; refreshToken: str
 /**
  * Request remote info about the workspace, mainly the correct cloud id to connect to
  */
-export async function requestWorkspaceInfo(axiosInstance: AxiosInstance): Promise<JiraResource | null> {
+export async function requestWorkspaceInfo(
+  axiosInstance: AxiosInstance,
+  cloudId?: string
+): Promise<JiraResource | null> {
+  const jiraAccounts = store.get(loginsAtom);
   return await axiosInstance
     .get<JiraResource[]>('https://api.atlassian.com/oauth/token/accessible-resources')
     // TODO @florianmrz how do we handle multiple resources?
     .then(response => {
-      console.log(response);
-      return response.data[0];
+      return (
+        response.data.find(resource => resource.id === cloudId) ??
+        response.data.find(resource => !jiraAccounts.some(a => a.accountId === resource.id)) ??
+        response.data[0]
+      );
     });
 }
 
@@ -44,13 +51,15 @@ export async function requestUserInfo(
  * Get the account data for a given access token
  */
 interface RequestAccountDataReturn {
-  jiraAccount: JiraAccountModel;
-  workspace: JiraResource;
-  userInfo: Version3Models.User;
+  login: LoginModel;
   accessToken: string;
   refreshToken: string;
 }
-export async function requestAccountData(accessToken: string, refreshToken: string): Promise<RequestAccountDataReturn> {
+export async function requestAccountData(
+  accessToken: string,
+  refreshToken: string,
+  cloudId?: string
+): Promise<RequestAccountDataReturn> {
   store.set(temporaryTokensAtom, { accessToken, refreshToken });
   const axiosInstance = axios.create();
   axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config));
@@ -58,7 +67,7 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
     response => response,
     async error => handleAxiosError(axiosInstance, error)
   );
-  const workspace = await requestWorkspaceInfo(axiosInstance);
+  const workspace = await requestWorkspaceInfo(axiosInstance, cloudId);
   if (!workspace) {
     throw new Error('Could not access the selected workspace. Please try again.');
   }
@@ -66,6 +75,7 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
   if (!userInfo) {
     throw new Error('Could not get user info. Please try again.');
   }
+  console.log(userInfo);
   const tokens = store.get(temporaryTokensAtom);
   if (!tokens) {
     throw new Error('Could not get tokens. Please try again.');
@@ -75,12 +85,12 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
   store.set(temporaryTokensAtom, null);
 
   return {
-    workspace,
-    userInfo,
-    jiraAccount: {
+    login: {
+      uuid: `${userInfo.accountId}_${workspace.id}`,
       accountId: userInfo.accountId,
-      name: userInfo.displayName,
-      avatarUrl: userInfo.avatarUrls?.['48x48'],
+      cloudId: workspace.id,
+      name: userInfo.displayName ?? '',
+      avatarUrl: userInfo.avatarUrls?.['48x48'] ?? '',
       workspaceName: workspace.name,
       workspaceDisplayName: workspace.name,
       workspaceColor: colorKeys[Math.floor(Math.random() * colorKeys.length)],
@@ -124,6 +134,8 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any)
     } catch (err) {
       if ((err as Error).message === 'refresh_token is invalid') {
         // Refresh token has expired after 90 days, user needs to re-authenticate
+        console.log(tokens);
+        console.log(error);
         Alert.alert('Your session has expired!', 'Please try to log in again.');
         store.set(temporaryTokensAtom, null);
       } else {

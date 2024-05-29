@@ -1,40 +1,46 @@
 import ms from 'ms';
-import { jiraAccountsAtom, jiraAuthsAtom, jiraClientsAtom } from './auth';
+import { AccountId, JiraAccountTokensAtom, LoginsAtom, UUID } from '../types/accounts.types';
+import { Worklog } from '../types/global.types';
+import { jiraAccountTokensAtom, jiraClientsAtom, loginsAtom } from './auth';
 import { projectsProtectedAtom } from './project';
 import { store } from './store';
 import { worklogsLocalAtom, worklogsLocalBackupsAtom, worklogsRemoteAtom } from './worklog';
-import { JiraAccountsAtom, JiraAuthsAtom } from '../services/storage.service';
-import { Worklog } from '../types/global.types';
 
 /**
  * Logs the user out but keeps local worklogs
  */
-export async function logout(accountId: string) {
-  const jiraAuths = store.get(jiraAuthsAtom);
-  delete jiraAuths[accountId];
-  store.set(jiraAuthsAtom, jiraAuths);
+export async function logout(uuid: UUID, accountId: AccountId) {
+  const logins = store.get(loginsAtom);
 
+  // Delete account tokens if no login is using them
+  const jiraAccountTokens = store.get(jiraAccountTokensAtom);
+  if (!logins.some(login => login.accountId === accountId)) {
+    delete jiraAccountTokens[uuid];
+    store.set(jiraAccountTokensAtom, jiraAccountTokens);
+  }
+
+  // Delete Jira client
   const jiraClients = store.get(jiraClientsAtom);
-  delete jiraClients[accountId];
+  delete jiraClients[uuid];
   store.set(jiraClientsAtom, jiraClients);
 
+  // Clean up worklogs
   const worklogsRemote = store.get(worklogsRemoteAtom);
   store.set(
     worklogsRemoteAtom,
-    worklogsRemote.filter(worklog => worklog.accountId !== accountId)
+    worklogsRemote.filter(worklog => worklog.uuid !== uuid)
   );
-
   const worklogsLocal = store.get(worklogsLocalAtom);
-  const thisAccountsWorklogs = worklogsLocal.filter(worklog => worklog.accountId === accountId);
+  const thisAccountsWorklogs = worklogsLocal.filter(worklog => worklog.uuid === uuid);
   store.set(
     worklogsLocalAtom,
-    worklogsLocal.filter(worklog => worklog.accountId !== accountId)
+    worklogsLocal.filter(worklog => worklog.uuid !== uuid)
   );
   store.set(worklogsLocalBackupsAtom, [...store.get(worklogsLocalBackupsAtom), ...thisAccountsWorklogs]);
 
-  const jiraAccounts = store.get(jiraAccountsAtom);
+  const jiraAccounts = store.get(loginsAtom);
   store.set(
-    jiraAccountsAtom,
+    loginsAtom,
     jiraAccounts.filter(account => account.accountId !== accountId)
   );
 }
@@ -49,20 +55,22 @@ export async function logout(accountId: string) {
  * - Limits the maximum number of projects to 250 by removing the first ones in the array
  */
 export function storageCleanup(
-  jiraAccounts: JiraAccountsAtom,
-  jiraAuths: JiraAuthsAtom,
+  logins: LoginsAtom,
+  jiraAccountTokens: JiraAccountTokensAtom,
   worklogsLocal: Worklog[],
   worklogsLocalBackups: Worklog[]
 ) {
   const now = Date.now();
 
   // Clean auths
-  if (jiraAuths) {
-    const accountIds = jiraAccounts.map(account => account.accountId);
-    const hasUnlinkedAuths = Object.keys(jiraAuths).some(authId => !accountIds.includes(authId));
+  if (jiraAccountTokens) {
+    const accountIds = logins.map(account => account.accountId);
+    const hasUnlinkedAuths = Object.keys(jiraAccountTokens).some(authId => !accountIds.includes(authId));
     if (hasUnlinkedAuths) {
-      const newAuths = Object.fromEntries(Object.entries(jiraAuths).filter(([authId]) => accountIds.includes(authId)));
-      jiraAuths = newAuths;
+      const newAuths = Object.fromEntries(
+        Object.entries(jiraAccountTokens).filter(([authId]) => accountIds.includes(authId))
+      );
+      jiraAccountTokens = newAuths;
     }
   }
 
@@ -95,7 +103,7 @@ export function storageCleanup(
   }
 
   return {
-    jiraAuths,
+    jiraAccountTokens,
     worklogsLocal,
     worklogsLocalBackups,
   };

@@ -1,6 +1,7 @@
 import { Issue, Project as JiraProject } from 'jira.js/out/version3/models';
 import { store } from '../atoms';
 import { upsertProjectAtom } from '../atoms/project';
+import { UUID } from '../types/accounts.types';
 import { getJiraClient } from './jira-auth.service';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 
@@ -19,8 +20,8 @@ import { createNewLocalProject, loadAvatarForProject } from './project.service';
  *
  * The results are then merged and duplicates are removed while keeping the sorting as listed above.
  */
-export async function getIssuesBySearchQuery(query: string, accountId: string) {
-  const jiraClient = getJiraClient(accountId);
+export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
+  const jiraClient = getJiraClient(uuid);
   /**
    * // TODO JIRA has a list of reserved characters and words that cannot be used in a JQL query. Is it okay if we escape the query here by removing all quotes?
    * @see https://support.atlassian.com/jira-software-cloud/docs/search-for-issues-using-the-text-field/
@@ -72,7 +73,7 @@ export async function getIssuesBySearchQuery(query: string, accountId: string) {
   // Add all projects to local projects atom
   issues
     .map(issue => issue.fields.project as JiraProject)
-    .map(project => createNewLocalProject(project, accountId))
+    .map(project => createNewLocalProject(project, uuid))
     .forEach(project => {
       store.set(upsertProjectAtom, project);
       loadAvatarForProject(project);
@@ -81,8 +82,8 @@ export async function getIssuesBySearchQuery(query: string, accountId: string) {
   return issues;
 }
 
-export function getIssueByKey(issueKey: string, accountId: string) {
-  const jiraClient = getJiraClient(accountId);
+export function getIssueByKey(issueKey: string, uuid: UUID) {
+  const jiraClient = getJiraClient(uuid);
   return jiraClient.issueSearch
     .searchForIssuesUsingJqlPost({
       jql: `key = "${issueKey.toUpperCase()}"`,

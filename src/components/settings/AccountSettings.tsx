@@ -1,10 +1,9 @@
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FC, Fragment, useMemo, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, themeAtom } from '../../atoms';
+import { loginsAtom, themeAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useAuthRequest } from '../../services/jira-auth.service';
-import { JiraAccountModel } from '../../services/storage.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
@@ -13,16 +12,17 @@ import { getPadding } from '../../styles/utils';
 import { ButtonSecondary } from '../ButtonSecondary';
 import { LoadingSpinnerSmall } from '../LoadingSpinnerSmall';
 import { AccountSettingsOptions } from './AccountSettingsOptions';
+import { LoginModel } from '../../types/accounts.types';
 
 interface AccountRowProps {
-  jiraAccount: JiraAccountModel;
+  login: LoginModel;
   isPrimary: boolean;
   showPrimaryButton: boolean;
   onSetPrimary: () => void;
 }
 
-const AccountRow: FC<AccountRowProps> = ({ jiraAccount, isPrimary, showPrimaryButton, onSetPrimary }) => {
-  const { name, avatarUrl, workspaceDisplayName } = jiraAccount;
+const AccountRow: FC<AccountRowProps> = ({ login, isPrimary, showPrimaryButton, onSetPrimary }) => {
+  const { name, avatarUrl, workspaceDisplayName } = login;
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const [showSettings, setShowSettings] = useState(false);
@@ -78,25 +78,25 @@ const AccountRow: FC<AccountRowProps> = ({ jiraAccount, isPrimary, showPrimaryBu
           style={{ ...getPadding(6), width: 32, height: 32 }}
         />
       </View>
-      {showSettings && <AccountSettingsOptions jiraAccount={jiraAccount} />}
+      {showSettings && <AccountSettingsOptions login={login} />}
     </View>
   );
 };
 
 export const AccountSettings: FC = () => {
-  const [jiraAccounts, setJiraAccounts] = useAtom(jiraAccountsAtom);
+  const [logins, setLogins] = useAtom(loginsAtom);
   const styles = useThemedStyles(createStyles);
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { t } = useTranslation();
   const { initOAuth, isLoading } = useAuthRequest();
   const [primaryAccountIndex, setPrimaryAccountIndex] = useState(
-    jiraAccounts.find(jiraAccount => jiraAccount.isPrimary)?.accountId
+    logins.find(jiraAccount => jiraAccount.isPrimary)?.accountId
   );
 
   function handleSetPrimary(accountId: string) {
     setPrimaryAccountIndex(accountId);
-    setJiraAccounts(
-      jiraAccounts
+    setLogins(
+      logins
         .map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.accountId === accountId }))
         .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary))
     );
@@ -106,13 +106,13 @@ export const AccountSettings: FC = () => {
     <View style={settingsStyles.card}>
       <Text style={[settingsStyles.headline, { marginBottom: 4 }]}>{t('account.settingsTitle')}</Text>
       <View style={settingsStyles.hr} />
-      {jiraAccounts.map(jiraAccount => (
-        <Fragment key={jiraAccount.accountId}>
+      {logins.map(login => (
+        <Fragment key={login.accountId}>
           <AccountRow
-            isPrimary={primaryAccountIndex === jiraAccount.accountId}
-            onSetPrimary={() => handleSetPrimary(jiraAccount.accountId)}
-            showPrimaryButton={jiraAccounts.length > 1}
-            jiraAccount={jiraAccount}
+            isPrimary={primaryAccountIndex === login.accountId}
+            onSetPrimary={() => handleSetPrimary(login.accountId)}
+            showPrimaryButton={logins.length > 1}
+            login={login}
           />
           <View style={settingsStyles.hr} />
         </Fragment>

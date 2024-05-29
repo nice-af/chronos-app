@@ -1,17 +1,17 @@
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { currentOverlayAtom, isFullscreenAtom, jiraAccountsAtom } from '../atoms';
+import { currentOverlayAtom, isFullscreenAtom, loginsAtom } from '../atoms';
+import { DebugTools } from '../components/DebugTools';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Overlay } from '../const';
 import { Login } from '../screens/Login';
 import { initialize } from '../services/global.service';
 import { addNativeEventListener, removeNativeEventListener } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
-import { DebugTools } from '../components/DebugTools';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const jiraAccounts = useAtomValue(loginsAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);

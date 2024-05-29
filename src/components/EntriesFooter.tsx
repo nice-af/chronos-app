@@ -1,7 +1,7 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import React, { FC, useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, Text } from 'react-native';
-import { syncProgressAtom, syncWorklogsForCurrentDayAtom } from '../atoms';
+import { syncProgressAtom, syncWorklogsForCurrentDay } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
@@ -14,7 +14,6 @@ interface EntriesFooterProps {
 }
 
 export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
-  const syncWorklogsForCurrentDay = useSetAtom(syncWorklogsForCurrentDayAtom);
   const styles = useThemedStyles(createStyles);
   const progress = useAtomValue(syncProgressAtom);
   const isSyncing = progress !== null;

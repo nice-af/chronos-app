@@ -2,12 +2,13 @@ import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { jiraAccountsAtom, projectsAtom, settingsAtom, themeAtom } from '../atoms';
+import { loginsAtom, projectsAtom, settingsAtom, themeAtom, useLoginByUUID } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
 import { getWorkspaceColor, useThemedStyles } from '../services/theme.service';
 import { ColorKey, Theme, colorKeys } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { AccountId, UUID } from '../types/accounts.types';
 
 function hashStr(str: string) {
   let hash = 0;
@@ -20,7 +21,7 @@ function hashStr(str: string) {
 
 interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
   issueKey: string;
-  accountId: string;
+  uuid: UUID;
   onPress?: () => void;
   style?: ViewStyle;
 }
@@ -28,10 +29,9 @@ interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
 type IssueKeyTagTheme = { text: TextStyle; bg: ViewStyle };
 type IssueKeyTagThemes = Record<ColorKey, IssueKeyTagTheme>;
 
-export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
+export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, uuid, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
-  const thisJiraAccount = jiraAccounts.find(account => account.accountId === accountId);
+  const login = useLoginByUUID(uuid);
   const projects = useAtomValue(projectsAtom);
   const styles = useThemedStyles(createStyles);
   const { issueTagIcon, issueTagColor } = useAtomValue(settingsAtom);
@@ -103,23 +103,23 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
   // Assign tag color theme
   const currentTheme: IssueKeyTagTheme = useMemo(() => {
     let newTheme = tagThemes[colorKeys[hashStr(issueKey) % colorKeys.length]];
-    if (thisJiraAccount && issueTagColor === 'workspace') {
-      if (thisJiraAccount.workspaceColor === 'custom' && thisJiraAccount.customWorkspaceColor) {
+    if (login && issueTagColor === 'workspace') {
+      if (login.workspaceColor === 'custom' && login.customWorkspaceColor) {
         newTheme = {
-          text: { color: thisJiraAccount.customWorkspaceColor },
-          bg: { backgroundColor: transparentize(0.75, thisJiraAccount.customWorkspaceColor) },
+          text: { color: login.customWorkspaceColor },
+          bg: { backgroundColor: transparentize(0.75, login.customWorkspaceColor) },
         };
-      } else if (thisJiraAccount.workspaceColor !== 'custom') {
-        newTheme = tagThemes[thisJiraAccount.workspaceColor as ColorKey];
+      } else if (login.workspaceColor !== 'custom') {
+        newTheme = tagThemes[login.workspaceColor as ColorKey];
       }
     }
     return newTheme;
-  }, [issueKey, thisJiraAccount?.workspaceColor, thisJiraAccount?.customWorkspaceColor, issueTagColor]);
+  }, [issueKey, login?.workspaceColor, login?.customWorkspaceColor, issueTagColor]);
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
   const project = useMemo(
-    () => (isPlaceholder ? null : getProjectByIssueKey(issueKey, accountId)),
-    [issueKey, accountId, projects, isPlaceholder]
+    () => (isPlaceholder ? null : getProjectByIssueKey(issueKey, uuid)),
+    [issueKey, uuid, projects, isPlaceholder]
   );
   const hasProjectIcon = issueTagIcon === 'project' || issueTagIcon === 'workspaceAndProject';
   const projectImageSrc = isPlaceholder
@@ -133,7 +133,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [styles.container, pressed && styles.isSelected, props.style]}>
       {hasWorkspaceIndicator && (
-        <View style={[styles.indicator, { backgroundColor: getWorkspaceColor(thisJiraAccount, theme) }]} />
+        <View style={[styles.indicator, { backgroundColor: getWorkspaceColor(login, theme) }]} />
       )}
       {hasProjectIcon &&
         (projectImageSrc ? <Image style={styles.logo} source={projectImageSrc} /> : <View style={styles.logo} />)}

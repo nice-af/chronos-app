@@ -2,10 +2,10 @@ import { atom } from 'jotai';
 import ms from 'ms';
 import { requestAccountData } from '../services/jira-info.service';
 import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira-worklogs.service';
-import { JiraAccountsAtom, JiraAuthsAtom } from '../services/storage.service';
 import { syncWorklogs } from '../services/worklog.service';
-import { Worklog, WorklogState } from '../types/global.types';
-import { jiraAccountsAtom, jiraAuthsAtom, primaryJiraAccountIdAtom } from './auth';
+import { JiraAccountTokensAtom, LoginsAtom } from '../types/accounts.types';
+import { Worklog, WorklogId, WorklogState } from '../types/global.types';
+import { jiraAccountTokensAtom, loginsAtom, primaryUUIDAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { store } from './store';
 
@@ -14,6 +14,7 @@ export const syncProgressAtom = atom<number | null>(null);
 export const worklogsLocalAtom = atom<Worklog[]>([]);
 export const worklogsRemoteAtom = atom<Worklog[]>([]);
 export const worklogsLocalBackupsAtom = atom<Worklog[]>([]);
+
 /**
  * Local and remote worklogs combined.
  * Local worklogs are prioritized over remote worklogs.
@@ -54,117 +55,133 @@ setInterval(() => {
     diff = Math.floor((now - start) / 1000);
   }
   if (diff > 0) {
-    store.set(updateWorklogAtom, {
-      ...activeWorklog,
-      timeSpentSeconds: activeWorklog.timeSpentSeconds + diff,
-    });
+    updateWorklog({ ...activeWorklog, timeSpentSeconds: activeWorklog.timeSpentSeconds + diff });
     store.set(activeWorklogTrackingStartedAtom, now);
   }
 }, ms('3s'));
 
-export const worklogsForCurrentDayAtom = atom(get => {
-  const worklogs = get(worklogsAtom);
-  return worklogs.filter(worklog => worklog.started === get(selectedDateAtom));
-});
+export function getWorklogsForSelectedDay() {
+  const worklogs = store.get(worklogsAtom);
+  return worklogs.filter(worklog => worklog.started === store.get(selectedDateAtom));
+}
 
-export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
-  const jiraAccounts = store.get(jiraAccountsAtom);
-  const jiraAuths = store.get(jiraAuthsAtom);
-  store.set(syncProgressAtom, 0);
-  const localWorklogs = get(worklogsLocalAtom);
-  const worklogsToSync = get(worklogsForCurrentDayAtom)
+/**
+ * Syncs all worklogs for the selected day and updates accounts and remote worklogs
+ */
+export async function syncWorklogsForCurrentDay() {
+  const logins = store.get(loginsAtom);
+  const jiraAccountTokens = store.get(jiraAccountTokensAtom);
+  const primaryUUID = store.get(primaryUUIDAtom);
+  const localWorklogs = store.get(worklogsLocalAtom);
+  const worklogsToSync = getWorklogsForSelectedDay()
     .filter(w => localWorklogs.find(lw => lw.id === w.id))
     .filter(worklog => worklog.timeSpentSeconds >= 60);
 
-  // Each worklog equals one progress step
-  const progressStepsSync = worklogsToSync.length;
-  // Each account has 3 progress steps: 1 to get user info and 2 to get worklogs
-  const progressStepsAccountsLoop = jiraAccounts.length * 3;
+  // Setup progress tracking
+  store.set(syncProgressAtom, 0);
+  const progressStepsSync = worklogsToSync.length; // Each worklog equals one progress step
+  const progressStepsAccountsLoop = logins.length * 3; // Each account has 3 progress steps: 1 to get user info and 2 to get worklogs
   const progressPerStep = 1 / (progressStepsSync + progressStepsAccountsLoop);
   await syncWorklogs(worklogsToSync, progressPerStep);
 
-  const newAccountsData: JiraAccountsAtom = [];
-  const primaryJiraAccountId = store.get(primaryJiraAccountIdAtom);
+  // Sync worklogs for all accounts
+  const newLogins: LoginsAtom = [];
   const newWorklogsRemote: Worklog[] = [];
-  const newAuths: JiraAuthsAtom = {};
-  for (let i = 0; i < jiraAccounts.length; i++) {
-    const jiraAccount = jiraAccounts[i];
-    const auth = jiraAuths[jiraAccount.accountId];
+  const newJiraAccountTokens: JiraAccountTokensAtom = {};
+  for (let i = 0; i < logins.length; i++) {
+    const login = logins[i];
+    const tokens = jiraAccountTokens[login.accountId];
     const {
-      jiraAccount: newJiraAccount,
+      login: newLogin,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
-    } = await requestAccountData(auth.accessToken, auth.refreshToken);
-    newAuths[jiraAccount.accountId] = { ...auth, accessToken: newAccessToken, refreshToken: newRefreshToken };
-    newAccountsData.push(newJiraAccount);
+    } = await requestAccountData(tokens.accessToken, tokens.refreshToken, login.accountId);
+    newJiraAccountTokens[login.accountId] = {
+      ...tokens,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
+    newLogins.push(newLogin);
     store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep);
-    newWorklogsRemote.push(...(await getRemoteWorklogs(jiraAccount.accountId)));
+    newWorklogsRemote.push(...(await getRemoteWorklogs(login.uuid, login.accountId)));
     store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep * 2);
   }
-  store.set(jiraAuthsAtom, newAuths);
+  store.set(jiraAccountTokensAtom, newJiraAccountTokens);
   store.set(
-    jiraAccountsAtom,
-    newAccountsData.map(account => ({ ...account, isPrimary: account.accountId === primaryJiraAccountId }))
+    loginsAtom,
+    newLogins.map(account => ({ ...account, isPrimary: account.accountId === primaryUUID }))
   );
   store.set(worklogsRemoteAtom, newWorklogsRemote);
 
   // Remove local worklogs that have been synced
-  set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
+  store.set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
   setTimeout(() => store.set(syncProgressAtom, null), 1500);
-});
+}
 
-export const addWorklogAtom = atom(null, async (_get, set, worklog: Worklog) => {
-  set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
-  set(setWorklogAsActiveAtom, worklog.id);
-});
-export const setWorklogAsActiveAtom = atom(null, (get, set, worklogId: string | null) => {
-  const activeWorklog = get(activeWorklogAtom);
-  const activeWorklogTrackingStarted = get(activeWorklogTrackingStartedAtom);
+/**
+ * Adds a new worklog to the local worklogs and sets it as active
+ */
+export function addWorklog(worklog: Worklog) {
+  store.set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
+  setWorklogAsActive(worklog.id);
+}
+
+/**
+ * Sets the given worklog as active and stops the previously active worklog
+ */
+export function setWorklogAsActive(worklogId: WorklogId | null) {
+  const activeWorklog = store.get(activeWorklogAtom);
+  const activeWorklogTrackingStarted = store.get(activeWorklogTrackingStartedAtom);
 
   if (activeWorklog && activeWorklogTrackingStarted > 0) {
     const activeWorklogDuration = Math.floor((Date.now() - activeWorklogTrackingStarted) / 1000);
     const newTimeSpent = activeWorklog.timeSpentSeconds + activeWorklogDuration;
     const roundedToFullMinute = Math.floor(newTimeSpent / 60) * 60;
-    set(updateWorklogAtom, {
-      ...activeWorklog,
-      timeSpentSeconds: roundedToFullMinute,
-    });
+    updateWorklog({ ...activeWorklog, timeSpentSeconds: roundedToFullMinute });
   }
 
-  set(activeWorklogIdAtom, worklogId);
+  store.set(activeWorklogIdAtom, worklogId);
   if (worklogId) {
-    set(lastActiveWorklogIdAtom, worklogId);
+    store.set(lastActiveWorklogIdAtom, worklogId);
   }
-  set(activeWorklogTrackingStartedAtom, Date.now());
-});
-export const updateWorklogAtom = atom(null, (get, set, worklog: Worklog) => {
+  store.set(activeWorklogTrackingStartedAtom, Date.now());
+}
+
+/**
+ * Updates the given worklog and stores it in the local worklogs
+ */
+export function updateWorklog(worklog: Worklog) {
   if (worklog.state !== WorklogState.LOCAL) {
     worklog.state = WorklogState.EDITED;
   }
-  const currentWorklogs = get(worklogsLocalAtom);
+  const currentWorklogs = store.get(worklogsLocalAtom);
   const exists = currentWorklogs.some(w => w.id === worklog.id);
   if (exists) {
-    set(worklogsLocalAtom, worklogs => worklogs.map(w => (w.id === worklog.id ? worklog : w)));
+    store.set(worklogsLocalAtom, worklogs => worklogs.map(w => (w.id === worklog.id ? worklog : w)));
   } else {
-    set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
+    store.set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   }
-});
-export const deleteWorklogAtom = atom(null, async (get, set, worklogId: string) => {
-  const worklogsRemote = get(worklogsRemoteAtom);
+}
+
+/**
+ * Deletes the worklog with the given ID locally and remotely
+ */
+export async function deleteWorklog(worklogId: WorklogId) {
+  const worklogsRemote = store.get(worklogsRemoteAtom);
   const worklogRemote = worklogsRemote.find(w => w.id === worklogId);
   if (worklogRemote) {
     await deleteRemoteWorklog(worklogRemote);
-    set(
+    store.set(
       worklogsRemoteAtom,
       worklogsRemote.filter(w => w.id !== worklogId)
     );
   }
-  const worklogsLocal = get(worklogsLocalAtom);
+  const worklogsLocal = store.get(worklogsLocalAtom);
   const worklogLocal = worklogsLocal.find(w => w.id === worklogId);
   if (worklogLocal) {
-    set(
+    store.set(
       worklogsLocalAtom,
       worklogsLocal.filter(w => w.id !== worklogId)
     );
   }
-});
+}

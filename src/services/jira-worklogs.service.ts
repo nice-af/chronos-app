@@ -8,11 +8,12 @@ import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } f
 import { getJiraClient } from './jira-auth.service';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 import { parseDurationStringToSeconds } from './time.service';
+import { AccountId, UUID } from '../types/accounts.types';
 
 /**
  * Converts Jira worklogs to our custom format
  */
-function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issue): Worklog[] {
+function convertWorklogs(worklogs: JiraWorklog[], uuid: UUID, accountId: AccountId, issue: Issue): Worklog[] {
   return worklogs
     ?.filter(worklog => worklog.author?.accountId === accountId && worklog.started && worklog.timeSpent)
     .map(worklog => ({
@@ -28,16 +29,16 @@ function convertWorklogs(worklogs: JiraWorklog[], accountId: string, issue: Issu
         .reduce((acc: number, curr: string) => acc + parseDurationStringToSeconds(curr), 0),
       comment: worklog.comment ? convertAdfToMd(worklog.comment) : '',
       state: WorklogState.SYNCED,
-      accountId: accountId,
+      uuid,
     }));
 }
 
 /**
  * Loads all worklogs of the last month of the current user from JIRA
  */
-export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
+export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promise<Worklog[]> {
   const startedAfterTimestamp = new Date().getTime() - ms('4w');
-  const jiraClient = getJiraClient(accountId);
+  const jiraClient = getJiraClient(uuid);
   const worklogsCompact: Worklog[] = [];
   const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -4w`;
   const maxIssuesResults = 40;
@@ -57,7 +58,7 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
       // Get worklogs for each issue
       if (issue.fields.worklog?.total && issue.fields.worklog?.total < (issue.fields.worklog?.maxResults ?? 0)) {
         // This issue already has all worklogs
-        worklogsCompact.push(...convertWorklogs(issue.fields.worklog.worklogs ?? [], accountId, issue));
+        worklogsCompact.push(...convertWorklogs(issue.fields.worklog.worklogs ?? [], uuid, accountId, issue));
       } else {
         // This issue has more worklogs than we have fetched
         const maxWorklogResults = 5000;
@@ -70,7 +71,7 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
             startAt: currentWorklog,
             startedAfter: startedAfterTimestamp,
           });
-          worklogsCompact.push(...convertWorklogs(worklogsCall.worklogs ?? [], accountId, issue));
+          worklogsCompact.push(...convertWorklogs(worklogsCall.worklogs ?? [], uuid, accountId, issue));
           currentWorklog += maxWorklogResults;
           totalWorklogs = worklogsCall.total ?? 0;
           if (worklogsFailsafe > 20) {
@@ -81,7 +82,7 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
       }
 
       if (issue.fields.project) {
-        const project = createNewLocalProject(issue.fields.project as JiraProject, accountId);
+        const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
         store.set(upsertProjectAtom, project);
         loadAvatarForProject(project);
       }
@@ -99,7 +100,7 @@ export async function getRemoteWorklogs(accountId: string): Promise<Worklog[]> {
 }
 
 export function createRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.accountId);
+  const jiraClient = getJiraClient(worklog.uuid);
   return jiraClient.issueWorklogs.addWorklog({
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
@@ -109,7 +110,7 @@ export function createRemoteWorklog(worklog: Worklog) {
 }
 
 export function updateRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.accountId);
+  const jiraClient = getJiraClient(worklog.uuid);
   return jiraClient.issueWorklogs.updateWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
@@ -120,7 +121,7 @@ export function updateRemoteWorklog(worklog: Worklog) {
 }
 
 export function deleteRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.accountId);
+  const jiraClient = getJiraClient(worklog.uuid);
   return jiraClient.issueWorklogs.deleteWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,

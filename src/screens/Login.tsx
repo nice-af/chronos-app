@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, themeAtom } from '../atoms';
+import { loginsAtom, themeAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Layout } from '../components/Layout';
@@ -15,7 +15,7 @@ import { getPadding } from '../styles/utils';
 
 export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const jiraAccounts = useAtomValue(loginsAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { jiraAccountsAtom, jiraAuthsAtom, store } from '../atoms';
+import { jiraAccountTokensAtom, loginsAtom, store } from '../atoms';
 import { initializeJiraAccount } from '../services/jira-auth.service';
 import { StorageKey, getFromStorage, removeFromStorage, setInStorage } from '../services/storage.service';
 
@@ -19,24 +19,23 @@ export async function migrateUp_0_1_14() {
   if (!oldAuth) {
     return;
   }
-  const { jiraAccount } = await initializeJiraAccount(oldAuth.accessToken, oldAuth.refreshToken);
+  const { login } = await initializeJiraAccount(oldAuth.accessToken, oldAuth.refreshToken);
 
   // Add missing account id to the worklogs
   const worklogsLocal = await getFromStorage(StorageKey.WORKLOGS_LOCAL);
   if (worklogsLocal) {
     await setInStorage(
       StorageKey.WORKLOGS_LOCAL,
-      worklogsLocal.map(worklog => ({ ...worklog, accountId: jiraAccount.accountId }))
+      worklogsLocal.map(worklog => ({ ...worklog, uuid: login.uuid }))
     );
   }
 
   // Save auth and account data
-  store.set(jiraAccountsAtom, [{ ...jiraAccount, isPrimary: true }]);
-  store.set(jiraAuthsAtom, {
-    [jiraAccount.accountId]: {
+  store.set(loginsAtom, [{ ...login, isPrimary: true }]);
+  store.set(jiraAccountTokensAtom, {
+    [login.accountId]: {
       accessToken: oldAuth.accessToken,
       refreshToken: oldAuth.refreshToken,
-      cloudId: oldAuth.cloudId,
     },
   });
 

@@ -6,6 +6,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { UUID } from '../types/accounts.types';
 import { ButtonTransparent } from './ButtonTransparent';
 import { IssueKeyTag } from './IssueKeyTag';
 
@@ -16,7 +17,7 @@ interface SearchResultIssue {
     name: string;
   };
   summary: string;
-  accountId: string;
+  uuid: UUID;
 }
 
 interface SearchResultsEntryProps extends Omit<PressableProps, 'style'> {
@@ -32,7 +33,7 @@ export const SearchResultsEntry: FC<SearchResultsEntryProps> = ({ issue, onPress
     <View key={issue.id} style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headlineContainer}>
-          <IssueKeyTag issueKey={issue.key} accountId={issue.accountId} />
+          <IssueKeyTag issueKey={issue.key} uuid={issue.uuid} />
           <Image
             style={styles.chevronIcon}
             source={

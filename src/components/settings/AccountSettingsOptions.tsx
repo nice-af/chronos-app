@@ -1,24 +1,24 @@
 import { useAtom } from 'jotai';
 import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, logout } from '../../atoms';
+import { loginsAtom, logout } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useModal } from '../../services/modal.service';
-import { JiraAccountModel } from '../../services/storage.service';
 import { useThemedStyles } from '../../services/theme.service';
-import { Theme } from '../../styles/theme/theme-types';
+import { ColorOption, Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
+import { LoginModel } from '../../types/accounts.types';
 import { ButtonDanger } from '../ButtonDanger';
 import { CustomTextInput } from '../CustomTextInput';
-import { ColorOption, ColorSelector } from './ColorSelector';
+import { ColorSelector } from './ColorSelector';
 
 interface AccountSettingsOptionsProps {
-  jiraAccount: JiraAccountModel;
+  login: LoginModel;
 }
 
-export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAccount }) => {
-  const { accountId, workspaceDisplayName, workspaceColor, customWorkspaceColor } = jiraAccount;
-  const [jiraAccounts, setJiraAccounts] = useAtom(jiraAccountsAtom);
+export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login }) => {
+  const { uuid, accountId, workspaceDisplayName, workspaceColor, customWorkspaceColor } = login;
+  const [jiraAccounts, setJiraAccounts] = useAtom(loginsAtom);
   const [customWorkspaceName, setCustomWorkspaceName] = useState(workspaceDisplayName);
   const [customWorkspaceColorValue, setCustomWorkspaceColorValue] = useState(customWorkspaceColor ?? '0B84FF');
   const styles = useThemedStyles(createStyles);
@@ -32,11 +32,11 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAc
       text: t('modals.accountLogoutText'),
     });
     if (confirmed) {
-      logout(accountId);
+      logout(uuid, accountId);
     }
   }
 
-  function updateJiraAccountValue(changes: Partial<JiraAccountModel>) {
+  function updateLoginValue(changes: Partial<LoginModel>) {
     const newJiraAccounts = jiraAccounts.map(account => {
       if (account.accountId === accountId) {
         return { ...account, ...changes };
@@ -47,11 +47,11 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAc
   }
 
   function updateWorkspaceDisplayName() {
-    updateJiraAccountValue({ workspaceDisplayName: customWorkspaceName });
+    updateLoginValue({ workspaceDisplayName: customWorkspaceName });
   }
 
   function updateWorkspaceColor(newColor: ColorOption) {
-    updateJiraAccountValue({ workspaceColor: newColor });
+    updateLoginValue({ workspaceColor: newColor });
   }
 
   function updateWorkspaceCustomColor() {
@@ -60,7 +60,7 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ jiraAc
     if (!hexColorRegex.test(customWorkspaceColorValue)) {
       return;
     }
-    updateJiraAccountValue({ customWorkspaceColor: `#${customWorkspaceColorValue}` });
+    updateLoginValue({ customWorkspaceColor: `#${customWorkspaceColorValue}` });
   }
 
   return (

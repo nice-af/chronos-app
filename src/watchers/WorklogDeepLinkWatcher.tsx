@@ -2,7 +2,7 @@ import { JIRA_CREATE_WORKLOG_URI } from '@env';
 import { useSetAtom } from 'jotai';
 import { FC, useEffect } from 'react';
 import { Linking } from 'react-native';
-import { addWorklogAtom, currentOverlayAtom, currentWorklogToEditAtom, selectedDateAtom } from '../atoms';
+import { addWorklog, currentOverlayAtom, currentWorklogToEditAtom, selectedDateAtom } from '../atoms';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssueByKey } from '../services/jira-issues.service';
@@ -11,7 +11,7 @@ import { getUrlParams } from '../utils/url';
 
 export const WorklogDeepLinkWatcher: FC = () => {
   const setSelectedDate = useSetAtom(selectedDateAtom);
-  const addWorklog = useSetAtom(addWorklogAtom);
+  const addWorklog = useSetAtom(addWorklog);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
 

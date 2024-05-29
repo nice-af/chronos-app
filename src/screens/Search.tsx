@@ -3,10 +3,10 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
-  addWorklogAtom,
+  addWorklog,
   currentOverlayAtom,
   currentWorklogToEditAtom,
-  jiraAccountsAtom,
+  loginsAtom,
   selectedDateAtom,
   themeAtom,
   worklogsAtom,
@@ -25,6 +25,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
+import { UUID } from '../types/accounts.types';
 import { IssueBase, Worklog } from '../types/global.types';
 
 const debounce = (func: Function, delay: number) => {
@@ -39,14 +40,11 @@ const debounce = (func: Function, delay: number) => {
 
 export const Search: FC = () => {
   const selectedDate = useAtomValue(selectedDateAtom);
-  const addWorklog = useSetAtom(addWorklogAtom);
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const logins = useAtomValue(loginsAtom);
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const [searchValue, setSearchValue] = useState('');
-  const [accountId, setAccountId] = useState(
-    jiraAccounts.find(acc => acc.isPrimary)?.accountId || jiraAccounts[0]?.accountId
-  );
+  const [uuid, setUUID] = useState<UUID>(logins.find(acc => acc.isPrimary)?.uuid || logins[0]?.uuid);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<Issue[]>([]);
   const theme = useAtomValue(themeAtom);
@@ -59,10 +57,10 @@ export const Search: FC = () => {
 
   const debouncedSearch = useMemo(
     () =>
-      debounce(async (query: string, searchAccountId: string) => {
+      debounce(async (query: string, tragetUUID: UUID) => {
         setSearchIsLoading(true);
         try {
-          setSearchResults(await getIssuesBySearchQuery(query, searchAccountId));
+          setSearchResults(await getIssuesBySearchQuery(query, tragetUUID));
         } catch (e) {
           console.error('Error while searching', e);
         } finally {
@@ -78,8 +76,8 @@ export const Search: FC = () => {
       setSearchResults([]);
       return;
     }
-    debouncedSearch(trimmedValue, accountId);
-  }, [searchValue, accountId]);
+    debouncedSearch(trimmedValue, uuid);
+  }, [searchValue, uuid]);
 
   /**
    * List of worklogs that have been worked on most recently.
@@ -125,7 +123,7 @@ export const Search: FC = () => {
         summary: issueBase.summary,
       },
       started: selectedDate,
-      accountId,
+      uuid,
     });
     addWorklog(worklog);
     setCurrentWorklogToEdit(worklog);
@@ -135,17 +133,14 @@ export const Search: FC = () => {
 
   const tabs: TabData[] = useMemo(
     () =>
-      jiraAccounts.map(jiraAccount => ({
-        label: jiraAccount.workspaceDisplayName,
-        workspaceImageSrc: jiraAccount.workspaceAvatarUrl,
-        userImageSrc: jiraAccounts.some(
-          acc => acc.workspaceName === jiraAccount.workspaceName && acc.accountId !== jiraAccount.accountId
-        )
-          ? jiraAccount.avatarUrl
+      logins.map(login => ({
+        label: login.workspaceDisplayName,
+        userImageSrc: logins.some(acc => acc.workspaceName === login.workspaceName && acc.accountId !== login.accountId)
+          ? login.avatarUrl
           : undefined,
-        onPress: () => setAccountId(jiraAccount.accountId),
+        onPress: () => setUUID(login.uuid),
       })),
-    [jiraAccounts]
+    [logins]
   );
   const hasTabs = tabs.length > 1;
 
@@ -200,7 +195,7 @@ export const Search: FC = () => {
                   name: issue.fields.project.name,
                 },
                 summary: issue.fields.summary,
-                accountId,
+                uuid,
               }}
               onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
             />
@@ -217,7 +212,7 @@ export const Search: FC = () => {
                   name: '',
                 },
                 summary: worklog.issue.summary,
-                accountId,
+                uuid,
               }}
               onPress={() =>
                 handleOnWorklogStart({

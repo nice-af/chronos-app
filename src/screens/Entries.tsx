@@ -6,10 +6,10 @@ import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import {
   activeWorklogAtom,
   currentOverlayAtom,
+  getWorklogsForSelectedDay,
   isFullscreenAtom,
   selectedDateAtom,
   themeAtom,
-  worklogsForCurrentDayAtom,
 } from '../atoms';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { EntriesFooter } from '../components/EntriesFooter';
@@ -25,7 +25,6 @@ import { typo } from '../styles/typo';
 import { WorklogState } from '../types/global.types';
 
 export const Entries: FC = () => {
-  const worklogsForCurrentDay = useAtomValue(worklogsForCurrentDayAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const selectedDate = useAtomValue(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
@@ -35,9 +34,10 @@ export const Entries: FC = () => {
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
   const isFullscreen = useAtomValue(isFullscreenAtom);
+  const worklogsForSelectedDay = getWorklogsForSelectedDay();
 
   const hasChanges =
-    activeWorklogIsThisDay || worklogsForCurrentDay.some(worklog => worklog.state !== WorklogState.SYNCED);
+    activeWorklogIsThisDay || worklogsForSelectedDay.some(worklog => worklog.state !== WorklogState.SYNCED);
   const isToday = selectedDate === todayDateString;
   const isOlderThan4Weeks = parseDateFromYYYYMMDD(selectedDate) < new Date(new Date().getTime() - ms('4w'));
 
@@ -74,13 +74,13 @@ export const Entries: FC = () => {
         onBackPress: undefined,
         position: 'absolute',
       }}>
-      {worklogsForCurrentDay.length === 0 ? (
+      {getWorklogsForSelectedDay.length === 0 ? (
         <View style={styles.errorMessageContainer}>
           <Text style={styles.errorMessage}>{t(isOlderThan4Weeks ? 'worklogOlderThen4Weeks' : 'noWorklogs')}</Text>
         </View>
       ) : (
         <ScrollView style={[styles.entriesContainer, isFullscreen && Platform.OS === 'macos' && { marginTop: 53 }]}>
-          {worklogsForCurrentDay.map(worklog => (
+          {worklogsForSelectedDay.map(worklog => (
             <TrackingListEntry key={worklog.id} worklog={worklog} />
           ))}
           {hasChanges && <View style={{ height: 60 }} />}

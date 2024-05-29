@@ -1,10 +1,9 @@
 import { useAtomValue } from 'jotai';
-import React, { useRef, useState } from 'react';
-import { Animated, Image } from 'react-native';
+import React, { useRef } from 'react';
+import { Image } from 'react-native';
 import { themeAtom } from '../atoms';
 import { showContextualMenu } from '../services/contextual-menu.service';
 import { ButtonSecondary } from './ButtonSecondary';
-import { ro } from 'date-fns/locale';
 
 type OptionValue = string | number;
 

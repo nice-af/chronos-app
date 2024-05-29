@@ -2,28 +2,28 @@ import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
 import { Alert } from 'react-native';
 import {
-  jiraAccountsAtom,
-  jiraAuthsAtom,
+  jiraAccountTokensAtom,
   jiraClientsAtom,
+  loginsAtom,
   store,
   worklogsLocalAtom,
   worklogsLocalBackupsAtom,
 } from '../atoms';
 import { refreshAccessToken } from '../services/jira-auth.service';
-import { JiraAuthModel } from '../services/storage.service';
+import { CloudId, JiraAccountTokens, UUID } from '../types/accounts.types';
 import { Worklog } from '../types/global.types';
 
-export function createJiraClient(jiraAuth: JiraAuthModel, accountId: string): Version3Client {
+export function createJiraClient(jiraAccountTokens: JiraAccountTokens, uuid: UUID, cloudId: CloudId): Version3Client {
   const jiraClient = new Version3Client({ host: 'https://example.com' });
   // @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
   const axiosInstance = jiraClient.instance as AxiosInstance;
-  axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config, jiraAuth));
+  axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config, jiraAccountTokens, cloudId));
   axiosInstance.interceptors.response.use(
     response => response,
-    async error => handleAxiosError(axiosInstance, error, jiraAuth, accountId)
+    async error => handleAxiosError(axiosInstance, error, jiraAccountTokens, uuid)
   );
   const newJiraClients = store.get(jiraClientsAtom);
-  newJiraClients[accountId] = jiraClient;
+  newJiraClients[uuid] = jiraClient;
   store.set(jiraClientsAtom, newJiraClients);
   return jiraClient;
 }
@@ -32,10 +32,10 @@ export function createJiraClient(jiraAuth: JiraAuthModel, accountId: string): Ve
  * Injects the access token into the request.
  * We need to do this for every request because the access token might have change.
  */
-export function addAccessTokenToRequest(config: any, jiraAuth: JiraAuthModel) {
-  config.baseURL = `https://api.atlassian.com/ex/jira/${jiraAuth?.cloudId}`;
-  if (jiraAuth?.accessToken) {
-    config.headers.Authorization = `Bearer ${jiraAuth!.accessToken}`;
+export function addAccessTokenToRequest(config: any, jiraAccountTokens: JiraAccountTokens, cloudId: CloudId) {
+  config.baseURL = `https://api.atlassian.com/ex/jira/${cloudId}`;
+  if (jiraAccountTokens.accessToken) {
+    config.headers.Authorization = `Bearer ${jiraAccountTokens.accessToken}`;
   }
   return config;
 }
@@ -47,31 +47,31 @@ export function addAccessTokenToRequest(config: any, jiraAuth: JiraAuthModel) {
 export async function handleAxiosError(
   axiosInstance: AxiosInstance,
   error: any,
-  jiraAuth: JiraAuthModel,
-  accountId: string
+  jiraAccountTokens: JiraAccountTokens,
+  uuid: UUID
 ) {
   const status = error.response ? error.response.status : null;
 
   if (status === 401) {
-    if (!jiraAuth?.refreshToken) {
+    if (!jiraAccountTokens?.refreshToken) {
       return Promise.reject(error);
     }
-    const jiraAuths = store.get(jiraAuthsAtom);
+    const jiraAuths = store.get(jiraAccountTokensAtom);
 
     try {
-      const freshTokens = await refreshAccessToken(jiraAuth.refreshToken);
+      const freshTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
       // Update auth tokens for upcoming requests
-      const newJiraAuths = store.get(jiraAuthsAtom);
-      newJiraAuths[accountId] = {
-        ...jiraAuth,
+      const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
+      newJiraAccountTokens[uuid] = {
+        ...jiraAccountTokens,
         accessToken: freshTokens.access_token,
         refreshToken: freshTokens.refresh_token,
       };
-      store.set(jiraAuthsAtom, { ...newJiraAuths });
+      store.set(jiraAccountTokensAtom, { ...newJiraAccountTokens });
     } catch (err) {
       if ((err as Error).message === 'refresh_token is invalid') {
         // Refresh token has expired after 90 days, user needs to re-authenticate
-        const jiraAccount = store.get(jiraAccountsAtom).find(account => account.accountId === accountId);
+        const jiraAccount = store.get(loginsAtom).find(account => account.accountId === uuid);
         Alert.alert(
           'Your session has expired!',
           `Please log in again as ${jiraAccount?.name} on the ${jiraAccount?.workspaceName} workspace.`
@@ -83,7 +83,7 @@ export async function handleAxiosError(
         store.set(
           worklogsLocalAtom,
           localWorklogs.filter(worklog => {
-            if (worklog.accountId === accountId) {
+            if (worklog.uuid === uuid) {
               newBackupWorklogs.push(worklog);
               return false;
             }
@@ -91,8 +91,8 @@ export async function handleAxiosError(
           })
         );
         store.set(worklogsLocalBackupsAtom, cur => [...cur, ...newBackupWorklogs]);
-        delete jiraAuths[accountId];
-        store.set(jiraAuthsAtom, { ...jiraAuths });
+        delete jiraAuths[uuid];
+        store.set(jiraAccountTokensAtom, { ...jiraAuths });
       } else {
         // Rethrow unexpected errors
         throw err;

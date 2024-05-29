@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { jiraAccountsAtom, settingsAtom } from '../../atoms';
+import { loginsAtom, settingsAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
@@ -12,7 +12,7 @@ import { Select } from '../Select';
 export const WorklogSettings: FC = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
   const settingsStyles = useThemedStyles(createSettingsStyles);
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const jiraAccounts = useAtomValue(loginsAtom);
   const { t } = useTranslation();
 
   const workingTimeCountMethodOptions: { label: string; value: WorkingTimeCountMethod }[] = [

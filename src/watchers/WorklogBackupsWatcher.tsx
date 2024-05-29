@@ -1,12 +1,12 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC, useEffect } from 'react';
-import { jiraAccountsAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from '../atoms';
+import { loginsAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { useModal } from '../services/modal.service';
 
 export const WorklogBackupsWatcher: FC = () => {
   const { getModalConfirmation } = useModal();
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
+  const jiraAccounts = useAtomValue(loginsAtom);
   const [worklogsLocalBackups, setWorklogsLocalBackups] = useAtom(worklogsLocalBackupsAtom);
   const setWorklogsLocal = useSetAtom(worklogsLocalAtom);
   const { t } = useTranslation();

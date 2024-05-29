@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { ViewStyle } from 'react-native';
+import { UUID } from './accounts.types';
 
 export type Layout = 'normal' | 'compact' | 'micro';
 export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -40,14 +41,16 @@ export interface IssueBase {
   summary: string;
 }
 
+export type WorklogId = string;
+
 export interface Worklog {
-  id: string;
+  id: WorklogId;
   issue: IssueBase;
   started: string;
   timeSpentSeconds: number;
   comment: string;
   state: WorklogState;
-  accountId: string;
+  uuid: UUID;
 }
 
 export interface Project {
@@ -65,7 +68,7 @@ export interface Project {
   avatar: string | null;
   key: string;
   name: string;
-  accountId: string;
+  uuid: UUID;
 }
 
 export interface CustomButtonProps {

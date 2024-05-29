@@ -6,10 +6,10 @@ import {
   activeWorklogAtom,
   currentOverlayAtom,
   currentWorklogToEditAtom,
-  deleteWorklogAtom,
-  primaryJiraAccountIdAtom,
+  deleteWorklog,
+  primaryUUIDAtom,
   selectedDateAtom,
-  setWorklogAsActiveAtom,
+  setWorklogAsActive,
   settingsAtom,
   worklogsLocalAtom,
 } from '../atoms';
@@ -37,10 +37,8 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const setLocalWorklogs = useSetAtom(worklogsLocalAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
-  const setWorklogAsActive = useSetAtom(setWorklogAsActiveAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
-  const deleteWorklog = useSetAtom(deleteWorklogAtom);
-  const primaryJiraAccountId = useAtomValue(primaryJiraAccountIdAtom);
+  const primaryUUID = useAtomValue(primaryUUIDAtom);
   const { getModalConfirmation } = useModal();
   const { t } = useTranslation();
   const ref = useRef(null);
@@ -128,7 +126,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
               [{worklog.state.substring(0, 1).toUpperCase()}]
             </Text>
           )}
-          <IssueKeyTag issueKey={worklog.issue.key} accountId={worklog.accountId} />
+          <IssueKeyTag issueKey={worklog.issue.key} uuid={worklog.uuid} />
           <Text numberOfLines={1} style={styles.title}>
             {worklog.issue.summary}
           </Text>
@@ -139,7 +137,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
         duration={worklog.timeSpentSeconds}
         isRunning={isActiveWorklog}
         onPress={handlePlayPause}
-        isPrimaryWorklog={worklog.accountId === primaryJiraAccountId}
+        isPrimaryWorklog={worklog.uuid === primaryUUID}
       />
     </Pressable>
   );

@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { currentOverlayAtom, jiraAccountsAtom, jiraAuthsAtom } from '../atoms';
+import { currentOverlayAtom, loginsAtom, jiraAccountTokensAtom } from '../atoms';
 import { getPadding } from '../styles/utils';
 import { StorageKey, getFromStorage } from '../services/storage.service';
 
@@ -26,8 +26,8 @@ export const DebugToolsTab: FC<DebugToolsTabProps> = ({ defaultExpanded, title, 
 
 export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const jiraAccounts = useAtomValue(jiraAccountsAtom);
-  const jiraAuths = useAtomValue(jiraAuthsAtom);
+  const jiraAccounts = useAtomValue(loginsAtom);
+  const jiraAuths = useAtomValue(jiraAccountTokensAtom);
   const currentOverlay = useAtomValue(currentOverlayAtom);
 
   if (!expanded) {
@@ -43,10 +43,10 @@ export const DebugTools: FC = () => {
           <Text style={styles.xButtonTitle}>X</Text>
         </Pressable>
         <ScrollView>
-          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.ACCOUNTS))}>
+          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.LOGINS))}>
             <Text style={styles.tabTitle}>Log accounts storage</Text>
           </Pressable>
-          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.AUTHS))}>
+          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS))}>
             <Text style={styles.tabTitle}>Log auths storage</Text>
           </Pressable>
           <DebugToolsTab title='jiraAccounts'>

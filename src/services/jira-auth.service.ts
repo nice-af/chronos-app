@@ -2,13 +2,13 @@ import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
-import { jiraAccountsAtom, jiraAuthsAtom, jiraClientsAtom, store, worklogsRemoteAtom } from '../atoms';
-import { GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/auth.types';
+import { jiraAccountTokensAtom, jiraClientsAtom, loginsAtom, store, worklogsRemoteAtom } from '../atoms';
+import { JiraAccountTokens, UUID } from '../types/accounts.types';
+import { GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/jira.types';
 import { getUrlParams } from '../utils/url';
 import { createJiraClient } from './jira-client.service';
 import { requestAccountData } from './jira-info.service';
 import { getRemoteWorklogs } from './jira-worklogs.service';
-import { JiraAuthModel } from './storage.service';
 
 const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
   if ('error' in res) {
@@ -73,26 +73,24 @@ export const useAuthRequest = () => {
       return;
     }
     setIsLoading(true);
+    console.log('event.url', event.url);
     const { code: urlCode, state: urlState } = getUrlParams(event.url);
     try {
       if (state.current !== urlState || !urlCode) {
         throw new Error('An error occured while authenticating. Maybe your session timed out? Please try again.');
       }
       const { access_token: accessToken, refresh_token: refreshToken } = await getOAuthToken(urlCode);
-      const { jiraAccount, jiraAuth, worklogs } = await initializeJiraAccount(accessToken, refreshToken);
+      const { login, jiraAccountTokens, worklogs } = await initializeJiraAccount(accessToken, refreshToken);
 
-      const newJiraAuths = store.get(jiraAuthsAtom);
-      newJiraAuths[jiraAccount.accountId] = jiraAuth;
-      store.set(jiraAuthsAtom, { ...newJiraAuths });
+      const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
+      newJiraAccountTokens[login.accountId] = jiraAccountTokens;
+      store.set(jiraAccountTokensAtom, { ...newJiraAccountTokens });
 
-      const newJiraAccounts = store.get(jiraAccountsAtom);
-      if (newJiraAccounts.length === 0) {
-        jiraAccount.isPrimary = true;
+      const newLogins = store.get(loginsAtom);
+      if (newLogins.length === 0) {
+        login.isPrimary = true;
       }
-      store.set(jiraAccountsAtom, [
-        ...newJiraAccounts.filter(account => account.accountId !== jiraAccount.accountId),
-        jiraAccount,
-      ]);
+      store.set(loginsAtom, [...newLogins.filter(account => account.accountId !== login.accountId), login]);
 
       const worklogsRemote = store.get(worklogsRemoteAtom);
       store.set(worklogsRemoteAtom, worklogsRemote.concat(worklogs));
@@ -131,6 +129,7 @@ export const useAuthRequest = () => {
         'read:issue:jira',
         'read:me',
         'read:project-role:jira',
+        'read:user-configuration:jira',
         'read:user:jira',
         'write:comment:jira',
         'write:issue-worklog:jira',
@@ -145,6 +144,7 @@ export const useAuthRequest = () => {
     });
 
     if (await Linking.canOpenURL(oAuthUrl)) {
+      console.log('oAuthUrl', oAuthUrl);
       await Linking.openURL(oAuthUrl);
     } else {
       Alert.alert(`This device can't open this URL: ${oAuthUrl}`);
@@ -161,27 +161,23 @@ export const useAuthRequest = () => {
  * Makes all the necessary calls to initialize the Jira account
  */
 export async function initializeJiraAccount(initialAccessToken: string, initialRefreshToken: string) {
-  const { workspace, userInfo, jiraAccount, accessToken, refreshToken } = await requestAccountData(
-    initialAccessToken,
-    initialRefreshToken
-  );
-  const jiraAuth: JiraAuthModel = {
+  const { login, accessToken, refreshToken } = await requestAccountData(initialAccessToken, initialRefreshToken);
+  const jiraAccountTokens: JiraAccountTokens = {
     accessToken,
     refreshToken,
-    cloudId: workspace.id,
   };
-  const jiraClient = createJiraClient(jiraAuth, userInfo.accountId);
-  const worklogs = await getRemoteWorklogs(userInfo.accountId);
-  return { jiraAccount, jiraAuth, jiraClient, worklogs };
+  const jiraClient = createJiraClient(jiraAccountTokens, login.uuid, login.accountId);
+  const worklogs = await getRemoteWorklogs(login.uuid, login.accountId);
+  return { login, jiraAccountTokens, jiraClient, worklogs };
 }
 
 /**
  * Returns the Jira client for the given account ID
  */
-export function getJiraClient(accountId: string) {
+export function getJiraClient(uuid: UUID) {
   const jiraClients = store.get(jiraClientsAtom);
-  if (!jiraClients[accountId]) {
-    throw new Error(`No Jira client for account ${accountId}`);
+  if (!jiraClients[uuid]) {
+    throw new Error(`No Jira client for account ${uuid}`);
   }
-  return jiraClients[accountId];
+  return jiraClients[uuid];
 }

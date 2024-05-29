@@ -3,8 +3,8 @@ import React, { FC, useMemo, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   hideNonWorkingDaysAtom,
-  jiraAccountsAtom,
-  primaryJiraAccountIdAtom,
+  loginsAtom,
+  primaryUUIDAtom,
   selectedDateAtom,
   settingsAtom,
   sidebarLayoutAtom,
@@ -31,7 +31,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
-  const primaryJiraAccountId = useAtomValue(primaryJiraAccountIdAtom);
+  const primaryJiraAccountId = useAtomValue(primaryUUIDAtom);
   const { workingTimeCountMethod } = useAtomValue(settingsAtom);
   const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
   const styles = useThemedStyles(createStyles);
