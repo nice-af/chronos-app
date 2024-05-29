@@ -97,9 +97,9 @@ export const syncWorklogsForCurrentDayAtom = atom(null, async (get, set) => {
     } = await requestAccountData(auth.accessToken, auth.refreshToken);
     newAuths[jiraAccount.accountId] = { ...auth, accessToken: newAccessToken, refreshToken: newRefreshToken };
     newAccountsData.push(newJiraAccount);
-    store.set(syncProgressAtom, progressPerStep * (progressStepsSync + i + 1));
+    store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep);
     newWorklogsRemote.push(...(await getRemoteWorklogs(jiraAccount.accountId)));
-    store.set(syncProgressAtom, progressPerStep * (progressStepsSync + progressStepsAccountsLoop + i + 1));
+    store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep * 2);
   }
   store.set(jiraAuthsAtom, newAuths);
   store.set(
