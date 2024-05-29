@@ -1,8 +1,10 @@
 import { Version3Client } from 'jira.js';
 import { ColorOption } from '../styles/theme/theme-types';
 
-export type AccountId = string;
-export type CloudId = string;
+// The AccountId and CloudId don't actually start with "accountId" or "cloudId",
+// but we need to prefix them to avoid conflicts with other types.
+export type AccountId = `accountId${string}`;
+export type CloudId = `cloudId${string}`;
 export type UUID = `${AccountId}_${CloudId}`;
 
 /**

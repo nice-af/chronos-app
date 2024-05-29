@@ -73,7 +73,6 @@ export const useAuthRequest = () => {
       return;
     }
     setIsLoading(true);
-    console.log('event.url', event.url);
     const { code: urlCode, state: urlState } = getUrlParams(event.url);
     try {
       if (state.current !== urlState || !urlCode) {
@@ -85,13 +84,11 @@ export const useAuthRequest = () => {
       const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
       newJiraAccountTokens[login.accountId] = jiraAccountTokens;
       store.set(jiraAccountTokensAtom, { ...newJiraAccountTokens });
-
       const newLogins = store.get(loginsAtom);
       if (newLogins.length === 0) {
         login.isPrimary = true;
       }
       store.set(loginsAtom, [...newLogins.filter(account => account.accountId !== login.accountId), login]);
-
       const worklogsRemote = store.get(worklogsRemoteAtom);
       store.set(worklogsRemoteAtom, worklogsRemote.concat(worklogs));
     } catch (error) {
@@ -144,7 +141,6 @@ export const useAuthRequest = () => {
     });
 
     if (await Linking.canOpenURL(oAuthUrl)) {
-      console.log('oAuthUrl', oAuthUrl);
       await Linking.openURL(oAuthUrl);
     } else {
       Alert.alert(`This device can't open this URL: ${oAuthUrl}`);
@@ -166,7 +162,7 @@ export async function initializeJiraAccount(initialAccessToken: string, initialR
     accessToken,
     refreshToken,
   };
-  const jiraClient = createJiraClient(jiraAccountTokens, login.uuid, login.accountId);
+  const jiraClient = createJiraClient(jiraAccountTokens, login.uuid, login.cloudId);
   const worklogs = await getRemoteWorklogs(login.uuid, login.accountId);
   return { login, jiraAccountTokens, jiraClient, worklogs };
 }

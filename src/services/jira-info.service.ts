@@ -4,7 +4,7 @@ import { atom } from 'jotai';
 import { Alert } from 'react-native';
 import { loginsAtom, store } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
-import { LoginModel } from '../types/accounts.types';
+import { AccountId, CloudId, LoginModel, UUID } from '../types/accounts.types';
 import { JiraResource } from '../types/jira.types';
 import { refreshAccessToken } from './jira-auth.service';
 
@@ -67,6 +67,7 @@ export async function requestAccountData(
     response => response,
     async error => handleAxiosError(axiosInstance, error)
   );
+
   const workspace = await requestWorkspaceInfo(axiosInstance, cloudId);
   if (!workspace) {
     throw new Error('Could not access the selected workspace. Please try again.');
@@ -75,7 +76,6 @@ export async function requestAccountData(
   if (!userInfo) {
     throw new Error('Could not get user info. Please try again.');
   }
-  console.log(userInfo);
   const tokens = store.get(temporaryTokensAtom);
   if (!tokens) {
     throw new Error('Could not get tokens. Please try again.');
@@ -86,9 +86,9 @@ export async function requestAccountData(
 
   return {
     login: {
-      uuid: `${userInfo.accountId}_${workspace.id}`,
-      accountId: userInfo.accountId,
-      cloudId: workspace.id,
+      uuid: `${userInfo.accountId}_${workspace.id}` as UUID,
+      accountId: userInfo.accountId as AccountId,
+      cloudId: workspace.id as CloudId,
       name: userInfo.displayName ?? '',
       avatarUrl: userInfo.avatarUrls?.['48x48'] ?? '',
       workspaceName: workspace.name,
@@ -134,8 +134,6 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any)
     } catch (err) {
       if ((err as Error).message === 'refresh_token is invalid') {
         // Refresh token has expired after 90 days, user needs to re-authenticate
-        console.log(tokens);
-        console.log(error);
         Alert.alert('Your session has expired!', 'Please try to log in again.');
         store.set(temporaryTokensAtom, null);
       } else {
