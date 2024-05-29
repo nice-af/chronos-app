@@ -5,7 +5,7 @@ import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, Vi
 import { jiraAccountsAtom, projectsAtom, settingsAtom, themeAtom } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
 import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
+import { Theme, colorKeys } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
@@ -25,21 +25,8 @@ interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
   style?: ViewStyle;
 }
 
-const tagThemesKeys = [
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'mint',
-  'teal',
-  'cyan',
-  'blue',
-  'indigo',
-  'purple',
-  'pink',
-  'gray',
-  'brown',
-] as const;
+type IssueKeyTagTheme = { text: TextStyle; bg: ViewStyle };
+type IssueKeyTagThemes = Record<(typeof colorKeys)[number], IssueKeyTagTheme>;
 
 export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
@@ -48,7 +35,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
   const projects = useAtomValue(projectsAtom);
   const styles = useThemedStyles(createStyles);
   const { issueTagIcon, issueTagColor } = useAtomValue(settingsAtom);
-  const tagThemes: Record<(typeof tagThemesKeys)[number], { text: TextStyle; bg: ViewStyle }> = useMemo(
+  const tagThemes: IssueKeyTagThemes = useMemo(
     () => ({
       red: {
         text: { color: theme.red },
@@ -105,6 +92,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
     }),
     [theme.type]
   );
+  colorKeys;
 
   // The placeholder is used to display the component in the settings screen.
   const isPlaceholder = issueKey === 'placeholder';
@@ -112,7 +100,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
     issueKey = 'PROJ-123';
   }
 
-  const currentTheme =
+  const currentTheme: IssueKeyTagTheme =
     issueTagColor === 'workspace' && thisJiraAccount
       ? {
           text: { color: thisJiraAccount?.workspaceColors[theme.type ?? 'dark'] },
@@ -120,7 +108,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
             backgroundColor: transparentize(0.75, thisJiraAccount?.workspaceColors[theme.type ?? 'dark']),
           },
         }
-      : tagThemes[tagThemesKeys[hashStr(issueKey) % tagThemesKeys.length]];
+      : tagThemes[colorKeys[hashStr(issueKey) % colorKeys.length]];
 
   // The useMemo hook is used to assure that the project is up-to-date when the projects change to display the latest avatar.
   const project = useMemo(

@@ -23,7 +23,10 @@ export async function requestWorkspaceInfo(axiosInstance: AxiosInstance): Promis
   return await axiosInstance
     .get<JiraResource[]>('https://api.atlassian.com/oauth/token/accessible-resources')
     // TODO @florianmrz how do we handle multiple resources?
-    .then(response => response.data[0]);
+    .then(response => {
+      console.log(response);
+      return response.data[0];
+    });
 }
 
 /**
@@ -87,7 +90,7 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
       workspaceAvatarUrl: workspace.avatarUrl,
       workspaceColors: {
         light: setLightness(Math.min(defaultLuminance, 0.65), primaryColor),
-        dark: setLightness(Math.max(defaultLuminance, 0.35), primaryColor),
+        dark: setLightness(Math.max(defaultLuminance, 0.45), primaryColor),
       },
       isPrimary: false,
     },

@@ -4,7 +4,7 @@
     "addNewAccount": "Add new account",
     "logOut": "Log out",
     "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar",
-    "settingsTitle": "Account"
+    "settingsTitle": "Accounts"
   },
   "calendarWeekShort": "Week",
   "cancel": "Cancel",
@@ -107,5 +107,10 @@
         "onlyPrimary": "Only primary account time"
       }
     }
+  },
+  "workspace": {
+    "color": "Workspace color",
+    "customColor": "Custom color",
+    "name": "Workspace name"
   }
 }

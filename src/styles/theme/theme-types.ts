@@ -61,3 +61,19 @@ export interface Theme {
 
   buttonBorderRadius: number;
 }
+
+export const colorKeys = [
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'mint',
+  'teal',
+  'cyan',
+  'blue',
+  'indigo',
+  'purple',
+  'pink',
+  'gray',
+  'brown',
+] as const;
