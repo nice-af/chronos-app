@@ -4,8 +4,8 @@ import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import { jiraAccountsAtom, projectsAtom, settingsAtom, themeAtom } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
-import { useThemedStyles } from '../services/theme.service';
-import { ColorKeys, Theme, colorKeys } from '../styles/theme/theme-types';
+import { getWorkspaceColor, useThemedStyles } from '../services/theme.service';
+import { ColorKey, Theme, colorKeys } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 
@@ -26,7 +26,7 @@ interface IssueKeyTagProps extends Omit<PressableProps, 'style'> {
 }
 
 type IssueKeyTagTheme = { text: TextStyle; bg: ViewStyle };
-type IssueKeyTagThemes = Record<ColorKeys, IssueKeyTagTheme>;
+type IssueKeyTagThemes = Record<ColorKey, IssueKeyTagTheme>;
 
 export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress, ...props }) => {
   const theme = useAtomValue(themeAtom);
@@ -110,7 +110,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
           bg: { backgroundColor: transparentize(0.75, thisJiraAccount.customWorkspaceColor) },
         };
       } else if (thisJiraAccount.workspaceColor !== 'custom') {
-        newTheme = tagThemes[thisJiraAccount.workspaceColor as ColorKeys];
+        newTheme = tagThemes[thisJiraAccount.workspaceColor as ColorKey];
       }
     }
     return newTheme;
@@ -128,14 +128,13 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, accountId, onPress
       ? { uri: project.avatar, width: 48, height: 48 }
       : undefined;
 
-  const workspaceImage = thisJiraAccount?.workspaceAvatarUrl;
-  const workspaceImageSrc = workspaceImage ? { uri: workspaceImage } : undefined;
-  const hasWorkspaceIcon = issueTagIcon === 'workspace' || issueTagIcon === 'workspaceAndProject';
+  const hasWorkspaceIndicator = issueTagIcon === 'workspace' || issueTagIcon === 'workspaceAndProject';
 
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [styles.container, pressed && styles.isSelected, props.style]}>
-      {hasWorkspaceIcon &&
-        (workspaceImageSrc ? <Image style={styles.logo} source={workspaceImageSrc} /> : <View style={styles.logo} />)}
+      {hasWorkspaceIndicator && (
+        <View style={[styles.indicator, { backgroundColor: getWorkspaceColor(thisJiraAccount, theme) }]} />
+      )}
       {hasProjectIcon &&
         (projectImageSrc ? <Image style={styles.logo} source={projectImageSrc} /> : <View style={styles.logo} />)}
       <View style={[styles.labelContainer, currentTheme.bg]}>
@@ -160,6 +159,11 @@ function createStyles(theme: Theme) {
     },
     isSelected: {
       opacity: 0.75,
+    },
+    indicator: {
+      width: 4,
+      height: 20,
+      backgroundColor: theme.surfaceButtonBase,
     },
     logo: {
       width: 20,

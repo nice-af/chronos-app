@@ -21,9 +21,9 @@
       "label": "Visible tag icons",
       "options": {
         "none": "None",
-        "project": "Project icon",
-        "workspace": "Workspace logo",
-        "workspaceAndProject": "Workspace logo and issue icon"
+        "project": "Only project icon",
+        "workspace": "Only workspace color",
+        "workspaceAndProject": "Workspace color and project icon"
       }
     },
     "preview": "Preview:",

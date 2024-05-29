@@ -3,9 +3,9 @@ import React, { FC, useMemo } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { themeAtom } from '../../atoms';
 import { useThemedStyles } from '../../services/theme.service';
-import { ColorKeys, Theme, colorKeys } from '../../styles/theme/theme-types';
+import { ColorKey, Theme, colorKeys } from '../../styles/theme/theme-types';
 
-export type ColorOption = ColorKeys | 'custom';
+export type ColorOption = ColorKey | 'custom';
 
 interface ColorSelectorProps {
   selectedColor: ColorOption;

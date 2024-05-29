@@ -77,4 +77,4 @@ export const colorKeys = [
   'gray',
   'brown',
 ] as const;
-export type ColorKeys = (typeof colorKeys)[number];
+export type ColorKey = (typeof colorKeys)[number];

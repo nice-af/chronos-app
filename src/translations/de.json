@@ -21,9 +21,9 @@
       "label": "Tag Icons",
       "options": {
         "none": "Keinen Icon anzeigen",
-        "project": "Icon des Projekts",
-        "workspace": "Logo des Workspace",
-        "workspaceAndProject": "Workspace Logo und Projekt Icon"
+        "project": "Nur Projekt-Icon",
+        "workspace": "Nur Workspace Farbe",
+        "workspaceAndProject": "Workspace Farbe und Projekt Icon"
       }
     },
     "preview": "Vorschau:",

@@ -83,7 +83,6 @@ export async function requestAccountData(accessToken: string, refreshToken: stri
       avatarUrl: userInfo.avatarUrls?.['48x48'],
       workspaceName: workspace.name,
       workspaceDisplayName: workspace.name,
-      workspaceAvatarUrl: workspace.avatarUrl,
       workspaceColor: colorKeys[Math.floor(Math.random() * colorKeys.length)],
       isPrimary: false,
     },
