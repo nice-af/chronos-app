@@ -9,10 +9,10 @@ import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
 import { getPadding } from '../../styles/utils';
+import { LoginModel, UUID } from '../../types/accounts.types';
 import { ButtonSecondary } from '../ButtonSecondary';
 import { LoadingSpinnerSmall } from '../LoadingSpinnerSmall';
 import { AccountSettingsOptions } from './AccountSettingsOptions';
-import { LoginModel, UUID } from '../../types/accounts.types';
 
 interface AccountRowProps {
   login: LoginModel;
@@ -77,7 +77,12 @@ const AccountRow: FC<AccountRowProps> = ({ login, isPrimary, showPrimaryButton, 
           />
         )}
         <ButtonSecondary
-          iconRight={<Image source={showSettings ? chevronIcon : settingsIcon} />}
+          iconRight={
+            <View style={{ pointerEvents: 'none' }}>
+              {showSettings && <Image source={chevronIcon} />}
+              {!showSettings && <Image source={settingsIcon} />}
+            </View>
+          }
           onPress={() => setShowSettings(!showSettings)}
           style={{ ...getPadding(6), width: 32, height: 32 }}
         />
@@ -93,12 +98,10 @@ export const AccountSettings: FC = () => {
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { t } = useTranslation();
   const { initOAuth, isLoading } = useAuthRequest();
-  const [primaryAccountIndex, setPrimaryAccountIndex] = useState(
-    logins.find(jiraAccount => jiraAccount.isPrimary)?.accountId
-  );
+  const [primaryAccountUUID, setPrimaryAccountUUID] = useState(logins.find(jiraAccount => jiraAccount.isPrimary)?.uuid);
 
   function handleSetPrimary(uuid: UUID) {
-    setPrimaryAccountIndex(uuid);
+    setPrimaryAccountUUID(uuid);
     setLogins(
       logins
         .map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.uuid === uuid }))
@@ -113,7 +116,7 @@ export const AccountSettings: FC = () => {
       {logins.map(login => (
         <Fragment key={login.uuid}>
           <AccountRow
-            isPrimary={primaryAccountIndex === login.uuid}
+            isPrimary={primaryAccountUUID === login.uuid}
             onSetPrimary={() => handleSetPrimary(login.uuid)}
             showPrimaryButton={logins.length > 1}
             login={login}

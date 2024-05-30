@@ -18,7 +18,7 @@ interface AccountSettingsOptionsProps {
 
 export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login }) => {
   const { uuid, accountId, workspaceDisplayName, workspaceColor, customWorkspaceColor } = login;
-  const [jiraAccounts, setJiraAccounts] = useAtom(loginsAtom);
+  const [logins, setLogins] = useAtom(loginsAtom);
   const [customWorkspaceName, setCustomWorkspaceName] = useState(workspaceDisplayName);
   const [customWorkspaceColorValue, setCustomWorkspaceColorValue] = useState(customWorkspaceColor ?? '0B84FF');
   const styles = useThemedStyles(createStyles);
@@ -36,13 +36,13 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login 
   }
 
   function updateLoginValue(changes: Partial<LoginModel>) {
-    const newJiraAccounts = jiraAccounts.map(account => {
-      if (account.accountId === accountId) {
-        return { ...account, ...changes };
+    const newLogin = logins.map(thisLogin => {
+      if (thisLogin.uuid === uuid) {
+        return { ...login, ...changes };
       }
-      return account;
+      return thisLogin;
     });
-    setJiraAccounts(newJiraAccounts);
+    setLogins(newLogin);
   }
 
   function updateWorkspaceDisplayName() {

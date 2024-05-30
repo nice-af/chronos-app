@@ -46,12 +46,12 @@ export async function initialize() {
     const newJiraClients: JiraClientsAtom = {};
     const newWorklogsRemote: Worklog[] = [];
 
-    for (const account of logins) {
-      const tokens = jiraAccountTokens[account.accountId];
+    for (const login of logins) {
+      const tokens = jiraAccountTokens[login.accountId];
       if (!tokens) {
         // We don't have tokens for this account, so we have to store its local worklogs and remove it
         newWorklogsLocal = newWorklogsLocal.filter(worklog => {
-          if (worklog.uuid === account.uuid) {
+          if (worklog.uuid === login.uuid) {
             newWorklogsLocalBackups.push(worklog);
             return false;
           }
@@ -59,13 +59,18 @@ export async function initialize() {
         });
         return;
       }
-      const { login, jiraClient, worklogs } = await initializeJiraAccount(
-        tokens.accessToken,
-        tokens.refreshToken,
-        account.cloudId
-      );
-      newLogins.push({ ...login, isPrimary: account.isPrimary });
-      newJiraClients[account.uuid] = jiraClient;
+      const {
+        login: newLogin,
+        jiraClient,
+        worklogs,
+      } = await initializeJiraAccount({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        cloudId: login.cloudId,
+        currentLogin: login,
+      });
+      newLogins.push(newLogin);
+      newJiraClients[login.uuid] = jiraClient;
       newWorklogsRemote.push(...worklogs);
     }
     if (newLogins.length > 0 && !newLogins.some(account => account.isPrimary)) {

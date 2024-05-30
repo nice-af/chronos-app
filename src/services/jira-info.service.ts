@@ -51,16 +51,19 @@ export async function requestUserInfo(
 /**
  * Get the account data for a given access token
  */
+interface RequestAccountDataOptions {
+  accessToken: string;
+  refreshToken: string;
+  cloudId?: string;
+  currentLogin?: LoginModel;
+}
 interface RequestAccountDataReturn {
   login: LoginModel;
   accessToken: string;
   refreshToken: string;
 }
-export async function requestAccountData(
-  accessToken: string,
-  refreshToken: string,
-  cloudId?: string
-): Promise<RequestAccountDataReturn> {
+export async function requestAccountData(data: RequestAccountDataOptions): Promise<RequestAccountDataReturn> {
+  const { accessToken, refreshToken, cloudId, currentLogin } = data;
   store.set(temporaryTokensAtom, { accessToken, refreshToken });
   const axiosInstance = axios.create();
   axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config));
@@ -96,9 +99,10 @@ export async function requestAccountData(
       name: userInfo.displayName ?? '',
       avatarUrl: userInfo.avatarUrls?.['48x48'] ?? '',
       workspaceName: workspace.name,
-      workspaceDisplayName: workspace.name,
-      workspaceColor: colorKeys[Math.floor(Math.random() * colorKeys.length)],
-      isPrimary: false,
+      workspaceDisplayName: currentLogin?.workspaceDisplayName ?? workspace.name,
+      workspaceColor: currentLogin?.workspaceColor ?? colorKeys[Math.floor(Math.random() * colorKeys.length)],
+      customWorkspaceColor: currentLogin?.customWorkspaceColor,
+      isPrimary: currentLogin?.isPrimary ?? false,
     },
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,

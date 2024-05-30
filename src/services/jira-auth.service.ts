@@ -3,7 +3,7 @@ import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import { jiraAccountTokensAtom, jiraClientsAtom, loginsAtom, store, worklogsRemoteAtom } from '../atoms';
-import { JiraAccountTokens, UUID } from '../types/accounts.types';
+import { JiraAccountTokens, LoginModel, UUID } from '../types/accounts.types';
 import { GetOauthTokenErrorResponse, GetOauthTokenResponse } from '../types/jira.types';
 import { getUrlParams } from '../utils/url';
 import { createJiraClient } from './jira-client.service';
@@ -79,7 +79,7 @@ export const useAuthRequest = () => {
         throw new Error('An error occured while authenticating. Maybe your session timed out? Please try again.');
       }
       const { access_token: accessToken, refresh_token: refreshToken } = await getOAuthToken(urlCode);
-      const { login, jiraAccountTokens, worklogs } = await initializeJiraAccount(accessToken, refreshToken);
+      const { login, jiraAccountTokens, worklogs } = await initializeJiraAccount({ accessToken, refreshToken });
 
       const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
       newJiraAccountTokens[login.accountId] = jiraAccountTokens;
@@ -157,18 +157,27 @@ export const useAuthRequest = () => {
 /**
  * Makes all the necessary calls to initialize the Jira account
  */
-export async function initializeJiraAccount(initialAccessToken: string, initialRefreshToken: string, cloudId?: string) {
-  const { login, accessToken, refreshToken } = await requestAccountData(
-    initialAccessToken,
-    initialRefreshToken,
-    cloudId
-  );
+interface initializeJiraAccountData {
+  accessToken: string;
+  refreshToken: string;
+  cloudId?: string;
+  currentLogin?: LoginModel;
+}
+export async function initializeJiraAccount(data: initializeJiraAccountData) {
+  const { accessToken: initialAccessToken, refreshToken: initialRefreshToken, cloudId, currentLogin } = data;
+  const { login, accessToken, refreshToken } = await requestAccountData({
+    accessToken: initialAccessToken,
+    refreshToken: initialRefreshToken,
+    cloudId,
+    currentLogin,
+  });
   const jiraAccountTokens: JiraAccountTokens = {
     accessToken,
     refreshToken,
   };
   const jiraClient = createJiraClient(jiraAccountTokens, login.uuid, login.cloudId);
   const worklogs = await getRemoteWorklogs(login.uuid, login.accountId);
+
   return { login, jiraAccountTokens, jiraClient, worklogs };
 }
 

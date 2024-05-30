@@ -96,7 +96,12 @@ export async function syncWorklogsForCurrentDay() {
       login: newLogin,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
-    } = await requestAccountData(tokens.accessToken, tokens.refreshToken, login.cloudId);
+    } = await requestAccountData({
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      cloudId: login.cloudId,
+      currentLogin: login,
+    });
     newJiraAccountTokens[login.accountId] = {
       ...tokens,
       accessToken: newAccessToken,
@@ -110,7 +115,7 @@ export async function syncWorklogsForCurrentDay() {
   store.set(jiraAccountTokensAtom, newJiraAccountTokens);
   store.set(
     loginsAtom,
-    newLogins.map(account => ({ ...account, isPrimary: account.accountId === primaryUUID }))
+    newLogins.map(thisLogin => ({ ...thisLogin, isPrimary: thisLogin.accountId === primaryUUID }))
   );
   store.set(worklogsRemoteAtom, newWorklogsRemote);
 
