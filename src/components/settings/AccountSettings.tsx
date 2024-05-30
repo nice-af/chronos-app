@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { loginsAtom, themeAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useAuthRequest } from '../../services/jira-auth.service';
-import { useThemedStyles } from '../../services/theme.service';
+import { getWorkspaceColor, useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
@@ -12,7 +12,7 @@ import { getPadding } from '../../styles/utils';
 import { ButtonSecondary } from '../ButtonSecondary';
 import { LoadingSpinnerSmall } from '../LoadingSpinnerSmall';
 import { AccountSettingsOptions } from './AccountSettingsOptions';
-import { LoginModel } from '../../types/accounts.types';
+import { LoginModel, UUID } from '../../types/accounts.types';
 
 interface AccountRowProps {
   login: LoginModel;
@@ -26,6 +26,7 @@ const AccountRow: FC<AccountRowProps> = ({ login, isPrimary, showPrimaryButton, 
   const styles = useThemedStyles(createStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const [showSettings, setShowSettings] = useState(false);
+  const theme = useAtomValue(themeAtom);
 
   const { settingsIcon, chevronIcon, starEmptyIcon, starFilledIcon } = useMemo(
     () => ({
@@ -60,9 +61,12 @@ const AccountRow: FC<AccountRowProps> = ({ login, isPrimary, showPrimaryButton, 
             </Text>
           )}
           {workspaceDisplayName && (
-            <Text numberOfLines={1} lineBreakMode='clip' style={styles.workspaceName}>
-              {workspaceDisplayName}
-            </Text>
+            <View style={styles.workspaceNameContainer}>
+              <View style={[styles.workspaceColorIndicator, { backgroundColor: getWorkspaceColor(login, theme) }]} />
+              <Text numberOfLines={1} lineBreakMode='clip' style={styles.workspaceName}>
+                {workspaceDisplayName}
+              </Text>
+            </View>
           )}
         </View>
         {showPrimaryButton && (
@@ -93,11 +97,11 @@ export const AccountSettings: FC = () => {
     logins.find(jiraAccount => jiraAccount.isPrimary)?.accountId
   );
 
-  function handleSetPrimary(accountId: string) {
-    setPrimaryAccountIndex(accountId);
+  function handleSetPrimary(uuid: UUID) {
+    setPrimaryAccountIndex(uuid);
     setLogins(
       logins
-        .map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.accountId === accountId }))
+        .map(jiraAccount => ({ ...jiraAccount, isPrimary: jiraAccount.uuid === uuid }))
         .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary))
     );
   }
@@ -107,10 +111,10 @@ export const AccountSettings: FC = () => {
       <Text style={[settingsStyles.headline, { marginBottom: 4 }]}>{t('account.settingsTitle')}</Text>
       <View style={settingsStyles.hr} />
       {logins.map(login => (
-        <Fragment key={login.accountId}>
+        <Fragment key={login.uuid}>
           <AccountRow
-            isPrimary={primaryAccountIndex === login.accountId}
-            onSetPrimary={() => handleSetPrimary(login.accountId)}
+            isPrimary={primaryAccountIndex === login.uuid}
+            onSetPrimary={() => handleSetPrimary(login.uuid)}
             showPrimaryButton={logins.length > 1}
             login={login}
           />
@@ -153,6 +157,17 @@ function createStyles(theme: Theme) {
     username: {
       ...typo.calloutEmphasized,
       color: theme.textPrimary,
+    },
+    workspaceNameContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    workspaceColorIndicator: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
     },
     workspaceName: {
       ...typo.callout,
