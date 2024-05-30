@@ -20,13 +20,13 @@ import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
 import { getIssuesBySearchQuery } from '../services/jira-issues.service';
-import { useModal } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { UUID } from '../types/accounts.types';
 import { IssueBase, Worklog } from '../types/global.types';
+import { getModalConfirmation } from '../services/modal.service';
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout;
@@ -53,7 +53,6 @@ export const Search: FC = () => {
   const enoughCharacters = searchValue.trim().length >= 3;
   const { t } = useTranslation();
   const worklogs = useAtomValue(worklogsAtom);
-  const { getModalConfirmation } = useModal();
 
   const debouncedSearch = useMemo(
     () =>

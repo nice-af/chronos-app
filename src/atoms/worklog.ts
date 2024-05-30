@@ -96,7 +96,7 @@ export async function syncWorklogsForCurrentDay() {
       login: newLogin,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
-    } = await requestAccountData(tokens.accessToken, tokens.refreshToken, login.accountId);
+    } = await requestAccountData(tokens.accessToken, tokens.refreshToken, login.cloudId);
     newJiraAccountTokens[login.accountId] = {
       ...tokens,
       accessToken: newAccessToken,

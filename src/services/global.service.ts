@@ -59,7 +59,11 @@ export async function initialize() {
         });
         return;
       }
-      const { login, jiraClient, worklogs } = await initializeJiraAccount(tokens.accessToken, tokens.refreshToken);
+      const { login, jiraClient, worklogs } = await initializeJiraAccount(
+        tokens.accessToken,
+        tokens.refreshToken,
+        account.cloudId
+      );
       newLogins.push({ ...login, isPrimary: account.isPrimary });
       newJiraClients[account.uuid] = jiraClient;
       newWorklogsRemote.push(...worklogs);

@@ -17,7 +17,6 @@ import { Overlay } from '../const';
 import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
-import { useModal } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -26,6 +25,7 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
+import { getModalConfirmation } from '../services/modal.service';
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklog: Worklog;
   isSelected?: boolean;
@@ -39,7 +39,6 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const primaryUUID = useAtomValue(primaryUUIDAtom);
-  const { getModalConfirmation } = useModal();
   const { t } = useTranslation();
   const ref = useRef(null);
   const { onPress: onDoublePress } = useDoublePress(editWorklog);

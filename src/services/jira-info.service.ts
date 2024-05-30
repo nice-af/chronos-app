@@ -2,11 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import { Version3Models } from 'jira.js';
 import { atom } from 'jotai';
 import { Alert } from 'react-native';
-import { loginsAtom, store } from '../atoms';
+import { store } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
 import { AccountId, CloudId, LoginModel, UUID } from '../types/accounts.types';
 import { JiraResource } from '../types/jira.types';
 import { refreshAccessToken } from './jira-auth.service';
+import { getModalAccountSelection } from './modal.service';
 
 /**
  * We need to temporarily store the tokens while we fetch the account data.
@@ -21,17 +22,17 @@ export async function requestWorkspaceInfo(
   axiosInstance: AxiosInstance,
   cloudId?: string
 ): Promise<JiraResource | null> {
-  const jiraAccounts = store.get(loginsAtom);
-  return await axiosInstance
+  const resources = await axiosInstance
     .get<JiraResource[]>('https://api.atlassian.com/oauth/token/accessible-resources')
-    // TODO @florianmrz how do we handle multiple resources?
-    .then(response => {
-      return (
-        response.data.find(resource => resource.id === cloudId) ??
-        response.data.find(resource => !jiraAccounts.some(a => a.accountId === resource.id)) ??
-        response.data[0]
-      );
-    });
+    .then(response => response.data);
+  if (cloudId) {
+    return resources.find(resource => resource.id === cloudId) ?? null;
+  }
+  if (resources.length === 1) {
+    return resources[0];
+  }
+  const targetCloudId = await getModalAccountSelection({ jiraResources: resources });
+  return resources.find(resource => resource.id === targetCloudId) ?? null;
 }
 
 /**
@@ -70,14 +71,17 @@ export async function requestAccountData(
 
   const workspace = await requestWorkspaceInfo(axiosInstance, cloudId);
   if (!workspace) {
+    Alert.alert('Could not access the selected workspace. Please try again.');
     throw new Error('Could not access the selected workspace. Please try again.');
   }
   const userInfo = await requestUserInfo(axiosInstance, workspace.id);
   if (!userInfo) {
+    Alert.alert('Could not get user info. Please try again.');
     throw new Error('Could not get user info. Please try again.');
   }
   const tokens = store.get(temporaryTokensAtom);
   if (!tokens) {
+    Alert.alert('Could not get tokens. Please try again.');
     throw new Error('Could not get tokens. Please try again.');
   }
   const newAccessToken = tokens.accessToken;

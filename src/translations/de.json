@@ -4,7 +4,8 @@
     "addNewAccount": "Weiteren Account hinzufügen",
     "logOut": "Abmelden",
     "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
-    "settingsTitle": "Accounts"
+    "settingsTitle": "Accounts",
+    "whichAccountToAdd": "Welchen Account möchtest du hinzufügen?"
   },
   "calendarWeekShort": "KW",
   "cancel": "Abbrechen",

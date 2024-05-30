@@ -3,7 +3,6 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { loginsAtom, logout } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
-import { useModal } from '../../services/modal.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { ColorOption, Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
@@ -11,6 +10,7 @@ import { LoginModel } from '../../types/accounts.types';
 import { ButtonDanger } from '../ButtonDanger';
 import { CustomTextInput } from '../CustomTextInput';
 import { ColorSelector } from './ColorSelector';
+import { getModalConfirmation } from '../../services/modal.service';
 
 interface AccountSettingsOptionsProps {
   login: LoginModel;
@@ -23,7 +23,6 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login 
   const [customWorkspaceColorValue, setCustomWorkspaceColorValue] = useState(customWorkspaceColor ?? '0B84FF');
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
-  const { getModalConfirmation } = useModal();
 
   async function handleLogout() {
     const confirmed = await getModalConfirmation({

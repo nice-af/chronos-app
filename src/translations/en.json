@@ -4,7 +4,8 @@
     "addNewAccount": "Add new account",
     "logOut": "Log out",
     "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar",
-    "settingsTitle": "Accounts"
+    "settingsTitle": "Accounts",
+    "whichAccountToAdd": "Which account do you want to add?"
   },
   "calendarWeekShort": "Week",
   "cancel": "Cancel",

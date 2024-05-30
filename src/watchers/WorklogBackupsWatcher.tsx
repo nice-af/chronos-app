@@ -2,21 +2,18 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { FC, useEffect } from 'react';
 import { loginsAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
-import { useModal } from '../services/modal.service';
+import { getModalConfirmation } from '../services/modal.service';
 
 export const WorklogBackupsWatcher: FC = () => {
-  const { getModalConfirmation } = useModal();
-  const jiraAccounts = useAtomValue(loginsAtom);
+  const logins = useAtomValue(loginsAtom);
   const [worklogsLocalBackups, setWorklogsLocalBackups] = useAtom(worklogsLocalBackupsAtom);
   const setWorklogsLocal = useSetAtom(worklogsLocalAtom);
   const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
-      const jiraAccountIds = jiraAccounts.map(account => account.accountId);
-      const worklogsLocalBackupsFiltered = worklogsLocalBackups.filter(worklog =>
-        jiraAccountIds.includes(worklog.accountId)
-      );
+      const loginsUUIDs = logins.map(login => login.uuid);
+      const worklogsLocalBackupsFiltered = worklogsLocalBackups.filter(worklog => loginsUUIDs.includes(worklog.uuid));
 
       if (worklogsLocalBackupsFiltered.length > 0) {
         const confirmation = await getModalConfirmation({
@@ -31,9 +28,9 @@ export const WorklogBackupsWatcher: FC = () => {
           setWorklogsLocal(worklogsLocal => [...worklogsLocal, ...worklogsLocalBackupsFiltered]);
         }
         // We check for all accounts here, but since only one account can change at a time, we can safely remove all backups
-        setWorklogsLocalBackups(worklogsLocalBackups.filter(worklog => !jiraAccountIds.includes(worklog.accountId)));
+        setWorklogsLocalBackups(worklogsLocalBackups.filter(worklog => !loginsUUIDs.includes(worklog.uuid)));
       }
     })();
-  }, [jiraAccounts.length]);
+  }, [logins.length]);
   return null;
 };

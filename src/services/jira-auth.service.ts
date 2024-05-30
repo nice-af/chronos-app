@@ -85,10 +85,10 @@ export const useAuthRequest = () => {
       newJiraAccountTokens[login.accountId] = jiraAccountTokens;
       store.set(jiraAccountTokensAtom, { ...newJiraAccountTokens });
       const newLogins = store.get(loginsAtom);
-      if (newLogins.length === 0) {
+      if (newLogins.length === 0 || !newLogins.find(newLogin => newLogin.isPrimary)) {
         login.isPrimary = true;
       }
-      store.set(loginsAtom, [...newLogins.filter(account => account.accountId !== login.accountId), login]);
+      store.set(loginsAtom, [...newLogins.filter(account => account.uuid !== login.uuid), login]);
       const worklogsRemote = store.get(worklogsRemoteAtom);
       store.set(worklogsRemoteAtom, worklogsRemote.concat(worklogs));
     } catch (error) {
@@ -157,8 +157,12 @@ export const useAuthRequest = () => {
 /**
  * Makes all the necessary calls to initialize the Jira account
  */
-export async function initializeJiraAccount(initialAccessToken: string, initialRefreshToken: string) {
-  const { login, accessToken, refreshToken } = await requestAccountData(initialAccessToken, initialRefreshToken);
+export async function initializeJiraAccount(initialAccessToken: string, initialRefreshToken: string, cloudId?: string) {
+  const { login, accessToken, refreshToken } = await requestAccountData(
+    initialAccessToken,
+    initialRefreshToken,
+    cloudId
+  );
   const jiraAccountTokens: JiraAccountTokens = {
     accessToken,
     refreshToken,
