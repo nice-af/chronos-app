@@ -113,5 +113,11 @@
     "color": "Workspace color",
     "customColor": "Custom color",
     "name": "Workspace name"
+  },
+  "newFeaturesModal": {
+    "pillText": "New in v0.1.15",
+    "headline": "Connect multiple accounts",
+    "body1": "Add more accounts to track working times over multiple workspaces. Customize their appearance and choose a primary account to only keep track of times where it matters.",
+    "body2": "All of this can be found in the settings."
   }
 }

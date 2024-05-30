@@ -105,6 +105,7 @@ function createStyles(theme: Theme) {
       },
       shadowOpacity: 0.7,
       shadowRadius: 100,
+      overflow: 'hidden',
     },
     content: {
       ...getPadding(20, 20, 16, 20),

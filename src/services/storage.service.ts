@@ -9,6 +9,7 @@ export enum StorageKey {
   SETTINGS = 'settings',
   WORKLOGS_LOCAL = 'worklogsLocal',
   WORKLOGS_LOCAL_BACKUPS = 'worklogsLocalBackups',
+  LAST_VERSION = 'lastVersion',
 }
 
 export type ThemeKey = 'light' | 'dark' | 'system';
@@ -35,6 +36,7 @@ interface StorageTypes {
   [StorageKey.SETTINGS]: SettingsModel;
   [StorageKey.WORKLOGS_LOCAL]: Worklog[];
   [StorageKey.WORKLOGS_LOCAL_BACKUPS]: Worklog[];
+  [StorageKey.LAST_VERSION]: string | null;
 }
 
 export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
@@ -54,6 +56,7 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
   [StorageKey.WORKLOGS_LOCAL_BACKUPS]: [],
+  [StorageKey.LAST_VERSION]: null,
 };
 
 export async function getFromStorage<T extends StorageKey = never>(key: T): Promise<StorageTypes[T]> {
@@ -65,7 +68,7 @@ export async function getFromStorage<T extends StorageKey = never>(key: T): Prom
   if (key === StorageKey.SETTINGS && defaultValues) {
     const defaultKeys = Object.keys(defaultValues);
     newValues = {
-      ...defaultValues,
+      ...(defaultValues as SettingsModel),
       ...Object.fromEntries(Object.entries(newValues).filter(([entryKey]) => defaultKeys.includes(entryKey))),
     };
   }

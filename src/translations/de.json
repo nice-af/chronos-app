@@ -113,5 +113,11 @@
     "color": "Workspace Farbe",
     "customColor": "Eigene Farbe",
     "name": "Workspace Anzeigename"
+  },
+  "newFeaturesModal": {
+    "pillText": "Neu in v0.1.15",
+    "headline": "Verbinde mehrere Accounts",
+    "body1": "Füge weitere Accounts hinzu, um Arbeitszeiten über mehrere Workspaces zu verfolgen. Passe ihr Aussehen an und wähle einen primären Account, um den Überblick über deine Zeiten zu behalten.",
+    "body2": "All das findest du in den Einstellungen."
   }
 }
