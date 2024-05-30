@@ -141,6 +141,7 @@ export const useAuthRequest = () => {
     });
 
     if (await Linking.canOpenURL(oAuthUrl)) {
+      console.log('oAuthUrl', oAuthUrl);
       await Linking.openURL(oAuthUrl);
     } else {
       Alert.alert(`This device can't open this URL: ${oAuthUrl}`);

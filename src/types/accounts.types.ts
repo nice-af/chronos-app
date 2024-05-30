@@ -5,7 +5,7 @@ import { ColorOption } from '../styles/theme/theme-types';
 // but we need to prefix them to avoid conflicts with other types.
 export type AccountId = `accountId${string}`;
 export type CloudId = `cloudId${string}`;
-export type UUID = `${AccountId}_${CloudId}`;
+export type UUID = `${AccountId}__${CloudId}`;
 
 /**
  * A login always consists of a Jira account and a Jira instance.

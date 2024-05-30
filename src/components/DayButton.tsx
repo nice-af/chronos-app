@@ -31,7 +31,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
   const workingDays = useAtomValue(workingDaysAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
-  const primaryJiraAccountId = useAtomValue(primaryUUIDAtom);
+  const primaryUUID = useAtomValue(primaryUUIDAtom);
   const { workingTimeCountMethod } = useAtomValue(settingsAtom);
   const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
   const styles = useThemedStyles(createStyles);
@@ -63,7 +63,7 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
     worklog => worklog.started === dateString && worklog.state !== WorklogState.SYNCED
   );
   const duration = worklogsForThisDay
-    .filter(worklog => workingTimeCountMethod === 'all' || worklog.accountId === primaryJiraAccountId)
+    .filter(worklog => workingTimeCountMethod === 'all' || worklog.uuid === primaryUUID)
     .reduce((acc, worklog) => acc + worklog.timeSpentSeconds, 0);
 
   return (

@@ -86,7 +86,7 @@ export async function requestAccountData(
 
   return {
     login: {
-      uuid: `${userInfo.accountId}_${workspace.id}` as UUID,
+      uuid: `${userInfo.accountId}__${workspace.id}` as UUID,
       accountId: userInfo.accountId as AccountId,
       cloudId: workspace.id as CloudId,
       name: userInfo.displayName ?? '',
