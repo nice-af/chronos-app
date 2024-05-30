@@ -74,7 +74,7 @@ export const Entries: FC = () => {
         onBackPress: undefined,
         position: 'absolute',
       }}>
-      {getWorklogsForSelectedDay.length === 0 ? (
+      {worklogsForSelectedDay.length === 0 ? (
         <View style={styles.errorMessageContainer}>
           <Text style={styles.errorMessage}>{t(isOlderThan4Weeks ? 'worklogOlderThen4Weeks' : 'noWorklogs')}</Text>
         </View>

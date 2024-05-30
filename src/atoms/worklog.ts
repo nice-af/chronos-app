@@ -62,7 +62,8 @@ setInterval(() => {
 
 export function getWorklogsForSelectedDay() {
   const worklogs = store.get(worklogsAtom);
-  return worklogs.filter(worklog => worklog.started === store.get(selectedDateAtom));
+  const selectedDate = store.get(selectedDateAtom);
+  return worklogs.filter(worklog => worklog.started === selectedDate);
 }
 
 /**
