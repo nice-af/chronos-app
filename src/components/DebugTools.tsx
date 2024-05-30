@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { currentOverlayAtom, loginsAtom, jiraAccountTokensAtom } from '../atoms';
-import { getPadding } from '../styles/utils';
+import { currentOverlayAtom, jiraAccountTokensAtom, loginsAtom, projectsAtom } from '../atoms';
 import { StorageKey, getFromStorage } from '../services/storage.service';
+import { getPadding } from '../styles/utils';
 
 interface DebugToolsTabProps {
   defaultExpanded?: boolean;
@@ -28,6 +28,7 @@ export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
   const jiraAccounts = useAtomValue(loginsAtom);
   const jiraAuths = useAtomValue(jiraAccountTokensAtom);
+  const projects = useAtomValue(projectsAtom);
   const currentOverlay = useAtomValue(currentOverlayAtom);
 
   if (!expanded) {
@@ -54,6 +55,9 @@ export const DebugTools: FC = () => {
           </DebugToolsTab>
           <DebugToolsTab title='jiraAuths'>
             <Text>{JSON.stringify(jiraAuths, null, 2)}</Text>
+          </DebugToolsTab>
+          <DebugToolsTab title='projects'>
+            <Text>{JSON.stringify(projects, null, 2)}</Text>
           </DebugToolsTab>
           <DebugToolsTab title='currentOverlay'>
             <Text>{JSON.stringify({ currentOverlay }, null, 2)}</Text>
