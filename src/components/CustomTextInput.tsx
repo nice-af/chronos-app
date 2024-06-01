@@ -10,8 +10,9 @@ interface CustomTextInputProps {
   isVisible?: boolean;
   value: string;
   onChangeText: (text: string) => void;
-  containerStyle?: StyleProp<TextStyle>;
   style?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<TextStyle>;
+  inputContainerStyle?: StyleProp<TextStyle>;
   multiline?: boolean;
   numberOfLines?: number;
   placeholder?: string;
@@ -26,8 +27,9 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
   isVisible,
   value,
   onChangeText,
-  containerStyle,
   style,
+  containerStyle,
+  inputContainerStyle,
   multiline,
   numberOfLines,
   placeholder,
@@ -50,7 +52,7 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
   return (
     <View style={[styles.container, containerStyle]}>
       {label && <Text style={styles.label}>{label}</Text>}
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, inputContainerStyle]}>
         <TextInput
           ref={inputRef}
           style={[

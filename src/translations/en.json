@@ -10,6 +10,8 @@
   "calendarWeekShort": "Week",
   "cancel": "Cancel",
   "delete": "Delete",
+  "description": "Description",
+  "duration": "Duration",
   "issueTag": {
     "color": {
       "label": "Tag color is based on",
@@ -47,6 +49,12 @@
     "startTimerInFutureText": "This will modify a worklog in the future. Are you sure you want to continue?",
     "startTimerInPastHeadline": "You are about to start a timer in the past",
     "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
+  },
+  "newFeaturesModal": {
+    "body1": "Add more accounts to track working times over multiple workspaces. Customize their appearance and choose a primary account to only keep track of times where it matters.",
+    "body2": "All of this can be found in the settings.",
+    "headline": "Connect multiple accounts",
+    "pillText": "New in v0.1.15"
   },
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
@@ -113,11 +121,5 @@
     "color": "Workspace color",
     "customColor": "Custom color",
     "name": "Workspace name"
-  },
-  "newFeaturesModal": {
-    "pillText": "New in v0.1.15",
-    "headline": "Connect multiple accounts",
-    "body1": "Add more accounts to track working times over multiple workspaces. Customize their appearance and choose a primary account to only keep track of times where it matters.",
-    "body2": "All of this can be found in the settings."
   }
 }

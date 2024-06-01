@@ -8,6 +8,7 @@ import { IssueKeyTag } from '../components/IssueKeyTag';
 import { Layout } from '../components/Layout';
 import { formatSecondsToHMM, parseDurationStringToSeconds } from '../services/time.service';
 import { typo } from '../styles/typo';
+import { useTranslation } from '../services/i18n.service';
 
 export const EditWorklog: FC = () => {
   const currentWorklogToEdit = useAtomValue(currentWorklogToEditAtom);
@@ -17,6 +18,7 @@ export const EditWorklog: FC = () => {
   );
   const [descriptionValue, setDescriptionValue] = useState(currentWorklogToEdit?.comment ?? '');
   const theme = useAtomValue(themeAtom);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (currentWorklogToEdit) {
@@ -44,8 +46,8 @@ export const EditWorklog: FC = () => {
     setCurrentOverlay(null);
   };
 
-  const handleOnDeleteClick = async () => {
-    await deleteWorklog(currentWorklogToEdit.id);
+  const handleOnDeleteClick = () => {
+    deleteWorklog(currentWorklogToEdit.id);
     setCurrentOverlay(null);
   };
 
@@ -76,13 +78,16 @@ export const EditWorklog: FC = () => {
       />
       <View style={styles.container}>
         <CustomTextInput
+          label={t('duration')}
           isVisible={!!currentWorklogToEdit}
           value={timeSpentInputValue}
           onChangeText={newText => setTimeSpentInputValue(newText)}
           onBlur={cleanupInputValue}
           style={styles.timeInput}
+          inputContainerStyle={styles.timeInputContainer}
         />
         <CustomTextInput
+          label={t('description')}
           isVisible={!!currentWorklogToEdit}
           value={descriptionValue}
           onChangeText={setDescriptionValue}
@@ -116,9 +121,11 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginTop: 2,
   },
-  timeInput: {
+  timeInputContainer: {
     width: 90,
     height: 42,
+  },
+  timeInput: {
     fontSize: 20,
     lineHeight: 24,
     paddingLeft: 0,
