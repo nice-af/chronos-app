@@ -8,10 +8,11 @@ import { formatDateToYYYYMMDD } from '../services/date.service';
 import { getIssueByKey } from '../services/jira-issues.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { getUrlParams } from '../utils/url';
+import { AccountId, CloudId } from '../types/accounts.types';
+import { getUUID } from '../services/account.service';
 
 export const WorklogDeepLinkWatcher: FC = () => {
   const setSelectedDate = useSetAtom(selectedDateAtom);
-  const addWorklog = useSetAtom(addWorklog);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
 
@@ -27,12 +28,16 @@ export const WorklogDeepLinkWatcher: FC = () => {
       return;
     }
 
-    const { issueKey, accountId } = getUrlParams(event.url);
-    if (!issueKey) {
+    const { issueKey, accountId: rawAccountId, cloudId: rawCloudId } = getUrlParams(event.url);
+    if (!issueKey || !rawAccountId || !rawCloudId) {
       return;
     }
 
-    const issueDetails = await getIssueByKey(issueKey, accountId);
+    const accountId = rawAccountId as AccountId;
+    const cloudId = rawCloudId as CloudId;
+    const uuid = getUUID(accountId, cloudId);
+
+    const issueDetails = await getIssueByKey(issueKey, uuid);
     if (!issueDetails) {
       return;
     }
@@ -45,7 +50,7 @@ export const WorklogDeepLinkWatcher: FC = () => {
         summary: issueDetails.fields.summary,
       },
       started: todayDateString,
-      accountId,
+      uuid,
     });
     setSelectedDate(todayDateString);
     addWorklog(worklog);
