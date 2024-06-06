@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { currentOverlayAtom, currentWorklogToEditAtom, themeAtom, updateWorklog } from '../atoms';
+import { currentOverlayAtom, currentWorklogToEditAtom, deleteWorklog, themeAtom, updateWorklog } from '../atoms';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { EditWorklogHeader } from '../components/EditWorklogHeader';
 import { IssueKeyTag } from '../components/IssueKeyTag';
@@ -137,6 +137,3 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-function deleteWorklog(id: string) {
-  throw new Error('Function not implemented.');
-}
