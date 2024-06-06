@@ -108,9 +108,9 @@ export async function syncWorklogsForCurrentDay() {
       refreshToken: newRefreshToken,
     };
     newLogins.push(newLogin);
-    store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep);
+    store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 1));
     newWorklogsRemote.push(...(await getRemoteWorklogs(login.uuid, login.accountId)));
-    store.set(syncProgressAtom, cur => cur ?? 0 + progressPerStep * 2);
+    store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 3));
   }
   store.set(jiraAccountTokensAtom, newJiraAccountTokens);
   store.set(
