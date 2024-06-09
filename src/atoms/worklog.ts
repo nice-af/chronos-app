@@ -1,11 +1,10 @@
 import { atom } from 'jotai';
 import ms from 'ms';
-import { requestAccountData } from '../services/jira-info.service';
-import { deleteRemoteWorklog, getRemoteWorklogs } from '../services/jira-worklogs.service';
+import { initializeJiraAccount } from '../services/jira-account.service';
+import { deleteRemoteWorklog } from '../services/jira-worklogs.service';
 import { syncWorklogs } from '../services/worklog.service';
-import { JiraAccountTokensAtom, LoginsAtom } from '../types/accounts.types';
 import { Worklog, WorklogId, WorklogState } from '../types/global.types';
-import { jiraAccountTokensAtom, loginsAtom, primaryUUIDAtom } from './auth';
+import { jiraAccountTokensAtom, loginsAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { store } from './store';
 
@@ -72,7 +71,6 @@ export function getWorklogsForSelectedDay() {
 export async function syncWorklogsForCurrentDay() {
   const logins = store.get(loginsAtom);
   const jiraAccountTokens = store.get(jiraAccountTokensAtom);
-  const primaryUUID = store.get(primaryUUIDAtom);
   const localWorklogs = store.get(worklogsLocalAtom);
   const worklogsToSync = getWorklogsForSelectedDay()
     .filter(w => localWorklogs.find(lw => lw.id === w.id))
@@ -86,38 +84,20 @@ export async function syncWorklogsForCurrentDay() {
   await syncWorklogs(worklogsToSync, progressPerStep);
 
   // Sync worklogs for all accounts
-  const newLogins: LoginsAtom = [];
-  const newWorklogsRemote: Worklog[] = [];
-  const newJiraAccountTokens: JiraAccountTokensAtom = {};
   for (let i = 0; i < logins.length; i++) {
     const login = logins[i];
     const tokens = jiraAccountTokens[login.accountId];
-    const {
-      login: newLogin,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    } = await requestAccountData({
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
-      cloudId: login.cloudId,
+    initializeJiraAccount({
+      jiraAccountTokens: tokens,
       currentLogin: login,
+      progressHooks: {
+        onWorkspaceInfoFetched: () =>
+          store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 1)),
+        onFinished: () =>
+          store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 3)),
+      },
     });
-    newJiraAccountTokens[login.accountId] = {
-      ...tokens,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
-    };
-    newLogins.push(newLogin);
-    store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 1));
-    newWorklogsRemote.push(...(await getRemoteWorklogs(login.uuid, login.accountId)));
-    store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 3));
   }
-  store.set(jiraAccountTokensAtom, newJiraAccountTokens);
-  store.set(
-    loginsAtom,
-    newLogins.map(thisLogin => ({ ...thisLogin, isPrimary: thisLogin.accountId === primaryUUID }))
-  );
-  store.set(worklogsRemoteAtom, newWorklogsRemote);
 
   // Remove local worklogs that have been synced
   store.set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
@@ -190,4 +170,8 @@ export async function deleteWorklog(worklogId: WorklogId) {
       worklogsLocal.filter(w => w.id !== worklogId)
     );
   }
+}
+
+export function addWorklogsToBackups(worklogs: Worklog[]) {
+  store.set(worklogsLocalBackupsAtom, cur => [...cur, ...worklogs]);
 }

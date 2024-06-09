@@ -26,8 +26,8 @@ export const DebugToolsTab: FC<DebugToolsTabProps> = ({ defaultExpanded, title, 
 
 export const DebugTools: FC = () => {
   const [expanded, setExpanded] = useState(false);
-  const jiraAccounts = useAtomValue(loginsAtom);
-  const jiraAuths = useAtomValue(jiraAccountTokensAtom);
+  const jiraLogins = useAtomValue(loginsAtom);
+  const jiraAccountTokens = useAtomValue(jiraAccountTokensAtom);
   const projects = useAtomValue(projectsAtom);
   const currentOverlay = useAtomValue(currentOverlayAtom);
 
@@ -44,17 +44,21 @@ export const DebugTools: FC = () => {
           <Text style={styles.xButtonTitle}>X</Text>
         </Pressable>
         <ScrollView>
-          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.LOGINS))}>
-            <Text style={styles.tabTitle}>Log accounts storage</Text>
+          <Pressable
+            onPress={async () => console.log(await getFromStorage(StorageKey.LOGINS))}
+            style={{ marginBottom: 6 }}>
+            <Text style={styles.tabTitle}>Log logins storage</Text>
           </Pressable>
-          <Pressable onPress={async () => console.log(await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS))}>
-            <Text style={styles.tabTitle}>Log auths storage</Text>
+          <Pressable
+            onPress={async () => console.log(await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS))}
+            style={{ marginBottom: 12 }}>
+            <Text style={styles.tabTitle}>Log accountTokens storage</Text>
           </Pressable>
-          <DebugToolsTab title='jiraAccounts'>
-            <Text>{JSON.stringify(jiraAccounts, null, 2)}</Text>
+          <DebugToolsTab title='jiraLogins'>
+            <Text>{JSON.stringify(jiraLogins, null, 2)}</Text>
           </DebugToolsTab>
-          <DebugToolsTab title='jiraAuths'>
-            <Text>{JSON.stringify(jiraAuths, null, 2)}</Text>
+          <DebugToolsTab title='jiraAccountTokens'>
+            <Text>{JSON.stringify(jiraAccountTokens, null, 2)}</Text>
           </DebugToolsTab>
           <DebugToolsTab title='projects'>
             <Text>{JSON.stringify(projects, null, 2)}</Text>

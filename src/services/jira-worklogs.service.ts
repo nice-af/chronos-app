@@ -1,14 +1,14 @@
 import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
-import { store } from '../atoms';
+import { Alert } from 'react-native';
+import { getJiraClientByUUID, store, worklogsRemoteAtom } from '../atoms';
 import { upsertProjectAtom } from '../atoms/project';
+import { AccountId, UUID } from '../types/accounts.types';
 import { Worklog, WorklogState } from '../types/global.types';
 import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
-import { getJiraClient } from './jira-auth.service';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 import { parseDurationStringToSeconds } from './time.service';
-import { AccountId, UUID } from '../types/accounts.types';
 
 /**
  * Converts Jira worklogs to our custom format
@@ -38,7 +38,7 @@ function convertWorklogs(worklogs: JiraWorklog[], uuid: UUID, accountId: Account
  */
 export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promise<Worklog[]> {
   const startedAfterTimestamp = new Date().getTime() - ms('4w');
-  const jiraClient = getJiraClient(uuid);
+  const jiraClient = getJiraClientByUUID(uuid);
   const worklogsCompact: Worklog[] = [];
   const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -4w`;
   const maxIssuesResults = 40;
@@ -75,8 +75,12 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
           currentWorklog += maxWorklogResults;
           totalWorklogs = worklogsCall.total ?? 0;
           if (worklogsFailsafe > 20) {
-            // We have fetched more then 10 times, something is wrong
-            throw new Error('Too many worklogs calls');
+            // We have fetched worklogs on this issue more then 20 times, something is wrong
+            Alert.alert(
+              'An unexpected error has occurred',
+              'We could not fetch all worklogs for an issue. Please contact our support.'
+            );
+            throw new Error('Too many worklogs on a single issue to process');
           }
         }
       }
@@ -90,9 +94,13 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
 
     currentIssue += maxIssuesResults;
     totalIssues = issuesCall.total ?? 0;
-    if (issuesFailsafe > 20) {
-      // We have fetched more then 20 times, something is wrong
-      throw new Error('Too many issues calls');
+    if (issuesFailsafe > 30) {
+      // We have fetched issues more then 30 times, so we got 30 * 40 issues with worklogs. Something is wrong
+      Alert.alert(
+        'An unexpected error has occurred',
+        'We could not fetch all issues with worklogs. Please contact our support.'
+      );
+      throw new Error('Too many issues with worklogs in the last month to process');
     }
   }
 
@@ -100,7 +108,7 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
 }
 
 export function createRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.uuid);
+  const jiraClient = getJiraClientByUUID(worklog.uuid);
   return jiraClient.issueWorklogs.addWorklog({
     issueIdOrKey: worklog.issue.id,
     started: formatDateToJiraFormat(parseDateFromYYYYMMDD(worklog.started)),
@@ -110,7 +118,7 @@ export function createRemoteWorklog(worklog: Worklog) {
 }
 
 export function updateRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.uuid);
+  const jiraClient = getJiraClientByUUID(worklog.uuid);
   return jiraClient.issueWorklogs.updateWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
@@ -121,9 +129,15 @@ export function updateRemoteWorklog(worklog: Worklog) {
 }
 
 export function deleteRemoteWorklog(worklog: Worklog) {
-  const jiraClient = getJiraClient(worklog.uuid);
+  const jiraClient = getJiraClientByUUID(worklog.uuid);
   return jiraClient.issueWorklogs.deleteWorklog({
     issueIdOrKey: worklog.issue.id,
     id: worklog.id,
   });
+}
+
+export async function updateRemoteWorklogsOfLogin(uuid: UUID, accountId: AccountId) {
+  const worklogsToAdd = await getRemoteWorklogs(uuid, accountId);
+  const currentWorklogsRemote = store.get(worklogsRemoteAtom);
+  store.set(worklogsRemoteAtom, currentWorklogsRemote.filter(worklog => worklog.uuid !== uuid).concat(worklogsToAdd));
 }

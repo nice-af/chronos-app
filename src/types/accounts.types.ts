@@ -3,9 +3,9 @@ import { ColorOption } from '../styles/theme/theme-types';
 
 // The AccountId and CloudId don't actually start with "accountId" or "cloudId",
 // but we need to prefix them to avoid conflicts with other types.
-export type AccountId = `accountId${string}`;
-export type CloudId = `cloudId${string}`;
-export type UUID = `${AccountId}__${CloudId}`;
+export type AccountId = `accountId${string}`; // Identifies a Jira account
+export type CloudId = `cloudId${string}`; // Identifies a Jira instance
+export type UUID = `${AccountId}__${CloudId}`; // Unique identifier for a combination of account and instance
 
 /**
  * A login always consists of a Jira account and a Jira instance.

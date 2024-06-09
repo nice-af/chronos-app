@@ -2,38 +2,40 @@ import { AxiosInstance } from 'axios';
 import { Version3Client } from 'jira.js';
 import { Alert } from 'react-native';
 import {
+  addJiraClientToStore,
+  getJiraAccountTokensByUUID,
   jiraAccountTokensAtom,
-  jiraClientsAtom,
   loginsAtom,
   store,
   worklogsLocalAtom,
   worklogsLocalBackupsAtom,
 } from '../atoms';
-import { refreshAccessToken } from '../services/jira-auth.service';
-import { CloudId, JiraAccountTokens, UUID } from '../types/accounts.types';
+import { CloudId, UUID } from '../types/accounts.types';
 import { Worklog } from '../types/global.types';
+import { refreshAccessToken } from './jira-api-fetch';
 
-export function createJiraClient(jiraAccountTokens: JiraAccountTokens, uuid: UUID, cloudId: CloudId): Version3Client {
+/**
+ * Creates a Jira client with the given credentials and adds it to the store.
+ */
+export async function createJiraClient(uuid: UUID, cloudId: CloudId) {
   const jiraClient = new Version3Client({ host: 'https://example.com' });
   // @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
   const axiosInstance = jiraClient.instance as AxiosInstance;
-  axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config, jiraAccountTokens, cloudId));
+  axiosInstance.interceptors.request.use(async config => addAccessTokenToRequest(config, uuid, cloudId));
   axiosInstance.interceptors.response.use(
     response => response,
-    async error => handleAxiosError(axiosInstance, error, jiraAccountTokens, uuid)
+    async error => handleAxiosError(axiosInstance, error, uuid)
   );
-  const newJiraClients = store.get(jiraClientsAtom);
-  newJiraClients[uuid] = jiraClient;
-  store.set(jiraClientsAtom, newJiraClients);
-  return jiraClient;
+  addJiraClientToStore(uuid, jiraClient);
 }
 
 /**
  * Injects the access token into the request.
  * We need to do this for every request because the access token might have change.
  */
-export function addAccessTokenToRequest(config: any, jiraAccountTokens: JiraAccountTokens, cloudId: CloudId) {
+export function addAccessTokenToRequest(config: any, uuid: UUID, cloudId: CloudId) {
   config.baseURL = `https://api.atlassian.com/ex/jira/${cloudId}`;
+  const jiraAccountTokens = getJiraAccountTokensByUUID(uuid);
   if (jiraAccountTokens.accessToken) {
     config.headers.Authorization = `Bearer ${jiraAccountTokens.accessToken}`;
   }
@@ -44,26 +46,20 @@ export function addAccessTokenToRequest(config: any, jiraAccountTokens: JiraAcco
  * Refreshes the access token if it has expired and retries the request.
  * Stores the new tokens in the auths object.
  */
-export async function handleAxiosError(
-  axiosInstance: AxiosInstance,
-  error: any,
-  jiraAccountTokens: JiraAccountTokens,
-  uuid: UUID
-) {
+export async function handleAxiosError(axiosInstance: AxiosInstance, error: any, uuid: UUID) {
   const status = error.response ? error.response.status : null;
 
   if (status === 401) {
-    if (!jiraAccountTokens?.refreshToken) {
+    const jiraAccountTokens = store.get(jiraAccountTokensAtom);
+    if (!jiraAccountTokens[uuid]) {
       return Promise.reject(error);
     }
-    const jiraAuths = store.get(jiraAccountTokensAtom);
 
     try {
-      const freshTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
+      const freshTokens = await refreshAccessToken(jiraAccountTokens[uuid].refreshToken);
       // Update auth tokens for upcoming requests
       const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
       newJiraAccountTokens[uuid] = {
-        ...jiraAccountTokens,
         accessToken: freshTokens.access_token,
         refreshToken: freshTokens.refresh_token,
       };
@@ -91,8 +87,8 @@ export async function handleAxiosError(
           })
         );
         store.set(worklogsLocalBackupsAtom, cur => [...cur, ...newBackupWorklogs]);
-        delete jiraAuths[uuid];
-        store.set(jiraAccountTokensAtom, { ...jiraAuths });
+        delete jiraAccountTokens[uuid];
+        store.set(jiraAccountTokensAtom, { ...jiraAccountTokens });
       } else {
         // Rethrow unexpected errors
         throw err;

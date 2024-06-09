@@ -62,15 +62,13 @@ export function storageCleanup(
 ) {
   const now = Date.now();
 
-  // Clean auths
+  // Clean account tokens
   if (jiraAccountTokens) {
-    const accountIds = logins.map(account => account.accountId);
-    const hasUnlinkedAuths = Object.keys(jiraAccountTokens).some(
-      accountId => !accountIds.includes(accountId as AccountId)
-    );
+    const uuids = logins.map(account => account.uuid);
+    const hasUnlinkedAuths = Object.keys(jiraAccountTokens).some(uuid => !uuids.includes(uuid as UUID));
     if (hasUnlinkedAuths) {
       const newAuths = Object.fromEntries(
-        Object.entries(jiraAccountTokens).filter(([accountId]) => accountIds.includes(accountId as AccountId))
+        Object.entries(jiraAccountTokens).filter(([uuid]) => uuids.includes(uuid as UUID))
       );
       jiraAccountTokens = newAuths;
     }

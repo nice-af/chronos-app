@@ -1,18 +1,15 @@
 import {
+  addWorklogsToBackups,
   jiraAccountTokensAtom,
-  jiraClientsAtom,
   loginsAtom,
   settingsAtom,
   storageCleanup,
   store,
   worklogsLocalAtom,
   worklogsLocalBackupsAtom,
-  worklogsRemoteAtom,
 } from '../atoms';
 import { migrateUp_0_1_14 } from '../migrations/v0.1.14';
-import { JiraClientsAtom, LoginsAtom } from '../types/accounts.types';
-import { Worklog } from '../types/global.types';
-import { initializeJiraAccount } from './jira-auth.service';
+import { initializeJiraAccount } from './jira-account.service';
 import { StorageKey, getFromStorage } from './storage.service';
 
 export async function initialize() {
@@ -42,12 +39,8 @@ export async function initialize() {
   if (logins === null) {
     store.set(loginsAtom, []);
   } else {
-    const newLogins: LoginsAtom = [];
-    const newJiraClients: JiraClientsAtom = {};
-    const newWorklogsRemote: Worklog[] = [];
-
     for (const login of logins) {
-      const tokens = jiraAccountTokens[login.accountId];
+      const tokens = jiraAccountTokens[login.uuid];
       if (!tokens) {
         // We don't have tokens for this account, so we have to store its local worklogs and remove it
         newWorklogsLocal = newWorklogsLocal.filter(worklog => {
@@ -57,31 +50,13 @@ export async function initialize() {
           }
           return true;
         });
-        return;
+        continue;
       }
-      const {
-        login: newLogin,
-        jiraClient,
-        worklogs,
-      } = await initializeJiraAccount({
-        accessToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
-        cloudId: login.cloudId,
-        currentLogin: login,
-      });
-      newLogins.push(newLogin);
-      newJiraClients[login.uuid] = jiraClient;
-      newWorklogsRemote.push(...worklogs);
+      await initializeJiraAccount({ jiraAccountTokens: tokens, currentLogin: login });
     }
-    if (newLogins.length > 0 && !newLogins.some(account => account.isPrimary)) {
-      // No primary account, so we make the first account primary
-      newLogins[0].isPrimary = true;
-    }
-    // Persist loaded data in store
-    store.set(loginsAtom, newLogins);
-    store.set(jiraClientsAtom, newJiraClients);
-    store.set(worklogsRemoteAtom, newWorklogsRemote);
   }
+
+  addWorklogsToBackups(newWorklogsLocalBackups);
 
   store.set(worklogsLocalAtom, newWorklogsLocal);
   store.set(worklogsLocalBackupsAtom, newWorklogsLocalBackups);

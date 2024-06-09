@@ -11,7 +11,7 @@ import { addNativeEventListener, removeNativeEventListener } from '../services/n
 import { NativeEvent } from '../services/native-event-emitter.service.types';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
-  const jiraAccounts = useAtomValue(loginsAtom);
+  const jiraLogins = useAtomValue(loginsAtom);
   const [isLoading, setIsLoading] = useState(false);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
@@ -52,7 +52,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     <View style={styles.container}>
       <LoadingSpinner />
     </View>
-  ) : jiraAccounts === null || jiraAccounts.length === 0 ? (
+  ) : jiraLogins === null || jiraLogins.length === 0 ? (
     <>
       {__DEV__ && <DebugTools />}
       <Login />

@@ -1,0 +1,59 @@
+import { addJiraAccountTokensToStore, addLoginToStore } from '../atoms';
+import { colorKeys } from '../styles/theme/theme-types';
+import { AccountId, CloudId, JiraAccountTokens, LoginModel, UUID } from '../types/accounts.types';
+import { getUserInfo, getWorkspaceInfo } from './jira-api-fetch';
+import { createJiraClient } from './jira-client.service';
+import { updateRemoteWorklogsOfLogin } from './jira-worklogs.service';
+
+interface InitializeJiraAccountData {
+  jiraAccountTokens: JiraAccountTokens;
+  /**
+   * Pass a current login if you want to update an existing login
+   */
+  currentLogin?: LoginModel;
+  /**
+   * Add hooks to be called when certain progress points are reached. Used to update a progress bar.
+   */
+  progressHooks?: {
+    onWorkspaceInfoFetched?: () => void;
+    onFinished?: () => void;
+  };
+}
+
+/**
+ * Makes all the necessary calls to initialize the Jira account
+ */
+export async function initializeJiraAccount({
+  jiraAccountTokens,
+  currentLogin,
+  progressHooks,
+}: InitializeJiraAccountData) {
+  const workspaceInfo = await getWorkspaceInfo(jiraAccountTokens.accessToken, currentLogin?.cloudId);
+  if (progressHooks?.onWorkspaceInfoFetched) {
+    progressHooks.onWorkspaceInfoFetched();
+  }
+
+  const userInfo = await getUserInfo(jiraAccountTokens.accessToken, workspaceInfo.id as CloudId);
+
+  const login: LoginModel = {
+    uuid: `${userInfo.accountId}__${workspaceInfo.id}` as UUID,
+    accountId: userInfo.accountId as AccountId,
+    cloudId: workspaceInfo.id as CloudId,
+    name: userInfo.displayName ?? '',
+    avatarUrl: userInfo.avatarUrls?.['48x48'] ?? '',
+    workspaceName: workspaceInfo.name,
+    workspaceDisplayName: currentLogin?.workspaceDisplayName ?? workspaceInfo.name,
+    workspaceColor: currentLogin?.workspaceColor ?? colorKeys[Math.floor(Math.random() * colorKeys.length)],
+    customWorkspaceColor: currentLogin?.customWorkspaceColor,
+    isPrimary: currentLogin?.isPrimary ?? false,
+  };
+
+  addJiraAccountTokensToStore(login.uuid, jiraAccountTokens);
+  addLoginToStore(login);
+  createJiraClient(login.uuid, login.cloudId);
+  updateRemoteWorklogsOfLogin(login.uuid, login.accountId);
+
+  if (progressHooks?.onFinished) {
+    progressHooks.onFinished();
+  }
+}
