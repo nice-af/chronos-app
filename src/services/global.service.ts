@@ -40,7 +40,7 @@ export async function initialize() {
     store.set(loginsAtom, []);
   } else {
     for (const login of logins) {
-      const tokens = jiraAccountTokens[login.uuid];
+      const tokens = jiraAccountTokens[login.accountId];
       if (!tokens) {
         // We don't have tokens for this account, so we have to store its local worklogs and remove it
         newWorklogsLocal = newWorklogsLocal.filter(worklog => {

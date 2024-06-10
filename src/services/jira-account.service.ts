@@ -1,7 +1,7 @@
 import { addJiraAccountTokensToStore, addLoginToStore } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
 import { AccountId, CloudId, JiraAccountTokens, LoginModel, UUID } from '../types/accounts.types';
-import { getUserInfo, getWorkspaceInfo } from './jira-api-fetch';
+import { getUserInfo, getWorkspaceInfo, refreshAccessToken } from './jira-api-fetch';
 import { createJiraClient } from './jira-client.service';
 import { updateRemoteWorklogsOfLogin } from './jira-worklogs.service';
 
@@ -28,6 +28,10 @@ export async function initializeJiraAccount({
   currentLogin,
   progressHooks,
 }: InitializeJiraAccountData) {
+  if (jiraAccountTokens.expiresAt < Date.now()) {
+    const newJiraAccountTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
+    jiraAccountTokens = newJiraAccountTokens;
+  }
   const workspaceInfo = await getWorkspaceInfo(jiraAccountTokens.accessToken, currentLogin?.cloudId);
   if (progressHooks?.onWorkspaceInfoFetched) {
     progressHooks.onWorkspaceInfoFetched();
@@ -48,9 +52,9 @@ export async function initializeJiraAccount({
     isPrimary: currentLogin?.isPrimary ?? false,
   };
 
-  addJiraAccountTokensToStore(login.uuid, jiraAccountTokens);
+  addJiraAccountTokensToStore(login.accountId, jiraAccountTokens);
   addLoginToStore(login);
-  createJiraClient(login.uuid, login.cloudId);
+  createJiraClient(login.uuid, login.accountId, login.cloudId);
   updateRemoteWorklogsOfLogin(login.uuid, login.accountId);
 
   if (progressHooks?.onFinished) {

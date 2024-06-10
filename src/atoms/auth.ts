@@ -1,6 +1,13 @@
 import { atom, useAtomValue } from 'jotai';
 import { Alert } from 'react-native';
-import { JiraAccountTokens, JiraAccountTokensAtom, JiraClientsAtom, LoginModel, UUID } from '../types/accounts.types';
+import {
+  AccountId,
+  JiraAccountTokens,
+  JiraAccountTokensAtom,
+  JiraClientsAtom,
+  LoginModel,
+  UUID,
+} from '../types/accounts.types';
 import { store } from './store';
 
 export const primaryUUIDAtom = atom<UUID>('' as UUID);
@@ -34,21 +41,9 @@ export function addLoginToStore(login: LoginModel) {
   store.set(loginsAtom, newLogins);
 }
 
-export function getJiraAccountTokensByUUID(uuid: UUID) {
-  const jiraAccountTokens = store.get(jiraAccountTokensAtom);
-  if (!jiraAccountTokens[uuid]) {
-    Alert.alert(
-      'An unexpected error has occurred',
-      "We couldn't find the tokens for a account. Please try to log in again."
-    );
-    throw new Error(`No Jira account tokens for account ${uuid}`);
-  }
-  return jiraAccountTokens[uuid];
-}
-
-export function addJiraAccountTokensToStore(uuid: UUID, tokens: JiraAccountTokens) {
+export function addJiraAccountTokensToStore(accountId: AccountId, tokens: JiraAccountTokens) {
   const newJiraAccountTokens = store.get(jiraAccountTokensAtom);
-  newJiraAccountTokens[uuid] = tokens;
+  newJiraAccountTokens[accountId] = tokens;
   store.set(jiraAccountTokensAtom, { ...newJiraAccountTokens });
 }
 

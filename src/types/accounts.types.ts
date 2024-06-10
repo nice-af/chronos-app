@@ -3,8 +3,8 @@ import { ColorOption } from '../styles/theme/theme-types';
 
 // The AccountId and CloudId don't actually start with "accountId" or "cloudId",
 // but we need to prefix them to avoid conflicts with other types.
-export type AccountId = `accountId${string}`; // Identifies a Jira account
-export type CloudId = `cloudId${string}`; // Identifies a Jira instance
+export type AccountId = `accountId${string}accountId`; // Identifies a Jira account
+export type CloudId = `cloudId${string}cloudId`; // Identifies a Jira instance
 export type UUID = `${AccountId}__${CloudId}`; // Unique identifier for a combination of account and instance
 
 /**
@@ -32,6 +32,7 @@ export interface LoginModel {
 export interface JiraAccountTokens {
   accessToken: string;
   refreshToken: string;
+  expiresAt: number;
 }
 
 export type LoginsAtom = LoginModel[];

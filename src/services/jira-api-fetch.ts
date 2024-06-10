@@ -5,7 +5,7 @@
 import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI, JIRA_SECRET } from '@env';
 import { Version3Models } from 'jira.js';
 import { Alert } from 'react-native';
-import { CloudId } from '../types/accounts.types';
+import { CloudId, JiraAccountTokens } from '../types/accounts.types';
 import { GetOauthTokenErrorResponse, GetOauthTokenResponse, JiraResource } from '../types/jira.types';
 import { getModalAccountSelection } from './modal.service';
 
@@ -38,7 +38,7 @@ export async function getOAuthToken(code: string): Promise<GetOauthTokenResponse
 /**
  * Gets a new access and refresh token using a refresh token
  */
-export async function refreshAccessToken(refreshToken: string): Promise<GetOauthTokenResponse> {
+export async function refreshAccessToken(refreshToken: string): Promise<JiraAccountTokens> {
   return await fetch('https://auth.atlassian.com/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -50,7 +50,12 @@ export async function refreshAccessToken(refreshToken: string): Promise<GetOauth
     }),
   })
     .then(response => response.json() as Promise<GetOauthTokenResponse | GetOauthTokenErrorResponse>)
-    .then(handleOAuthError);
+    .then(handleOAuthError)
+    .then(data => ({
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      expiresAt: Date.now() + data.expires_in * 1000,
+    }));
 }
 
 /**
@@ -59,10 +64,14 @@ export async function refreshAccessToken(refreshToken: string): Promise<GetOauth
 export async function getWorkspaceInfo(accessToken: string, cloudId?: CloudId): Promise<JiraResource> {
   const resources = await fetch('https://api.atlassian.com/oauth/token/accessible-resources', {
     headers: { Authorization: `Bearer ${accessToken}` },
-  }).then(response => response.json() as Promise<JiraResource[]>);
+  }).then(response => {
+    console.log(response);
+    return response.json() as Promise<JiraResource[]>;
+  });
 
   // If we got a cloudId then we are looking for a specific workspace
   if (cloudId) {
+    console.log(resources);
     const foundResource = resources.find(resource => resource.id === cloudId) ?? null;
     if (!foundResource) {
       Alert.alert(

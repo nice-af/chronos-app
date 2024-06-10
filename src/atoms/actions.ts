@@ -15,7 +15,7 @@ export async function logout(uuid: UUID, accountId: AccountId) {
   // Delete account tokens if no login is using them
   const jiraAccountTokens = store.get(jiraAccountTokensAtom);
   if (!logins.some(login => login.accountId === accountId)) {
-    delete jiraAccountTokens[uuid];
+    delete jiraAccountTokens[accountId];
     store.set(jiraAccountTokensAtom, jiraAccountTokens);
   }
 
