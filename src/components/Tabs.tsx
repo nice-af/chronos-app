@@ -3,10 +3,11 @@ import { Image, ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, Vi
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { getPadding } from '../styles/utils';
+import { WorkspaceLogo } from './WorkspaceLogo';
 
 export interface TabData {
   label: string;
-  workspaceImageSrc?: string;
+  workspaceUrl: string;
   userImageSrc?: string;
   onPress: () => void;
 }
@@ -17,19 +18,17 @@ interface TabProps extends TabData {
   isLast: boolean;
 }
 
-const Tab: FC<TabProps> = ({ label, workspaceImageSrc, userImageSrc, isActive, isFirst, isLast, onPress }) => {
+const Tab: FC<TabProps> = ({ label, workspaceUrl, userImageSrc, isActive, isFirst, isLast, onPress }) => {
   const styles = useThemedStyles(createStyles);
 
   return (
     <Pressable
       style={[styles.tab, isActive && styles.tabActive, isFirst && styles.tabFirst, isLast && styles.tabLast]}
       onPress={onPress}>
-      {(workspaceImageSrc || userImageSrc) && (
-        <View style={styles.logosContainer}>
-          {workspaceImageSrc && <Image style={styles.logo} source={{ uri: workspaceImageSrc }} />}
-          {userImageSrc && <Image style={styles.logo} source={{ uri: userImageSrc }} />}
-        </View>
-      )}
+      <View style={styles.logosContainer}>
+        <WorkspaceLogo size={20} workspaceUrl={workspaceUrl} />
+        {userImageSrc && <Image style={styles.logo} source={{ uri: userImageSrc }} />}
+      </View>
       <Text>{label}</Text>
     </Pressable>
   );

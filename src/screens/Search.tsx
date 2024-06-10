@@ -137,6 +137,7 @@ export const Search: FC = () => {
         userImageSrc: logins.some(acc => acc.workspaceName === login.workspaceName && acc.accountId !== login.accountId)
           ? login.avatarUrl
           : undefined,
+        workspaceUrl: login.workspaceUrl,
         onPress: () => setUUID(login.uuid),
       })),
     [logins]

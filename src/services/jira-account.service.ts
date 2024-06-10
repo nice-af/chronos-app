@@ -45,6 +45,7 @@ export async function initializeJiraAccount({
     cloudId: workspaceInfo.id as CloudId,
     name: userInfo.displayName ?? '',
     avatarUrl: userInfo.avatarUrls?.['48x48'] ?? '',
+    workspaceUrl: workspaceInfo.url,
     workspaceName: workspaceInfo.name,
     workspaceDisplayName: currentLogin?.workspaceDisplayName ?? workspaceInfo.name,
     workspaceColor: currentLogin?.workspaceColor ?? colorKeys[Math.floor(Math.random() * colorKeys.length)],
@@ -60,4 +61,6 @@ export async function initializeJiraAccount({
   if (progressHooks?.onFinished) {
     progressHooks.onFinished();
   }
+
+  return login;
 }

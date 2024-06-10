@@ -17,6 +17,7 @@ export interface LoginModel {
   cloudId: CloudId;
   name: string;
   avatarUrl: string;
+  workspaceUrl: string;
   workspaceName: string;
   workspaceDisplayName: string;
   workspaceColor: ColorOption;

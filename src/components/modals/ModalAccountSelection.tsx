@@ -1,5 +1,5 @@
 import { useAtomValue } from 'jotai';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, View } from 'react-native';
 import { themeAtom } from '../../atoms';
 import { modalAccountSelectionDataAtom, modalAccountSelectionVisibleAtom } from '../../atoms/modals';
@@ -11,6 +11,7 @@ import { getPadding } from '../../styles/utils';
 import { CloudId } from '../../types/accounts.types';
 import { JiraResource } from '../../types/jira.types';
 import { ButtonSecondary } from '../ButtonSecondary';
+import { WorkspaceLogo } from '../WorkspaceLogo';
 import { ModalContainer } from './ModalContainer';
 
 export const ModalAccountSelection: FC = () => {
@@ -43,13 +44,7 @@ export const ModalAccountSelection: FC = () => {
       <Text style={styles.headline}>{t('account.whichAccountToAdd')}</Text>
       <View style={styles.pressableContainer}>
         {data.jiraResources.map(resource => (
-          <AccountButton
-            key={resource.url}
-            onPress={data.onConfirm}
-            uri={`${resource.url}/jira-logo-scaled.png`}
-            arrowIcon={arrowIcon}
-            resource={resource}
-          />
+          <AccountButton key={resource.url} onPress={data.onConfirm} arrowIcon={arrowIcon} resource={resource} />
         ))}
       </View>
       <View style={styles.buttonsContainer}>
@@ -65,46 +60,29 @@ export const ModalAccountSelection: FC = () => {
 
 interface AccountButtonProps {
   onPress: (cloudId: CloudId) => void;
-  uri: string;
   arrowIcon: ImageSourcePropType;
   resource: JiraResource;
 }
 
-export const AccountButton: FC<AccountButtonProps> = ({ onPress, uri, arrowIcon, resource }) => {
-  const size = 32;
-  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
+export const AccountButton: FC<AccountButtonProps> = ({ onPress, arrowIcon, resource }) => {
   const [isHovered, setIsHovered] = useState(false);
   const styles = useThemedStyles(createStyles);
 
-  useEffect(() => {
-    Image.getSize(uri, (width, height) => {
-      setDimensions({ width, height });
-    });
-  }, [uri]);
-
-  if (dimensions) {
-    const { width, height } = dimensions;
-    const isLandscape = width > height;
-    const newHeight = isLandscape ? size : (size / width) * height;
-    const newWidth = isLandscape ? (size / height) * width : size;
-    return (
-      <Pressable
-        onPress={() => onPress(resource.id as CloudId)}
-        style={[styles.pressable, isHovered && styles.pressableHovered]}
-        onHoverIn={() => setIsHovered(true)}
-        onHoverOut={() => setIsHovered(false)}>
-        <View style={styles.labelContainer}>
-          <View style={styles.logoContainer}>
-            <Image style={{ width: newWidth, height: newHeight }} source={{ uri }} />
-          </View>
-          <Text lineBreakMode='clip' numberOfLines={1} style={styles.label}>
-            {resource.name.charAt(0).toUpperCase() + resource.name.slice(1)}
-          </Text>
-        </View>
-        <Image style={styles.arrowIcon} source={arrowIcon} />
-      </Pressable>
-    );
-  }
+  return (
+    <Pressable
+      onPress={() => onPress(resource.id as CloudId)}
+      style={[styles.pressable, isHovered && styles.pressableHovered]}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}>
+      <View style={styles.labelContainer}>
+        <WorkspaceLogo size={32} workspaceUrl={resource.url} borderRadius={6} />
+        <Text lineBreakMode='clip' numberOfLines={1} style={styles.label}>
+          {resource.name.charAt(0).toUpperCase() + resource.name.slice(1)}
+        </Text>
+      </View>
+      <Image style={styles.arrowIcon} source={arrowIcon} />
+    </Pressable>
+  );
 };
 
 function createStyles(theme: Theme) {
@@ -149,12 +127,6 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
-    },
-    logoContainer: {
-      width: 32,
-      height: 32,
-      borderRadius: 6,
-      overflow: 'hidden',
     },
     label: {
       ...typo.bodyEmphasized,
