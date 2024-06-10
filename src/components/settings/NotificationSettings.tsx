@@ -52,6 +52,7 @@ export const NotificationSettings: FC = () => {
       <Text style={settingsStyles.headline}>{t('notifications.settingsTitle')}</Text>
       <Toggle
         label={t('notifications.enableTrackingReminder')}
+        infoText={t('notifications.infoText')}
         state={settings.enableTrackingReminder}
         setState={newState => setSettings(cur => ({ ...cur, enableTrackingReminder: newState }))}
       />

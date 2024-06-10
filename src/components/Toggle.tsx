@@ -8,14 +8,18 @@ export interface ToggleProps {
   state: boolean;
   setState: (newState: boolean) => void;
   label: string;
+  infoText?: string;
 }
 
-export const Toggle: FC<ToggleProps> = ({ state, setState, label }) => {
+export const Toggle: FC<ToggleProps> = ({ state, setState, label, infoText }) => {
   const styles = useThemedStyles(createStyles);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.label}>{label}</Text>
+        {infoText && <Text style={styles.infoText}>{infoText}</Text>}
+      </View>
       <Pressable
         onPress={() => setState(!state)}
         style={[styles.toggleContainer, state ? styles.toggleContainerOn : styles.toggleContainerOff]}>
@@ -35,11 +39,18 @@ function createStyles(theme: Theme) {
       alignItems: 'center',
       justifyContent: 'space-between',
     },
+    textContainer: {
+      flexBasis: 'auto',
+      flexShrink: 1,
+    },
     label: {
       ...typo.body,
       color: theme.textPrimary,
-      flexBasis: 'auto',
-      flexShrink: 1,
+    },
+    infoText: {
+      ...typo.callout,
+      color: theme.textSecondary,
+      marginTop: 2,
     },
     toggleContainer: {
       flexShrink: 0,
