@@ -6,10 +6,10 @@ import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-nativ
 import {
   activeWorklogAtom,
   currentOverlayAtom,
-  getWorklogsForSelectedDay,
   isFullscreenAtom,
   selectedDateAtom,
   themeAtom,
+  useGetWorklogsForSelectedDay,
 } from '../atoms';
 import { ButtonTransparent } from '../components/ButtonTransparent';
 import { EntriesFooter } from '../components/EntriesFooter';
@@ -34,7 +34,7 @@ export const Entries: FC = () => {
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
   const isFullscreen = useAtomValue(isFullscreenAtom);
-  const worklogsForSelectedDay = getWorklogsForSelectedDay();
+  const worklogsForSelectedDay = useGetWorklogsForSelectedDay();
 
   const hasChanges =
     activeWorklogIsThisDay || worklogsForSelectedDay.some(worklog => worklog.state !== WorklogState.SYNCED);

@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import ms from 'ms';
 import { initializeJiraAccount } from '../services/jira-account.service';
 import { deleteRemoteWorklog } from '../services/jira-worklogs.service';
@@ -62,6 +62,11 @@ setInterval(() => {
 export function getWorklogsForSelectedDay() {
   const worklogs = store.get(worklogsAtom);
   const selectedDate = store.get(selectedDateAtom);
+  return worklogs.filter(worklog => worklog.started === selectedDate);
+}
+export function useGetWorklogsForSelectedDay() {
+  const worklogs = useAtomValue(worklogsAtom);
+  const selectedDate = useAtomValue(selectedDateAtom);
   return worklogs.filter(worklog => worklog.started === selectedDate);
 }
 
