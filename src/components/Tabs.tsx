@@ -53,7 +53,16 @@ export const Tabs: FC<TabsProps> = ({ tabs }) => {
           const isLast = index === tabs.length - 1;
           return (
             <Fragment key={index + tab.label}>
-              <Tab {...tab} isActive={isActive} isFirst={isFirst} isLast={isLast} onPress={() => setActiveTab(index)} />
+              <Tab
+                {...tab}
+                isActive={isActive}
+                isFirst={isFirst}
+                isLast={isLast}
+                onPress={() => {
+                  tab.onPress();
+                  setActiveTab(index);
+                }}
+              />
               {!isActive && !previousIsActive && !isLast && <View style={styles.spacer} />}
             </Fragment>
           );

@@ -38,6 +38,8 @@ const debounce = (func: Function, delay: number) => {
   };
 };
 
+type IssueWithUUID = Issue & { uuid: UUID };
+
 export const Search: FC = () => {
   const selectedDate = useAtomValue(selectedDateAtom);
   const logins = useAtomValue(loginsAtom);
@@ -46,7 +48,7 @@ export const Search: FC = () => {
   const [searchValue, setSearchValue] = useState('');
   const [uuid, setUUID] = useState<UUID>(logins.find(acc => acc.isPrimary)?.uuid || logins[0]?.uuid);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState<Issue[]>([]);
+  const [searchResults, setSearchResults] = useState<IssueWithUUID[]>([]);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const hasCharacters = searchValue.trim().length > 0;
@@ -59,7 +61,7 @@ export const Search: FC = () => {
       debounce(async (query: string, tragetUUID: UUID) => {
         setSearchIsLoading(true);
         try {
-          setSearchResults(await getIssuesBySearchQuery(query, tragetUUID));
+          setSearchResults((await getIssuesBySearchQuery(query, tragetUUID)).map(issue => ({ ...issue, uuid })));
         } catch (e) {
           console.error('Error while searching', e);
         } finally {
@@ -77,6 +79,11 @@ export const Search: FC = () => {
     }
     debouncedSearch(trimmedValue, uuid);
   }, [searchValue, uuid]);
+
+  // Clear search results when switching between tabs
+  useEffect(() => {
+    setSearchResults([]);
+  }, [uuid]);
 
   /**
    * List of worklogs that have been worked on most recently.
@@ -195,7 +202,7 @@ export const Search: FC = () => {
                   name: issue.fields.project.name,
                 },
                 summary: issue.fields.summary,
-                uuid,
+                uuid: issue.uuid,
               }}
               onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
             />
@@ -212,7 +219,7 @@ export const Search: FC = () => {
                   name: '',
                 },
                 summary: worklog.issue.summary,
-                uuid,
+                uuid: worklog.uuid,
               }}
               onPress={() =>
                 handleOnWorklogStart({
