@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { FC, useEffect } from 'react';
 import { Platform } from 'react-native';
 import { lastActiveWorklogIdAtom, selectedDateAtom, setWorklogAsActive, worklogsLocalAtom } from '../atoms';
@@ -8,7 +8,6 @@ import { NativeEvent, StatusBarState } from '../services/native-event-emitter.se
 export const WorklogStateWatcher: FC = () => {
   const lastActiveWorklogId = useAtomValue(lastActiveWorklogIdAtom);
   const [worklogsLocal, setWorklogsLocal] = useAtom(worklogsLocalAtom);
-  const setWorklogAsActive = useSetAtom(setWorklogAsActive);
   const selectedDate = useAtomValue(selectedDateAtom);
 
   function handlePlayPauseClick(currentState: StatusBarState) {
