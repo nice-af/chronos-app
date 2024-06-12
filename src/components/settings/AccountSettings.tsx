@@ -11,8 +11,8 @@ import { typo } from '../../styles/typo';
 import { getPadding } from '../../styles/utils';
 import { LoginModel, UUID } from '../../types/accounts.types';
 import { ButtonSecondary } from '../ButtonSecondary';
-import { LoadingSpinnerSmall } from '../LoadingSpinnerSmall';
 import { AccountSettingsOptions } from './AccountSettingsOptions';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 interface AccountRowProps {
   login: LoginModel;
@@ -126,7 +126,7 @@ export const AccountSettings: FC = () => {
       ))}
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <LoadingSpinnerSmall />
+          <LoadingSpinner size='tiny' />
           <Text style={styles.loadingText}>{t('account.addingNewAccount')}</Text>
         </View>
       ) : (
@@ -188,9 +188,9 @@ function createStyles(theme: Theme) {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 12,
-      marginTop: 10,
-      marginBottom: 4,
+      gap: 8,
+      minHeight: 36,
+      paddingTop: 4,
     },
     loadingText: {
       ...typo.body,

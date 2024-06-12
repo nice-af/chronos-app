@@ -5,7 +5,7 @@ import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { CustomButtonProps } from '../types/global.types';
-import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
+import { LoadingSpinner } from './LoadingSpinner';
 
 type ButtonPrimaryProps = Omit<PressableProps, 'style'> &
   CustomButtonProps & {
@@ -35,7 +35,7 @@ export const ButtonPrimary: FC<ButtonPrimaryProps> = ({
         pressed && styles.isActive,
         props.style,
       ]}>
-      {isLoading && <LoadingSpinnerSmall style={styles.loadingSpinner} forcedTheme='dark' />}
+      {isLoading && <LoadingSpinner style={styles.loadingSpinner} size='small' forcedTheme='dark' />}
       <Text style={[styles.label, isLoading && styles.labelIsHidden]}>{label}</Text>
       {iconRight}
     </Pressable>

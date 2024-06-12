@@ -3,7 +3,7 @@ import { Animated, StyleSheet, View, ViewProps } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
-import { LoadingSpinnerSmall } from './LoadingSpinnerSmall';
+import { LoadingSpinner } from './LoadingSpinner';
 
 type LoadingBarProps = ViewProps & {
   progress: number;
@@ -38,7 +38,7 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progress, ...props }) => {
       <View style={styles.spinnerBg} />
       {showCheckmark && <AnimatedCheckmarkIcon style={styles.checkmark} />}
       <Animated.View style={[styles.spinnerContainer, { opacity: loadingSpinnerAnim }]}>
-        <LoadingSpinnerSmall />
+        <LoadingSpinner size='small' />
       </Animated.View>
       <View {...props} style={[styles.barContainer, props.style]}>
         <Animated.View style={[styles.progress, { transform: [{ scaleX: progressAnim }] }]} />

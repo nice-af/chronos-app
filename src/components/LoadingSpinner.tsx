@@ -1,24 +1,67 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Animated, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, ImageSourcePropType, StyleSheet, View, ViewStyle } from 'react-native';
 import { themeAtom } from '../atoms';
 import { LOADING_SPINNER_SPEED } from '../const';
 
 interface LoadingSpinnerProps {
   style?: ViewStyle;
   forcedTheme?: 'light' | 'dark';
+  size?: 'tiny' | 'small' | 'normal';
 }
 
-export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme }) => {
+export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme, size = 'normal' }) => {
   const theme = useAtomValue(themeAtom);
   const [activeElement, setActiveElement] = useState(0);
 
-  const { image, opacityInactive } = useMemo(() => {
+  const { image, imageSize, containerSize, opacityInactive } = useMemo(() => {
+    let nImage: ImageSourcePropType;
+    let nImageSize: number;
+    let nContainerSize: number;
+    let nOpacityInactive: number;
     if ((forcedTheme ?? theme.type) === 'light') {
-      return { image: require('../assets/loading-spinner/loading-spinner-element-light.png'), opacityInactive: 0.15 };
+      nOpacityInactive = 0.15;
+      switch (size) {
+        case 'tiny':
+          nImage = require('../assets/loading-spinner/loading-spinner-tiny-element-light.png');
+          break;
+        case 'small':
+          nImage = require('../assets/loading-spinner/loading-spinner-small-element-light.png');
+          break;
+        case 'normal':
+          nImage = require('../assets/loading-spinner/loading-spinner-element-light.png');
+          break;
+      }
     } else {
-      return { image: require('../assets/loading-spinner/loading-spinner-element-dark.png'), opacityInactive: 0.12 };
+      nOpacityInactive = 0.12;
+      switch (size) {
+        case 'tiny':
+          nImage = require('../assets/loading-spinner/loading-spinner-tiny-element-dark.png');
+          break;
+        case 'small':
+          nImage = require('../assets/loading-spinner/loading-spinner-small-element-dark.png');
+          break;
+        case 'normal':
+          nImage = require('../assets/loading-spinner/loading-spinner-element-dark.png');
+          break;
+      }
     }
+
+    switch (size) {
+      case 'tiny':
+        nImageSize = 6;
+        nContainerSize = 14;
+        break;
+      case 'small':
+        nImageSize = 10;
+        nContainerSize = 22;
+        break;
+      case 'normal':
+        nImageSize = 14;
+        nContainerSize = 30;
+        break;
+    }
+    return { image: nImage, imageSize: nImageSize, containerSize: nContainerSize, opacityInactive: nOpacityInactive };
   }, [theme]);
 
   useEffect(() => {
@@ -29,28 +72,28 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme }) 
   }, []);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, { width: containerSize, height: containerSize }, style]}>
       <Animated.Image
-        width={14}
-        height={14}
+        width={imageSize}
+        height={imageSize}
         style={[styles.topRight, { opacity: activeElement === 0 ? 1 : opacityInactive }]}
         source={image}
       />
       <Animated.Image
-        width={14}
-        height={14}
+        width={imageSize}
+        height={imageSize}
         style={[styles.bottomRight, { opacity: activeElement === 1 ? 1 : opacityInactive }]}
         source={image}
       />
       <Animated.Image
-        width={14}
-        height={14}
+        width={imageSize}
+        height={imageSize}
         style={[styles.bottomLeft, { opacity: activeElement === 2 ? 1 : opacityInactive }]}
         source={image}
       />
       <Animated.Image
-        width={14}
-        height={14}
+        width={imageSize}
+        height={imageSize}
         style={[styles.topLeft, { opacity: activeElement === 3 ? 1 : opacityInactive }]}
         source={image}
       />
@@ -61,8 +104,6 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme }) 
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    width: 30,
-    height: 30,
   },
   topRight: {
     position: 'absolute',
