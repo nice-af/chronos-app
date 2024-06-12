@@ -1,7 +1,7 @@
 import { Issue } from 'jira.js/out/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   addWorklog,
   currentOverlayAtom,
@@ -55,13 +55,21 @@ export const Search: FC = () => {
   const enoughCharacters = searchValue.trim().length >= 3;
   const { t } = useTranslation();
   const worklogs = useAtomValue(worklogsAtom);
+  const fadeInAnim = useRef(new Animated.Value(0)).current;
 
   const debouncedSearch = useMemo(
     () =>
       debounce(async (query: string, tragetUUID: UUID) => {
         setSearchIsLoading(true);
         try {
-          setSearchResults((await getIssuesBySearchQuery(query, tragetUUID)).map(issue => ({ ...issue, uuid })));
+          const newResults = (await getIssuesBySearchQuery(query, tragetUUID)).map(issue => ({ ...issue, uuid }));
+          setSearchResults(newResults);
+          fadeInAnim.setValue(0);
+          Animated.timing(fadeInAnim, {
+            toValue: 26,
+            duration: 800,
+            useNativeDriver: true,
+          }).start();
         } catch (e) {
           console.error('Error while searching', e);
         } finally {
@@ -192,20 +200,31 @@ export const Search: FC = () => {
           <Text style={styles.errorMessage}>{t('search.error.noResults')}</Text>
         )}
         {!searchIsLoading &&
-          searchResults?.map(issue => (
-            <SearchResultsEntry
+          searchResults?.map((issue, index) => (
+            <Animated.View
               key={`issue-${issue.id}`}
-              issue={{
-                id: issue.id,
-                key: issue.key,
-                project: {
-                  name: issue.fields.project.name,
-                },
-                summary: issue.fields.summary,
-                uuid: issue.uuid,
-              }}
-              onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
-            />
+              style={{
+                opacity:
+                  index > 20
+                    ? 1
+                    : fadeInAnim.interpolate({
+                        inputRange: [index, index + 6],
+                        outputRange: [0, 1],
+                      }),
+              }}>
+              <SearchResultsEntry
+                issue={{
+                  id: issue.id,
+                  key: issue.key,
+                  project: {
+                    name: issue.fields.project.name,
+                  },
+                  summary: issue.fields.summary,
+                  uuid: issue.uuid,
+                }}
+                onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
+              />
+            </Animated.View>
           ))}
         {!hasCharacters &&
           latestWorklogsWorkedOn.map(worklog => (
