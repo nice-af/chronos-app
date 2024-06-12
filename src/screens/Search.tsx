@@ -46,7 +46,9 @@ export const Search: FC = () => {
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const [searchValue, setSearchValue] = useState('');
-  const [uuid, setUUID] = useState<UUID>(logins.find(acc => acc.isPrimary)?.uuid || logins[0]?.uuid);
+  const initialUUID = logins.find(acc => acc.isPrimary)?.uuid || logins[0]?.uuid;
+  const [uuid, setUUID] = useState<UUID>(initialUUID);
+  const lastUUID = useRef<UUID>(initialUUID);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<IssueWithUUID[]>([]);
   const theme = useAtomValue(themeAtom);
@@ -57,27 +59,27 @@ export const Search: FC = () => {
   const worklogs = useAtomValue(worklogsAtom);
   const fadeInAnim = useRef(new Animated.Value(0)).current;
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce(async (query: string, tragetUUID: UUID) => {
-        setSearchIsLoading(true);
-        try {
-          const newResults = (await getIssuesBySearchQuery(query, tragetUUID)).map(issue => ({ ...issue, uuid }));
-          setSearchResults(newResults);
-          fadeInAnim.setValue(0);
-          Animated.timing(fadeInAnim, {
-            toValue: 26,
-            duration: 800,
-            useNativeDriver: true,
-          }).start();
-        } catch (e) {
-          console.error('Error while searching', e);
-        } finally {
-          setSearchIsLoading(false);
-        }
-      }, 500),
-    []
-  );
+  async function search(query: string, targetUUID: UUID) {
+    setSearchIsLoading(true);
+    try {
+      const newResults = (await getIssuesBySearchQuery(query, targetUUID)).map(issue => ({
+        ...issue,
+        uuid: targetUUID,
+      }));
+      setSearchResults(newResults);
+      fadeInAnim.setValue(0);
+      Animated.timing(fadeInAnim, {
+        toValue: 26,
+        duration: 800,
+        useNativeDriver: true,
+      }).start();
+    } catch (e) {
+      console.error('Error while searching', e);
+    } finally {
+      setSearchIsLoading(false);
+    }
+  }
+  const debouncedSearch = useMemo(() => debounce(search, 500), []);
 
   useEffect(() => {
     const trimmedValue = searchValue.trim();
@@ -85,7 +87,12 @@ export const Search: FC = () => {
       setSearchResults([]);
       return;
     }
-    debouncedSearch(trimmedValue, uuid);
+    if (uuid !== lastUUID.current) {
+      search(trimmedValue, uuid);
+      lastUUID.current = uuid;
+    } else {
+      debouncedSearch(trimmedValue, uuid);
+    }
   }, [searchValue, uuid]);
 
   // Clear search results when switching between tabs
