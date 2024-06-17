@@ -128,10 +128,11 @@ export const Search: FC = () => {
 
   async function handleOnWorklogStart(issueBase: IssueBase) {
     if (formatDateToYYYYMMDD(new Date()) !== selectedDate) {
+      const isInFuture = new Date() < new Date(selectedDate);
       const confirmed = await getModalConfirmation({
         icon: 'timer-warning',
-        headline: t('modals.startTimerInPastHeadline'),
-        text: t('modals.startTimerInPastText'),
+        headline: isInFuture ? t('modals.startTimerInFutureHeadline') : t('modals.startTimerInPastHeadline'),
+        text: isInFuture ? t('modals.startTimerInFutureText') : t('modals.startTimerInPastText'),
       });
       if (!confirmed) {
         return;
