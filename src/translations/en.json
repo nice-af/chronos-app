@@ -51,8 +51,8 @@
     "startTimerInPastText": "This will modify a worklog in the past. Are you sure you want to continue?"
   },
   "newFeaturesModal": {
-    "body1": "Add more accounts to track working times over multiple workspaces. Customize their appearance and choose a primary account to only keep track of times where it matters.",
-    "body2": "All of this can be found in the settings.",
+    "body1": "From now on you can add multiple accounts from different workspaces.",
+    "body2": "You can also set a primary account and e.g. configure that only its times are counted in the total time in the sidebar.",
     "headline": "Connect multiple accounts",
     "pillText": "New in v0.1.15"
   },

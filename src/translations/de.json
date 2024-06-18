@@ -51,8 +51,8 @@
     "startTimerInPastText": "Dies wird einen Arbeitsprotokoll in der Vergangenheit ändern. Bist du sicher, dass du fortfahren möchten?"
   },
   "newFeaturesModal": {
-    "body1": "Füge weitere Accounts hinzu, um Arbeitszeiten über mehrere Workspaces zu verfolgen. Passe ihr Aussehen an und wähle einen primären Account, um den Überblick über deine Zeiten zu behalten.",
-    "body2": "All das findest du in den Einstellungen.",
+    "body1": "Ab jetzt kannst du mehrere Accounts aus verschiedenen Workspace hinzufügen.",
+    "body2": "Du kannst zudem einen primären Account festlegen und z.B. einstellen, dass nur dessen Zeiten in der Gesamtzeit zählen.",
     "headline": "Verbinde mehrere Accounts",
     "pillText": "Neu in v0.1.15"
   },
