@@ -79,6 +79,7 @@
   "overrides": {
     "@atlaskit/editor-bitbucket-transformer": {
       "react": "$react"
-    }
+    },
+    "typescript": "5.4.5"
   }
 }
