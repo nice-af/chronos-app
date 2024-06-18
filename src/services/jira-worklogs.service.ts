@@ -135,9 +135,3 @@ export function deleteRemoteWorklog(worklog: Worklog) {
     id: worklog.id,
   });
 }
-
-export async function updateRemoteWorklogsOfLogin(uuid: UUID, accountId: AccountId) {
-  const worklogsToAdd = await getRemoteWorklogs(uuid, accountId);
-  const currentWorklogsRemote = store.get(worklogsRemoteAtom);
-  store.set(worklogsRemoteAtom, currentWorklogsRemote.filter(worklog => worklog.uuid !== uuid).concat(worklogsToAdd));
-}

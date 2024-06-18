@@ -1,9 +1,9 @@
-import { addJiraAccountTokensToStore, addLoginToStore } from '../atoms';
+import { addJiraAccountTokensToStore, addLoginToStore, store, worklogsRemoteAtom } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
 import { AccountId, CloudId, JiraAccountTokens, LoginModel, UUID } from '../types/accounts.types';
 import { getUserInfo, getWorkspaceInfo, refreshAccessToken } from './jira-api-fetch';
 import { createJiraClient } from './jira-client.service';
-import { updateRemoteWorklogsOfLogin } from './jira-worklogs.service';
+import { getRemoteWorklogs } from './jira-worklogs.service';
 
 interface InitializeJiraAccountData {
   jiraAccountTokens: JiraAccountTokens;
@@ -14,33 +14,30 @@ interface InitializeJiraAccountData {
   /**
    * Add hooks to be called when certain progress points are reached. Used to update a progress bar.
    */
-  progressHooks?: {
+  options?: {
     onWorkspaceInfoFetched?: () => void;
     onUserInfoFetched?: () => void;
     onFinished?: () => void;
+    storeRemoteWorklogs?: boolean;
   };
 }
 
 /**
  * Makes all the necessary calls to initialize the Jira account
  */
-export async function initializeJiraAccount({
-  jiraAccountTokens,
-  currentLogin,
-  progressHooks,
-}: InitializeJiraAccountData) {
+export async function initializeJiraAccount({ jiraAccountTokens, currentLogin, options }: InitializeJiraAccountData) {
   if (jiraAccountTokens.expiresAt < Date.now()) {
     const newJiraAccountTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
     jiraAccountTokens = newJiraAccountTokens;
   }
   const workspaceInfo = await getWorkspaceInfo(jiraAccountTokens.accessToken, currentLogin?.cloudId);
-  if (progressHooks?.onWorkspaceInfoFetched) {
-    progressHooks.onWorkspaceInfoFetched();
+  if (options?.onWorkspaceInfoFetched) {
+    options.onWorkspaceInfoFetched();
   }
 
   const userInfo = await getUserInfo(jiraAccountTokens.accessToken, workspaceInfo.id as CloudId);
-  if (progressHooks?.onUserInfoFetched) {
-    progressHooks.onUserInfoFetched();
+  if (options?.onUserInfoFetched) {
+    options.onUserInfoFetched();
   }
 
   const login: LoginModel = {
@@ -60,11 +57,19 @@ export async function initializeJiraAccount({
   addJiraAccountTokensToStore(login.accountId, jiraAccountTokens);
   addLoginToStore(login);
   createJiraClient(login.uuid, login.accountId, login.cloudId);
-  updateRemoteWorklogsOfLogin(login.uuid, login.accountId);
 
-  if (progressHooks?.onFinished) {
-    progressHooks.onFinished();
+  const newWorklogsRemote = await getRemoteWorklogs(login.uuid, login.accountId);
+  if (!options?.storeRemoteWorklogs === false) {
+    const currentWorklogsRemote = store.get(worklogsRemoteAtom);
+    store.set(
+      worklogsRemoteAtom,
+      currentWorklogsRemote.filter(worklog => worklog.uuid !== login.uuid).concat(newWorklogsRemote)
+    );
   }
 
-  return login;
+  if (options?.onFinished) {
+    options.onFinished();
+  }
+
+  return { login, newWorklogsRemote };
 }

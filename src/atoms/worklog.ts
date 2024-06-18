@@ -29,9 +29,7 @@ export const activeWorklogAtom = atom(get => {
   return get(worklogsAtom).find(worklog => worklog.id === worklogId) ?? null;
 });
 export const lastActiveWorklogIdAtom = atom<string | null>(null);
-/**
- * Unix timestamp where the tracking of the active worklog started
- */
+// Unix timestamp where the tracking of the active worklog started
 const activeWorklogTrackingStartedAtom = atom(0);
 
 // TODO @florianmrz we need to run the below logic once upon the app being focussed / opened again
@@ -76,9 +74,11 @@ export function useGetWorklogsForSelectedDay() {
 export async function syncWorklogsForCurrentDay() {
   const logins = store.get(loginsAtom);
   const jiraAccountTokens = store.get(jiraAccountTokensAtom);
-  const localWorklogs = store.get(worklogsLocalAtom);
+  const worklogsLocal = store.get(worklogsLocalAtom);
+  const worklogsRemote = store.get(worklogsRemoteAtom);
+  let newWorklogsRemote: Worklog[] = [...worklogsRemote];
   const worklogsToSync = getWorklogsForSelectedDay()
-    .filter(w => localWorklogs.find(lw => lw.id === w.id))
+    .filter(w => worklogsLocal.find(lw => lw.id === w.id))
     .filter(worklog => worklog.timeSpentSeconds >= 60);
 
   // Setup progress tracking
@@ -92,19 +92,23 @@ export async function syncWorklogsForCurrentDay() {
   for (let i = 0; i < logins.length; i++) {
     const login = logins[i];
     const tokens = jiraAccountTokens[login.accountId];
-    initializeJiraAccount({
+    const { newWorklogsRemote: loadedWorklogsRemote } = await initializeJiraAccount({
       jiraAccountTokens: tokens,
       currentLogin: login,
-      progressHooks: {
+      options: {
         onWorkspaceInfoFetched: () => addProgress(),
         onUserInfoFetched: () => addProgress(),
         onFinished: () => addProgress(),
       },
     });
+    newWorklogsRemote = newWorklogsRemote.filter(w => w.uuid !== login.uuid).concat(loadedWorklogsRemote);
   }
 
   // Remove local worklogs that have been synced
   store.set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
+
+  // Save new remote worklogs
+  store.set(worklogsRemoteAtom, newWorklogsRemote);
   setTimeout(resetProgress, 1500);
 }
 

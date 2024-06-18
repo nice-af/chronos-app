@@ -18,7 +18,7 @@ export async function migrateUp_0_1_14() {
   if (!oldAuth) {
     return;
   }
-  const login = await initializeJiraAccount({
+  const { login } = await initializeJiraAccount({
     jiraAccountTokens: { accessToken: oldAuth.accessToken, refreshToken: oldAuth.refreshToken, expiresAt: 0 },
   });
 
