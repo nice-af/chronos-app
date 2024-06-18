@@ -1,13 +1,14 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, Text } from 'react-native';
-import { syncProgressAtom, syncWorklogsForCurrentDay } from '../atoms';
+import { syncWorklogsForCurrentDay } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { ButtonPrimary } from './ButtonPrimary';
 import { LoadingBar } from './LoadingBar';
+import { syncProgressAtom } from '../atoms/progress';
 
 interface EntriesFooterProps {
   dayHasChanges: boolean;
@@ -15,8 +16,8 @@ interface EntriesFooterProps {
 
 export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   const styles = useThemedStyles(createStyles);
-  const progress = useAtomValue(syncProgressAtom);
-  const isSyncing = progress !== null;
+  const progressAtomValue = useAtomValue(syncProgressAtom);
+  const isSyncing = progressAtomValue !== null;
   const { t } = useTranslation();
   const isVisible = dayHasChanges;
   const containerPosition = useRef(new Animated.Value(isSyncing ? 0 : isVisible ? 28 : 88)).current; // 0 is not visible, 1 is visible
@@ -62,7 +63,7 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
       </Animated.View>
       <Animated.View style={[styles.loadingContainer, { opacity: loadingVisibility }]}>
         <Text style={styles.loadingText}>{t('submittingWorklogs')}</Text>
-        <LoadingBar progress={progress ?? 0} />
+        <LoadingBar progress={progressAtomValue?.progress ?? 0} />
       </Animated.View>
     </Animated.View>
   );

@@ -1,4 +1,4 @@
-import { store, syncProgressAtom } from '../atoms';
+import { addProgress } from '../atoms/progress';
 import { UUID } from '../types/accounts.types';
 import { Worklog, WorklogState } from '../types/global.types';
 import { DateString } from './date.service';
@@ -38,15 +38,13 @@ export function filterWorklogsByDate(worklogs: Worklog[], date: string): Worklog
   return worklogs.filter(worklog => worklog.started === date);
 }
 
-export async function syncWorklogs(worklogs: Worklog[], progressPerStep?: number): Promise<void> {
-  for (const [i, worklog] of worklogs.entries()) {
+export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
+  for (const worklog of worklogs) {
     if (worklog.state === WorklogState.LOCAL) {
       await createRemoteWorklog(worklog);
     } else if (worklog.state === WorklogState.EDITED) {
       await updateRemoteWorklog(worklog);
     }
-    if (progressPerStep !== undefined) {
-      store.set(syncProgressAtom, progressPerStep * (i + 1));
-    }
+    addProgress();
   }
 }

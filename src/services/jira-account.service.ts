@@ -16,6 +16,7 @@ interface InitializeJiraAccountData {
    */
   progressHooks?: {
     onWorkspaceInfoFetched?: () => void;
+    onUserInfoFetched?: () => void;
     onFinished?: () => void;
   };
 }
@@ -38,6 +39,9 @@ export async function initializeJiraAccount({
   }
 
   const userInfo = await getUserInfo(jiraAccountTokens.accessToken, workspaceInfo.id as CloudId);
+  if (progressHooks?.onUserInfoFetched) {
+    progressHooks.onUserInfoFetched();
+  }
 
   const login: LoginModel = {
     uuid: `${userInfo.accountId}__${workspaceInfo.id}` as UUID,

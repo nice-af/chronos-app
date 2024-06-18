@@ -6,10 +6,10 @@ import { syncWorklogs } from '../services/worklog.service';
 import { Worklog, WorklogId, WorklogState } from '../types/global.types';
 import { jiraAccountTokensAtom, loginsAtom } from './auth';
 import { selectedDateAtom } from './navigation';
+import { addProgress, resetProgress, setTotalProgress } from './progress';
 import { store } from './store';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
-export const syncProgressAtom = atom<number | null>(null);
 export const worklogsLocalAtom = atom<Worklog[]>([]);
 export const worklogsRemoteAtom = atom<Worklog[]>([]);
 export const worklogsLocalBackupsAtom = atom<Worklog[]>([]);
@@ -82,11 +82,11 @@ export async function syncWorklogsForCurrentDay() {
     .filter(worklog => worklog.timeSpentSeconds >= 60);
 
   // Setup progress tracking
-  store.set(syncProgressAtom, 0);
-  const progressStepsSync = worklogsToSync.length; // Each worklog equals one progress step
-  const progressStepsAccountsLoop = logins.length * 3; // Each account has 3 progress steps: 1 to get user info and 2 to get worklogs
-  const progressPerStep = 1 / (progressStepsSync + progressStepsAccountsLoop);
-  await syncWorklogs(worklogsToSync, progressPerStep);
+  // Each worklog equals one progress step and each account has 3 progress steps
+  resetProgress();
+  const totalProgress = worklogsToSync.length + logins.length * 3;
+  setTotalProgress(totalProgress);
+  await syncWorklogs(worklogsToSync);
 
   // Sync worklogs for all accounts
   for (let i = 0; i < logins.length; i++) {
@@ -96,17 +96,16 @@ export async function syncWorklogsForCurrentDay() {
       jiraAccountTokens: tokens,
       currentLogin: login,
       progressHooks: {
-        onWorkspaceInfoFetched: () =>
-          store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 1)),
-        onFinished: () =>
-          store.set(syncProgressAtom, progressStepsSync * progressPerStep + progressPerStep * (i * 3 + 3)),
+        onWorkspaceInfoFetched: () => addProgress(),
+        onUserInfoFetched: () => addProgress(),
+        onFinished: () => addProgress(),
       },
     });
   }
 
   // Remove local worklogs that have been synced
   store.set(worklogsLocalAtom, worklogs => worklogs.filter(w => !worklogsToSync.find(lw => lw.id === w.id)));
-  setTimeout(() => store.set(syncProgressAtom, null), 1500);
+  setTimeout(resetProgress, 1500);
 }
 
 /**
