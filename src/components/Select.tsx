@@ -5,9 +5,9 @@ import { themeAtom } from '../atoms';
 import { showContextualMenu } from '../services/contextual-menu.service';
 import { ButtonSecondary } from './ButtonSecondary';
 
-type OptionValue = string | number;
+export type OptionValue = string | number;
 
-interface SelectProps<T extends OptionValue> {
+export interface SelectProps<T extends OptionValue> {
   options: { label: string; value: OptionValue }[];
   value: T;
   onChange: (value: T) => void;

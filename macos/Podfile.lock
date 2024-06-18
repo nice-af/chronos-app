@@ -1017,6 +1017,8 @@ PODS:
     - React-perflogger (= 0.73.26)
   - RNCAsyncStorage (1.23.1):
     - React-Core
+  - RNCPicker (2.7.7):
+    - React-Core
   - SocketRocket (0.7.0)
   - Yoga (1.14.0)
 
@@ -1071,6 +1073,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native-macos/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native-macos/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - SocketRocket (from `../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec`)
   - Yoga (from `../node_modules/react-native-macos/ReactCommon/yoga`)
 
@@ -1171,6 +1174,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-macos/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   SocketRocket:
     :podspec: "../node_modules/react-native-macos/third-party-podspecs/SocketRocket.podspec"
   Yoga:
@@ -1225,6 +1230,7 @@ SPEC CHECKSUMS:
   React-utils: bcb3d9194f9ef8ac3ae42a29c179ddd359476096
   ReactCommon: 431c77593451cb97b7bc7226066ae61c46d75027
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNCPicker: b7873ba797dc586bfaf3307d737cbdc620a9ff3e
   SocketRocket: f6c6249082c011e6de2de60ed641ef8bbe0cfac9
   Yoga: d916f14a1d3e918bbae9506ae15daf239134f709
 

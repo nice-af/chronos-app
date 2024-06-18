@@ -32,6 +32,7 @@
     "@atlaskit/editor-markdown-transformer": "^5.5.3",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/hooks": "^3.0.0",
+    "@react-native-picker/picker": "^2.7.7",
     "buffer": "^6.0.3",
     "date-fns": "^2.30.0",
     "jira.js": "^4.0.0",
