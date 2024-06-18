@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { OptionValue, SelectProps } from './Select';
+import { OptionValue, SelectProps } from './Select.types';
 
 export function Select<T extends OptionValue>({ options, value, onChange }: SelectProps<T>) {
   const [selectedValue, setSelectedValue] = useState(value);

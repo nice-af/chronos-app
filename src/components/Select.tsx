@@ -4,14 +4,7 @@ import { Image } from 'react-native';
 import { themeAtom } from '../atoms';
 import { showContextualMenu } from '../services/contextual-menu.service';
 import { ButtonSecondary } from './ButtonSecondary';
-
-export type OptionValue = string | number;
-
-export interface SelectProps<T extends OptionValue> {
-  options: { label: string; value: OptionValue }[];
-  value: T;
-  onChange: (value: T) => void;
-}
+import { OptionValue, SelectProps } from './Select.types';
 
 export function Select<T extends OptionValue>({ options, value, onChange }: SelectProps<T>) {
   const ref = useRef(null);
