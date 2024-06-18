@@ -1,6 +1,6 @@
 import { GestureResponderEvent } from 'react-native';
 
-interface MenuItem {
+export interface MenuItem {
   name: string;
   onClick: () => void;
 }
