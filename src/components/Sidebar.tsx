@@ -1,7 +1,7 @@
 import { useAppState } from '@react-native-community/hooks';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
-import { Platform, ScrollView, StyleSheet, View } from 'react-native-macos';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -24,7 +24,7 @@ export const Sidebar: FC = () => {
   const styles = useThemedStyles(createStyles);
 
   return (
-    <View style={styles.outerContainer} allowsVibrancy>
+    <View style={styles.outerContainer}>
       {Platform.OS === 'macos' && <NativeView type='sidebar' style={styles.backgroundView} />}
       <ScrollView
         contentContainerStyle={[
