@@ -26,6 +26,7 @@ export interface Theme {
   brown: string | OpaqueColorValue;
 
   background: string | OpaqueColorValue;
+  backgroundSolid: string | OpaqueColorValue; // Only different to background on Windows
   backgroundDark: string | OpaqueColorValue;
   backgroundLogin: string | OpaqueColorValue;
   backgroundDrawer: string | OpaqueColorValue;

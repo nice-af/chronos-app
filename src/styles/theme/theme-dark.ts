@@ -38,6 +38,7 @@ const windowColors = {
   ...Platform.select({
     default: {
       background: '#1e1e1e',
+      backgroundSolid: '#1e1e1e',
       backgroundDark: '#1a1a1a',
       backgroundLogin: '#1e1e1e',
       backgroundDrawer: '#1e1e1e',
@@ -47,6 +48,7 @@ const windowColors = {
     },
     windows: {
       background: PlatformColor('LayerFillColorDefaultBrush'),
+      backgroundSolid: PlatformColor('CardBackgroundFillColorDefaultBrush'),
       backgroundDark: PlatformColor('SolidBackgroundFillColorBaseBrush'),
       backgroundLogin: 'transparent',
       backgroundDrawer: PlatformColor('SolidBackgroundFillColorTertiaryBrush'),

@@ -94,7 +94,7 @@ function createStyles(theme: Theme) {
       width: '100%',
       maxWidth: 330,
       zIndex: 998,
-      backgroundColor: theme.background,
+      backgroundColor: theme.backgroundSolid,
       borderWidth: 1,
       borderColor: theme.border,
       borderRadius: 10,
