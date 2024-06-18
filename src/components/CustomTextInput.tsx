@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect, useRef } from 'react';
-import { StyleProp, StyleSheet, Text, TextInput, TextStyle, View } from 'react-native';
+import { Platform, StyleProp, StyleSheet, Text, TextInput, TextStyle, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { getPadding } from '../styles/utils';
@@ -42,45 +42,45 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
   const inputRef = useRef<TextInput>(null);
   const showPlaceholder = !value || (value === '' && !!placeholder);
   const styles = useThemedStyles(createStyles);
-
+  
   useEffect(() => {
     if (!isVisible && inputRef.current) {
       inputRef.current?.blur();
     }
   }, [isVisible]);
-
+  
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <Text style={styles.label}>{label}</Text>}
-      <View style={[styles.inputContainer, inputContainerStyle]}>
-        <TextInput
-          ref={inputRef}
-          style={[
-            styles.input,
-            iconLeft ? styles.inputWithIcon : undefined,
-            multiline ? { textAlignVertical: 'center' } : undefined,
-            !!visiblePrefix ? { paddingLeft: 32 } : undefined,
-            style,
-          ]}
-          onChangeText={onChangeText}
-          value={value}
-          multiline={multiline}
-          numberOfLines={numberOfLines}
-          maxLength={maxLength}
-          onBlur={onBlur}
-        />
-        {iconLeft && <View style={styles.iconContainer}>{iconLeft}</View>}
-        {showPlaceholder && (
-          <Text style={[styles.placeholder, iconLeft ? styles.placeholderWithIcon : undefined, style]}>
-            {placeholder}
-          </Text>
-        )}
-        {visiblePrefix && (
-          <View style={styles.prefixContainer}>
-            <Text style={styles.prefix}>{visiblePrefix}</Text>
-          </View>
-        )}
+    {label && <Text style={styles.label}>{label}</Text>}
+    <View style={[styles.inputContainer, inputContainerStyle]}>
+    <TextInput
+    ref={inputRef}
+    style={[
+      styles.input,
+      iconLeft ? styles.inputWithIcon : undefined,
+      multiline ? { textAlignVertical: 'center' } : undefined,
+      !!visiblePrefix ? { paddingLeft: 32 } : undefined,
+      style,
+    ]}
+    onChangeText={onChangeText}
+    value={value}
+    multiline={multiline}
+    numberOfLines={numberOfLines}
+    maxLength={maxLength}
+    onBlur={onBlur}
+    />
+    {iconLeft && <View style={styles.iconContainer}>{iconLeft}</View>}
+    {showPlaceholder && (
+      <Text style={[styles.placeholder, iconLeft ? styles.placeholderWithIcon : undefined, style]}>
+      {placeholder}
+      </Text>
+    )}
+    {visiblePrefix && (
+      <View style={styles.prefixContainer}>
+      <Text style={styles.prefix}>{visiblePrefix}</Text>
       </View>
+    )}
+    </View>
     </View>
   );
 };
@@ -109,6 +109,8 @@ function createStyles(theme: Theme) {
       ...getPadding(7, 12, 9),
       backgroundColor: theme.backgroundDark,
       color: theme.textPrimary,
+      borderRadius: 7,
+      borderWidth: 0,
     },
     inputWithIcon: {
       paddingLeft: 32,
@@ -122,12 +124,20 @@ function createStyles(theme: Theme) {
     },
     placeholder: {
       position: 'absolute',
-      top: 8,
-      left: 15,
       width: '100%',
       height: 20,
       color: theme.textSecondary,
       pointerEvents: 'none',
+      ...Platform.select({
+        windows: {
+          top: 6,
+          left: 0,
+        },
+        macos: {
+          top: 8,
+          left: 15,
+        },
+      }),
     },
     placeholderWithIcon: {
       left: 35,

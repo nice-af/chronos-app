@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useState } from 'react';
-import { Image, ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageSourcePropType, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { getPadding } from '../styles/utils';
@@ -44,7 +44,7 @@ export const Tabs: FC<TabsProps> = ({ tabs }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.borderTop} />
+      { Platform.OS !== 'windows' && <View style={styles.borderTop} /> }
       <ScrollView contentContainerStyle={styles.scrollContainer} showsHorizontalScrollIndicator={false} horizontal>
         {tabs.map((tab, index) => {
           const isActive = index === activeTab;
@@ -108,7 +108,14 @@ function createStyles(theme: Theme) {
       borderColor: theme.border,
       borderLeftWidth: 1,
       borderRightWidth: 1,
-      borderBottomWidth: 1,
+      ...Platform.select({
+        windows: {
+          borderBottomWidth: 2,
+        },
+        macos: {
+          borderBottomWidth: 1,
+        },
+      }),
       backgroundColor: theme.background,
       marginBottom: -1,
     },
