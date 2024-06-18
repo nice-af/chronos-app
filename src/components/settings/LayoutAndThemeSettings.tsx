@@ -41,9 +41,9 @@ export const LayoutAndThemeSettings: FC = () => {
               },
             ]}
           />
+          <View style={settingsStyles.hr} />
         </>
       )}
-      <View style={settingsStyles.hr} />
       <Text style={settingsStyles.headline}>{t('sidebarLayout.settingsTitle')}</Text>
       <CardsSelectionButtons
         options={[
