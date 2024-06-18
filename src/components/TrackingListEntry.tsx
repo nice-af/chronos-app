@@ -1,6 +1,6 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
@@ -14,9 +14,10 @@ import {
   worklogsLocalAtom,
 } from '../atoms';
 import { Overlay } from '../const';
-import { isRightClick, showContextualMenu } from '../services/contextual-menu.service';
+import { MenuItem, isRightClick, showContextualMenu } from '../services/contextual-menu.service';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
+import { getModalConfirmation } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -25,7 +26,7 @@ import { Worklog, WorklogState } from '../types/global.types';
 import { useDoublePress } from '../utils/double-press';
 import { IssueKeyTag } from './IssueKeyTag';
 import { PlayPauseButton } from './PlayPauseButton';
-import { getModalConfirmation } from '../services/modal.service';
+import { ContextualMenuWindows } from './ContextualMenuWindows';
 interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
   worklog: Worklog;
   isSelected?: boolean;
@@ -43,6 +44,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const ref = useRef(null);
   const { onPress: onDoublePress } = useDoublePress(editWorklog);
   const styles = useThemedStyles(createStyles);
+  const [contextualMenuIsOpen, setContextualMenuIsOpen] = useState(false);
 
   function editWorklog() {
     setCurrentWorklogToEdit(worklog);
@@ -86,7 +88,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
     }
   }
 
-  const contextualMenuItems = [
+  const contextualMenuItems: MenuItem[] = [
     { name: t('worklogs.editWorklog'), onClick: editWorklog },
     { name: t('delete'), onClick: async () => await deleteWorklog(worklog.id) },
   ];
@@ -105,39 +107,45 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
       onPress={e => {
         if (isRightClick(e)) {
           showContextualMenu(contextualMenuItems, ref.current);
+          setContextualMenuIsOpen(true);
         } else {
           onDoublePress();
         }
       }}
       style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
-      <View style={styles.infoContainer}>
-        <View style={styles.header}>
-          {__DEV__ && (
-            <Text
-              style={{
-                color:
-                  worklog.state === WorklogState.SYNCED
-                    ? 'lime'
-                    : worklog.state === WorklogState.EDITED
-                      ? 'yellow'
-                      : 'aqua',
-              }}>
-              [{worklog.state.substring(0, 1).toUpperCase()}]
+      <ContextualMenuWindows
+        menuItems={contextualMenuItems}
+        isOpen={contextualMenuIsOpen}
+        setIsOpen={setContextualMenuIsOpen}>
+        <View style={styles.infoContainer}>
+          <View style={styles.header}>
+            {__DEV__ && (
+              <Text
+                style={{
+                  color:
+                    worklog.state === WorklogState.SYNCED
+                      ? 'lime'
+                      : worklog.state === WorklogState.EDITED
+                        ? 'yellow'
+                        : 'aqua',
+                }}>
+                [{worklog.state.substring(0, 1).toUpperCase()}]
+              </Text>
+            )}
+            <IssueKeyTag issueKey={worklog.issue.key} uuid={worklog.uuid} />
+            <Text numberOfLines={1} style={styles.title}>
+              {worklog.issue.summary}
             </Text>
-          )}
-          <IssueKeyTag issueKey={worklog.issue.key} uuid={worklog.uuid} />
-          <Text numberOfLines={1} style={styles.title}>
-            {worklog.issue.summary}
-          </Text>
+          </View>
+          {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
         </View>
-        {worklog.comment && <Text style={styles.description}>{worklog.comment}</Text>}
-      </View>
-      <PlayPauseButton
-        duration={worklog.timeSpentSeconds}
-        isRunning={isActiveWorklog}
-        onPress={handlePlayPause}
-        isPrimaryWorklog={worklog.uuid === primaryUUID}
-      />
+        <PlayPauseButton
+          duration={worklog.timeSpentSeconds}
+          isRunning={isActiveWorklog}
+          onPress={handlePlayPause}
+          isPrimaryWorklog={worklog.uuid === primaryUUID}
+        />
+      </ContextualMenuWindows>
     </Pressable>
   );
 };
