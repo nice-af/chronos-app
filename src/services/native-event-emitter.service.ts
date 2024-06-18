@@ -5,13 +5,13 @@ import {
 } from './native-event-emitter.service.types';
 
 export function sendNativeEvent(params: SendNativeEventParams) {
-  console.error('sendNativeEvent is not implemented');
+  console.warn('sendNativeEvent is not implemented');
 }
 
 export function addNativeEventListener(params: AddNativeEventListenerParams) {
-  console.error('addNativeEventListener is not implemented');
+  console.warn('addNativeEventListener is not implemented');
 }
 
 export function removeNativeEventListener(params: RemoveNativeEventListenerParams) {
-  console.error('removeNativeEventListener is not implemented');
+  console.warn('removeNativeEventListener is not implemented');
 }
