@@ -10,7 +10,7 @@ export function Select<T extends OptionValue>({ options, value, onChange }: Sele
     <Picker
       style={styles.picker}
       selectedValue={selectedValue}
-      onValueChange={(itemValue, itemIndex) => {
+      onValueChange={itemValue => {
         setSelectedValue(itemValue);
         onChange(itemValue);
       }}>
