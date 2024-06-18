@@ -99,6 +99,7 @@ export async function syncWorklogsForCurrentDay() {
         onWorkspaceInfoFetched: () => addProgress(),
         onUserInfoFetched: () => addProgress(),
         onFinished: () => addProgress(),
+        storeRemoteWorklogs: false,
       },
     });
     newWorklogsRemote = newWorklogsRemote.filter(w => w.uuid !== login.uuid).concat(loadedWorklogsRemote);
@@ -109,7 +110,7 @@ export async function syncWorklogsForCurrentDay() {
 
   // Save new remote worklogs
   store.set(worklogsRemoteAtom, newWorklogsRemote);
-  setTimeout(resetProgress, 1500);
+  setTimeout(resetProgress, 1250);
 }
 
 /**
