@@ -23,7 +23,7 @@ export function Select<T extends OptionValue>({ options, value, onChange }: Sele
 
 const styles = StyleSheet.create({
   picker: {
-    flexBasis: 80,
+    flexBasis: 170,
     flexShrink: 1,
   },
 });
