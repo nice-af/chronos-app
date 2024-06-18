@@ -48,7 +48,7 @@ const windowColors = {
     },
     windows: {
       background: PlatformColor('LayerFillColorDefaultBrush'),
-      backgroundSolid: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      backgroundSolid: '#e7e7e7',
       backgroundDark: PlatformColor('SolidBackgroundFillColorBaseBrush'),
       backgroundLogin: 'transparent',
       backgroundDrawer: PlatformColor('SolidBackgroundFillColorQuarternaryBrush'),
