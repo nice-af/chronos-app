@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { currentOverlayAtom, jiraAccountTokensAtom, loginsAtom, projectsAtom } from '../atoms';
-import { StorageKey, getFromStorage } from '../services/storage.service';
+import { StorageKey, getFromStorage, removeFromStorage } from '../services/storage.service';
 import { getPadding } from '../styles/utils';
 
 interface DebugToolsTabProps {
@@ -53,6 +53,13 @@ export const DebugTools: FC = () => {
             onPress={async () => console.log(await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS))}
             style={{ marginBottom: 12 }}>
             <Text style={styles.tabTitle}>Log accountTokens storage</Text>
+          </Pressable>
+          <Pressable
+            onPress={async () => {
+              Object.values(StorageKey).forEach(key => removeFromStorage(key));
+            }}
+            style={{ marginBottom: 12 }}>
+            <Text style={styles.tabTitle}>Clear all storage</Text>
           </Pressable>
           <DebugToolsTab title='jiraLogins'>
             <Text>{JSON.stringify(jiraLogins, null, 2)}</Text>
