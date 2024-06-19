@@ -1,7 +1,7 @@
-import { JIRA_CLIENT_ID, JIRA_REDIRECT_URI } from '@env';
+import { APP_DEEPLINK_BASEURL, APP_OAUTH_REDIRECT_URI, JIRA_CLIENT_ID } from '@env';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import { getUrlParams } from '../utils/url';
 import { initializeJiraAccount } from './jira-account.service';
 import { getOAuthToken } from './jira-api-fetch';
@@ -14,14 +14,26 @@ export const useAuthRequest = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    Linking.addEventListener('url', handleDeepLink);
-    return () => {
-      Linking.removeAllListeners('url');
-    };
+    if (Platform.OS === 'macos') {
+      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin);
+      const subscription = loginSessionEmitter.addListener('onOAuthLogin', data => {
+        if (data.error) {
+          console.error(data.error);
+        } else {
+          handleDeepLink({ url: data.url });
+        }
+      });
+      return () => subscription.remove();
+    } else {
+      Linking.addEventListener('url', handleDeepLink);
+      return () => {
+        Linking.removeAllListeners('url');
+      };
+    }
   }, []);
 
   async function handleDeepLink(event: { url: string }) {
-    if (!event.url.startsWith(JIRA_REDIRECT_URI)) {
+    if (!event.url.startsWith(APP_OAUTH_REDIRECT_URI)) {
       return;
     }
     setIsLoading(true);
@@ -81,14 +93,15 @@ export const useAuthRequest = () => {
         'write:issue.time-tracking:jira',
         'offline_access', // This scope is required to get a refresh token
       ].join(' '),
-      redirect_uri: JIRA_REDIRECT_URI,
+      redirect_uri: APP_OAUTH_REDIRECT_URI,
       state: state.current,
       response_type: 'code',
       prompt: 'consent',
     });
 
-    if (await Linking.canOpenURL(oAuthUrl)) {
-      console.log('oAuthUrl', oAuthUrl);
+    if (Platform.OS === 'macos') {
+      NativeModules.ReactNativeOAuthLogin.startSession(oAuthUrl, APP_DEEPLINK_BASEURL);
+    } else if (await Linking.canOpenURL(oAuthUrl)) {
       await Linking.openURL(oAuthUrl);
     } else {
       Alert.alert(`This device can't open this URL: ${oAuthUrl}`);
