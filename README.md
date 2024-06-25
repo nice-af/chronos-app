@@ -1,4 +1,4 @@
-![Chronos app icon with an UI screenshot](.github/repo-header.jpg)
+![Chronos app icon with an UI screenshot](.github/repo-header.png)
 
 **Chronos for Jira** is an app to track time spent on Jira issues. It is built with React Native and will soon be available for MacOS and Windows.
 The project is still in development, we got an open beta for MacOS though.
