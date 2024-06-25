@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "514201482437B4B30078DB4F"
-               BuildableName = "JiraTimeTracker.app"
+               BuildableName = "Chronos for Jira.app"
                BlueprintName = "JiraTimeTracker-macOS"
                ReferencedContainer = "container:JiraTimeTracker.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "JiraTimeTracker.app"
+            BuildableName = "Chronos for Jira.app"
             BlueprintName = "JiraTimeTracker-macOS"
             ReferencedContainer = "container:JiraTimeTracker.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "JiraTimeTracker.app"
+            BuildableName = "Chronos for Jira.app"
             BlueprintName = "JiraTimeTracker-macOS"
             ReferencedContainer = "container:JiraTimeTracker.xcodeproj">
          </BuildableReference>
