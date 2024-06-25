@@ -42,7 +42,7 @@
 		3AD966452AE3F686003C5B78 /* JiraTimeTracker-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JiraTimeTracker-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindowController.swift; sourceTree = "<group>"; };
-		514201492437B4B30078DB4F /* JiraTimeTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiraTimeTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		514201492437B4B30078DB4F /* Chronos for Jira.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chronos for Jira.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		514201512437B4B40078DB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514201542437B4B40078DB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				514201492437B4B30078DB4F /* JiraTimeTracker.app */,
+				514201492437B4B30078DB4F /* Chronos for Jira.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,7 +160,7 @@
 			);
 			name = "JiraTimeTracker-macOS";
 			productName = JiraTimeTracker;
-			productReference = 514201492437B4B30078DB4F /* JiraTimeTracker.app */;
+			productReference = 514201492437B4B30078DB4F /* Chronos for Jira.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -340,7 +340,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Jira Time Tracker";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronos for Jira";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -354,8 +354,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/RCTTypeSafety/RCTTypeSafety.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React/React-Core.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/ReactCommon/ReactCommon.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React_Codegen/React-Codegen.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/folly/RCT-Folly.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/yoga/Yoga.modulemap\" -DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = de.adrianfahrbach.jiratimetracker;
-				PRODUCT_NAME = JiraTimeTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.nice-af.chronos";
+				PRODUCT_NAME = "Chronos for Jira";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -377,7 +377,7 @@
 				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "JiraTimeTracker-macos/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Jira Time Tracker";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronos for Jira";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -390,8 +390,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.adrianfahrbach.jiratimetracker;
-				PRODUCT_NAME = JiraTimeTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.nice-af.chronos";
+				PRODUCT_NAME = "Chronos for Jira";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
