@@ -16,7 +16,7 @@ class XCode extends Plugin {
     const buildNumber = `${year}${month}${day}`;
 
     // Get CFBundleVersion from the Info.plist file
-    let infoPlistFile = fs.readFileSync('./macos/JiraTimeTracker-macOS/Info.plist', 'utf8');
+    let infoPlistFile = fs.readFileSync('./macos/Chronos-macOS/Info.plist', 'utf8');
     const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\t<string>(.*)<\/string>/)?.[1];
 
     // The buildNumber should be in the format YYMMDD.
@@ -41,14 +41,14 @@ class XCode extends Plugin {
         /<key>CFBundleVersion<\/key>\n\t<string>.*<\/string>/,
         `<key>CFBundleVersion</key>\n\t<string>${newBuildNumber}</string>`
       );
-    fs.writeFileSync('./macos/JiraTimeTracker-macOS/Info.plist', infoPlistFile);
+    fs.writeFileSync('./macos/Chronos-macOS/Info.plist', infoPlistFile);
 
     // Update the MARKETING_VERSION and CURRENT_PROJECT_VERSION in the xcodeproj file
-    let xcodeprojFile = fs.readFileSync('./macos/JiraTimeTracker.xcodeproj/project.pbxproj', 'utf8');
+    let xcodeprojFile = fs.readFileSync('./macos/Chronos.xcodeproj/project.pbxproj', 'utf8');
     xcodeprojFile = xcodeprojFile
       .replace(/MARKETING_VERSION = [0-9]+\.[0-9]+\.[0-9]+;/g, `MARKETING_VERSION = "${version}";`)
       .replace(/CURRENT_PROJECT_VERSION = .*;/g, `CURRENT_PROJECT_VERSION = ${newBuildNumber};`);
-    fs.writeFileSync('./macos/JiraTimeTracker.xcodeproj/project.pbxproj', xcodeprojFile);
+    fs.writeFileSync('./macos/Chronos.xcodeproj/project.pbxproj', xcodeprojFile);
   }
 }
 

@@ -18,11 +18,3 @@ export interface JiraResource {
   scopes: string[];
   avatarUrl: string;
 }
-
-export interface JiraUserInfo {
-  id: '8e37969d-562c-4f29-8e8a-0019f5c645a2';
-  url: 'https://jiratimetracker.atlassian.net';
-  name: string;
-  scopes: string[];
-  avatarUrl: string;
-}

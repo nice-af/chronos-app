@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "android": "react-native run-android",
-    "build:macos": "xcodebuild -workspace macos/JiraTimeTracker.xcworkspace -scheme JiraTimeTracker-macOS-prod -config Release",
+    "build:macos": "xcodebuild -workspace macos/Chronos.xcworkspace -scheme Chronos-macOS-prod -config Release",
     "devtools": "npx react-devtools",
     "clear-cache": "sh ./scripts/clear-cache.sh",
     "ios": "react-native run-ios",

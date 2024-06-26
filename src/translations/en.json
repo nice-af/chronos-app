@@ -34,7 +34,7 @@
   },
   "login": {
     "buttonLabel": "Login to Jira",
-    "description": "Please click the button below to connect your Jira account with Jira Time Tracker."
+    "description": "Please click the button below to connect your Jira account with Chronos."
   },
   "modals": {
     "accountLogoutHeadline": "You are about to remove an account",
@@ -59,7 +59,7 @@
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
     "infoText": "On workdays you receive a notification if you have no or unpublished worklogs for today.",
-    "noPermission": "It seems like Jira Time Tracker doesn't have the necessary permissions to send you notifications. Go to System Settings > Notifications and enable notifications for Jira Time Tracker.",
+    "noPermission": "It seems like Chronos doesn't have the necessary permissions to send you notifications. Go to System Settings > Notifications and enable notifications for Chronos for Jira.",
     "settingsTitle": "Notifications",
     "trackingReminderHeadline": "Tracking reminder",
     "trackingReminderNoTimesText": "You did not submit your worklogs for today yet.",
