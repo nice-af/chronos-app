@@ -8,14 +8,11 @@ export function resetProgress() {
 }
 
 export function addProgress(progress?: number) {
-  const currentProgress = store.get(syncProgressAtom);
-  if (!currentProgress) {
-    return;
-  }
-  store.set(syncProgressAtom, { ...currentProgress, progress: currentProgress.progress + (progress ?? 1) });
+  store.set(syncProgressAtom, currentProgress =>
+    currentProgress === null ? null : { ...currentProgress, progress: currentProgress.progress + (progress ?? 1) }
+  );
 }
 
 export function setTotalProgress(total: number) {
-  const currentProgress = store.get(syncProgressAtom);
-  store.set(syncProgressAtom, { progress: currentProgress?.progress ?? 0, total });
+  store.set(syncProgressAtom, currentProgress => ({ progress: currentProgress?.progress ?? 0, total }));
 }
