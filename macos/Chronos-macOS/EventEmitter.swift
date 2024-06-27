@@ -1,5 +1,4 @@
 class EventEmitter {
-  
   /// Shared Instance.
   public static var sharedInstance = EventEmitter()
   
@@ -36,5 +35,4 @@ class EventEmitter {
     ]
     return allEventNames
   }()
-  
 }
