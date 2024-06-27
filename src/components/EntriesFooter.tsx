@@ -63,7 +63,7 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
       </Animated.View>
       <Animated.View style={[styles.loadingContainer, { opacity: loadingVisibility }]}>
         <Text style={styles.loadingText}>{t('submittingWorklogs')}</Text>
-        <LoadingBar progress={progressAtomValue?.progress ?? 0} />
+        <LoadingBar progressAtom={progressAtomValue} />
       </Animated.View>
     </Animated.View>
   );

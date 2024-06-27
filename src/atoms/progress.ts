@@ -1,7 +1,8 @@
 import { atom } from 'jotai';
 import { store } from './store';
 
-export const syncProgressAtom = atom<{ progress: number; total: number } | null>(null);
+export type SyncProgressAtom = { progress: number; total: number } | null;
+export const syncProgressAtom = atom<SyncProgressAtom>(null);
 
 export function resetProgress() {
   store.set(syncProgressAtom, null);

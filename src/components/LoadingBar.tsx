@@ -4,16 +4,18 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { AnimatedCheckmarkIcon } from './AnimatedCheckmarkIcon';
 import { LoadingSpinner } from './LoadingSpinner';
+import { SyncProgressAtom } from '../atoms/progress';
 
 type LoadingBarProps = ViewProps & {
-  progress: number;
+  progressAtom: SyncProgressAtom;
 };
 
-export const LoadingBar: FC<LoadingBarProps> = ({ progress, ...props }) => {
+export const LoadingBar: FC<LoadingBarProps> = ({ progressAtom, ...props }) => {
   const styles = useThemedStyles(createStyles);
   const progressAnim = useRef(new Animated.Value(0)).current;
   const loadingSpinnerAnim = useRef(new Animated.Value(1)).current;
   const [showCheckmark, setShowCheckmark] = useState(false);
+  const progress = progressAtom ? progressAtom?.progress / progressAtom?.total ?? 1 : 0;
 
   useEffect(() => {
     Animated.timing(progressAnim, {
