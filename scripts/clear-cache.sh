@@ -7,7 +7,10 @@ rm -rf ~/Library/Caches/CocoaPods
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
 # Clean root folder
-rm -rf node_modules package-lock.json Pods Podfile.lock
+rm -rf node_modules package-lock.json Pods Podfile.lock Gemfile.lock
+
+# Install gems
+bundle install
 
 # Clean ios folder
 cd ios
@@ -28,3 +31,4 @@ npm i
 npx pod-install ios
 npx pod-install macos
 npm start --reset-cache
+
