@@ -6,7 +6,6 @@ import { DebugTools } from './src/components/DebugTools';
 import { TrafficLights } from './src/components/TrafficLights';
 import { ModalAccountSelection } from './src/components/modals/ModalAccountSelection';
 import { ModalConfirmation } from './src/components/modals/ModalConfirmation';
-import { ModalNewFeatures } from './src/components/modals/ModalNewFeatures';
 import { GlobalProvider } from './src/providers/GlobalProvider';
 import { Main } from './src/screens/Main';
 import { ColorSchemeWatcher } from './src/watchers/ColorSchemeWatcher';
@@ -28,7 +27,6 @@ const App: FC = () => {
         <NotificationWatcher />
         <ColorSchemeWatcher />
         <GlobalProvider>
-          <ModalNewFeatures />
           <Main />
           {__DEV__ && <DebugTools />}
         </GlobalProvider>
