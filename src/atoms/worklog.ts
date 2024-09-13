@@ -86,7 +86,7 @@ export async function syncWorklogsForCurrentDay() {
   resetProgress();
   const totalProgress = worklogsToSync.length + logins.length * 3;
   setTotalProgress(totalProgress);
-  await syncWorklogs(worklogsToSync);
+  const { error } = await syncWorklogs(worklogsToSync);
 
   // Sync worklogs for all accounts
   for (let i = 0; i < logins.length; i++) {
@@ -110,6 +110,12 @@ export async function syncWorklogsForCurrentDay() {
 
   // Save new remote worklogs
   store.set(worklogsRemoteAtom, newWorklogsRemote);
+
+  if (error) {
+    resetProgress();
+    throw new Error(error);
+  }
+
   setTimeout(resetProgress, 1250);
 }
 

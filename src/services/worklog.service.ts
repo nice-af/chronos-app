@@ -39,7 +39,7 @@ export function filterWorklogsByDate(worklogs: Worklog[], date: string): Worklog
   return worklogs.filter(worklog => worklog.started === date);
 }
 
-export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
+export async function syncWorklogs(worklogs: Worklog[]): Promise<{ error?: string }> {
   const syncedWorklogs: Worklog[] = [];
   try {
     for (const worklog of worklogs) {
@@ -58,7 +58,8 @@ export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
       worklogsLocal.filter(w => !syncedWorklogs.find(sw => sw.id === w.id))
     );
     if (e instanceof Error) {
-      throw new Error(`Failed to sync worklogs: ${e.message}`);
+      return { error: `Failed to sync worklogs: ${e.message}` };
     }
   }
+  return {};
 }
