@@ -1,3 +1,4 @@
+import { store, worklogsLocalAtom } from '../atoms';
 import { addProgress } from '../atoms/progress';
 import { UUID } from '../types/accounts.types';
 import { Worklog, WorklogState } from '../types/global.types';
@@ -39,12 +40,25 @@ export function filterWorklogsByDate(worklogs: Worklog[], date: string): Worklog
 }
 
 export async function syncWorklogs(worklogs: Worklog[]): Promise<void> {
-  for (const worklog of worklogs) {
-    if (worklog.state === WorklogState.LOCAL) {
-      await createRemoteWorklog(worklog);
-    } else if (worklog.state === WorklogState.EDITED) {
-      await updateRemoteWorklog(worklog);
+  const syncedWorklogs: Worklog[] = [];
+  try {
+    for (const worklog of worklogs) {
+      if (worklog.state === WorklogState.LOCAL) {
+        await createRemoteWorklog(worklog);
+        syncedWorklogs.push(worklog);
+      } else if (worklog.state === WorklogState.EDITED) {
+        await updateRemoteWorklog(worklog);
+        syncedWorklogs.push(worklog);
+      }
+      addProgress();
     }
-    addProgress();
+  } catch (e) {
+    // If an error occurs, we want to remove the worklogs that were successfully synced
+    store.set(worklogsLocalAtom, worklogsLocal =>
+      worklogsLocal.filter(w => !syncedWorklogs.find(sw => sw.id === w.id))
+    );
+    if (e instanceof Error) {
+      throw new Error(`Failed to sync worklogs: ${e.message}`);
+    }
   }
 }
