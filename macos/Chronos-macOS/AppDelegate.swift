@@ -28,7 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let jsCodeLocation: URL
     #if DEBUG
-      jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+      jsCodeLocation = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")!
     #else
       jsCodeLocation = Bundle.main.url(forResource: "main", withExtension: "jsbundle")!
     #endif
