@@ -71,6 +71,4 @@
   // Hot fix for https://github.com/prettier/prettier-vscode/issues/3020 - can be removed when the issue is fixed
   "prettier.prettierPath": "./node_modules/prettier",
   "typescript.tsdk": "node_modules/typescript/lib",
-  // Increase terminal limit
-  "terminal.integrated.scrollback": 100000,
 }
