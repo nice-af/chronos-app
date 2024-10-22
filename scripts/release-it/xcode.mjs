@@ -1,9 +1,9 @@
-import { Plugin } from 'release-it';
 import fs from 'fs';
-import packageJson from '../../package.json' with { type: 'json' };
+import { Plugin } from 'release-it';
 
 class XCode extends Plugin {
   getLatestVersion() {
+    const packageJson = JSON.parse(fs.readFileSync('./package.json'));
     return packageJson.version;
   }
   bump(version) {
@@ -17,7 +17,7 @@ class XCode extends Plugin {
 
     // Get CFBundleVersion from the Info.plist file
     let infoPlistFile = fs.readFileSync('./macos/Chronos-macOS/Info.plist', 'utf8');
-    const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\t<string>(.*)<\/string>/)?.[1];
+    const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\t<string>(.*)<\/string>/)[1];
 
     // The buildNumber should be in the format YYMMDD.
     // If there already is a build number for today, we add a ".1" to it
@@ -25,7 +25,7 @@ class XCode extends Plugin {
     let newBuildNumber = buildNumber;
     if (currentBuildNumber === buildNumber) {
       newBuildNumber = `${buildNumber}.1`;
-    } else if (currentBuildNumber?.startsWith(buildNumber)) {
+    } else if (currentBuildNumber.startsWith(buildNumber)) {
       const suffix = currentBuildNumber.slice(buildNumber.length);
       const suffixNumber = parseInt(suffix);
       newBuildNumber = `${buildNumber}.${suffixNumber + 1}`;
