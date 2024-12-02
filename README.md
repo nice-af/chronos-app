@@ -24,13 +24,33 @@ npm start
 Once your Metro bundler is running, you can start the app by opening the Xcode project (`Chronos.xcworkspace`) in the `macos` directory and starting the app from within Xcode.
 The Xcode project contains two schemes: `Chronos-macOS` for development and `Chronos-macOS-prod` for the production build.
 
+## Common issues
 
-## Debug starting issues
+### React Native Debugger
+
+It is recommended to use the React Native Debugger for development. You can download it [here](https://github.com/jhen0409/react-native-debugger).
+
+### Debug starting issues
 
 Sometimes the dev environment will not start after updating packages or other external dependencies.
-The reason for that is that multiple caches have to be cleared and some of those don't get cleared automatically.
-To fix this issue, run the following command:
+The reason for that is that can be outdated packages, cache issues or other problems. This commands will help you to solve the most common issues:
 
 ```bash
 npm run clear-cache
+```
+
+### Metro bundler not starting
+
+Sometimes the Metro bundler will not start because of too many open files and the following error will be shown:
+
+```
+Error: EMFILE: too many open files, watch
+```
+
+This can be solved by installing `watchman` globally and clearing the watchman cache:
+
+```bash
+brew install watchman
+watchman shutdown-server
+watchman watch-del-all
 ```
