@@ -21,7 +21,7 @@ This will launch the Metro bundler which creates the JavaScript bundle for the a
 npm start
 ```
 
-Once your Metro bundler is running, you can start the app by opening the Xcode project (`Chronos.xcodeproj`) in the `macos` directory and starting the app from within Xcode.
+Once your Metro bundler is running, you can start the app by opening the Xcode project (`Chronos.xcworkspace`) in the `macos` directory and starting the app from within Xcode.
 The Xcode project contains two schemes: `Chronos-macOS` for development and `Chronos-macOS-prod` for the production build.
 
 
