@@ -117,6 +117,7 @@ function createStyles(theme: Theme) {
     title: {
       ...typo.title3Emphasized,
       flexGrow: 1,
+      opacity: theme.type === 'light' ? 0.82 : 1,
     },
     actions: {
       display: 'flex',
