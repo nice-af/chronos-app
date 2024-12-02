@@ -26,10 +26,10 @@
 			<key>CFBundleURLIconFile</key>
 			<string>app-icon</string>
 			<key>CFBundleURLName</key>
-			<string>de.nice-af.chronos</string>
+			<string>de.adrianfahrbach.jiratimetracker</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>de.nice-af.chronos</string>
+				<string>de.adrianfahrbach.jiratimetracker</string>
 			</array>
 		</dict>
 	</array>

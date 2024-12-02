@@ -45,7 +45,7 @@
       </uap:VisualElements>
       <Extensions>
         <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="de.nice-af.chronos">
+          <uap:Protocol Name="de.adrianfahrbach.jiratimetracker">
             <uap:DisplayName>Chronos</uap:DisplayName>
           </uap:Protocol>
         </uap:Extension>
