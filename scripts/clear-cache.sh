@@ -16,6 +16,7 @@ bundle install
 cd ios
 rm -rf ./build Podfile.lock
 pod deintegrate
+pod cache clean --all
 pod setup
 cd ..
 
@@ -23,6 +24,7 @@ cd ..
 cd macos
 rm -rf ./build Podfile.lock
 pod deintegrate
+pod cache clean --all
 pod setup
 cd ..
 
@@ -31,4 +33,3 @@ npm i
 npx pod-install ios
 npx pod-install macos
 npm start --reset-cache
-
