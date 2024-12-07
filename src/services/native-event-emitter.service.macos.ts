@@ -13,8 +13,7 @@ export function sendNativeEvent(params: SendNativeEventParams) {
   );
 }
 
-console.log('ReactNativeEventEmitter', Object.keys(NativeModules));
-const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter, 'ReactNativeEventEmitter');
+const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
 
 export function addNativeEventListener(params: AddNativeEventListenerParams) {
   emitter.addListener(params.name, params.callback);

@@ -6,6 +6,6 @@ export const projectsProtectedAtom = atom<Project[]>([]);
 
 export const projectsAtom = atom(get => get(projectsProtectedAtom));
 
-export const upsertProjectAtom = atom(null, (get, set, project: Project) => {
+export const upsertProjectsAtom = atom(null, (_get, set, project: Project) => {
   set(projectsProtectedAtom, projects => [...projects.filter(p => p.id !== project.id), project]);
 });

@@ -15,8 +15,7 @@ export const useAuthRequest = () => {
 
   useEffect(() => {
     if (Platform.OS === 'macos') {
-      console.log('ReactNativeOAuthLogin', typeof NativeModules.ReactNativeEventEmitter);
-      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin, 'ReactNativeOAuthLogin');
+      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin);
       const subscription = loginSessionEmitter.addListener('onOAuthLogin', data => {
         if (data.error) {
           console.error(data.error);

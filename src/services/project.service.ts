@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import { Project as JiraProject } from 'jira.js/out/version3/models';
-import { jiraAccountTokensAtom, projectsAtom, store, upsertProjectAtom } from '../atoms';
+import { jiraAccountTokensAtom, projectsAtom, store, upsertProjectsAtom } from '../atoms';
 import { UUID } from '../types/accounts.types';
 import { Project } from '../types/global.types';
 import { getAccountIdFromUUID } from './account.service';
@@ -39,5 +39,5 @@ export async function loadAvatarForProject(project: Project) {
     headers: { Authorization: `Bearer ${tokens.accessToken}` },
   });
   const base64 = Buffer.from(imageRes.data, 'binary').toString('base64');
-  store.set(upsertProjectAtom, { ...project, avatar: `data:image/png;charset=utf-8;base64,${base64}` });
+  store.set(upsertProjectsAtom, { ...project, avatar: `data:image/png;charset=utf-8;base64,${base64}` });
 }

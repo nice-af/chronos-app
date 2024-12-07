@@ -1,12 +1,13 @@
 import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { Alert } from 'react-native';
-import { getJiraClientByUUID, store, worklogsRemoteAtom } from '../atoms';
-import { upsertProjectAtom } from '../atoms/project';
+import { getJiraClientByUUID, store } from '../atoms';
+import { upsertProjectsAtom } from '../atoms/project';
 import { AccountId, UUID } from '../types/accounts.types';
 import { Worklog, WorklogState } from '../types/global.types';
 import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
+import { upsertIssuesProject } from './jira-issues.service';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 import { parseDurationStringToSeconds } from './time.service';
 
@@ -54,6 +55,9 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       startAt: currentIssue,
     });
 
+    // Update local projects with the projects of the fetched issues
+    upsertIssuesProject(issuesCall.issues ?? [], uuid);
+
     for (const issue of issuesCall.issues ?? []) {
       // Get worklogs for each issue
       if (issue.fields.worklog?.total && issue.fields.worklog?.total < (issue.fields.worklog?.maxResults ?? 0)) {
@@ -87,7 +91,7 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
 
       if (issue.fields.project) {
         const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
-        store.set(upsertProjectAtom, project);
+        store.set(upsertProjectsAtom, project);
         loadAvatarForProject(project);
       }
     }

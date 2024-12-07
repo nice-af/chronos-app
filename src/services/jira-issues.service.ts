@@ -1,6 +1,6 @@
 import { Issue, Project as JiraProject } from 'jira.js/out/version3/models';
 import { getJiraClientByUUID, store } from '../atoms';
-import { upsertProjectAtom } from '../atoms/project';
+import { upsertProjectsAtom } from '../atoms/project';
 import { UUID } from '../types/accounts.types';
 import { createNewLocalProject, loadAvatarForProject } from './project.service';
 
@@ -70,18 +70,15 @@ export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
   });
 
   // Add all projects to local projects atom
-  issues
-    .map(issue => issue.fields.project as JiraProject)
-    .map(project => createNewLocalProject(project, uuid))
-    .forEach(project => {
-      store.set(upsertProjectAtom, project);
-      loadAvatarForProject(project);
-    });
+  upsertIssuesProject(issues, uuid);
 
   return issues;
 }
 
-export function getIssueByKey(issueKey: string, uuid: UUID) {
+/**
+ * Gets an issue by its key. There should always be only one issue with a given key.
+ */
+export async function getIssueByKey(issueKey: string, uuid: UUID) {
   const jiraClient = getJiraClientByUUID(uuid);
   return jiraClient.issueSearch
     .searchForIssuesUsingJqlPost({
@@ -90,4 +87,15 @@ export function getIssueByKey(issueKey: string, uuid: UUID) {
       maxResults: 1,
     })
     .then(res => res.issues?.[0]);
+}
+
+/**
+ * Adds all projects to the local atom and loads the avatar for each project.
+ */
+export function upsertIssuesProject(issues: Issue[], uuid: UUID) {
+  issues.forEach(issue => {
+    const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
+    store.set(upsertProjectsAtom, project);
+    loadAvatarForProject(project);
+  });
 }
