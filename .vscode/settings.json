@@ -2,47 +2,47 @@
   "gitmoji.onlyUseCustomEmoji": true,
   "gitmoji.addCustomEmoji": [
     {
-      "emoji": "✨ feat:",
+      "emoji": "feat:",
       "code": ":feat:",
       "description": "Introduce new features"
     },
     {
-      "emoji": "🐛 fix:",
+      "emoji": "fix:",
       "code": ":fix:",
       "description": "Fixes a bug for the user (not build/CI related)"
     },
     {
-      "emoji": "💬 content:",
+      "emoji": "content:",
       "code": ":content:",
       "description": "Add or update content"
     },
     {
-      "emoji": "🧹 chore:",
+      "emoji": "chore:",
       "code": ":chore:",
       "description": "Update build system or external dependencies (e.g. gulp tasks)"
     },
     {
-      "emoji": "🏗 ci:",
+      "emoji": "ci:",
       "code": ":ci:",
       "description": "Add or update CI configuration or scripts"
     },
     {
-      "emoji": "📖 docs:",
+      "emoji": "docs:",
       "code": ":docs:",
       "description": "Add or update the documentation"
     },
     {
-      "emoji": "♻️ refactor:",
+      "emoji": "refactor:",
       "code": ":refactor:",
       "description": "Refactor code"
     },
     {
-      "emoji": "🧪 test:",
+      "emoji": "test:",
       "code": ":test:",
       "description": "Add or update tests"
     },
     {
-      "emoji": "🏷 release:",
+      "emoji": "release:",
       "code": ":release:",
       "description": "Publish a release"
     }
