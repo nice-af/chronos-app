@@ -43,9 +43,9 @@
     "polished": "^4.3.1",
     "qs": "^6.13.1",
     "react": "18.3.1",
-    "react-native": "0.76.3",
+    "react-native": "0.76.4",
     "react-native-dotenv": "^3.4.11",
-    "react-native-macos": "0.76.2",
+    "react-native-macos": "0.76.4",
     "react-native-windows": "0.76.2"
   },
   "devDependencies": {
@@ -53,8 +53,8 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/runtime": "^7.26.0",
     "@react-native-community/eslint-config": "^3.2.0",
-    "@react-native/eslint-config": "0.76.3",
-    "@react-native/metro-config": "0.76.3",
+    "@react-native/eslint-config": "0.76.4",
+    "@react-native/metro-config": "0.76.4",
     "@tsconfig/react-native": "^3.0.5",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.13",
@@ -68,7 +68,7 @@
     "jest": "^29.7.0",
     "metro-config": "^0.81.0",
     "metro-react-native-babel-preset": "0.77.0",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "react-test-renderer": "18.3.1",
     "release-it": "^17.10.0",
     "tsconfig-paths": "^4.2.0",
@@ -77,7 +77,6 @@
   "overrides": {
     "@atlaskit/editor-bitbucket-transformer": {
       "react": "$react"
-    },
-    "@react-native-mac/virtualized-lists": "0.76.0"
+    }
   }
 }
