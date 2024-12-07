@@ -11,7 +11,7 @@ export const WorklogBackupsWatcher: FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const loginsUUIDs = logins.map(login => login.uuid);
       const worklogsLocalBackupsFiltered = worklogsLocalBackups.filter(worklog => loginsUUIDs.includes(worklog.uuid));
 

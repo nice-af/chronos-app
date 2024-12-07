@@ -3,7 +3,6 @@ import React, { FC, useMemo, useState } from 'react';
 import { Image, Platform, Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
 import {
   hideNonWorkingDaysAtom,
-  loginsAtom,
   primaryUUIDAtom,
   selectedDateAtom,
   settingsAtom,
@@ -105,7 +104,8 @@ export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) 
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     default: {
       display: 'flex',
       flexDirection: 'column',
@@ -190,4 +190,5 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
     },
   });
+  return styles;
 }

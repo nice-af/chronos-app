@@ -38,6 +38,7 @@ export async function loadAvatarForProject(project: Project) {
     responseType: 'arraybuffer',
     headers: { Authorization: `Bearer ${tokens.accessToken}` },
   });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const base64 = Buffer.from(imageRes.data, 'binary').toString('base64');
   store.set(upsertProjectsAtom, { ...project, avatar: `data:image/png;charset=utf-8;base64,${base64}` });
 }

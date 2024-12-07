@@ -6,7 +6,6 @@ import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
-import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
 import { weekDays } from '../types/global.types';
 import { DayButton } from './DayButton';
@@ -56,7 +55,8 @@ export const Sidebar: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     outerContainer: {
       position: 'relative',
       width: 93,
@@ -90,14 +90,6 @@ function createStyles(theme: Theme) {
       width: 92,
       ...getPadding(11, 16, 6),
     },
-    today: {
-      ...typo.bodyEmphasized,
-      position: 'absolute',
-      top: 6,
-      left: 0,
-      width: '100%',
-      textAlign: 'center',
-      color: theme.textPrimary,
-    },
   });
+  return styles;
 }

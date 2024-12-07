@@ -92,7 +92,7 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       if (issue.fields.project) {
         const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
         store.set(upsertProjectsAtom, project);
-        loadAvatarForProject(project);
+        void loadAvatarForProject(project);
       }
     }
 

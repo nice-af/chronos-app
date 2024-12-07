@@ -7,7 +7,7 @@ import { lightTheme } from '../styles/theme/theme-light';
 import { Theme } from '../styles/theme/theme-types';
 import { DayId } from '../types/global.types';
 
-export const settingsAtom = atom<SettingsModel>(defaultStorageValues[StorageKey.SETTINGS] as SettingsModel);
+export const settingsAtom = atom<SettingsModel>(defaultStorageValues[StorageKey.SETTINGS]);
 export const sidebarLayoutAtom = atom<SidebarLayout>(get => get(settingsAtom).sidebarLayout);
 export const workingDaysAtom = atom<DayId[]>(get => get(settingsAtom).workingDays);
 export const hideNonWorkingDaysAtom = atom(get => get(settingsAtom).hideNonWorkingDays);

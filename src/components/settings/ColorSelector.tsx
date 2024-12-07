@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useMemo } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ImageSourcePropType, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { themeAtom } from '../../atoms';
 import { useThemedStyles } from '../../services/theme.service';
 import { ColorOption, Theme, colorKeys } from '../../styles/theme/theme-types';
@@ -13,7 +13,10 @@ interface ColorSelectorProps {
 export const ColorSelector: FC<ColorSelectorProps> = ({ selectedColor, setSelectedColor }) => {
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
-  const customColorSrc = useMemo(() => require('../../assets/color-picker-custom.png'), []);
+  const customColorSrc = useMemo<ImageSourcePropType>(
+    () => require('../../assets/color-picker-custom.png') as ImageSourcePropType,
+    []
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container} showsHorizontalScrollIndicator={false} horizontal>
@@ -34,7 +37,8 @@ export const ColorSelector: FC<ColorSelectorProps> = ({ selectedColor, setSelect
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
@@ -66,4 +70,5 @@ function createStyles(theme: Theme) {
       borderRadius: 9,
     },
   });
+  return styles;
 }

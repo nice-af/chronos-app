@@ -29,7 +29,8 @@ export const JumpToTodayButton: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     icon: {
       width: 24,
       height: 24,
@@ -47,4 +48,5 @@ function createStyles(theme: Theme) {
       opacity: theme.type === 'light' ? 0.6 : 1,
     },
   });
+  return styles;
 }

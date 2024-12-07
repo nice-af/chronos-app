@@ -2,6 +2,10 @@ import { Platform, PlatformColor } from 'react-native';
 import { Theme } from './theme-types';
 
 const baseColors = {
+  transparent: 'transparent',
+  white: '#ffffff',
+  black: '#000000',
+
   contrast: '#FFFFFF',
   ...Platform.select({
     default: {

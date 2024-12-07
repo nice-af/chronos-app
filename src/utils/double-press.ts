@@ -1,31 +1,37 @@
 import { useRef } from 'react';
 
 export function useDoublePress(onDoublePress: () => void) {
-  let delayTime = 300;
+  const delayTime = 300;
   let lastTime: number = new Date().getTime();
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const firstPress = useRef(true);
 
-  const singlePress = (now: number) => {
+  function singlePress(now: number) {
     firstPress.current = false;
     timer.current = setTimeout(() => {
       firstPress.current = true;
     }, delayTime);
     lastTime = now;
-  };
+  }
 
-  const doublePress = (now: number) => {
+  function doublePress(now: number) {
     if (now - lastTime < delayTime) {
-      timer.current && clearTimeout(timer.current);
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
       onDoublePress();
       firstPress.current = true;
     }
-  };
+  }
 
-  const onPress = () => {
-    let now = new Date().getTime();
-    firstPress.current ? singlePress(now) : doublePress(now);
-  };
+  function onPress() {
+    const now = new Date().getTime();
+    if (firstPress.current) {
+      singlePress(now);
+    } else {
+      doublePress(now);
+    }
+  }
 
   return { onPress };
 }

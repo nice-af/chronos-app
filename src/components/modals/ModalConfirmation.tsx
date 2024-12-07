@@ -17,22 +17,22 @@ export const ModalConfirmation: FC = () => {
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
   const { t } = useTranslation();
-  const iconSource: ImageSourcePropType | null = useMemo(() => {
+  const iconSource = useMemo<ImageSourcePropType | undefined>(() => {
     if (!data) {
-      return null;
+      return undefined;
     }
     if (data.icon === 'timer-warning') {
       return theme.type === 'light'
-        ? require('../../assets/modal-icons/timer-warning-light.png')
-        : require('../../assets/modal-icons/timer-warning-dark.png');
+        ? (require('../../assets/modal-icons/timer-warning-light.png') as ImageSourcePropType)
+        : (require('../../assets/modal-icons/timer-warning-dark.png') as ImageSourcePropType);
     } else if (data.icon === 'account-warning') {
       return theme.type === 'light'
-        ? require('../../assets/modal-icons/account-warning-light.png')
-        : require('../../assets/modal-icons/account-warning-dark.png');
+        ? (require('../../assets/modal-icons/account-warning-light.png') as ImageSourcePropType)
+        : (require('../../assets/modal-icons/account-warning-dark.png') as ImageSourcePropType);
     } else if (data.icon === 'recover-worklogs') {
       return theme.type === 'light'
-        ? require('../../assets/modal-icons/recover-worklogs-light.png')
-        : require('../../assets/modal-icons/recover-worklogs-dark.png');
+        ? (require('../../assets/modal-icons/recover-worklogs-light.png') as ImageSourcePropType)
+        : (require('../../assets/modal-icons/recover-worklogs-dark.png') as ImageSourcePropType);
     }
   }, [data?.icon, theme.type]);
 
@@ -62,7 +62,8 @@ export const ModalConfirmation: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     icon: {
       width: 48,
       height: 48,
@@ -88,4 +89,5 @@ function createStyles(theme: Theme) {
       marginTop: 24,
     },
   });
+  return styles;
 }

@@ -15,7 +15,7 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progressAtom, ...props }) => {
   const progressAnim = useRef(new Animated.Value(0)).current;
   const loadingSpinnerAnim = useRef(new Animated.Value(1)).current;
   const [showCheckmark, setShowCheckmark] = useState(false);
-  const progress = progressAtom ? progressAtom?.progress / progressAtom?.total ?? 1 : 0;
+  const progress = progressAtom ? (progressAtom?.progress / progressAtom?.total ?? 1) : 0;
 
   useEffect(() => {
     Animated.timing(progressAnim, {
@@ -50,7 +50,8 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progressAtom, ...props }) => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       width: '100%',
@@ -102,4 +103,5 @@ function createStyles(theme: Theme) {
       transform: [{ rotate: '45deg' }],
     },
   });
+  return styles;
 }

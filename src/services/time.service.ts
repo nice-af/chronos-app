@@ -1,7 +1,7 @@
 import { intervalToDuration } from 'date-fns';
 import parseDuration from 'parse-duration';
 
-export function formatSecondsToHMM(timestamp: number, debug?: boolean): string {
+export function formatSecondsToHMM(timestamp: number): string {
   const duration = intervalToDuration({ start: 0, end: timestamp * 1_000 });
   return `${(duration.days ?? 0) * 24 + (duration.hours ?? 0)}:${(duration.minutes ?? 0).toString().padStart(2, '0')}`;
 }

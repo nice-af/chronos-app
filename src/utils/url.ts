@@ -3,8 +3,8 @@
  */
 export function getUrlParams(url: string) {
   const regex = /[?&]([^=#]+)=([^&#]*)/g;
-  let params: Record<string, string> = {},
-    match;
+  const params: Record<string, string> = {};
+  let match;
   while ((match = regex.exec(url))) {
     params[match[1]] = match[2];
   }

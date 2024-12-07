@@ -39,7 +39,7 @@ interface StorageTypes {
   [StorageKey.LAST_VERSION]: string | null;
 }
 
-export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> = {
+export const defaultStorageValues: { [key in StorageKey]: StorageTypes[key] } = {
   [StorageKey.LOGINS]: [],
   [StorageKey.JIRA_ACCOUNT_TOKENS]: {},
   [StorageKey.SETTINGS]: {
@@ -59,21 +59,25 @@ export const defaultStorageValues: Record<StorageKey, StorageTypes[StorageKey]> 
   [StorageKey.LAST_VERSION]: null,
 };
 
-export async function getFromStorage<T extends StorageKey = never>(key: T): Promise<StorageTypes[T]> {
+export async function getFromStorage<T extends StorageKey>(key: T): Promise<StorageTypes[T]> {
   const storedValuesString = await AsyncStorage.getItem(key);
   const defaultValues = defaultStorageValues[key];
-  let newValues = storedValuesString ? JSON.parse(storedValuesString) : defaultValues;
+  const loadedValues = storedValuesString ? (JSON.parse(storedValuesString) as StorageTypes[T]) : null;
 
-  // We sometimes add new settings or remove old ones, so we need to make sure that the stored settings are up to date
-  if (key === StorageKey.SETTINGS && defaultValues) {
-    const defaultKeys = Object.keys(defaultValues);
-    newValues = {
-      ...(defaultValues as SettingsModel),
-      ...Object.fromEntries(Object.entries(newValues).filter(([entryKey]) => defaultKeys.includes(entryKey))),
-    };
+  if (!loadedValues) {
+    return defaultValues;
   }
 
-  return newValues;
+  // We sometimes add new settings or remove old ones, so we need to make sure that the stored settings are up to date
+  if (key === StorageKey.SETTINGS) {
+    const defaultKeys = Object.keys(defaultStorageValues[StorageKey.SETTINGS]);
+    return {
+      ...(defaultValues as SettingsModel),
+      ...Object.fromEntries(Object.entries(loadedValues).filter(([entryKey]) => defaultKeys.includes(entryKey))),
+    } as StorageTypes[T];
+  }
+
+  return loadedValues;
 }
 
 export async function setInStorage<T extends StorageKey = never>(key: T, value: StorageTypes[T]) {

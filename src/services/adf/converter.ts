@@ -22,7 +22,7 @@ function convert(this: any, node: Node): string {
       return node.content!.map(subNode => convert(subNode)).join('');
 
     case 'heading':
-      return `${'#'.repeat(node.attrs.level)} ${node.content!.map(subNode => convert(subNode)).join('')}\n`;
+      return `${'#'.repeat(node.attrs.level as number)} ${node.content!.map(subNode => convert(subNode)).join('')}\n`;
 
     case 'hardBreak':
       return '\n';
@@ -72,7 +72,7 @@ function convert(this: any, node: Node): string {
       return '\n---\n';
 
     case 'emoji':
-      return node.attrs.shortName;
+      return node.attrs.shortName as string;
 
     case 'table':
       return node.content!.map(subNode => convert(subNode)).join('');

@@ -13,24 +13,24 @@ import { activeWorklogAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from '
 store.sub(loginsAtom, () => {
   const logins = store.get(loginsAtom);
   store.set(primaryUUIDAtom, logins.find(a => a.isPrimary)?.uuid ?? ('' as UUID));
-  setInStorage(StorageKey.LOGINS, logins);
+  void setInStorage(StorageKey.LOGINS, logins);
 });
 store.sub(jiraAccountTokensAtom, () => {
   const jiraAuths = store.get(jiraAccountTokensAtom);
   // TODO @florianmrz is it secure to store the token in AsyncStorage?
-  setInStorage(StorageKey.JIRA_ACCOUNT_TOKENS, jiraAuths);
+  void setInStorage(StorageKey.JIRA_ACCOUNT_TOKENS, jiraAuths);
 });
 store.sub(settingsAtom, () => {
   const settings = store.get(settingsAtom);
-  setInStorage(StorageKey.SETTINGS, settings);
+  void setInStorage(StorageKey.SETTINGS, settings);
 });
 store.sub(worklogsLocalAtom, () => {
   const worklogs = store.get(worklogsLocalAtom);
-  setInStorage(StorageKey.WORKLOGS_LOCAL, worklogs);
+  void setInStorage(StorageKey.WORKLOGS_LOCAL, worklogs);
 });
 store.sub(worklogsLocalBackupsAtom, () => {
   const backupWorklogs = store.get(worklogsLocalBackupsAtom);
-  setInStorage(StorageKey.WORKLOGS_LOCAL_BACKUPS, backupWorklogs);
+  void setInStorage(StorageKey.WORKLOGS_LOCAL_BACKUPS, backupWorklogs);
 });
 
 /**

@@ -53,7 +53,7 @@ export const LayoutAndThemeSettings: FC = () => {
                 ? require('../../assets/settings/layout-normal-dark.png')
                 : require('../../assets/settings/layout-normal-light.png'),
             label: t('sidebarLayout.normal'),
-            isChecked: settings.sidebarLayout === 'normal',
+            isChecked: settings.sidebarLayout === SidebarLayout.NORMAL,
             onClick: () => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.NORMAL })),
           },
           {
@@ -62,7 +62,7 @@ export const LayoutAndThemeSettings: FC = () => {
                 ? require('../../assets/settings/layout-compact-dark.png')
                 : require('../../assets/settings/layout-compact-light.png'),
             label: t('sidebarLayout.compact'),
-            isChecked: settings.sidebarLayout === 'compact',
+            isChecked: settings.sidebarLayout === SidebarLayout.COMPACT,
             onClick: () => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.COMPACT })),
           },
           {
@@ -71,7 +71,7 @@ export const LayoutAndThemeSettings: FC = () => {
                 ? require('../../assets/settings/layout-micro-dark.png')
                 : require('../../assets/settings/layout-micro-light.png'),
             label: t('sidebarLayout.micro'),
-            isChecked: settings.sidebarLayout === 'micro',
+            isChecked: settings.sidebarLayout === SidebarLayout.MICRO,
             onClick: () => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.MICRO })),
           },
         ]}

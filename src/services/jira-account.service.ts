@@ -56,7 +56,7 @@ export async function initializeJiraAccount({ jiraAccountTokens, currentLogin, o
 
   addJiraAccountTokensToStore(login.accountId, jiraAccountTokens);
   addLoginToStore(login);
-  await createJiraClient(login.uuid, login.accountId, login.cloudId);
+  createJiraClient(login.uuid, login.accountId, login.cloudId);
 
   const newWorklogsRemote = await getRemoteWorklogs(login.uuid, login.accountId);
   if (!(options?.storeRemoteWorklogs === false)) {

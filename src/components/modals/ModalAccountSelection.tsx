@@ -86,7 +86,8 @@ export const AccountButton: FC<AccountButtonProps> = ({ onPress, arrowIcon, reso
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     icon: {
       width: 48,
       height: 48,
@@ -145,4 +146,5 @@ function createStyles(theme: Theme) {
       marginTop: 24,
     },
   });
+  return styles;
 }

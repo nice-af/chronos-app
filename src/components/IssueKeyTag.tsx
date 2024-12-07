@@ -2,13 +2,13 @@ import { useAtomValue } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useMemo } from 'react';
 import { Image, Pressable, PressableProps, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import { loginsAtom, projectsAtom, settingsAtom, themeAtom, useLoginByUUID } from '../atoms';
+import { projectsAtom, settingsAtom, themeAtom, useLoginByUUID } from '../atoms';
 import { getProjectByIssueKey } from '../services/project.service';
 import { getWorkspaceColor, useThemedStyles } from '../services/theme.service';
 import { ColorKey, Theme, colorKeys } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
-import { AccountId, UUID } from '../types/accounts.types';
+import { UUID } from '../types/accounts.types';
 
 function hashStr(str: string) {
   let hash = 0;
@@ -92,7 +92,6 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, uuid, onPress, ...
     }),
     [theme.type]
   );
-  colorKeys;
 
   // The placeholder is used to display the component in the settings screen.
   const isPlaceholder = issueKey === 'placeholder';
@@ -110,7 +109,7 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, uuid, onPress, ...
           bg: { backgroundColor: transparentize(0.75, login.customWorkspaceColor) },
         };
       } else if (login.workspaceColor !== 'custom') {
-        newTheme = tagThemes[login.workspaceColor as ColorKey];
+        newTheme = tagThemes[login.workspaceColor];
       }
     }
     return newTheme;
@@ -145,14 +144,15 @@ export const IssueKeyTag: FC<IssueKeyTagProps> = ({ issueKey, uuid, onPress, ...
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       alignItems: 'center',
       flexDirection: 'row',
       gap: 2,
       height: 20,
-      backgroundColor: 'transparent',
+      backgroundColor: theme.transparent,
       textAlign: 'center',
       borderRadius: 5,
       overflow: 'hidden',
@@ -181,4 +181,5 @@ function createStyles(theme: Theme) {
       ...typo.subheadlineEmphasized,
     },
   });
+  return styles;
 }

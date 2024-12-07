@@ -44,7 +44,8 @@ export const AnimatedCheckmarkIcon: FC<ViewProps> = ({ ...props }) => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       width: 6,
@@ -80,4 +81,5 @@ function createStyles(theme: Theme) {
       backgroundColor: theme.green,
     },
   });
+  return styles;
 }

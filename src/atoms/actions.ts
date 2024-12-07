@@ -9,7 +9,7 @@ import { worklogsLocalAtom, worklogsLocalBackupsAtom, worklogsRemoteAtom } from 
 /**
  * Logs the user out but keeps local worklogs
  */
-export async function logout(uuid: UUID, accountId: AccountId) {
+export function logout(uuid: UUID, accountId: AccountId) {
   const logins = store.get(loginsAtom);
 
   // Delete account tokens if no login is using them

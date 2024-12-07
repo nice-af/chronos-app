@@ -42,51 +42,52 @@ export const CustomTextInput: FC<CustomTextInputProps> = ({
   const inputRef = useRef<TextInput>(null);
   const showPlaceholder = !value || (value === '' && !!placeholder);
   const styles = useThemedStyles(createStyles);
-  
+
   useEffect(() => {
     if (!isVisible && inputRef.current) {
       inputRef.current?.blur();
     }
   }, [isVisible]);
-  
+
   return (
     <View style={[styles.container, containerStyle]}>
-    {label && <Text style={styles.label}>{label}</Text>}
-    <View style={[styles.inputContainer, inputContainerStyle]}>
-    <TextInput
-    ref={inputRef}
-    style={[
-      styles.input,
-      iconLeft ? styles.inputWithIcon : undefined,
-      multiline ? { textAlignVertical: 'center' } : undefined,
-      !!visiblePrefix ? { paddingLeft: 32 } : undefined,
-      style,
-    ]}
-    onChangeText={onChangeText}
-    value={value}
-    multiline={multiline}
-    numberOfLines={numberOfLines}
-    maxLength={maxLength}
-    onBlur={onBlur}
-    />
-    {iconLeft && <View style={styles.iconContainer}>{iconLeft}</View>}
-    {showPlaceholder && (
-      <Text style={[styles.placeholder, iconLeft ? styles.placeholderWithIcon : undefined, style]}>
-      {placeholder}
-      </Text>
-    )}
-    {visiblePrefix && (
-      <View style={styles.prefixContainer}>
-      <Text style={styles.prefix}>{visiblePrefix}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View style={[styles.inputContainer, inputContainerStyle]}>
+        <TextInput
+          ref={inputRef}
+          style={[
+            styles.input,
+            iconLeft ? styles.inputWithIcon : undefined,
+            multiline ? { textAlignVertical: 'center' } : undefined,
+            !!visiblePrefix ? { paddingLeft: 32 } : undefined,
+            style,
+          ]}
+          onChangeText={onChangeText}
+          value={value}
+          multiline={multiline}
+          numberOfLines={numberOfLines}
+          maxLength={maxLength}
+          onBlur={onBlur}
+        />
+        {iconLeft && <View style={styles.iconContainer}>{iconLeft}</View>}
+        {showPlaceholder && (
+          <Text style={[styles.placeholder, iconLeft ? styles.placeholderWithIcon : undefined, style]}>
+            {placeholder}
+          </Text>
+        )}
+        {visiblePrefix && (
+          <View style={styles.prefixContainer}>
+            <Text style={styles.prefix}>{visiblePrefix}</Text>
+          </View>
+        )}
       </View>
-    )}
-    </View>
     </View>
   );
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       display: 'flex',
@@ -161,4 +162,5 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
     },
   });
+  return styles;
 }

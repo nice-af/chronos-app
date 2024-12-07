@@ -2,7 +2,6 @@ import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, PressableProps, StyleSheet, ViewStyle } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
-import { typo } from '../styles/typo';
 
 interface ButtonTransparentProps extends Omit<PressableProps, 'style'> {
   onPress: () => void;
@@ -33,7 +32,8 @@ export const ButtonTransparent: FC<ButtonTransparentProps> = ({ onPress, childre
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     pressable: {
       position: 'relative', // Needed for elements within this button elsewhere
       display: 'flex',
@@ -41,7 +41,7 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       flexShrink: 0,
       gap: 8,
-      backgroundColor: 'transparent',
+      backgroundColor: theme.transparent,
       borderRadius: theme.buttonBorderRadius,
       padding: 2,
       margin: -2,
@@ -56,9 +56,6 @@ function createStyles(theme: Theme) {
     isActive: {
       backgroundColor: theme.transparentButtonActive,
     },
-    label: {
-      ...typo.bodyEmphasized,
-      color: theme.textPrimary,
-    },
   });
+  return styles;
 }

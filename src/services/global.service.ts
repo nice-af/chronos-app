@@ -14,7 +14,7 @@ import { StorageKey, getFromStorage } from './storage.service';
 
 export async function initialize() {
   // Migrate old account data
-  await migrateUp_0_1_14();
+  migrateUp_0_1_14();
 
   const logins = await getFromStorage(StorageKey.LOGINS);
   const storageJiraAccountTokens = await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS);
@@ -34,7 +34,7 @@ export async function initialize() {
   store.set(settingsAtom, settings);
   // There could be new worklogs in the local backups later, so we can't just set it here
   let newWorklogsLocal = worklogsLocal;
-  let newWorklogsLocalBackups = worklogsLocalBackups;
+  const newWorklogsLocalBackups = worklogsLocalBackups;
 
   if (logins === null) {
     store.set(loginsAtom, []);

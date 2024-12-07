@@ -1,7 +1,7 @@
 import { APP_DEEPLINK_BASEURL, APP_OAUTH_REDIRECT_URI, JIRA_CLIENT_ID } from '@env';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Linking, NativeEventEmitter, NativeModules, Platform } from 'react-native';
+import { Alert, Linking, NativeEventEmitter, NativeModule, NativeModules, Platform } from 'react-native';
 import { getUrlParams } from '../utils/url';
 import { initializeJiraAccount } from './jira-account.service';
 import { getOAuthToken } from './jira-api-fetch';
@@ -15,12 +15,12 @@ export const useAuthRequest = () => {
 
   useEffect(() => {
     if (Platform.OS === 'macos') {
-      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin);
+      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin as NativeModule);
       const subscription = loginSessionEmitter.addListener('onOAuthLogin', data => {
         if (data.error) {
           console.error(data.error);
         } else {
-          handleDeepLink({ url: data.url });
+          void handleDeepLink({ url: data.url });
         }
       });
       return () => subscription.remove();

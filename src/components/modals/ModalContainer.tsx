@@ -69,7 +69,8 @@ export const ModalContainer: FC<ModalContainerProps> = ({ children, contentConta
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'absolute',
       top: 0,
@@ -98,7 +99,7 @@ function createStyles(theme: Theme) {
       borderWidth: 1,
       borderColor: theme.border,
       borderRadius: 10,
-      shadowColor: '#000',
+      shadowColor: theme.black,
       shadowOffset: {
         width: 0,
         height: 36,
@@ -121,4 +122,5 @@ function createStyles(theme: Theme) {
       borderRadius: 10,
     },
   });
+  return styles;
 }

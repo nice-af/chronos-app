@@ -49,7 +49,8 @@ export const Main: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       display: 'flex',
@@ -77,13 +78,6 @@ function createStyles(theme: Theme) {
       width: '100%',
       height: '100%',
     },
-    overlayContainer: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      zIndex: 2,
-      width: '100%',
-      height: '100%',
-    },
   });
+  return styles;
 }

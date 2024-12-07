@@ -24,7 +24,8 @@ export const Layout: FC<LayoutProps> = ({ header, children, customBackgroundColo
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     globalContainer: {
       flexGrow: 1,
       backgroundColor: theme.background,
@@ -38,4 +39,5 @@ function createStyles(theme: Theme) {
       zIndex: 1,
     },
   });
+  return styles;
 }

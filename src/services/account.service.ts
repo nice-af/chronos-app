@@ -9,5 +9,5 @@ export function getCloudIdFromUUID(uuid: UUID): CloudId {
 }
 
 export function getUUID(accountId: AccountId, cloudId: CloudId): UUID {
-  return `${accountId}__${cloudId}` as UUID;
+  return `${accountId}__${cloudId}`;
 }

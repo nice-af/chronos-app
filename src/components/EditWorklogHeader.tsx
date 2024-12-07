@@ -58,7 +58,8 @@ export const EditWorklogHeader: FC<EditWorklogHeaderProps> = ({ onCancelPress, o
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       height: 49,
@@ -117,4 +118,5 @@ function createStyles(theme: Theme) {
       height: 16,
     },
   });
+  return styles;
 }

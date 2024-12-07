@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useState } from 'react';
-import { Image, ImageSourcePropType, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { getPadding } from '../styles/utils';
@@ -44,7 +44,7 @@ export const Tabs: FC<TabsProps> = ({ tabs }) => {
 
   return (
     <View style={styles.container}>
-      { Platform.OS !== 'windows' && <View style={styles.borderTop} /> }
+      {Platform.OS !== 'windows' && <View style={styles.borderTop} />}
       <ScrollView contentContainerStyle={styles.scrollContainer} showsHorizontalScrollIndicator={false} horizontal>
         {tabs.map((tab, index) => {
           const isActive = index === activeTab;
@@ -73,7 +73,8 @@ export const Tabs: FC<TabsProps> = ({ tabs }) => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
@@ -98,7 +99,7 @@ function createStyles(theme: Theme) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderColor: 'transparent',
+      borderColor: theme.transparent,
       gap: 6,
       ...getPadding(6, 16),
     },
@@ -147,4 +148,5 @@ function createStyles(theme: Theme) {
       backgroundColor: theme.surfaceButtonBase,
     },
   });
+  return styles;
 }

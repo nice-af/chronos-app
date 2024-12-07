@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeEventEmitter, NativeModule, NativeModules } from 'react-native';
 import {
   AddNativeEventListenerParams,
   RemoveNativeEventListenerParams,
@@ -13,7 +13,7 @@ export function sendNativeEvent(params: SendNativeEventParams) {
   );
 }
 
-const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter);
+const emitter = new NativeEventEmitter(NativeModules.ReactNativeEventEmitter as NativeModule);
 
 export function addNativeEventListener(params: AddNativeEventListenerParams) {
   emitter.addListener(params.name, params.callback);

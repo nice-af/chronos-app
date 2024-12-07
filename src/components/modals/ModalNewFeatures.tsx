@@ -33,7 +33,7 @@ export const ModalNewFeatures: FC = () => {
   );
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const lastVersion = await getFromStorage(StorageKey.LAST_VERSION);
       if (lastVersion !== currentVersion) {
         setIsVisible(true);
@@ -44,7 +44,7 @@ export const ModalNewFeatures: FC = () => {
 
   function handlePress() {
     setIsVisible(false);
-    setInStorage(StorageKey.LAST_VERSION, currentVersion);
+    void setInStorage(StorageKey.LAST_VERSION, currentVersion);
   }
 
   return (
@@ -64,7 +64,8 @@ export const ModalNewFeatures: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     closeBtn: {
       position: 'absolute',
       top: 10,
@@ -102,4 +103,5 @@ function createStyles(theme: Theme) {
       marginTop: 8,
     },
   });
+  return styles;
 }

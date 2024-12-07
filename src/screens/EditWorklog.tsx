@@ -31,10 +31,15 @@ export const EditWorklog: FC = () => {
     return null;
   }
 
-  const handleOnSaveClick = async () => {
+  function handleOnSaveClick() {
     // TODO @florianmrz use `immer` or similar
-    const newWorklog = JSON.parse(JSON.stringify(currentWorklogToEdit));
+    const newWorklog = JSON.parse(JSON.stringify(currentWorklogToEdit)) as typeof currentWorklogToEdit;
     const parsed = parseDurationStringToSeconds(timeSpentInputValue);
+    setCurrentOverlay(null);
+
+    if (!newWorklog) {
+      return;
+    }
     if (parsed !== null) {
       newWorklog.timeSpentSeconds = parsed;
     }
@@ -43,18 +48,19 @@ export const EditWorklog: FC = () => {
     if (JSON.stringify(newWorklog) !== JSON.stringify(currentWorklogToEdit)) {
       updateWorklog(newWorklog);
     }
-    setCurrentOverlay(null);
-  };
+  }
 
-  const handleOnDeleteClick = () => {
-    deleteWorklog(currentWorklogToEdit.id);
+  function handleOnDeleteClick() {
+    if (currentWorklogToEdit) {
+      void deleteWorklog(currentWorklogToEdit.id);
+    }
     setCurrentOverlay(null);
-  };
+  }
 
-  const cleanupInputValue = () => {
+  function cleanupInputValue() {
     const parsed = parseDurationStringToSeconds(timeSpentInputValue);
-    setTimeSpentInputValue(formatSecondsToHMM(parsed, true));
-  };
+    setTimeSpentInputValue(formatSecondsToHMM(parsed));
+  }
 
   return (
     <Layout

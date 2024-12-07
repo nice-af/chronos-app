@@ -3,6 +3,10 @@ import { ColorSchemeName, OpaqueColorValue } from 'react-native';
 export interface Theme {
   type: ColorSchemeName;
 
+  transparent: string | OpaqueColorValue;
+  white: string | OpaqueColorValue;
+  black: string | OpaqueColorValue;
+
   contrast: string | OpaqueColorValue;
   textPrimary: string | OpaqueColorValue;
   textSecondary: string | OpaqueColorValue;

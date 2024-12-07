@@ -20,23 +20,24 @@ import { Overlay } from '../const';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
 import { getIssuesBySearchQuery } from '../services/jira-issues.service';
+import { getModalConfirmation } from '../services/modal.service';
 import { useThemedStyles } from '../services/theme.service';
 import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { UUID } from '../types/accounts.types';
 import { IssueBase, Worklog } from '../types/global.types';
-import { getModalConfirmation } from '../services/modal.service';
 
-const debounce = (func: Function, delay: number) => {
+function debounce(func: (...args: any[]) => void, delay: number) {
   let timeoutId: NodeJS.Timeout;
   return (...args: any[]) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       func(...args);
     }, delay);
   };
-};
+}
 
 type IssueWithUUID = Issue & { uuid: UUID };
 
@@ -46,7 +47,7 @@ export const Search: FC = () => {
   const [currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
   const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
   const [searchValue, setSearchValue] = useState('');
-  const initialUUID = logins.find(acc => acc.isPrimary)?.uuid || logins[0]?.uuid;
+  const initialUUID = logins.find(acc => acc.isPrimary)?.uuid ?? logins[0]?.uuid;
   const [uuid, setUUID] = useState<UUID>(initialUUID);
   const lastUUID = useRef<UUID>(initialUUID);
   const [searchIsLoading, setSearchIsLoading] = useState(false);
@@ -88,7 +89,7 @@ export const Search: FC = () => {
       return;
     }
     if (uuid !== lastUUID.current) {
-      search(trimmedValue, uuid);
+      void search(trimmedValue, uuid);
       lastUUID.current = uuid;
     } else {
       debouncedSearch(trimmedValue, uuid);
@@ -105,7 +106,7 @@ export const Search: FC = () => {
    * This allows the user to quickly add a new worklog for an issue they have worked on recently without searching.
    */
   const latestWorklogsWorkedOn: Worklog[] = useMemo(() => {
-    let maxWorklogsShown = 10;
+    const maxWorklogsShown = 12;
     const latestWorklogs: Worklog[] = [];
 
     worklogs
@@ -263,7 +264,8 @@ export const Search: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     inputContainer: {
       width: '100%',
       height: 52,
@@ -304,4 +306,5 @@ function createStyles(theme: Theme) {
       marginTop: 100,
     },
   });
+  return styles;
 }

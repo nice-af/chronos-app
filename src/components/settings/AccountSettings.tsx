@@ -139,7 +139,8 @@ export const AccountSettings: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     rowContainer: {
       marginTop: 2,
       marginBottom: 2,
@@ -197,4 +198,5 @@ function createStyles(theme: Theme) {
       color: theme.textPrimary,
     },
   });
+  return styles;
 }

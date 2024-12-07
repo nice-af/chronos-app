@@ -4,7 +4,7 @@ import { Document } from 'jira.js/out/version3/models';
 import convert from './adf/converter';
 
 export function convertAdfToMd(adf: Document) {
-  return convert(adf as any);
+  return convert(adf);
 }
 
 /**
@@ -16,7 +16,7 @@ function removeLocalIdIfNull(commentData: Document) {
       if (content.attrs && content.attrs.localId === null) {
         delete content.attrs.localId;
       }
-      if (content.attrs && Object.keys(content.attrs).length === 0) {
+      if (content.attrs && Object.keys(content.attrs as {}).length === 0) {
         delete content.attrs;
       }
       if (content.content) {

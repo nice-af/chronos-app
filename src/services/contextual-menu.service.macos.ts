@@ -1,4 +1,5 @@
-import { ActionSheetIOS, ActionSheetIOSOptions, GestureResponderEvent, findNodeHandle } from 'react-native';
+import { ActionSheetIOS, ActionSheetIOSOptions } from 'react-native';
+import { GestureResponderEvent, findNodeHandle } from 'react-native';
 
 interface MenuItem {
   name: string;
@@ -12,7 +13,7 @@ export function isRightClick(e: GestureResponderEvent) {
 export function showContextualMenu(menuItems: MenuItem[], target: React.ReactNode) {
   const options: ActionSheetIOSOptions = {
     options: menuItems.map(item => item.name),
-    anchor: target ? findNodeHandle(target as any) ?? undefined : undefined,
+    anchor: target ? (findNodeHandle(target as number) ?? undefined) : undefined,
   };
 
   ActionSheetIOS.showActionSheetWithOptions(options, buttonIndex => {

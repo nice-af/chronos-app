@@ -18,7 +18,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    initialize().finally(() => {
+    void initialize().finally(() => {
       setIsLoading(false);
     });
 

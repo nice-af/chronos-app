@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { Version3Client } from 'jira.js';
 import { Alert } from 'react-native';
 import {
@@ -16,7 +16,7 @@ import { refreshAccessToken } from './jira-api-fetch';
 /**
  * Creates a Jira client with the given credentials and adds it to the store.
  */
-export async function createJiraClient(uuid: UUID, accountId: AccountId, cloudId: CloudId) {
+export function createJiraClient(uuid: UUID, accountId: AccountId, cloudId: CloudId) {
   const jiraClient = new Version3Client({ host: 'https://example.com' });
   // @ts-expect-error (we are accessing a private property here, but it's the only way to access the underlying Axios instance)
   const axiosInstance = jiraClient.instance as AxiosInstance;
@@ -32,7 +32,11 @@ export async function createJiraClient(uuid: UUID, accountId: AccountId, cloudId
  * Injects the access token into the request.
  * We need to do this for every request because the access token might have change.
  */
-export async function addAccessTokenToRequest(config: any, accountId: AccountId, cloudId: CloudId) {
+export async function addAccessTokenToRequest(
+  config: InternalAxiosRequestConfig<any>,
+  accountId: AccountId,
+  cloudId: CloudId
+) {
   config.baseURL = `https://api.atlassian.com/ex/jira/${cloudId}`;
   const jiraAccountTokens = store.get(jiraAccountTokensAtom);
   if (jiraAccountTokens[accountId]) {
@@ -56,7 +60,9 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any,
   if (status === 401) {
     const jiraAccountTokens = store.get(jiraAccountTokensAtom);
     if (!jiraAccountTokens[accountId]) {
-      return Promise.reject(error);
+      return Promise.reject(
+        new Error((error.message as string) || 'No auth tokens found for this account. Please logout and login again.')
+      );
     }
 
     try {
@@ -96,8 +102,10 @@ export async function handleAxiosError(axiosInstance: AxiosInstance, error: any,
       }
     }
 
-    return axiosInstance.request(error.config);
+    if (error instanceof AxiosError && error.config) {
+      return axiosInstance.request(error.config);
+    }
   }
 
-  return Promise.reject(error);
+  return Promise.reject(new Error((error.message as string) || 'An unexpected error occurred.'));
 }

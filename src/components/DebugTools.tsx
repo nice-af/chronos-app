@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-color-literals */
 import { useAtomValue } from 'jotai';
 import React, { FC, ReactNode, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -55,7 +56,7 @@ export const DebugTools: FC = () => {
             <Text style={styles.tabTitle}>Log accountTokens storage</Text>
           </Pressable>
           <Pressable
-            onPress={async () => {
+            onPress={() => {
               Object.values(StorageKey).forEach(key => removeFromStorage(key));
             }}
             style={{ marginBottom: 12 }}>

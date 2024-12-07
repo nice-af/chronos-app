@@ -15,6 +15,8 @@ type Leaves<T> = T extends object
   : never;
 
 type TranslationObjectType = typeof translationsDE & typeof translationsEN;
+// We have an eslint issue here when the locales are duplicates/synced and therefore correct
+// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents
 type TranslationKey = Leaves<typeof translationsDE> & Leaves<typeof translationsEN>;
 
 export enum Locale {
@@ -28,8 +30,8 @@ const localeToTranslationsMap: { [key in Locale]: TranslationObjectType } = {
 };
 
 const localeToDateFnsLocaleMap: { [key in Locale]: DateFnsLocale } = {
-  [Locale.EN]: enLocale,
-  [Locale.DE]: deLocale,
+  [Locale.EN]: enLocale as unknown as DateFnsLocale,
+  [Locale.DE]: deLocale as unknown as DateFnsLocale,
 };
 
 const localeToLongDateFormat: { [key in Locale]: string } = {

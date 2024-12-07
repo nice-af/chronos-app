@@ -96,6 +96,6 @@ export function upsertIssuesProject(issues: Issue[], uuid: UUID) {
   issues.forEach(issue => {
     const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
     store.set(upsertProjectsAtom, project);
-    loadAvatarForProject(project);
+    void loadAvatarForProject(project);
   });
 }

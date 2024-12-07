@@ -31,7 +31,8 @@ export const Toggle: FC<ToggleProps> = ({ state, setState, label, infoText }) =>
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
@@ -119,7 +120,7 @@ function createStyles(theme: Theme) {
           height: 12,
         },
       }),
-      backgroundColor: '#fff',
+      backgroundColor: theme.white,
       borderRadius: 999,
     },
     knobOff: {
@@ -143,4 +144,5 @@ function createStyles(theme: Theme) {
       }),
     },
   });
+  return styles;
 }

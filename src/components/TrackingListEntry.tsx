@@ -44,7 +44,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const ref = useRef(null);
   const { onPress: onDoublePress } = useDoublePress(editWorklog);
   const styles = useThemedStyles(createStyles);
-  const [contextualMenuIsOpen, setContextualMenuIsOpen] = useState(false);
+  const [_contextualMenuIsOpen, setContextualMenuIsOpen] = useState(false);
 
   function editWorklog() {
     setCurrentWorklogToEdit(worklog);
@@ -112,11 +112,12 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
           onDoublePress();
         }
       }}
-      style={({ pressed }) => [styles.container, (isSelected || pressed) && styles.containerIsSelected]}>
+      style={({ pressed }) => [styles.container, (isSelected ?? pressed) && styles.containerIsSelected]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
           {__DEV__ && (
             <Text
+              // eslint-disable-next-line react-native/no-color-literals
               style={{
                 color:
                   worklog.state === WorklogState.SYNCED
@@ -146,13 +147,14 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       gap: 16,
-      backgroundColor: 'transparent',
+      backgroundColor: theme.transparent,
       ...getPadding(12, 16),
     },
     containerIsSelected: {
@@ -179,4 +181,5 @@ function createStyles(theme: Theme) {
       color: theme.textSecondary,
     },
   });
+  return styles;
 }

@@ -65,7 +65,8 @@ export const WeekPicker: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     container: {
       display: 'flex',
       flexDirection: 'row',
@@ -91,4 +92,5 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
     },
   });
+  return styles;
 }

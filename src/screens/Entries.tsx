@@ -92,7 +92,8 @@ export const Entries: FC = () => {
 };
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     titleContainer: {
       flexGrow: 1,
       flexDirection: 'row',
@@ -137,4 +138,5 @@ function createStyles(theme: Theme) {
       maxWidth: 300,
     },
   });
+  return styles;
 }

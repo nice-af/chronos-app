@@ -43,7 +43,8 @@ export const ButtonSecondary: FC<ButtonSecondaryProps> = forwardRef<View, Button
 );
 
 function createStyles(theme: Theme) {
-  return StyleSheet.create({
+  // This needs to be assigned to `styles` for react-native/no-unused-styles to work
+  const styles = StyleSheet.create({
     pressable: {
       display: 'flex',
       alignItems: 'center',
@@ -82,4 +83,5 @@ function createStyles(theme: Theme) {
       pointerEvents: 'none',
     },
   });
+  return styles;
 }

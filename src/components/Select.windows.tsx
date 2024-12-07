@@ -4,13 +4,11 @@
  */
 
 // import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { OptionValue, SelectProps } from './Select.types';
 
-export function Select<T extends OptionValue>({ options, value, onChange }: SelectProps<T>) {
-  const [selectedValue, setSelectedValue] = useState(value);
-
+export function Select<T extends OptionValue>({}: SelectProps<T>) {
   return (
     <View />
     // <Picker
@@ -27,9 +25,9 @@ export function Select<T extends OptionValue>({ options, value, onChange }: Sele
   );
 }
 
-const styles = StyleSheet.create({
-  picker: {
-    flexBasis: 170,
-    flexShrink: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   picker: {
+//     flexBasis: 170,
+//     flexShrink: 1,
+//   },
+// });
