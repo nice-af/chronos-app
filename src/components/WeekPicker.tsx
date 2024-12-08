@@ -1,4 +1,4 @@
-import { getISOWeek } from 'date-fns';
+import { format } from 'date-fns';
 import { useAtom, useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
@@ -14,53 +14,50 @@ export const WeekPicker: FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
-  const { t } = useTranslation();
+  const { t, dateFnsLocale } = useTranslation();
   const selectedDateParsed = parseDateFromYYYYMMDD(selectedDate);
 
   return (
-    <>
-      <View style={styles.container}>
-        <ButtonTransparent
-          onPress={() => {
-            const newDate = new Date(selectedDateParsed);
-            newDate.setDate(newDate.getDate() - 7);
-            setSelectedDate(formatDateToYYYYMMDD(newDate));
-          }}
-          hasLargePadding>
-          <Image
-            style={styles.arrow}
-            source={
-              theme.type === 'light'
-                ? require('../assets/icons/chevron-left-light.png')
-                : require('../assets/icons/chevron-left-dark.png')
-            }
-          />
-        </ButtonTransparent>
-        <View>
-          <Text style={styles.label} numberOfLines={1}>
-            {t('calendarWeekShort')}
-          </Text>
-          {/* TODO: This is not locale aware, but it's fine for now. */}
-          <Text style={styles.value}>{getISOWeek(selectedDateParsed)}</Text>
-        </View>
-        <ButtonTransparent
-          onPress={() => {
-            const newDate = new Date(selectedDateParsed);
-            newDate.setDate(newDate.getDate() + 7);
-            setSelectedDate(formatDateToYYYYMMDD(newDate));
-          }}
-          hasLargePadding>
-          <Image
-            style={styles.arrow}
-            source={
-              theme.type === 'light'
-                ? require('../assets/icons/chevron-right-light.png')
-                : require('../assets/icons/chevron-right-dark.png')
-            }
-          />
-        </ButtonTransparent>
+    <View style={styles.container}>
+      <ButtonTransparent
+        onPress={() => {
+          const newDate = new Date(selectedDateParsed);
+          newDate.setDate(newDate.getDate() - 7);
+          setSelectedDate(formatDateToYYYYMMDD(newDate));
+        }}
+        hasLargePadding>
+        <Image
+          style={styles.arrow}
+          source={
+            theme.type === 'light'
+              ? require('../assets/icons/chevron-left-light.png')
+              : require('../assets/icons/chevron-left-dark.png')
+          }
+        />
+      </ButtonTransparent>
+      <View>
+        <Text style={styles.label} numberOfLines={1}>
+          {t('calendarWeekShort')}
+        </Text>
+        <Text style={styles.value}>{format(selectedDateParsed, 'w', { locale: dateFnsLocale })}</Text>
       </View>
-    </>
+      <ButtonTransparent
+        onPress={() => {
+          const newDate = new Date(selectedDateParsed);
+          newDate.setDate(newDate.getDate() + 7);
+          setSelectedDate(formatDateToYYYYMMDD(newDate));
+        }}
+        hasLargePadding>
+        <Image
+          style={styles.arrow}
+          source={
+            theme.type === 'light'
+              ? require('../assets/icons/chevron-right-light.png')
+              : require('../assets/icons/chevron-right-dark.png')
+          }
+        />
+      </ButtonTransparent>
+    </View>
   );
 };
 

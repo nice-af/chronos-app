@@ -1,9 +1,13 @@
 import { Locale as DateFnsLocale } from 'date-fns';
 import deLocale from 'date-fns/locale/de';
-import enLocale from 'date-fns/locale/en-US';
+import enAULocale from 'date-fns/locale/en-AU';
+import enCALocale from 'date-fns/locale/en-CA';
+import enGBLocale from 'date-fns/locale/en-GB';
+import enUSLocale from 'date-fns/locale/en-US';
 import { pickLocale } from 'locale-matcher';
 import { get } from 'lodash';
 import { useCallback, useMemo } from 'react';
+import { NativeModules, Platform } from 'react-native';
 import translationsDE from '../translations/de.json';
 import translationsEN from '../translations/en.json';
 import { requestedLanguages } from './i18n-native.service';
@@ -29,15 +33,33 @@ const localeToTranslationsMap: { [key in Locale]: TranslationObjectType } = {
   [Locale.DE]: translationsDE,
 };
 
-const localeToDateFnsLocaleMap: { [key in Locale]: DateFnsLocale } = {
-  [Locale.EN]: enLocale as unknown as DateFnsLocale,
-  [Locale.DE]: deLocale as unknown as DateFnsLocale,
+const deviceLocaleToDateFnsLocaleMap: Record<string, DateFnsLocale> = {
+  de: deLocale as unknown as DateFnsLocale,
+  en_AU: enAULocale as unknown as DateFnsLocale,
+  en_CA: enCALocale as unknown as DateFnsLocale,
+  en_GB: enGBLocale as unknown as DateFnsLocale,
+  en_US: enUSLocale as unknown as DateFnsLocale,
 };
 
 const localeToLongDateFormat: { [key in Locale]: string } = {
   [Locale.EN]: 'MMMM do',
   [Locale.DE]: 'do MMMM',
 };
+
+function getDateFnsLocale(locale: string): DateFnsLocale {
+  if (deviceLocaleToDateFnsLocaleMap[locale]) {
+    return deviceLocaleToDateFnsLocaleMap[locale];
+  }
+
+  // Try again without the region
+  const language = locale.split('_')[0];
+  if (deviceLocaleToDateFnsLocaleMap[language]) {
+    return deviceLocaleToDateFnsLocaleMap[language];
+  }
+
+  // Fallback to en-US
+  return enUSLocale as unknown as DateFnsLocale;
+}
 
 export function useTranslation() {
   const locale = pickLocale(requestedLanguages, Object.values(Locale), Locale.EN) as Locale;
@@ -53,11 +75,26 @@ export function useTranslation() {
     [locale]
   );
 
+  const deviceLocale = useMemo<string>(() => {
+    if (Platform.OS === 'ios' || Platform.OS === 'macos') {
+      return (NativeModules.SettingsManager.settings.AppleLocale ||
+        NativeModules.SettingsManager.settings.AppleLanguages[0]) as string;
+    }
+    return NativeModules.I18nManager.localeIdentifier as string;
+  }, [
+    NativeModules.SettingsManager.settings.AppleLocale,
+    NativeModules.SettingsManager.settings.AppleLanguages,
+    NativeModules.I18nManager.localeIdentifier,
+  ]);
+
+  const dateFnsLocale = useMemo(() => getDateFnsLocale(deviceLocale), [deviceLocale]);
+
   return useMemo(
     () => ({
       locale,
-      dateFnsLocale: localeToDateFnsLocaleMap[locale],
+      dateFnsLocale,
       longDateFormat: localeToLongDateFormat[locale],
+      deviceLocale,
       t: tFunc,
     }),
     [locale]
