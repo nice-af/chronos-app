@@ -1,7 +1,7 @@
 {
   "account": {
-    "addingNewAccount": "Adding new account",
     "addNewAccount": "Add new account",
+    "addingNewAccount": "Adding new account",
     "logOut": "Log out",
     "onlyPrimaryTimeInSidebar": "Only count the working time of the primary account in the sidebar",
     "settingsTitle": "Accounts",
@@ -56,6 +56,7 @@
     "headline": "Connect multiple accounts",
     "pillText": "New in v0.1.15"
   },
+  "noWorklogs": "No worklogs for this day yet",
   "notifications": {
     "enableTrackingReminder": "Enable tracking reminder",
     "infoText": "On workdays you receive a notification if you have no or unpublished worklogs for today.",
@@ -66,7 +67,6 @@
     "trackingReminderTime": "Time of the tracking reminder",
     "trackingReminderUnpublishedTimesText": "You have unpublished worklogs for today."
   },
-  "noWorklogs": "No worklogs for this day yet",
   "save": "Save",
   "search": {
     "error": {

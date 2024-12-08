@@ -1,7 +1,7 @@
 {
   "account": {
-    "addingNewAccount": "Neuer Account wird hinzugefügt",
     "addNewAccount": "Weiteren Account hinzufügen",
+    "addingNewAccount": "Neuer Account wird hinzugefügt",
     "logOut": "Abmelden",
     "onlyPrimaryTimeInSidebar": "Nur Arbeitszeiten des primären Accounts in der Seitenleiste anzeigen",
     "settingsTitle": "Accounts",
@@ -56,6 +56,7 @@
     "headline": "Verbinde mehrere Accounts",
     "pillText": "Neu in v0.1.15"
   },
+  "noWorklogs": "Dieser Tag hat noch keine Arbeitszeiten.",
   "notifications": {
     "enableTrackingReminder": "Arbeitszeiten Erinnerung aktivieren",
     "infoText": "Du erhältst an Arbeitstagen eine Benachrichtigung, wenn du keine oder unveröffentlichte Arbeitszeiten hast.",
@@ -66,7 +67,6 @@
     "trackingReminderTime": "Uhrzeit der Erinnerung",
     "trackingReminderUnpublishedTimesText": "Du hast Arbeitszeiten, die noch nicht abgeschickt wurden."
   },
-  "noWorklogs": "Dieser Tag hat noch keine Arbeitszeiten.",
   "save": "Speichern",
   "search": {
     "error": {

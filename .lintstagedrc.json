@@ -1,0 +1,5 @@
+{
+  "assets/locales/*.json": "jsonsort",
+  "*.{js,ts,tsx,json,yml}": "prettier --write",
+  "*.{ts,tsx}": "eslint --fix"
+}
