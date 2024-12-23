@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "start": "npm run git-secret:check && react-native start",
+    "postinstall": "patch-package",
     "devtools": "npx react-devtools",
     "clear-cache": "sh ./scripts/clear-cache.sh",
     "git-secret:check": "node ./scripts/check-git-secrets.mjs",

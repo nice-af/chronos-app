@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m b/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m
+index 90ce88b..b3de174 100644
+--- a/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m
++++ b/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m
+@@ -31,7 +31,7 @@ RCTDimensions RCTGetDimensions(CGFloat fontScale)
+   NSWindow *window = RCTKeyWindow();
+   NSSize windowSize = window ? [window frame].size : CGSizeZero;
+   screenSize = window ? [[window screen] frame].size : screenSize;
+-  CGFloat scale = window ? [[window screen] backingScaleFactor] : 1.0; // Default scale to 1.0 if window is nil
++  CGFloat scale = window ? [[window screen] backingScaleFactor] : 2.0; // Default scale to 1.0 if window is nil
+ #endif // macOS]
+   
+   RCTDimensions result;
