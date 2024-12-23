@@ -65,12 +65,21 @@ export function useTranslation() {
   const locale = pickLocale(requestedLanguages, Object.values(Locale), Locale.EN) as Locale;
 
   const tFunc = useCallback(
-    (key: TranslationKey) => {
+    (key: TranslationKey, args?: Record<string, string | number>) => {
       if (!locale || !localeToTranslationsMap[locale]) {
         return key;
       }
       const translations = localeToTranslationsMap[locale];
-      return get(translations, key) || key;
+      const translation = get(translations, key) || key;
+
+      if (args) {
+        return Object.entries(args).reduce(
+          (acc, [key, value]) => acc.replace(`{${key}}`, value.toString()),
+          translation
+        );
+      }
+
+      return translation;
     },
     [locale]
   );

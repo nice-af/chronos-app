@@ -16,6 +16,7 @@ export type ThemeKey = 'light' | 'dark' | 'system';
 export type IssueTagIconOption = 'none' | 'project' | 'workspace' | 'workspaceAndProject';
 export type IssueTagColorOption = 'issue' | 'workspace';
 export type WorkingTimeCountMethod = 'onlyPrimary' | 'all';
+export type WorklogsSyncPeriod = '1w' | '2w' | '4w' | '8w' | '12w' | '24w';
 
 export interface SettingsModel {
   sidebarLayout: SidebarLayout;
@@ -28,6 +29,7 @@ export interface SettingsModel {
   workingTimeCountMethod: WorkingTimeCountMethod;
   issueTagIcon: IssueTagIconOption;
   issueTagColor: IssueTagColorOption;
+  worklogsSyncPeriod:WorklogsSyncPeriod;
 }
 
 interface StorageTypes {
@@ -53,6 +55,7 @@ export const defaultStorageValues: { [key in StorageKey]: StorageTypes[key] } = 
     workingTimeCountMethod: 'all',
     issueTagIcon: 'project',
     issueTagColor: 'issue',
+    worklogsSyncPeriod: '4w',
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
   [StorageKey.WORKLOGS_LOCAL_BACKUPS]: [],

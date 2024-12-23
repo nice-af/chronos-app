@@ -102,8 +102,12 @@
     "tu": "Tu",
     "we": "We"
   },
-  "worklogOlderThen4Weeks": "For technical reasons, we do not support working times that are more than 4 weeks in the past.",
   "worklogs": {
+    "olderThan1Week": "Only worklogs of the last 7 days are loaded.",
+    "olderThanXWeeks": "Only worklogs of the last {{weeks}} weeks are loaded.",
+    "olderThanXMonths": "Only worklogs of the last {{months}} months are loaded.",
+    "changeLimit": "You can change this limit in the settings.",
+    "syncNow": "Sync now",
     "addNewWorklog": "Add new worklog",
     "editWorklog": "Edit worklog",
     "resetChanges": "Reset changes",
@@ -115,6 +119,18 @@
       "options": {
         "all": "All accounts combined",
         "onlyPrimary": "Only primary account time"
+      }
+    },
+    "worklogsSyncPeriod": {
+      "label": "Sync period",
+      "note": "A longer period can significantly increase the sync time, especially for accounts with many issues.",
+      "options": {
+        "1w": "One week",
+        "2w": "Two weeks",
+        "4w": "Four weeks",
+        "8w": "Two months",
+        "12w": "Three months",
+        "24w": "Six months"
       }
     }
   },

@@ -102,8 +102,12 @@
     "tu": "Di",
     "we": "Mi"
   },
-  "worklogOlderThen4Weeks": "Aus technischen Gründen werden Arbeitszeiten, die älter als 4 Wochen sind, nicht geladen.",
   "worklogs": {
+    "olderThan1Week": "Es werden nur Arbeitszeiten der letzten 7 Tage geladen.",
+    "olderThanXWeeks": "Es werden nur Arbeitszeiten der letzten {weeks} Wochen geladen.",
+    "olderThanXMonths": "Es werden nur Arbeitszeiten der letzten {months} Monaten geladen.",
+    "changeLimit": "Du kannst dieses Limit in den Einstellungen ändern.",
+    "syncNow": "Jetzt synchronisieren",
     "addNewWorklog": "Neue Arbeitszeit hinzufügen",
     "editWorklog": "Bearbeiten",
     "resetChanges": "Änderungen zurücksetzen",
@@ -115,6 +119,18 @@
       "options": {
         "all": "Alle Accounts kombinieren",
         "onlyPrimary": "Nur Zeit des primären Account"
+      }
+    },
+    "worklogsSyncPeriod": {
+      "label": "Synchronisierungszeitraum",
+      "note": "Ein längerer Zeitraum kann die Synchronisationszeit erheblich verlängern, besonders bei Accounts mit vielen Issues.",
+      "options": {
+        "1w": "Eine Woche",
+        "2w": "Zwei Wochen",
+        "4w": "Vier Wochen",
+        "8w": "Zwei Monate",
+        "12w": "Drei Monate",
+        "24w": "Sechs Monate"
       }
     }
   },

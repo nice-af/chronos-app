@@ -1,7 +1,7 @@
 import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
 import ms from 'ms';
 import { Alert } from 'react-native';
-import { getJiraClientByUUID, store } from '../atoms';
+import { getJiraClientByUUID, loginsAtom, settingsAtom, store, worklogsRemoteAtom } from '../atoms';
 import { upsertProjectsAtom } from '../atoms/project';
 import { AccountId, UUID } from '../types/accounts.types';
 import { Worklog, WorklogState } from '../types/global.types';
@@ -38,10 +38,11 @@ function convertWorklogs(worklogs: JiraWorklog[], uuid: UUID, accountId: Account
  * Loads all worklogs of the last month of the current user from JIRA
  */
 export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promise<Worklog[]> {
-  const startedAfterTimestamp = new Date().getTime() - ms('4w');
+  const settings = store.get(settingsAtom);
+  const startedAfterTimestamp = new Date().getTime() - ms(settings.worklogsSyncPeriod);
   const jiraClient = getJiraClientByUUID(uuid);
   const worklogsCompact: Worklog[] = [];
-  const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -4w`;
+  const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -${settings.worklogsSyncPeriod}`;
   const maxIssuesResults = 40;
   let totalIssues = 1;
   let issuesFailsafe = 0;
@@ -109,6 +110,18 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
   }
 
   return worklogsCompact;
+}
+
+export async function refetchAllRemoteWorklogs() {
+  const logins = store.get(loginsAtom);
+  for (const login of logins) {
+    const newWorklogsRemote = await getRemoteWorklogs(login.uuid, login.accountId);
+    const currentWorklogsRemote = store.get(worklogsRemoteAtom);
+    store.set(
+      worklogsRemoteAtom,
+      currentWorklogsRemote.filter(worklog => worklog.uuid !== login.uuid).concat(newWorklogsRemote)
+    );
+  }
 }
 
 export function createRemoteWorklog(worklog: Worklog) {

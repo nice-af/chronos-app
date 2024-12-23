@@ -8,6 +8,7 @@ import {
   currentOverlayAtom,
   isFullscreenAtom,
   selectedDateAtom,
+  settingsAtom,
   themeAtom,
   useGetWorklogsForSelectedDay,
 } from '../atoms';
@@ -19,6 +20,7 @@ import { TrackingListEntry } from '../components/TrackingListEntry';
 import { Overlay } from '../const';
 import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
+import { WorklogsSyncPeriod } from '../services/storage.service';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
@@ -29,6 +31,7 @@ export const Entries: FC = () => {
   const selectedDate = useAtomValue(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const theme = useAtomValue(themeAtom);
+  const settings = useAtomValue(settingsAtom);
   const styles = useThemedStyles(createStyles);
   const todayDateString = formatDateToYYYYMMDD(new Date());
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
@@ -39,7 +42,8 @@ export const Entries: FC = () => {
   const hasChanges =
     activeWorklogIsThisDay || worklogsForSelectedDay.some(worklog => worklog.state !== WorklogState.SYNCED);
   const isToday = selectedDate === todayDateString;
-  const isOlderThan4Weeks = parseDateFromYYYYMMDD(selectedDate) < new Date(new Date().getTime() - ms('4w'));
+  const isOlderThanLimit =
+    parseDateFromYYYYMMDD(selectedDate) < new Date(new Date().getTime() - ms(settings.worklogsSyncPeriod));
 
   const rightElement = (
     <>
@@ -56,6 +60,15 @@ export const Entries: FC = () => {
       </ButtonTransparent>
     </>
   );
+
+  const errorMessages: Record<WorklogsSyncPeriod, string> = {
+    '1w': t('worklogs.olderThan1Week'),
+    '2w': t('worklogs.olderThanXWeeks', { weeks: 2 }),
+    '4w': t('worklogs.olderThanXWeeks', { weeks: 4 }),
+    '8w': t('worklogs.olderThanXMonths', { months: 2 }),
+    '12w': t('worklogs.olderThanXMonths', { months: 3 }),
+    '24w': t('worklogs.olderThanXMonths', { months: 6 }),
+  };
 
   return (
     <Layout
@@ -76,7 +89,11 @@ export const Entries: FC = () => {
       }}>
       {worklogsForSelectedDay.length === 0 ? (
         <View style={styles.errorMessageContainer}>
-          <Text style={styles.errorMessage}>{t(isOlderThan4Weeks ? 'worklogOlderThen4Weeks' : 'noWorklogs')}</Text>
+          <Text style={styles.errorMessage}>
+            {isOlderThanLimit
+              ? `${errorMessages[settings.worklogsSyncPeriod]} ${t('worklogs.changeLimit')}`
+              : t('noWorklogs')}
+          </Text>
         </View>
       ) : (
         <ScrollView style={[styles.entriesContainer, isFullscreen && Platform.OS === 'macos' && { marginTop: 53 }]}>
