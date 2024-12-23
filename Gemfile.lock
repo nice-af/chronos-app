@@ -5,7 +5,7 @@ GEM
       base64
       nkf
       rexml
-    activesupport (7.1.5)
+    activesupport (7.1.5.1)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -79,8 +79,8 @@ GEM
     httpclient (2.8.3)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
-    json (2.9.0)
-    logger (1.6.2)
+    json (2.9.1)
+    logger (1.6.4)
     minitest (5.25.4)
     molinillo (0.8.0)
     mutex_m (0.3.0)
@@ -89,7 +89,7 @@ GEM
     netrc (0.11.0)
     nkf (0.2.0)
     public_suffix (4.0.7)
-    rexml (3.3.9)
+    rexml (3.4.0)
     ruby-macho (2.5.1)
     securerandom (0.3.2)
     typhoeus (1.4.1)
