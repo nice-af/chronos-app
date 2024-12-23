@@ -31,7 +31,8 @@ class EventEmitter {
       "sendNotification",
       "requestNotificationPermission",
       "checkNotificationPermission",
-      "themeChanged"
+      "themeChanged",
+      "setappVisibility"
     ]
     return allEventNames
   }()

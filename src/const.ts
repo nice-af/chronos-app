@@ -11,3 +11,9 @@ export enum SidebarLayout {
 }
 
 export const LOADING_SPINNER_SPEED = 200;
+
+export enum appVisibility {
+  BOTH = 'both',
+  MENUBAR_ONLY = 'menuBarOnly',
+  DOCK_ONLY = 'dockOnly',
+}

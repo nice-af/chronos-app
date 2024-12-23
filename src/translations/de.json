@@ -82,6 +82,12 @@
     "normal": "Normal",
     "settingsTitle": "Seitenleiste"
   },
+  "appVisibility": {
+    "headline": "App Darstellung",
+    "both": "Dock und Menüleiste",
+    "dockOnly": "Nur Dock",
+    "menuBarOnly": "Nur Menüleiste"
+  },
   "submittingWorklogs": "Arbeitszeiten werden abgeschickt",
   "syncDay": "Diesen Tag synchronisieren",
   "theme": {

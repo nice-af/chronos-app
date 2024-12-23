@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SidebarLayout } from '../const';
+import { appVisibility, SidebarLayout } from '../const';
 import { JiraAccountTokensAtom, LoginsAtom } from '../types/accounts.types';
 import { DayId, Worklog } from '../types/global.types';
 
@@ -20,6 +20,7 @@ export type WorklogsSyncPeriod = '1w' | '2w' | '4w' | '8w' | '12w' | '24w';
 
 export interface SettingsModel {
   sidebarLayout: SidebarLayout;
+  appVisibility: appVisibility;
   workingDays: DayId[];
   hideNonWorkingDays: boolean;
   warningWhenEditingOtherDays: boolean;
@@ -29,7 +30,7 @@ export interface SettingsModel {
   workingTimeCountMethod: WorkingTimeCountMethod;
   issueTagIcon: IssueTagIconOption;
   issueTagColor: IssueTagColorOption;
-  worklogsSyncPeriod:WorklogsSyncPeriod;
+  worklogsSyncPeriod: WorklogsSyncPeriod;
 }
 
 interface StorageTypes {
@@ -46,6 +47,7 @@ export const defaultStorageValues: { [key in StorageKey]: StorageTypes[key] } = 
   [StorageKey.JIRA_ACCOUNT_TOKENS]: {},
   [StorageKey.SETTINGS]: {
     sidebarLayout: SidebarLayout.NORMAL,
+    appVisibility: appVisibility.BOTH,
     workingDays: [0, 1, 2, 3, 4],
     hideNonWorkingDays: false,
     warningWhenEditingOtherDays: true,

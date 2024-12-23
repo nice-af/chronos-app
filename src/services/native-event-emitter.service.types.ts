@@ -1,3 +1,4 @@
+import { appVisibility } from '../const';
 import { ThemeKey } from './storage.service';
 
 export enum NativeEvent {
@@ -13,6 +14,7 @@ export enum NativeEvent {
   REQUEST_NOTIFICATION_PERMISSION = 'requestNotificationPermission',
   CHECK_NOTIFICATION_PERMISSION = 'checkNotificationPermission',
   THEME_CHANGED = 'themeChanged',
+  SET_APP__VISIBILITY = 'setappVisibility',
 }
 
 export enum StatusBarState {
@@ -29,7 +31,8 @@ export type SendNativeEventParams =
   | SendNativeEventParams_STATUS_BAR_STATE_CHANGE
   | SendNativeEventParams_STATUS_BAR_TIME_CHANGE
   | SendNativeEventParams_SEND_NOTIFICATION
-  | SendNativeEventParams_THEME_CHANGED;
+  | SendNativeEventParams_THEME_CHANGED
+  | SendNativeEventParams_SET_APP__VISIBILITY;
 
 export interface SendNativeEventParams_DEFAULT {
   name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION;
@@ -68,6 +71,11 @@ export interface SendNativeEventParams_SEND_NOTIFICATION {
 export interface SendNativeEventParams_THEME_CHANGED {
   name: NativeEvent.THEME_CHANGED;
   data: Omit<ThemeKey, 'system'>;
+}
+
+export interface SendNativeEventParams_SET_APP__VISIBILITY {
+  name: NativeEvent.SET_APP__VISIBILITY;
+  data: appVisibility;
 }
 
 /**

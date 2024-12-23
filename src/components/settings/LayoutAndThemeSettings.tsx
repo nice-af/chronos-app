@@ -2,17 +2,27 @@ import { useAtom, useAtomValue } from 'jotai';
 import React, { FC } from 'react';
 import { Platform, Text, View } from 'react-native';
 import { settingsAtom, themeAtom } from '../../atoms';
-import { SidebarLayout } from '../../const';
+import { appVisibility, SidebarLayout } from '../../const';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { CardsSelectionButtons } from './CardsSelectionButtons';
+import { Select } from '../Select';
+import { sendNativeEvent } from '../../services/native-event-emitter.service';
+import { NativeEvent } from '../../services/native-event-emitter.service.types';
+import { SelectProps } from '../Select.types';
 
 export const LayoutAndThemeSettings: FC = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
   const settingsStyles = useThemedStyles(createSettingsStyles);
   const { type: themeType } = useAtomValue(themeAtom);
   const { t } = useTranslation();
+
+  const appVisibilityOptions: SelectProps<appVisibility>['options'] = [
+    { label: t('appVisibility.both'), value: appVisibility.BOTH },
+    { label: t('appVisibility.menuBarOnly'), value: appVisibility.MENUBAR_ONLY },
+    { label: t('appVisibility.dockOnly'), value: appVisibility.DOCK_ONLY },
+  ];
 
   return (
     <View style={settingsStyles.card}>
@@ -75,6 +85,16 @@ export const LayoutAndThemeSettings: FC = () => {
             onClick: () => setSettings(cur => ({ ...cur, sidebarLayout: SidebarLayout.MICRO })),
           },
         ]}
+      />
+      <View style={settingsStyles.hr} />
+      <Text style={settingsStyles.headline}>{t('appVisibility.headline')}</Text>
+      <Select<appVisibility>
+        options={appVisibilityOptions}
+        value={settings.appVisibility}
+        onChange={newState => {
+          sendNativeEvent({ name: NativeEvent.SET_APP__VISIBILITY, data: newState });
+          setSettings(cur => ({ ...cur, appVisibility: newState }));
+        }}
       />
     </View>
   );

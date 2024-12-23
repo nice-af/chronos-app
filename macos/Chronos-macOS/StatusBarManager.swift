@@ -107,27 +107,7 @@ class StatusBarManager: NSObject {
     self.jttData = newJTTData
     self.rootView = JTTStatusItemView(jttData: newJTTData)
     self.windowController = newWindowController
-    
-    // Adding content view to the status bar
-    let newStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    
-    // Status bar icon SwiftUI view & a hosting view.
-    let subView = NSHostingView(rootView: self.rootView)
-    subView.frame = NSRect(x: 0, y: 0, width: 70, height: 22)
-    
-    // Adding the status bar view
-    newStatusItem.button?.addSubview(subView)
-    newStatusItem.button?.frame = subView.frame
-    newStatusItem.button?.action = #selector(toggleWindow(_:))
-    
-    // StatusItem is stored as a property.
-    self.statusItem = newStatusItem
-    
     super.init()
-    
-    // Set button target for selector to search in this file
-    newStatusItem.button?.target = self
-    self.statusItem = newStatusItem
     
     // Setup event listeners
     NotificationCenter.default.addObserver(self, selector: #selector(setTime), name: NSNotification.Name("statusBarTimeChange"), object: nil)
@@ -173,6 +153,30 @@ class StatusBarManager: NSObject {
           self.statusItem?.button?.toolTip = "\((data.issueKey != nil) ? "\(data.issueKey ?? ""):" : "") \(data.issueSummary ?? "")"
         }
         self.jttData.setState(newState: StatusBarState.RUNNING)
+      }
+    }
+  }
+
+  func hideStatusBar() {
+    DispatchQueue.main.async {
+      if let statusItem = self.statusItem {
+        NSStatusBar.system.removeStatusItem(statusItem)
+        self.statusItem = nil
+      }
+    }
+  }
+  
+  func showStatusBar() {
+    DispatchQueue.main.async {
+      if self.statusItem == nil {
+        let newStatusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        let subView = NSHostingView(rootView: self.rootView)
+        subView.frame = NSRect(x: 0, y: 0, width: 70, height: 22)
+        newStatusItem.button?.addSubview(subView)
+        newStatusItem.button?.frame = subView.frame
+        newStatusItem.button?.action = #selector(self.toggleWindow(_:))
+        newStatusItem.button?.target = self
+        self.statusItem = newStatusItem
       }
     }
   }

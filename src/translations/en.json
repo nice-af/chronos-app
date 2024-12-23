@@ -82,6 +82,12 @@
     "normal": "Normal",
     "settingsTitle": "Sidebar layout"
   },
+  "appVisibility": {
+    "headline": "App visibility",
+    "both": "Dock and menu bar",
+    "dockOnly": "Only dock",
+    "menuBarOnly": "Only menu bar"
+  },
   "submittingWorklogs": "Submitting worklogs",
   "syncDay": "Sync this day",
   "theme": {
