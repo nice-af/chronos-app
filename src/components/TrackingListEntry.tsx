@@ -1,7 +1,7 @@
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import transparentize from 'polished/lib/color/transparentize';
 import React, { FC, useRef, useState } from 'react';
-import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native';
+import { Pressable, PressableProps, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import {
   activeWorklogAtom,
   currentOverlayAtom,
@@ -13,7 +13,7 @@ import {
   settingsAtom,
   worklogsLocalAtom,
 } from '../atoms';
-import { Overlay } from '../const';
+import { Overlay, WIDESCREEN_WINDOW_WIDTH } from '../const';
 import { MenuItem, isRightClick, showContextualMenu } from '../services/contextual-menu.service';
 import { formatDateToYYYYMMDD } from '../services/date.service';
 import { useTranslation } from '../services/i18n.service';
@@ -35,7 +35,7 @@ interface TrackingListEntryProps extends Omit<PressableProps, 'style'> {
 export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelected }) => {
   const selectedDate = useAtomValue(selectedDateAtom);
   const settings = useAtomValue(settingsAtom);
-  const setCurrentWorklogToEdit = useSetAtom(currentWorklogToEditAtom);
+  const [currentWorklogToEdit, setCurrentWorklogToEdit] = useAtom(currentWorklogToEditAtom);
   const setLocalWorklogs = useSetAtom(worklogsLocalAtom);
   const activeWorklog = useAtomValue(activeWorklogAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
@@ -45,6 +45,7 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
   const { onPress: onDoublePress } = useDoublePress(editWorklog);
   const styles = useThemedStyles(createStyles);
   const [_contextualMenuIsOpen, setContextualMenuIsOpen] = useState(false);
+  const isWideScreen = useWindowDimensions().width > WIDESCREEN_WINDOW_WIDTH;
 
   function editWorklog() {
     setCurrentWorklogToEdit(worklog);
@@ -109,10 +110,18 @@ export const TrackingListEntry: FC<TrackingListEntryProps> = ({ worklog, isSelec
           showContextualMenu(contextualMenuItems, ref.current);
           setContextualMenuIsOpen(true);
         } else {
-          onDoublePress();
+          if (isWideScreen) {
+            editWorklog();
+          } else {
+            onDoublePress();
+          }
         }
       }}
-      style={({ pressed }) => [styles.container, (isSelected ?? pressed) && styles.containerIsSelected]}>
+      style={({ pressed }) => [
+        styles.container,
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+        (isSelected || pressed || currentWorklogToEdit?.id === worklog.id) && styles.containerIsSelected,
+      ]}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
           {__DEV__ && (
@@ -158,7 +167,7 @@ function createStyles(theme: Theme) {
       ...getPadding(12, 16),
     },
     containerIsSelected: {
-      backgroundColor: transparentize(0.96, theme.contrast as string),
+      backgroundColor: transparentize(0.98, theme.contrast as string),
     },
     infoContainer: {
       flex: 1,

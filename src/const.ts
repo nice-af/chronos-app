@@ -11,6 +11,7 @@ export enum SidebarLayout {
 }
 
 export const LOADING_SPINNER_SPEED = 200;
+export const WIDESCREEN_WINDOW_WIDTH = 900;
 
 export enum appVisibility {
   BOTH = 'both',
