@@ -102,7 +102,7 @@ function createStyles(theme: Theme) {
       position: 'relative',
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: theme.surfaceBorder,
+      borderColor: theme.inputBorder,
       overflow: 'hidden',
     },
     input: {

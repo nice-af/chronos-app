@@ -49,6 +49,7 @@ const windowColors = {
       border: 'rgba(0,0,0,0.15)',
       surface: '#fbfbfb',
       surfaceBorder: '#e3e3e3',
+      inputBorder: '#e1e1e1',
     },
     windows: {
       background: PlatformColor('LayerFillColorDefaultBrush'),
@@ -59,6 +60,7 @@ const windowColors = {
       border: 'rgba(0,0,0,0.07)',
       surface: PlatformColor('CardBackgroundFillColorDefaultBrush'),
       surfaceBorder: PlatformColor('CardBackgroundFillColorDefaultBrush'),
+      inputBorder: PlatformColor('CardBackgroundFillColorDefaultBrush'),
     },
   }),
   backdrop: 'rgba(0,0,0,0.3)',

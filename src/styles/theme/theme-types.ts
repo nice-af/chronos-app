@@ -38,6 +38,7 @@ export interface Theme {
   borderSolid: string | OpaqueColorValue;
   surface: string | OpaqueColorValue;
   surfaceBorder: string | OpaqueColorValue;
+  inputBorder: string | OpaqueColorValue;
   backdrop: string | OpaqueColorValue;
   borderInset: string | OpaqueColorValue;
 
