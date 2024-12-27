@@ -59,7 +59,9 @@ export interface Theme {
   dayButtonBase: string | OpaqueColorValue;
   dayButtonHover: string | OpaqueColorValue;
   dayButtonBorder: string | OpaqueColorValue;
+  dayButtonBorderSelected: string | OpaqueColorValue;
   dayButtonBorderInset: string | OpaqueColorValue;
+  cardsSelectionButtonBorder: string | OpaqueColorValue;
   cardsSelectionButtonBorderInset: string | OpaqueColorValue;
   cardsSelectionButtonHover: string | OpaqueColorValue;
   cardsSelectionButtonActive: string | OpaqueColorValue;

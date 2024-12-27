@@ -70,12 +70,12 @@ const buttonColors = {
   buttonBase: baseColors.blue,
   buttonHover: baseColors.blueHover,
   buttonActive: baseColors.blueActive,
-  secondaryButtonBase: 'rgba(0,0,0,0.1)',
-  secondaryButtonHover: 'rgba(0,0,0,0.2)',
-  secondaryButtonActive: 'rgba(0,0,0,0.1)',
+  secondaryButtonBase: 'rgba(0,0,0,0.07)',
+  secondaryButtonHover: 'rgba(0,0,0,0.11)',
+  secondaryButtonActive: 'rgba(0,0,0,0.16)',
   ...Platform.select({
     default: {
-      secondaryButtonBorder: 'rgba(0,0,0,0.1)',
+      secondaryButtonBorder: 'rgba(0,0,0,0.08)',
     },
     windows: {
       secondaryButtonBorder: 'transparent',
@@ -86,8 +86,8 @@ const buttonColors = {
   dangerButtonActive: '#ec433a',
   transparentButtonHover: 'rgba(10,132,255,0.2)',
   transparentButtonActive: 'rgba(10,132,255,0.3)',
-  surfaceButtonBase: '#eeeeee',
-  surfaceButtonHover: '#e3e3e3',
+  surfaceButtonBase: '#ececec',
+  surfaceButtonHover: '#e2e2e2',
   surfaceButtonActive: '#dedede',
   ...Platform.select({
     default: {
@@ -100,10 +100,12 @@ const buttonColors = {
     },
   }),
   dayButtonBorder: 'rgba(0,0,0,0.14)',
+  dayButtonBorderSelected: Platform.OS === 'windows' ? baseColors.blue : '#f0f0f0',
   dayButtonBorderInset: 'rgba(255,255,255,0.16)',
+  cardsSelectionButtonBorder: 'rgba(0,0,0,0.2)',
   ...Platform.select({
     default: {
-      cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',
+      cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.2)',
     },
     windows: {
       cardsSelectionButtonBorderInset: 'transparent',

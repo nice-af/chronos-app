@@ -100,7 +100,9 @@ const buttonColors = {
     },
   }),
   dayButtonBorder: Platform.OS === 'windows' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.4)',
+  dayButtonBorderSelected: Platform.OS === 'windows' ? baseColors.blue : 'rgba(0,0,0,0.4)',
   dayButtonBorderInset: 'rgba(255,255,255,0.1)',
+  cardsSelectionButtonBorder: 'rgba(0,0,0,0.4)',
   ...Platform.select({
     default: {
       cardsSelectionButtonBorderInset: 'rgba(255,255,255,0.1)',

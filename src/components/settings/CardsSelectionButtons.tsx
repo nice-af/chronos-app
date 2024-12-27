@@ -25,7 +25,7 @@ const CardsSelectionButton: FC<CardsSelectionButtonProps> = ({ isChecked, onClic
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         onPress={onClick}
-        style={styles.pressable}>
+        style={[styles.pressable, isChecked && styles.pressableChecked]}>
         <View
           style={[
             styles.highlight,
@@ -79,9 +79,12 @@ function createStyles(theme: Theme) {
       width: 76,
       height: 48,
       padding: 0,
-      borderRadius: 10,
-      borderColor: theme.border,
+      borderRadius: 9,
+      borderColor: theme.cardsSelectionButtonBorder,
       borderWidth: 1,
+    },
+    pressableChecked: {
+      borderColor: theme.transparent,
     },
     highlight: {
       position: 'absolute',
