@@ -56,6 +56,13 @@ export const DebugTools: FC = () => {
             <Text style={styles.tabTitle}>Log accountTokens storage</Text>
           </Pressable>
           <Pressable
+            onPress={async () => {
+              await removeFromStorage(StorageKey.PROJECTS);
+            }}
+            style={{ marginBottom: 6 }}>
+            <Text style={styles.tabTitle}>Clear projects storage</Text>
+          </Pressable>
+          <Pressable
             onPress={() => {
               Object.values(StorageKey).forEach(key => removeFromStorage(key));
             }}

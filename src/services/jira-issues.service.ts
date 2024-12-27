@@ -1,8 +1,7 @@
 import { Issue, Project as JiraProject } from 'jira.js/out/version3/models';
-import { getJiraClientByUUID, store } from '../atoms';
-import { upsertProjectsAtom } from '../atoms/project';
+import { getJiraClientByUUID } from '../atoms';
 import { UUID } from '../types/accounts.types';
-import { createNewLocalProject, loadAvatarForProject } from './project.service';
+import { upsertProjectByJiraProject } from './project.service';
 
 /**
  * Gets all issues that match a given search query.
@@ -70,7 +69,7 @@ export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
   });
 
   // Add all projects to local projects atom
-  upsertIssuesProject(issues, uuid);
+  await upsertIssuesProject(issues, uuid);
 
   return issues;
 }
@@ -92,10 +91,8 @@ export async function getIssueByKey(issueKey: string, uuid: UUID) {
 /**
  * Adds all projects to the local atom and loads the avatar for each project.
  */
-export function upsertIssuesProject(issues: Issue[], uuid: UUID) {
-  issues.forEach(issue => {
-    const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
-    store.set(upsertProjectsAtom, project);
-    void loadAvatarForProject(project);
-  });
+export async function upsertIssuesProject(issues: Issue[], uuid: UUID) {
+  for (const issue of issues) {
+    await upsertProjectByJiraProject(issue.fields.project as JiraProject, uuid);
+  }
 }

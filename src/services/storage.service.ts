@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { appVisibility, SidebarLayout } from '../const';
 import { JiraAccountTokensAtom, LoginsAtom } from '../types/accounts.types';
-import { DayId, Worklog } from '../types/global.types';
+import { DayId, ProjectsAtom, Worklog } from '../types/global.types';
 
 export enum StorageKey {
   LOGINS = 'logins',
@@ -9,6 +9,7 @@ export enum StorageKey {
   SETTINGS = 'settings',
   WORKLOGS_LOCAL = 'worklogsLocal',
   WORKLOGS_LOCAL_BACKUPS = 'worklogsLocalBackups',
+  PROJECTS = 'projects',
   LAST_VERSION = 'lastVersion',
 }
 
@@ -39,6 +40,7 @@ interface StorageTypes {
   [StorageKey.SETTINGS]: SettingsModel;
   [StorageKey.WORKLOGS_LOCAL]: Worklog[];
   [StorageKey.WORKLOGS_LOCAL_BACKUPS]: Worklog[];
+  [StorageKey.PROJECTS]: ProjectsAtom;
   [StorageKey.LAST_VERSION]: string | null;
 }
 
@@ -61,6 +63,7 @@ export const defaultStorageValues: { [key in StorageKey]: StorageTypes[key] } = 
   },
   [StorageKey.WORKLOGS_LOCAL]: [],
   [StorageKey.WORKLOGS_LOCAL_BACKUPS]: [],
+  [StorageKey.PROJECTS]: {},
   [StorageKey.LAST_VERSION]: null,
 };
 

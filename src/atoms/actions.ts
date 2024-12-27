@@ -1,8 +1,8 @@
 import ms from 'ms';
+import { deleteFromProjectAtom } from '../services/project.service';
 import { AccountId, JiraAccountTokensAtom, LoginsAtom, UUID } from '../types/accounts.types';
-import { Worklog } from '../types/global.types';
+import { Project, ProjectsAtom, Worklog } from '../types/global.types';
 import { jiraAccountTokensAtom, jiraClientsAtom, loginsAtom } from './auth';
-import { projectsProtectedAtom } from './project';
 import { store } from './store';
 import { worklogsLocalAtom, worklogsLocalBackupsAtom, worklogsRemoteAtom } from './worklog';
 
@@ -58,7 +58,8 @@ export function storageCleanup(
   logins: LoginsAtom,
   jiraAccountTokens: JiraAccountTokensAtom,
   worklogsLocal: Worklog[],
-  worklogsLocalBackups: Worklog[]
+  worklogsLocalBackups: Worklog[],
+  projects: ProjectsAtom
 ) {
   const now = Date.now();
 
@@ -98,15 +99,24 @@ export function storageCleanup(
     }
   }
 
-  // Limit the number of projects
-  const projects = store.get(projectsProtectedAtom);
-  if (projects.length > 250) {
-    store.set(projectsProtectedAtom, projects.slice(-250));
+  // Limit the number of projects and remove the oldest ones first
+  if (!!projects) {
+    const MAX_PROJECTS = 250;
+    const allProjects: Project[] = [];
+    Object.keys(projects).forEach(key => {
+      allProjects.push(...Object.values(projects[key as UUID] ?? {}));
+    });
+    if (allProjects.length > MAX_PROJECTS) {
+      allProjects.sort((a, b) => a.updatedAt - b.updatedAt);
+      const projectsToDelete = allProjects.slice(0, allProjects.length - MAX_PROJECTS);
+      deleteFromProjectAtom(projectsToDelete);
+    }
   }
 
   return {
     jiraAccountTokens,
     worklogsLocal,
     worklogsLocalBackups,
+    projects,
   };
 }

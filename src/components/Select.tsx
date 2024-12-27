@@ -15,7 +15,7 @@ export function Select<T extends OptionValue>({ options, value, onChange }: Sele
       options.map(option => ({
         name: (option.value === value ? '✓ ' : '    ') + option.label,
         onClick: () => {
-          onChange(option.value as T);
+          onChange(option.value);
         },
       })),
       ref.current

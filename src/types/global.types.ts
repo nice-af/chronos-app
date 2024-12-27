@@ -35,9 +35,12 @@ export enum WorklogState {
   EDITED = 'edited',
 }
 
+export type ProjectKey = string;
+export type IssueKey = `${ProjectKey}-${number}`;
+
 export interface IssueBase {
   id: string;
-  key: string;
+  key: IssueKey;
   summary: string;
 }
 
@@ -61,15 +64,28 @@ export interface Project {
    *
    * @internal
    */
-  _avatarUrl: string;
+  _avatarUrl: string | null;
   /**
    * Base64 encoded image or `null` if avatar was not loaded yet
    */
   avatar: string | null;
-  key: string;
+  key: ProjectKey;
   name: string;
+  /**
+   * UUID of the account this project belongs to
+   */
   uuid: UUID;
+  /**
+   * Timestamp of the last update of this project. Used to clean up old projects.
+   */
+  updatedAt: number;
 }
+
+/**
+ * Projects are stored in a nested object with the UUID of the account as the first key
+ * and the project id as the second key.
+ */
+export type ProjectsAtom = Partial<Record<UUID, Record<ProjectKey, Project>>>;
 
 export interface CustomButtonProps {
   label?: string;

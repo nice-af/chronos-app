@@ -2,7 +2,8 @@ import { sendNativeEvent } from '../services/native-event-emitter.service';
 import { NativeEvent, StatusBarState } from '../services/native-event-emitter.service.types';
 import { StorageKey, setInStorage } from '../services/storage.service';
 import { UUID } from '../types/accounts.types';
-import { loginsAtom, jiraAccountTokensAtom, primaryUUIDAtom } from './auth';
+import { jiraAccountTokensAtom, loginsAtom, primaryUUIDAtom } from './auth';
+import { projectsAtom } from './project';
 import { settingsAtom } from './setting';
 import { store } from './store';
 import { activeWorklogAtom, worklogsLocalAtom, worklogsLocalBackupsAtom } from './worklog';
@@ -31,6 +32,10 @@ store.sub(worklogsLocalAtom, () => {
 store.sub(worklogsLocalBackupsAtom, () => {
   const backupWorklogs = store.get(worklogsLocalBackupsAtom);
   void setInStorage(StorageKey.WORKLOGS_LOCAL_BACKUPS, backupWorklogs);
+});
+store.sub(projectsAtom, () => {
+  const projects = store.get(projectsAtom);
+  void setInStorage(StorageKey.PROJECTS, projects);
 });
 
 /**

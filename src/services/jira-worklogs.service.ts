@@ -2,13 +2,11 @@ import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/o
 import ms from 'ms';
 import { Alert } from 'react-native';
 import { getJiraClientByUUID, loginsAtom, settingsAtom, store, worklogsRemoteAtom } from '../atoms';
-import { upsertProjectsAtom } from '../atoms/project';
 import { AccountId, UUID } from '../types/accounts.types';
-import { Worklog, WorklogState } from '../types/global.types';
+import { IssueKey, Worklog, WorklogState } from '../types/global.types';
 import { convertAdfToMd, convertMdToAdf } from './atlassian-document-format.service';
 import { formatDateToJiraFormat, formatDateToYYYYMMDD, parseDateFromYYYYMMDD } from './date.service';
-import { upsertIssuesProject } from './jira-issues.service';
-import { createNewLocalProject, loadAvatarForProject } from './project.service';
+import { upsertProjectByJiraProject } from './project.service';
 import { parseDurationStringToSeconds } from './time.service';
 
 /**
@@ -21,7 +19,7 @@ function convertWorklogs(worklogs: JiraWorklog[], uuid: UUID, accountId: Account
       id: worklog.id ?? '',
       issue: {
         id: issue.id,
-        key: issue.key,
+        key: issue.key as IssueKey,
         summary: issue.fields.summary,
       },
       started: formatDateToYYYYMMDD(new Date(worklog.started ?? 0)),
@@ -56,9 +54,6 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       startAt: currentIssue,
     });
 
-    // Update local projects with the projects of the fetched issues
-    upsertIssuesProject(issuesCall.issues ?? [], uuid);
-
     for (const issue of issuesCall.issues ?? []) {
       // Get worklogs for each issue
       if (issue.fields.worklog?.total && issue.fields.worklog?.total < (issue.fields.worklog?.maxResults ?? 0)) {
@@ -91,9 +86,7 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       }
 
       if (issue.fields.project) {
-        const project = createNewLocalProject(issue.fields.project as JiraProject, uuid);
-        store.set(upsertProjectsAtom, project);
-        void loadAvatarForProject(project);
+        await upsertProjectByJiraProject(issue.fields.project as JiraProject, uuid);
       }
     }
 

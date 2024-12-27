@@ -2,6 +2,7 @@ import {
   addWorklogsToBackups,
   jiraAccountTokensAtom,
   loginsAtom,
+  projectsAtom,
   settingsAtom,
   storageCleanup,
   store,
@@ -20,13 +21,15 @@ export async function initialize() {
   const storageJiraAccountTokens = await getFromStorage(StorageKey.JIRA_ACCOUNT_TOKENS);
   const storageWorklogsLocal = await getFromStorage(StorageKey.WORKLOGS_LOCAL);
   const storageWorklogsLocalBackups = await getFromStorage(StorageKey.WORKLOGS_LOCAL_BACKUPS);
+  const storageProjects = await getFromStorage(StorageKey.PROJECTS);
 
   // Clear storage from old data. This function doesn't save anything, it just returns the cleaned data
-  const { jiraAccountTokens, worklogsLocal, worklogsLocalBackups } = storageCleanup(
+  const { jiraAccountTokens, worklogsLocal, worklogsLocalBackups, projects } = storageCleanup(
     logins,
     storageJiraAccountTokens,
     storageWorklogsLocal,
-    storageWorklogsLocalBackups
+    storageWorklogsLocalBackups,
+    storageProjects
   );
   const settings = await getFromStorage(StorageKey.SETTINGS);
 
@@ -35,6 +38,7 @@ export async function initialize() {
   // There could be new worklogs in the local backups later, so we can't just set it here
   let newWorklogsLocal = worklogsLocal;
   const newWorklogsLocalBackups = worklogsLocalBackups;
+  store.set(projectsAtom, projects);
 
   if (logins === null) {
     store.set(loginsAtom, []);
