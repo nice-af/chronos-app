@@ -32,4 +32,7 @@ cd ..
 npm i
 npx pod-install ios
 npx pod-install macos
+
+watchman shutdown-server
+watchman watch-del-all
 npm start --reset-cache
