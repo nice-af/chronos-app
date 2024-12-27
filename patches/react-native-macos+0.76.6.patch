@@ -1,3 +1,30 @@
+diff --git a/node_modules/react-native-macos/React/Base/RCTUtils.m b/node_modules/react-native-macos/React/Base/RCTUtils.m
+index d91af71..3512a3b 100644
+--- a/node_modules/react-native-macos/React/Base/RCTUtils.m
++++ b/node_modules/react-native-macos/React/Base/RCTUtils.m
+@@ -635,6 +635,22 @@ RCTUIWindow *__nullable RCTKeyWindow(void) // [macOS]
+ 
+   return nil;
+ #else // [macOS
++  // React Native can't handle multiple windows, since the mobile platforms usually have only one window.
++  // This leads to the issue where our window can't be found because it doesn't have focus / keyboard focus.
++  // We fix this by looking for our custom window in the list of windows.
++  // @see https://github.com/microsoft/react-native-macos/issues/2296
++  if ([NSApp keyWindow] != nil) {
++    // We have a key window, so we can return it.
++    return [NSApp keyWindow];
++  } else {
++    for (NSWindow *window in [NSApp windows]) {
++      if ([[window className] isEqualToString:@"Chronos.CustomWindow"]) {
++        // We found our custom window, even though it is not the key window. We can return it.
++        return window;
++      }
++    }
++  }
++  // No key window found and no custom window found. This shouldn't happen.
+   return [NSApp keyWindow];
+ #endif // macOS]
+ }
 diff --git a/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m b/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m
 index 90ce88b..b3de174 100644
 --- a/node_modules/react-native-macos/React/UIUtils/RCTUIUtils.m

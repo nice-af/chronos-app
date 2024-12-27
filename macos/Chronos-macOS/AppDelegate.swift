@@ -47,24 +47,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let origin = CGPoint(x: Int(midScreenX), y: posScreenY)
     let size = CGSize(width: 460, height: 548)
     let frame = NSRect(origin: origin, size: size)
-    windowController.window!.setFrame(frame, display: true)
-    windowController.window!.center()
-    windowController.window!.makeKeyAndOrderFront(self)
+    
+    windowController.window?.setFrame(frame, display: true)
+    windowController.window?.center()
+    windowController.window?.makeKeyAndOrderFront(self)
   }
   
   //
   // Reopen window on dock icon click
   //
-
+  
   func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-    windowController.window!.makeKeyAndOrderFront(self)
+    windowController.window?.makeKeyAndOrderFront(self)
     return true
   }
   
   //
   // The actions for the menubar items
   //
-
+  
   @IBAction func openGitHubURL(_ sender: AnyObject) {
     let url = URL(string: "https://github.com/nice-af/chronos-app")
     NSWorkspace.shared.open(url!)
@@ -86,13 +87,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   //
   // Toggle the app icon visibility
   //
-
+  
   @objc func setappVisibility(notification: NSNotification) -> Void {
     guard let appIconSetting = notification.object as? String else {
       print("Notification object is not a string")
       return
     }
-  
+    
     if (appIconSetting == "both" || appIconSetting == "menuBarOnly") {
       statusBarManager.showStatusBar()
     } else {
@@ -113,7 +114,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   //
   // Listen to notification event
   //
-
+  
   let un = UNUserNotificationCenter.current()
   struct TrackingReminderData: Codable {
     let title: String

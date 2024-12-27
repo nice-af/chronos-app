@@ -118,7 +118,7 @@ class StatusBarManager: NSObject {
     if self.windowController.window!.isKeyWindow {
       self.windowController.window!.close()
     } else {
-      self.windowController.window!.makeKeyAndOrderFront(self)
+      self.windowController.window?.makeKeyAndOrderFront(self)
       NSApplication.shared.activate(ignoringOtherApps: true)
     }
   }
