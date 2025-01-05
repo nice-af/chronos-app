@@ -17,6 +17,7 @@
     "postinstall": "patch-package",
     "devtools": "npx react-devtools",
     "clear-cache": "sh ./scripts/clear-cache.sh",
+    "clear-watchman": "watchman shutdown-server && watchman watch-del-all",
     "git-secret:check": "node ./scripts/check-git-secrets.mjs",
     "lint:eslint:fix": "eslint --fix .",
     "lint:eslint": "eslint .",
