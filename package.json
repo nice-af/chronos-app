@@ -73,6 +73,7 @@
     "metro-react-native-babel-preset": "0.77.0",
     "node-notifier": "^10.0.1",
     "patch-package": "^8.0.0",
+    "path": "^0.12.7",
     "prettier": "^3.4.2",
     "react-test-renderer": "18.3.1",
     "release-it": "^17.11.0",
