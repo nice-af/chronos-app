@@ -1,4 +1,4 @@
-import { Document } from 'jira.js/out/version3/models';
+import { Document } from 'jira.js/src/version3/models';
 
 type Node = Omit<Document, 'version'>;
 
@@ -44,12 +44,7 @@ function convert(this: any, node: Node): string {
           const converted = convert.call(node, subNode);
 
           if (node.type === 'orderedList') {
-            if (!node.attrs) {
-              node.attrs = {
-                order: 1,
-              };
-            }
-
+            node.attrs ??= { order: 1 };
             node.attrs.order += 1;
           }
 

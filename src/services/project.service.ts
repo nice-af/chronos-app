@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Buffer } from 'buffer';
-import { Project as JiraProject } from 'jira.js/out/version3/models';
+import { Project as JiraProject } from 'jira.js/src/version3/models';
 import ms from 'ms';
 import { jiraAccountTokensAtom, projectsAtom, store } from '../atoms';
 import { UUID } from '../types/accounts.types';
@@ -41,9 +41,7 @@ export function deleteFromProjectAtom(projectsToDelete: Project[]) {
  */
 export function upsertToProjectsAtom(project: Project) {
   const loadedProjects = { ...store.get(projectsAtom) };
-  if (!loadedProjects[project.uuid]) {
-    loadedProjects[project.uuid] = {};
-  }
+  loadedProjects[project.uuid] ??= {};
   loadedProjects[project.uuid]![project.key] = project;
   store.set(projectsAtom, loadedProjects);
 }

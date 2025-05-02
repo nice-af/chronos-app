@@ -1,6 +1,6 @@
 import { defaultSchema } from '@atlaskit/adf-schema/schema-default';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
-import { Document } from 'jira.js/out/version3/models';
+import { Document } from 'jira.js/src/version3/models';
 import convert from './adf/converter';
 
 export function convertAdfToMd(adf: Document) {

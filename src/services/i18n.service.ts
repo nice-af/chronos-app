@@ -86,7 +86,7 @@ export function useTranslation() {
 
   const deviceLocale = useMemo<string>(() => {
     if (Platform.OS === 'ios' || Platform.OS === 'macos') {
-      return (NativeModules.SettingsManager.settings.AppleLocale ||
+      return (NativeModules.SettingsManager.settings.AppleLocale ??
         NativeModules.SettingsManager.settings.AppleLanguages[0]) as string;
     }
     return NativeModules.I18nManager.localeIdentifier as string;

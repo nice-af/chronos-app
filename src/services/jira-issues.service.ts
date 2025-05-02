@@ -1,4 +1,4 @@
-import { Issue, Project as JiraProject } from 'jira.js/out/version3/models';
+import { Issue, Project as JiraProject } from 'jira.js/src/version3/models';
 import { getJiraClientByUUID } from '../atoms';
 import { UUID } from '../types/accounts.types';
 import { upsertProjectByJiraProject } from './project.service';

@@ -1,4 +1,4 @@
-import { Issue } from 'jira.js/out/version3/models';
+import { Issue } from 'jira.js/src/version3/models';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -26,7 +26,7 @@ import { createNewLocalWorklog } from '../services/worklog.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { UUID } from '../types/accounts.types';
-import { IssueBase, Worklog } from '../types/global.types';
+import { IssueBase, IssueKey, Worklog } from '../types/global.types';
 
 function debounce(func: (...args: any[]) => void, delay: number) {
   let timeoutId: NodeJS.Timeout;
@@ -231,7 +231,9 @@ export const Search: FC = () => {
                   summary: issue.fields.summary,
                   uuid: issue.uuid,
                 }}
-                onPress={() => handleOnWorklogStart({ id: issue.id, key: issue.key, summary: issue.fields.summary })}
+                onPress={() =>
+                  handleOnWorklogStart({ id: issue.id, key: issue.key as IssueKey, summary: issue.fields.summary })
+                }
               />
             </Animated.View>
           ))}

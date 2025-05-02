@@ -1,4 +1,4 @@
-import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/out/version3/models';
+import { Issue, Project as JiraProject, Worklog as JiraWorklog } from 'jira.js/src/version3/models';
 import ms from 'ms';
 import { Alert } from 'react-native';
 import { getJiraClientByUUID, loginsAtom, settingsAtom, store, worklogsRemoteAtom } from '../atoms';
