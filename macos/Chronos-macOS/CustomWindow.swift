@@ -2,6 +2,10 @@ public class CustomWindow: NSWindow {
   var buttonsShouldBeMoved: Bool = true;
   var titlebarAccessory: NSTitlebarAccessoryViewController
   
+  override public var canBecomeKey: Bool {
+      return true
+  }
+  
   override init(contentRect: NSRect, styleMask style: NSWindow.StyleMask, backing backingStoreType: NSWindow.BackingStoreType, defer flag: Bool) {
     self.titlebarAccessory = NSTitlebarAccessoryViewController()
     

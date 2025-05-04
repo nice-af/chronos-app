@@ -1,4 +1,11 @@
 {
+  "workbench.colorCustomizations": {
+    "editorBracketMatch.border": "#000",
+    "activityBar.background": "#181819",
+    "activityBar.foreground": "#FAFAFA",
+    "titleBar.activeBackground": "#181819",
+    "titleBar.activeForeground": "#FAFAFA"
+  },
   "gitmoji.onlyUseCustomEmoji": true,
   "gitmoji.addCustomEmoji": [
     {

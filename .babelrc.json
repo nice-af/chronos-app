@@ -1,5 +1,5 @@
 {
-  "presets": [["module:metro-react-native-babel-preset", { "useTransformReactJSXExperimental": true }]],
+  "presets": ["module:@react-native/babel-preset"],
   "plugins": ["module:react-native-dotenv", "jotai/babel/plugin-react-refresh"],
   "env": {
     "production": {

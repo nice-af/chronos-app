@@ -54,3 +54,7 @@ brew install watchman
 watchman shutdown-server
 watchman watch-del-all
 ```
+
+### Errors after upgrading react-native
+
+Getting errors after upgrading react-native is a common issue. A good starting point is to check the [react-native upgrade helper](https://react-native-community.github.io/upgrade-helper/) and follow the instructions there.
