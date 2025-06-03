@@ -16,47 +16,33 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme, si
 
   const spinnerThemes = {
     light: {
-      opacityInactive: 0.15,
       image: {
-        tiny: require('../assets/loading-spinner/loading-spinner-tiny-element-light.png'),
-        small: require('../assets/loading-spinner/loading-spinner-small-element-light.png'),
-        normal: require('../assets/loading-spinner/loading-spinner-element-light.png'),
+        tiny: require('../assets/loading-spinner/loading-spinner-tiny-light.png'),
+        small: require('../assets/loading-spinner/loading-spinner-small-light.png'),
+        normal: require('../assets/loading-spinner/loading-spinner-large-light.png'),
       },
     },
     dark: {
-      opacityInactive: 0.12,
       image: {
-        tiny: require('../assets/loading-spinner/loading-spinner-tiny-element-dark.png'),
-        small: require('../assets/loading-spinner/loading-spinner-small-element-dark.png'),
-        normal: require('../assets/loading-spinner/loading-spinner-element-dark.png'),
+        tiny: require('../assets/loading-spinner/loading-spinner-tiny-dark.png'),
+        small: require('../assets/loading-spinner/loading-spinner-small-dark.png'),
+        normal: require('../assets/loading-spinner/loading-spinner-large-dark.png'),
       },
     },
   };
 
   const loadingSpinnerSizes = {
-    tiny: {
-      imageSize: 6,
-      containerSize: 14,
-    },
-    small: {
-      imageSize: 10,
-      containerSize: 22,
-    },
-    normal: {
-      imageSize: 14,
-      containerSize: 30,
-    },
+    tiny: 14,
+    small: 22,
+    normal: 30,
   };
 
-  const { image, imageSize, containerSize, opacityInactive } = useMemo(() => {
+  const { image, spinnerSize } = useMemo(() => {
     const currentTheme = (forcedTheme ?? theme.type) as 'light' | 'dark';
     const spinnerTheme = spinnerThemes[currentTheme];
-    const sizeConfig = loadingSpinnerSizes[size];
     return {
       image: spinnerTheme.image[size],
-      imageSize: sizeConfig.imageSize,
-      containerSize: sizeConfig.containerSize,
-      opacityInactive: spinnerTheme.opacityInactive,
+      spinnerSize: loadingSpinnerSizes[size],
     };
   }, [forcedTheme, theme.type, size]);
 
@@ -69,30 +55,18 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme, si
   }, []);
 
   return (
-    <View style={[styles.container, { width: containerSize, height: containerSize }, style]}>
+    <View style={[styles.container, { width: spinnerSize, height: spinnerSize }, style]}>
       <Image
-        width={imageSize}
-        height={imageSize}
-        style={[styles.topRight, { opacity: activeElement === 0 ? 1 : opacityInactive }]}
         source={image}
-      />
-      <Image
-        width={imageSize}
-        height={imageSize}
-        style={[styles.bottomRight, { opacity: activeElement === 1 ? 1 : opacityInactive }]}
-        source={image}
-      />
-      <Image
-        width={imageSize}
-        height={imageSize}
-        style={[styles.bottomLeft, { opacity: activeElement === 2 ? 1 : opacityInactive }]}
-        source={image}
-      />
-      <Image
-        width={imageSize}
-        height={imageSize}
-        style={[styles.topLeft, { opacity: activeElement === 3 ? 1 : opacityInactive }]}
-        source={image}
+        style={[
+          styles.spritesheet,
+          {
+            width: spinnerSize * 4, // Spritesheet is 4 times wider
+            height: spinnerSize,
+            transform: [{ translateX: -activeElement * spinnerSize }], // Move to show current frame
+          },
+        ]}
+        resizeMode='contain'
       />
     </View>
   );
@@ -100,29 +74,11 @@ export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ style, forcedTheme, si
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
+    overflow: 'hidden', // Hide the parts of the spritesheet we don't want to show
   },
-  topRight: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  bottomRight: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    transform: [{ rotate: '90deg' }],
-  },
-  bottomLeft: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    transform: [{ rotate: '180deg' }],
-  },
-  topLeft: {
+  spritesheet: {
     position: 'absolute',
     top: 0,
     left: 0,
-    transform: [{ rotate: '270deg' }],
   },
 });

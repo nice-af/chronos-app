@@ -15,7 +15,7 @@ export const LoadingBar: FC<LoadingBarProps> = ({ progressAtom, ...props }) => {
   const progressAnim = useRef(new Animated.Value(0)).current;
   const loadingSpinnerAnim = useRef(new Animated.Value(1)).current;
   const [showCheckmark, setShowCheckmark] = useState(false);
-  const progress = progressAtom ? (progressAtom?.progress / progressAtom?.total ?? 1) : 0;
+  const progress = progressAtom ? progressAtom?.progress / (progressAtom?.total ?? 1) : 0;
 
   useEffect(() => {
     Animated.timing(progressAnim, {
