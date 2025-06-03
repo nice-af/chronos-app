@@ -1,15 +1,24 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import { LogoType } from '../types/accounts.types';
 
 interface WorkspaceLogoProps {
   size: number;
+  logoVariant: LogoType;
   workspaceUrl: string;
+  workspaceAvatarUrl: string;
   borderRadius?: number;
 }
 
-export const WorkspaceLogo: FC<WorkspaceLogoProps> = ({ size, borderRadius, workspaceUrl }) => {
+export const WorkspaceLogo: FC<WorkspaceLogoProps> = ({
+  size,
+  borderRadius,
+  logoVariant,
+  workspaceUrl,
+  workspaceAvatarUrl,
+}) => {
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
-  const uri = `${workspaceUrl}/jira-logo-scaled.png`;
+  const uri = logoVariant === 'navbarLogo' ? `${workspaceUrl}/jira-logo-scaled.png` : workspaceAvatarUrl;
 
   useEffect(() => {
     Image.getSize(uri, (width, height) => {

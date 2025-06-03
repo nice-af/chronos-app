@@ -49,6 +49,8 @@ export async function initializeJiraAccount({ jiraAccountTokens, currentLogin, o
     workspaceUrl: workspaceInfo.url,
     workspaceName: workspaceInfo.name,
     workspaceDisplayName: currentLogin?.workspaceDisplayName ?? workspaceInfo.name,
+    workspaceAvatarUrl: workspaceInfo.avatarUrl ?? '',
+    selectedLogo: currentLogin?.selectedLogo ?? 'navbarLogo',
     workspaceColor: currentLogin?.workspaceColor ?? colorKeys[Math.floor(Math.random() * colorKeys.length)],
     customWorkspaceColor: currentLogin?.customWorkspaceColor,
     isPrimary: currentLogin?.isPrimary ?? false,

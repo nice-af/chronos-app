@@ -162,6 +162,8 @@ export const Search: FC = () => {
           ? login.avatarUrl
           : undefined,
         workspaceUrl: login.workspaceUrl,
+        workspaceAvatarUrl: login.workspaceAvatarUrl,
+        selectedLogo: login.selectedLogo,
         onPress: () => setUUID(login.uuid),
       })),
     [logins]

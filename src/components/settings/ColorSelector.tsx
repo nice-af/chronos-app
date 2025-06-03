@@ -44,7 +44,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({ selectedColor, setSelect
     };
   }, [theme.type]);
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
     const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
     const scrollX = contentOffset.x;
     const contentWidth = contentSize.width;
@@ -55,7 +55,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({ selectedColor, setSelect
 
     // Show right fade if not scrolled to the end
     setShowRightFade(scrollX < contentWidth - containerWidth - 5);
-  };
+  }
 
   return (
     <View style={styles.wrapper}>

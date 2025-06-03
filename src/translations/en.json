@@ -143,6 +143,7 @@
   "workspace": {
     "color": "Workspace color",
     "customColor": "Custom color",
-    "name": "Workspace name"
+    "name": "Workspace name",
+    "logo": "Workspace logo"
   }
 }

@@ -11,6 +11,8 @@ export type UUID = `${AccountId}__${CloudId}`; // Unique identifier for a combin
  * A login always consists of a Jira account and a Jira instance.
  * Basically an account of this app, including account specific settings. This is not the same as a Jira account.
  */
+export type LogoType = 'navbarLogo' | 'workspaceLogo';
+
 export interface LoginModel {
   uuid: UUID;
   accountId: AccountId;
@@ -20,6 +22,8 @@ export interface LoginModel {
   workspaceUrl: string;
   workspaceName: string;
   workspaceDisplayName: string;
+  workspaceAvatarUrl: string;
+  selectedLogo: LogoType;
   workspaceColor: ColorOption;
   customWorkspaceColor?: string;
   isPrimary: boolean;

@@ -75,7 +75,13 @@ export const AccountButton: FC<AccountButtonProps> = ({ onPress, arrowIcon, reso
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}>
       <View style={styles.labelContainer}>
-        <WorkspaceLogo size={32} workspaceUrl={resource.url} borderRadius={6} />
+        <WorkspaceLogo
+          size={32}
+          workspaceUrl={resource.url}
+          workspaceAvatarUrl={resource.avatarUrl ?? ''}
+          logoVariant='navbarLogo'
+          borderRadius={6}
+        />
         <Text lineBreakMode='clip' numberOfLines={1} style={styles.label}>
           {resource.name.charAt(0).toUpperCase() + resource.name.slice(1)}
         </Text>

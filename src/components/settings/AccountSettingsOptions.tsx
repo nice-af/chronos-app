@@ -6,10 +6,11 @@ import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { ColorOption, Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
-import { LoginModel } from '../../types/accounts.types';
+import { LogoType, LoginModel } from '../../types/accounts.types';
 import { ButtonDanger } from '../ButtonDanger';
 import { CustomTextInput } from '../CustomTextInput';
 import { ColorSelector } from './ColorSelector';
+import { LogoSelector } from './LogoSelector';
 import { getModalConfirmation } from '../../services/modal.service';
 
 interface AccountSettingsOptionsProps {
@@ -17,7 +18,16 @@ interface AccountSettingsOptionsProps {
 }
 
 export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login }) => {
-  const { uuid, accountId, workspaceDisplayName, workspaceColor, customWorkspaceColor } = login;
+  const {
+    uuid,
+    accountId,
+    workspaceDisplayName,
+    workspaceColor,
+    customWorkspaceColor,
+    workspaceUrl,
+    workspaceAvatarUrl,
+    selectedLogo,
+  } = login;
   const [logins, setLogins] = useAtom(loginsAtom);
   const [customWorkspaceName, setCustomWorkspaceName] = useState(workspaceDisplayName);
   const [customWorkspaceColorValue, setCustomWorkspaceColorValue] = useState(customWorkspaceColor ?? '0B84FF');
@@ -53,6 +63,10 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login 
     updateLoginValue({ workspaceColor: newColor });
   }
 
+  function updateSelectedLogo(newLogo: LogoType) {
+    updateLoginValue({ selectedLogo: newLogo });
+  }
+
   function updateWorkspaceCustomColor() {
     // Make sure that the custom color is a valid hex color
     const hexColorRegex = /^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
@@ -64,6 +78,15 @@ export const AccountSettingsOptions: FC<AccountSettingsOptionsProps> = ({ login 
 
   return (
     <View style={styles.container}>
+      <View>
+        <Text style={styles.label}>{t('workspace.logo')}</Text>
+        <LogoSelector
+          workspaceUrl={workspaceUrl}
+          workspaceAvatarUrl={workspaceAvatarUrl}
+          selectedLogo={selectedLogo}
+          onLogoChange={updateSelectedLogo}
+        />
+      </View>
       <View>
         <Text style={styles.label}>{t('workspace.color')}</Text>
         <ColorSelector selectedColor={workspaceColor} setSelectedColor={updateWorkspaceColor} />

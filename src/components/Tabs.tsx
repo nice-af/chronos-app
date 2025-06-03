@@ -8,6 +8,8 @@ import { WorkspaceLogo } from './WorkspaceLogo';
 export interface TabData {
   label: string;
   workspaceUrl: string;
+  workspaceAvatarUrl: string;
+  selectedLogo: 'navbarLogo' | 'workspaceLogo';
   userImageSrc?: string;
   onPress: () => void;
 }
@@ -18,7 +20,17 @@ interface TabProps extends TabData {
   isLast: boolean;
 }
 
-const Tab: FC<TabProps> = ({ label, workspaceUrl, userImageSrc, isActive, isFirst, isLast, onPress }) => {
+const Tab: FC<TabProps> = ({
+  label,
+  workspaceUrl,
+  workspaceAvatarUrl,
+  selectedLogo,
+  userImageSrc,
+  isActive,
+  isFirst,
+  isLast,
+  onPress,
+}) => {
   const styles = useThemedStyles(createStyles);
 
   return (
@@ -26,7 +38,12 @@ const Tab: FC<TabProps> = ({ label, workspaceUrl, userImageSrc, isActive, isFirs
       style={[styles.tab, isActive && styles.tabActive, isFirst && styles.tabFirst, isLast && styles.tabLast]}
       onPress={onPress}>
       <View style={styles.logosContainer}>
-        <WorkspaceLogo size={20} workspaceUrl={workspaceUrl} />
+        <WorkspaceLogo
+          size={20}
+          workspaceUrl={workspaceUrl}
+          workspaceAvatarUrl={workspaceAvatarUrl}
+          logoVariant={selectedLogo}
+        />
         {userImageSrc && <Image style={styles.logo} source={{ uri: userImageSrc }} />}
       </View>
       <Text>{label}</Text>

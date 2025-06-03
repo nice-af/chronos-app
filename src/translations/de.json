@@ -143,6 +143,7 @@
   "workspace": {
     "color": "Workspace Farbe",
     "customColor": "Eigene Farbe",
-    "name": "Workspace Anzeigename"
+    "name": "Workspace Anzeigename",
+    "logo": "Workspace Logo"
   }
 }
