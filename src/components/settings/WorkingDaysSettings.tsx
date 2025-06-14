@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import React, { FC, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { Animated, Easing, OpaqueColorValue, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { settingsAtom, themeAtom, workingDaysAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
@@ -20,11 +20,69 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
   const setSettings = useSetAtom(settingsAtom);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const isChecked = workingDays.includes(id);
+  const [animatedValue] = useState(new Animated.Value(isChecked ? 1 : 0));
+  const [pressedValue] = useState(new Animated.Value(0));
 
-  const handlePress = () => {
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: isChecked ? 1 : 0,
+      duration: 200,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    }).start();
+  }, [isChecked]);
+
+  useEffect(() => {
+    Animated.timing(pressedValue, {
+      toValue: isPressed ? 1 : 0,
+      duration: 100,
+      useNativeDriver: false,
+    }).start();
+  }, [isPressed]);
+
+  // We need to ensure that the color values are strings.
+  function getColor(val: string | OpaqueColorValue) {
+    return typeof val === 'string' ? val : '#fff';
+  }
+
+  // Animate between base and hover
+  const bgHoverAnim = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [getColor(theme.surfaceButtonHover), getColor(theme.buttonHover)],
+  });
+  const bgBaseAnim = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [getColor(theme.surfaceButtonBase), getColor(theme.buttonBase)],
+  });
+  const bgActiveAnim = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [getColor(theme.surfaceButtonActive), getColor(theme.buttonActive)],
+  });
+
+  // Interpolate between base/hover/active using pressed/hovered state
+  let backgroundColorAnim = bgBaseAnim;
+  if (isPressed) {
+    backgroundColorAnim = bgActiveAnim;
+  } else if (isHovered) {
+    backgroundColorAnim = bgHoverAnim;
+  }
+
+  // Label color interpolation with fallback
+  const labelColorFrom = getColor(theme.textSecondary);
+  const labelColorTo = getColor(theme.textPrimary);
+  const labelColor = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [labelColorFrom, labelColorTo],
+  });
+  const labelTop = animatedValue.interpolate({ inputRange: [0, 1], outputRange: [13, 2] });
+  const inputOpacity = animatedValue;
+  const inputPointerEvents = isChecked ? 'auto' : 'none';
+
+  function handlePress() {
     let newWorkingDays: DayId[] = [];
     if (isChecked) {
       newWorkingDays = workingDays.filter(day => day !== id);
@@ -32,30 +90,40 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
       newWorkingDays = [...workingDays, id];
     }
     setSettings(cur => ({ ...cur, workingDays: newWorkingDays }));
-  };
+  }
 
   return (
     <Pressable
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       onPress={handlePress}
-      style={({ pressed }) => [
-        styles.pressable,
-        { backgroundColor: isChecked ? theme.buttonBase : theme.surfaceButtonBase },
-        isHovered && { backgroundColor: isChecked ? theme.buttonHover : theme.surfaceButtonHover },
-        pressed && { backgroundColor: isChecked ? theme.buttonActive : theme.surfaceButtonActive },
-      ]}>
-      <View style={styles.borderInset} />
-      <Text style={[styles.label, isChecked && styles.labelChecked]}>{label}</Text>
-      <TextInput
-        style={[
-          styles.pressableInput,
-          isFocused && styles.pressableInputFocused,
-          isChecked && styles.pressableInputVisible,
-        ]}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      style={styles.pressable}>
+      <Animated.View
+        style={[StyleSheet.absoluteFill, { borderRadius: 6, backgroundColor: backgroundColorAnim }]}
+        pointerEvents='none'
       />
+      <View style={styles.borderInset} />
+      <Animated.Text
+        style={[
+          styles.label,
+          {
+            color: labelColor,
+            top: labelTop,
+          },
+        ]}>
+        {label}
+      </Animated.Text>
+      <Animated.View
+        style={[styles.pressableInput, isFocused && styles.pressableInputFocused, { opacity: inputOpacity }]}
+        pointerEvents={inputPointerEvents}>
+        <TextInput
+          style={{ flex: 1, textAlign: 'center', borderWidth: 0 }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+      </Animated.View>
     </Pressable>
   );
 };
@@ -116,10 +184,6 @@ function createStyles(theme: Theme) {
       width: 40,
       top: 13,
     },
-    labelChecked: {
-      color: theme.textPrimary,
-      top: 2,
-    },
     pressableInput: {
       position: 'absolute',
       bottom: 3,
@@ -137,10 +201,6 @@ function createStyles(theme: Theme) {
     },
     pressableInputFocused: {
       borderColor: theme.textSecondary,
-    },
-    pressableInputVisible: {
-      opacity: 1,
-      pointerEvents: 'auto',
     },
   });
   return styles;
