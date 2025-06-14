@@ -6,7 +6,7 @@ const baseColors = {
   white: '#ffffff',
   black: '#000000',
 
-  contrast: '#FFFFFF',
+  contrast: '#ffffff',
   ...Platform.select({
     default: {
       textPrimary: 'rgba(255,255,255,0.85)',
@@ -19,23 +19,23 @@ const baseColors = {
       textTertiary: PlatformColor('TextFillColorTertiaryBrush'),
     },
   }),
-  textButton: '#FFFFFF',
-  red: '#FF453A',
+  textButton: '#ffffff',
+  red: '#ff453a',
   redTransparent: 'rgba(255,69,58,0.1)',
-  orange: '#FF9F0A',
-  yellow: '#FFD60A',
-  green: '#32D74B',
-  mint: '#66D4CF',
-  teal: '#6AC4DC',
-  cyan: '#5AC8F5',
-  blue: '#0A84FF',
+  orange: '#ff9f0a',
+  yellow: '#ffd60a',
+  green: '#32d74b',
+  mint: '#66d4cf',
+  teal: '#6ac4dc',
+  cyan: '#5ac8f5',
+  blue: '#0a84ff',
   blueHover: '#0c7ced',
   blueActive: '#0e77e1',
-  indigo: '#5E5CE6',
-  purple: '#BF5AF2',
-  pink: '#FF375F',
-  gray: '#98989D',
-  brown: '#AC8E68',
+  indigo: '#5e5ce6',
+  purple: '#bf5af2',
+  pink: '#ff375f',
+  gray: '#98989d',
+  brown: '#ac8e68',
 } satisfies Partial<Theme>;
 
 const windowColors = {
@@ -48,7 +48,7 @@ const windowColors = {
       backgroundDrawer: '#1e1e1e',
       border: 'rgba(0,0,0,0.4)',
       surface: '#292827',
-      surfaceBorder: '#3A3938',
+      surfaceBorder: '#3a3938',
       inputBorder: '#2f2e2d',
     },
     windows: {
@@ -83,12 +83,12 @@ const buttonColors = {
       secondaryButtonBorder: 'transparent',
     },
   }),
-  dangerButtonBase: '#FF453A',
+  dangerButtonBase: '#ff453a',
   dangerButtonHover: '#ef453c',
   dangerButtonActive: '#ec433a',
   transparentButtonHover: 'rgba(10,132,255,0.2)',
   transparentButtonActive: 'rgba(10,132,255,0.3)',
-  surfaceButtonBase: '#3A3938',
+  surfaceButtonBase: '#3a3938',
   surfaceButtonHover: '#434241',
   surfaceButtonActive: '#454443',
   ...Platform.select({
@@ -115,6 +115,8 @@ const buttonColors = {
   }),
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
+  workingDayButtonInputBg: '#0f69c4',
+  workingDayButtonInputBorder: '#125fad',
 } satisfies Partial<Theme>;
 
 export const darkTheme: Theme = {

@@ -115,6 +115,8 @@ const buttonColors = {
   }),
   cardsSelectionButtonHover: 'rgba(255,255,255,0.05)',
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
+  workingDayButtonInputBg: '#0f69c4',
+  workingDayButtonInputBorder: '#125fad',
 } satisfies Partial<Theme>;
 
 export const lightTheme: Theme = {

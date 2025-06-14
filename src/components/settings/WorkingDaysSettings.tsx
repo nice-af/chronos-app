@@ -1,13 +1,12 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { settingsAtom, themeAtom, workingDaysAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
-import { getPadding } from '../../styles/utils';
 import { DayId, weekDays } from '../../types/global.types';
 import { Toggle } from '../Toggle';
 
@@ -20,6 +19,7 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
   const workingDays = useAtomValue(workingDaysAtom);
   const setSettings = useSetAtom(settingsAtom);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const isChecked = workingDays.includes(id);
@@ -46,7 +46,16 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
         pressed && { backgroundColor: isChecked ? theme.buttonActive : theme.surfaceButtonActive },
       ]}>
       <View style={styles.borderInset} />
-      <Text style={isChecked ? styles.labelChecked : styles.label}>{label}</Text>
+      <Text style={[styles.label, isChecked && styles.labelChecked]}>{label}</Text>
+      <TextInput
+        style={[
+          styles.pressableInput,
+          isFocused && styles.pressableInputFocused,
+          isChecked && styles.pressableInputVisible,
+        ]}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
     </Pressable>
   );
 };
@@ -86,30 +95,52 @@ function createStyles(theme: Theme) {
     },
     pressable: {
       position: 'relative',
-      width: 34,
-      height: 30,
-      ...getPadding(7, 8, 9),
+      width: 40,
+      height: 48,
       borderRadius: 6,
     },
     borderInset: {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: 34,
-      height: 30,
+      width: 40,
+      height: 48,
       borderWidth: 1,
       borderColor: theme.borderInset,
       borderRadius: 6,
     },
-    labelChecked: {
-      ...typo.subheadlineEmphasized,
-      color: theme.textButton,
-      textAlign: 'center',
-    },
     label: {
-      ...typo.subheadline,
-      color: theme.textPrimary,
+      ...typo.bodyEmphasized,
+      color: theme.textSecondary,
       textAlign: 'center',
+      width: 40,
+      top: 13,
+    },
+    labelChecked: {
+      color: theme.textPrimary,
+      top: 2,
+    },
+    pressableInput: {
+      position: 'absolute',
+      bottom: 3,
+      left: 3,
+      width: 34,
+      height: 22,
+      opacity: 0,
+      pointerEvents: 'none',
+      backgroundColor: theme.workingDayButtonInputBg,
+      borderRadius: 3,
+      zIndex: 2,
+      textAlign: 'center',
+      borderWidth: 1,
+      borderColor: theme.workingDayButtonInputBorder,
+    },
+    pressableInputFocused: {
+      borderColor: theme.textSecondary,
+    },
+    pressableInputVisible: {
+      opacity: 1,
+      pointerEvents: 'auto',
     },
   });
   return styles;
