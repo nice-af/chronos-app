@@ -9,6 +9,7 @@ import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
 import { DayId, weekDays } from '../../types/global.types';
 import { Toggle } from '../Toggle';
+import { HorizontalScrollWithFade } from '../HorizontalScrollWithFade';
 
 interface WorkingDaysSettingProps {
   id: DayId;
@@ -137,11 +138,11 @@ export const WorkingDaysSetting: FC = () => {
   return (
     <View style={settingsStyles.card}>
       <Text style={settingsStyles.headline}>{t('weekDays.settingsTitle')}</Text>
-      <View style={styles.container}>
+      <HorizontalScrollWithFade style={styles.container} contentContainerStyle={{ gap: 6, alignItems: 'flex-start' }}>
         {weekDays.map(weekDay => (
           <WorkingDaysSettingButton key={weekDay.id} id={weekDay.id} label={t(`weekDays.${weekDay.code}`)} />
         ))}
-      </View>
+      </HorizontalScrollWithFade>
       <Toggle
         label={t('weekDays.hideNonWorkingDays')}
         state={settings.hideNonWorkingDays}

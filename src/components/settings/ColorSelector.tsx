@@ -1,18 +1,10 @@
 import { useAtomValue } from 'jotai';
-import React, { FC, useMemo, useState } from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, { FC, useMemo } from 'react';
+import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from 'react-native';
 import { themeAtom } from '../../atoms';
 import { useThemedStyles } from '../../services/theme.service';
 import { ColorOption, Theme, colorKeys } from '../../styles/theme/theme-types';
+import { HorizontalScrollWithFade } from '../HorizontalScrollWithFade';
 
 interface ColorSelectorProps {
   selectedColor: ColorOption;
@@ -22,77 +14,26 @@ interface ColorSelectorProps {
 export const ColorSelector: FC<ColorSelectorProps> = ({ selectedColor, setSelectedColor }) => {
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
-  const [showLeftFade, setShowLeftFade] = useState(false);
-  const [showRightFade, setShowRightFade] = useState(true);
-
   const customColorSrc = useMemo<ImageSourcePropType>(
     () => require('../../assets/color-picker-custom.png') as ImageSourcePropType,
     []
   );
 
-  const fadeImages = useMemo(() => {
-    const currentTheme = theme.type as 'light' | 'dark';
-    return {
-      left:
-        currentTheme === 'light'
-          ? require('../../assets/color-selector/color-selector-gradient-left-light.png')
-          : require('../../assets/color-selector/color-selector-gradient-left-dark.png'),
-      right:
-        currentTheme === 'light'
-          ? require('../../assets/color-selector/color-selector-gradient-right-light.png')
-          : require('../../assets/color-selector/color-selector-gradient-right-dark.png'),
-    };
-  }, [theme.type]);
-
-  function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-    const scrollX = contentOffset.x;
-    const contentWidth = contentSize.width;
-    const containerWidth = layoutMeasurement.width;
-
-    // Show left fade if scrolled away from the start
-    setShowLeftFade(scrollX > 5);
-
-    // Show right fade if not scrolled to the end
-    setShowRightFade(scrollX < contentWidth - containerWidth - 5);
-  }
-
   return (
-    <View style={styles.wrapper}>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        onScroll={handleScroll}
-        scrollEventThrottle={16}>
-        {colorKeys.map(colorKey => (
-          <Pressable
-            key={colorKey}
-            onPress={() => setSelectedColor(colorKey)}
-            style={[styles.colorOption, { backgroundColor: theme[colorKey] }]}>
-            {selectedColor === colorKey && <View style={styles.activeIndicator} />}
-          </Pressable>
-        ))}
-        <Pressable onPress={() => setSelectedColor('custom')} style={styles.colorOption}>
-          {selectedColor === 'custom' && <View style={styles.activeIndicator} />}
-          <Image style={styles.customColor} source={customColorSrc} />
+    <HorizontalScrollWithFade style={styles.wrapper} contentContainerStyle={styles.container}>
+      {colorKeys.map(colorKey => (
+        <Pressable
+          key={colorKey}
+          onPress={() => setSelectedColor(colorKey)}
+          style={[styles.colorOption, { backgroundColor: theme[colorKey] }]}>
+          {selectedColor === colorKey && <View style={styles.activeIndicator} />}
         </Pressable>
-      </ScrollView>
-
-      {/* Left fade overlay */}
-      {showLeftFade && (
-        <View style={[styles.fadeOverlay, styles.leftFade]} pointerEvents='none'>
-          <Image source={fadeImages.left} style={styles.fadeImage} />
-        </View>
-      )}
-
-      {/* Right fade overlay */}
-      {showRightFade && (
-        <View style={[styles.fadeOverlay, styles.rightFade]} pointerEvents='none'>
-          <Image source={fadeImages.right} style={styles.fadeImage} />
-        </View>
-      )}
-    </View>
+      ))}
+      <Pressable onPress={() => setSelectedColor('custom')} style={styles.colorOption}>
+        {selectedColor === 'custom' && <View style={styles.activeIndicator} />}
+        <Image style={styles.customColor} source={customColorSrc} />
+      </Pressable>
+    </HorizontalScrollWithFade>
   );
 };
 
@@ -131,23 +72,6 @@ function createStyles(theme: Theme) {
       width: 18,
       height: 18,
       borderRadius: 9,
-    },
-    fadeOverlay: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      width: 20,
-    },
-    fadeImage: {
-      width: 32,
-      height: '100%',
-      resizeMode: 'stretch',
-    },
-    leftFade: {
-      left: 0,
-    },
-    rightFade: {
-      right: 0,
     },
   });
   return styles;
