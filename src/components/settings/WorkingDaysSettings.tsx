@@ -83,6 +83,20 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ dayCode, label 
   const inputOpacity = animatedValue;
   const inputPointerEvents = isChecked ? 'auto' : 'none';
 
+  const hours = workingDaysAndTime[dayCode].hours?.toString() ?? '';
+
+  function handleHoursChange(text: string) {
+    // Only allow numbers and optional decimal point
+    const sanitized = text.replace(/[^\d.]/g, '');
+    // Update hours in settings
+    setSettings(currentSettings => {
+      const updatedWorkingDays = { ...currentSettings.workingDaysAndTime };
+      // Parse as float, fallback to 0 if empty
+      updatedWorkingDays[dayCode].hours = sanitized === '' ? 0 : parseFloat(sanitized);
+      return { ...currentSettings, workingDaysAndTime: updatedWorkingDays };
+    });
+  }
+
   function handlePress() {
     setSettings(currentSettings => {
       const updatedWorkingDays = { ...currentSettings.workingDaysAndTime };
@@ -119,6 +133,10 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ dayCode, label 
         pointerEvents={inputPointerEvents}>
         <TextInput
           style={{ flex: 1, textAlign: 'center', borderWidth: 0 }}
+          value={hours}
+          onChangeText={handleHoursChange}
+          editable={isChecked}
+          keyboardType='numeric'
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
@@ -189,6 +207,8 @@ function createStyles(theme: Theme) {
       left: 3,
       width: 34,
       height: 22,
+      lineHeight: 20,
+      paddingTop: 2,
       opacity: 0,
       pointerEvents: 'none',
       backgroundColor: theme.workingDayButtonInputBg,
@@ -197,9 +217,11 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.workingDayButtonInputBorder,
+      color: theme.textSecondary,
     },
     pressableInputFocused: {
       borderColor: theme.textSecondary,
+      outlineWidth: 0,
     },
   });
   return styles;
