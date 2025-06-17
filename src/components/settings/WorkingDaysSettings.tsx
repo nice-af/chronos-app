@@ -1,30 +1,30 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC, useEffect, useState } from 'react';
 import { Animated, Easing, OpaqueColorValue, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { settingsAtom, themeAtom, workingDaysAtom } from '../../atoms';
+import { settingsAtom, themeAtom, workingDaysAndTimeAtom } from '../../atoms';
 import { useTranslation } from '../../services/i18n.service';
 import { useThemedStyles } from '../../services/theme.service';
 import { createSettingsStyles } from '../../styles/settings';
 import { Theme } from '../../styles/theme/theme-types';
 import { typo } from '../../styles/typo';
-import { DayId, weekDays } from '../../types/global.types';
-import { Toggle } from '../Toggle';
+import { DayCode, weekDays } from '../../types/global.types';
 import { HorizontalScrollWithFade } from '../HorizontalScrollWithFade';
+import { Toggle } from '../Toggle';
 
 interface WorkingDaysSettingProps {
-  id: DayId;
+  dayCode: DayCode;
   label: string;
 }
 
-const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) => {
-  const workingDays = useAtomValue(workingDaysAtom);
+const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ dayCode, label }) => {
+  const workingDaysAndTime = useAtomValue(workingDaysAndTimeAtom);
   const setSettings = useSetAtom(settingsAtom);
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
-  const isChecked = workingDays.includes(id);
+  const isChecked = workingDaysAndTime[dayCode].enabled;
   const [animatedValue] = useState(new Animated.Value(isChecked ? 1 : 0));
   const [pressedValue] = useState(new Animated.Value(0));
 
@@ -84,13 +84,11 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ id, label }) =>
   const inputPointerEvents = isChecked ? 'auto' : 'none';
 
   function handlePress() {
-    let newWorkingDays: DayId[] = [];
-    if (isChecked) {
-      newWorkingDays = workingDays.filter(day => day !== id);
-    } else {
-      newWorkingDays = [...workingDays, id];
-    }
-    setSettings(cur => ({ ...cur, workingDays: newWorkingDays }));
+    setSettings(currentSettings => {
+      const updatedWorkingDays = { ...currentSettings.workingDaysAndTime };
+      updatedWorkingDays[dayCode].enabled = !updatedWorkingDays[dayCode].enabled;
+      return { ...currentSettings, workingDaysAndTime: updatedWorkingDays };
+    });
   }
 
   return (
@@ -139,8 +137,8 @@ export const WorkingDaysSetting: FC = () => {
     <View style={settingsStyles.card}>
       <Text style={settingsStyles.headline}>{t('weekDays.settingsTitle')}</Text>
       <HorizontalScrollWithFade style={styles.container} contentContainerStyle={{ gap: 6, alignItems: 'flex-start' }}>
-        {weekDays.map(weekDay => (
-          <WorkingDaysSettingButton key={weekDay.id} id={weekDay.id} label={t(`weekDays.${weekDay.code}`)} />
+        {weekDays.map(dayCode => (
+          <WorkingDaysSettingButton key={dayCode} dayCode={dayCode} label={t(`weekDays.${dayCode}`)} />
         ))}
       </HorizontalScrollWithFade>
       <Toggle

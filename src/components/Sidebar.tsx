@@ -32,14 +32,14 @@ export const Sidebar: FC = () => {
           !isFullscreen && Platform.OS === 'macos' && { paddingTop: 0, paddingBottom: 16 },
         ]}>
         <WeekPicker />
-        {weekDays.map(day => {
-          const date = setDateToThisWeekday(parseDateFromYYYYMMDD(selectedDate), day.id);
+        {weekDays.map(dayCode => {
+          const date = setDateToThisWeekday(parseDateFromYYYYMMDD(selectedDate), dayCode);
           const dateString = formatDateToYYYYMMDD(date);
 
           return (
             <DayButton
-              key={day.id}
-              dayCode={day.code}
+              key={dayCode}
+              dayCode={dayCode}
               dateString={dateString}
               onPress={() => {
                 setCurrentOverlay(null);

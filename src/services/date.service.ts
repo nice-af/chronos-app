@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import ms from 'ms';
+import { DayCode, weekDays } from '../types/global.types';
 
 type oneToNine = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type zeroToNine = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
@@ -14,12 +15,16 @@ export type DateString = `${YYYY}-${MM}-${DD}`;
 export function getWeekday(date: Date): number {
   return date.getDay() === 0 ? 6 : date.getDay() - 1;
 }
+export function getWeekdayFromCode(dayCode: DayCode): number {
+  return weekDays.indexOf(dayCode);
+}
 
 /**
  * Sets the date to the given weekday of the current week from Monday (0) to Sunday (6).
  */
-export function setDateToThisWeekday(date: Date, weekday: number): Date {
+export function setDateToThisWeekday(date: Date, dayCode: DayCode): Date {
   const currentDay = getWeekday(date);
+  const weekday = getWeekdayFromCode(dayCode);
   const dayOffset = weekday - currentDay;
   return new Date(date.getTime() + ms(`${dayOffset}d`));
 }

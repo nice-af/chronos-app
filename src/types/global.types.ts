@@ -3,31 +3,8 @@ import { ViewStyle } from 'react-native';
 import { UUID } from './accounts.types';
 
 export type Layout = 'normal' | 'compact' | 'micro';
-export type DayId = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DayCode = 'mo' | 'tu' | 'we' | 'th' | 'fr' | 'sa' | 'su';
-
-export const dayCodeToDayIdMap: Record<DayCode, DayId> = {
-  mo: 0,
-  tu: 1,
-  we: 2,
-  th: 3,
-  fr: 4,
-  sa: 5,
-  su: 6,
-};
-
-export const weekDays: {
-  id: DayId;
-  code: DayCode;
-}[] = [
-  { id: 0, code: 'mo' },
-  { id: 1, code: 'tu' },
-  { id: 2, code: 'we' },
-  { id: 3, code: 'th' },
-  { id: 4, code: 'fr' },
-  { id: 5, code: 'sa' },
-  { id: 6, code: 'su' },
-];
+export const weekDays: DayCode[] = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
 
 export enum WorklogState {
   LOCAL = 'local',

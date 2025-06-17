@@ -8,7 +8,7 @@ import {
   settingsAtom,
   sidebarLayoutAtom,
   themeAtom,
-  workingDaysAtom,
+  workingDaysAndTimeAtom,
   worklogsAtom,
 } from '../atoms';
 import { SidebarLayout } from '../const';
@@ -17,7 +17,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { formatSecondsToHMM } from '../services/time.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
-import { DayCode, WorklogState, dayCodeToDayIdMap } from '../types/global.types';
+import { DayCode, WorklogState } from '../types/global.types';
 
 interface DayButtonProps extends Omit<PressableProps, 'style'> {
   dateString: string;
@@ -28,11 +28,11 @@ interface DayButtonProps extends Omit<PressableProps, 'style'> {
 export const DayButton: FC<DayButtonProps> = ({ onPress, dayCode, dateString }) => {
   const [isHovered, setIsHovered] = useState(false);
   const sidebarLayout = useAtomValue(sidebarLayoutAtom);
-  const workingDays = useAtomValue(workingDaysAtom);
+  const workingDaysAndTime = useAtomValue(workingDaysAndTimeAtom);
   const hideNonWorkingDays = useAtomValue(hideNonWorkingDaysAtom);
   const primaryUUID = useAtomValue(primaryUUIDAtom);
   const { workingTimeCountMethod } = useAtomValue(settingsAtom);
-  const isWorkingDay = workingDays.includes(dayCodeToDayIdMap[dayCode]);
+  const isWorkingDay = workingDaysAndTime[dayCode].enabled;
   const styles = useThemedStyles(createStyles);
   const theme = useAtomValue(themeAtom);
   const worklogs = useAtomValue(worklogsAtom);

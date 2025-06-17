@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { appVisibility, SidebarLayout } from '../const';
 import { JiraAccountTokensAtom, LoginsAtom } from '../types/accounts.types';
-import { DayId, ProjectsAtom, Worklog } from '../types/global.types';
+import { DayCode, ProjectsAtom, Worklog } from '../types/global.types';
 
 export enum StorageKey {
   LOGINS = 'logins',
@@ -18,11 +18,12 @@ export type IssueTagIconOption = 'none' | 'project' | 'workspace' | 'workspaceAn
 export type IssueTagColorOption = 'issue' | 'workspace';
 export type WorkingTimeCountMethod = 'onlyPrimary' | 'all';
 export type WorklogsSyncPeriod = '1w' | '2w' | '4w' | '8w' | '12w' | '24w';
+export type WorkingDaysAndTime = Record<DayCode, { enabled: boolean; hours: number }>;
 
 export interface SettingsModel {
   sidebarLayout: SidebarLayout;
   appVisibility: appVisibility;
-  workingDays: DayId[];
+  workingDaysAndTime: WorkingDaysAndTime;
   hideNonWorkingDays: boolean;
   warningWhenEditingOtherDays: boolean;
   enableTrackingReminder: boolean;
@@ -50,7 +51,15 @@ export const defaultStorageValues: { [key in StorageKey]: StorageTypes[key] } = 
   [StorageKey.SETTINGS]: {
     sidebarLayout: SidebarLayout.NORMAL,
     appVisibility: appVisibility.BOTH,
-    workingDays: [0, 1, 2, 3, 4],
+    workingDaysAndTime: {
+      mo: { enabled: true, hours: 8 },
+      tu: { enabled: true, hours: 8 },
+      we: { enabled: true, hours: 8 },
+      th: { enabled: true, hours: 8 },
+      fr: { enabled: true, hours: 8 },
+      sa: { enabled: false, hours: 0 },
+      su: { enabled: false, hours: 0 },
+    },
     hideNonWorkingDays: false,
     warningWhenEditingOtherDays: true,
     enableTrackingReminder: false,
