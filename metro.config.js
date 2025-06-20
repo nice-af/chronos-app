@@ -23,6 +23,7 @@ const config = {
     ]),
     extraNodeModules: {
       stream: path.resolve(__dirname, 'node_modules/web-streams-polyfill'),
+      'node:stream': path.resolve(__dirname, 'node_modules/web-streams-polyfill'),
     },
   },
   transformer: {
