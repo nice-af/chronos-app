@@ -1,6 +1,5 @@
 import Cocoa
 import Foundation
-import ReactAppDependencyProvider
 import React_RCTAppDelegate
 import SwiftUI
 import UserNotifications
@@ -24,7 +23,6 @@ class AppDelegate: RCTAppDelegate {
     // Basically the initialization of the app
     self.automaticallyLoadReactNativeWindow = false
     self.moduleName = "Chronos"
-    self.dependencyProvider = RCTAppDependencyProvider()
 
     // Listen to notification events
     NotificationCenter.default.addObserver(
