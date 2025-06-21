@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
-import { Image, ImageBackground, Platform, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, Platform, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { themeAtom } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { useThemedStyles } from '../services/theme.service';
@@ -22,12 +22,13 @@ export const EditWorklogHeader: FC<EditWorklogHeaderProps> = ({ onCancelPress, o
   const [showOther, setShowOther] = useState(false);
   const theme = useAtomValue(themeAtom);
   const { t } = useTranslation();
+  const isCramped = useWindowDimensions().width < 500;
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/edit-stripes-bg.png')} resizeMode='repeat' style={styles.stripesBg} />
       <View style={[styles.content, showOther && { justifyContent: 'flex-end' }]}>
-        {!showOther && (
+        {!(showOther && isCramped) && (
           <Text style={styles.title} numberOfLines={1}>
             {t('worklogs.editWorklog')}
           </Text>
@@ -104,6 +105,7 @@ function createStyles(theme: Theme) {
       ...typo.headline,
       color: theme.textPrimary,
       flexShrink: 1,
+      flexGrow: 1,
       marginTop: 2,
     },
     buttonsContainer: {
