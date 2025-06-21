@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue } from 'jotai';
-import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
+import React, { FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { currentOverlayAtom, isFullscreenAtom, loginsAtom, settingsAtom } from '../atoms';
 import { DebugTools } from '../components/DebugTools';
@@ -13,7 +13,7 @@ import {
   sendNativeEvent,
 } from '../services/native-event-emitter.service.macos';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
-import { get4WeeksWorklogOverview } from '../utils/four-weeks-worklog-overview';
+import { send4WeeksWorklogOverview } from '../utils/four-weeks-worklog-overview';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const jiraLogins = useAtomValue(loginsAtom);
@@ -21,6 +21,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
+  const timeout4WeeksWorklogOverview = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -32,14 +33,15 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     void initialize().finally(() => {
       setIsLoading(false);
 
-      // Listen for widget tracking data requests from the native side
-      addNativeEventListener({
-        name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW,
-        callback: () => {
-          const data = get4WeeksWorklogOverview();
-          sendNativeEvent({ name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW, data });
-        },
-      });
+      if (Platform.OS === 'macos') {
+        // Listen for widget tracking data requests from the native side
+        addNativeEventListener({
+          name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW,
+          callback: send4WeeksWorklogOverview,
+        });
+        send4WeeksWorklogOverview();
+        timeout4WeeksWorklogOverview.current = setTimeout(send4WeeksWorklogOverview, 10000);
+      }
     });
 
     // Add event listeners for native events
@@ -65,6 +67,11 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
         removeNativeEventListener({ name: NativeEvent.FULLSCREEN_CHANGE });
         removeNativeEventListener({ name: NativeEvent.CREATE_NEW_WORKLOG });
         removeNativeEventListener({ name: NativeEvent.CLOSE_OVERLAY });
+        removeNativeEventListener({ name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW });
+        if (timeout4WeeksWorklogOverview.current) {
+          clearTimeout(timeout4WeeksWorklogOverview.current);
+          timeout4WeeksWorklogOverview.current = null;
+        }
       }
     };
   }, []);

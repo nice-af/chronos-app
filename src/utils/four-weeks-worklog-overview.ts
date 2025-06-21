@@ -2,7 +2,12 @@ import { store } from '../atoms/store';
 import { worklogsAtom } from '../atoms/worklog';
 import { settingsAtom } from '../atoms/setting';
 import { weekDays, DayCode } from '../types/global.types';
-import { FourWeeksWorklogOverview, FourWeeksWorklogDayOverview } from '../services/native-event-emitter.service.types';
+import {
+  FourWeeksWorklogOverview,
+  FourWeeksWorklogDayOverview,
+  NativeEvent,
+} from '../services/native-event-emitter.service.types';
+import { sendNativeEvent } from '../services/native-event-emitter.service';
 
 /**
  * Returns 4 weeks worklog overview data for the last 4 weeks (28 days), oldest to newest.
@@ -40,4 +45,9 @@ export function get4WeeksWorklogOverview(): FourWeeksWorklogOverview {
     });
   }
   return { days };
+}
+
+export function send4WeeksWorklogOverview() {
+  const data = get4WeeksWorklogOverview();
+  sendNativeEvent({ name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW, data });
 }
