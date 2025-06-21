@@ -14,7 +14,7 @@ export enum NativeEvent {
   REQUEST_NOTIFICATION_PERMISSION = 'requestNotificationPermission',
   CHECK_NOTIFICATION_PERMISSION = 'checkNotificationPermission',
   THEME_CHANGED = 'themeChanged',
-  SET_APP__VISIBILITY = 'setappVisibility',
+  SET_APP__VISIBILITY = 'setAppVisibility',
   REQUEST_4_WEEKS_WORKLOG_OVERVIEW = 'request4WeeksWorklogOverview',
   SEND_4_WEEKS_WORKLOG_OVERVIEW = 'send4WeeksWorklogOverview',
 }

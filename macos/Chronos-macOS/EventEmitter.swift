@@ -32,7 +32,7 @@ class EventEmitter {
       "requestNotificationPermission",
       "checkNotificationPermission",
       "themeChanged",
-      "setappVisibility",
+      "setAppVisibility",
       "request4WeeksWorklogOverview",
       "send4WeeksWorklogOverview" 
     ]

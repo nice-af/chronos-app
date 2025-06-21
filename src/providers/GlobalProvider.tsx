@@ -40,8 +40,6 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
           sendNativeEvent({ name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW, data });
         },
       });
-
-      console.log(get4WeeksWorklogOverview());
     });
 
     // Add event listeners for native events
