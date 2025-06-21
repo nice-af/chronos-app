@@ -15,11 +15,27 @@ export enum NativeEvent {
   CHECK_NOTIFICATION_PERMISSION = 'checkNotificationPermission',
   THEME_CHANGED = 'themeChanged',
   SET_APP__VISIBILITY = 'setappVisibility',
+  REQUEST_4_WEEKS_WORKLOG_OVERVIEW = 'request4WeeksWorklogOverview',
+  SEND_4_WEEKS_WORKLOG_OVERVIEW = 'send4WeeksWorklogOverview',
 }
 
 export enum StatusBarState {
   RUNNING = 'running',
   PAUSED = 'paused',
+}
+
+/**
+ * 4 weeks worklog overview data types
+ */
+export interface FourWeeksWorklogDayOverview {
+  date: string; // ISO date string (YYYY-MM-DD)
+  trackedHours: number;
+  workingHours: number;
+  enabled: boolean;
+}
+
+export interface FourWeeksWorklogOverview {
+  days: FourWeeksWorklogDayOverview[]; // Ordered oldest to newest (28 days)
 }
 
 /**
@@ -32,7 +48,9 @@ export type SendNativeEventParams =
   | SendNativeEventParams_STATUS_BAR_TIME_CHANGE
   | SendNativeEventParams_SEND_NOTIFICATION
   | SendNativeEventParams_THEME_CHANGED
-  | SendNativeEventParams_SET_APP__VISIBILITY;
+  | SendNativeEventParams_SET_APP__VISIBILITY
+  | SendNativeEventParams_SEND_4_WEEKS_WORKLOG_OVERVIEW
+  | SendNativeEventParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
 
 export interface SendNativeEventParams_DEFAULT {
   name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION;
@@ -78,6 +96,16 @@ export interface SendNativeEventParams_SET_APP__VISIBILITY {
   data: appVisibility;
 }
 
+export interface SendNativeEventParams_SEND_4_WEEKS_WORKLOG_OVERVIEW {
+  name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW;
+  data: FourWeeksWorklogOverview;
+}
+
+export interface SendNativeEventParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW {
+  name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
+  data: null;
+}
+
 /**
  * Add event listener types
  */
@@ -88,7 +116,8 @@ export type AddNativeEventListenerParams =
   | AddNativeEventListenerParams_FULLSCREEN_CHANGE
   | AddNativeEventListenerParams_PLAY_PAUSE_CLICK
   | AddNativeEventListenerParams_CHECK_NOTIFICATION_PERMISSION
-  | AddNativeEventListenerParams_DEFAULT;
+  | AddNativeEventListenerParams_DEFAULT
+  | AddNativeEventListenerParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
 
 export interface AddNativeEventListenerParams_STATUS_BAR_STATE_CHANGE {
   name: NativeEvent.STATUS_BAR_STATE_CHANGE;
@@ -121,6 +150,11 @@ export interface AddNativeEventListenerParams_DEFAULT {
     | NativeEvent.CLOSE_MODAL
     | NativeEvent.CREATE_NEW_WORKLOG
     | NativeEvent.RESET_WORKLOGS_FOR_SELECTED_DATE;
+  callback: () => void;
+}
+
+export interface AddNativeEventListenerParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW {
+  name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
   callback: () => void;
 }
 

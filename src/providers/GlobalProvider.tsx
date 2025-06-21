@@ -11,8 +11,9 @@ import {
   addNativeEventListener,
   removeNativeEventListener,
   sendNativeEvent,
-} from '../services/native-event-emitter.service';
+} from '../services/native-event-emitter.service.macos';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
+import { get4WeeksWorklogOverview } from '../utils/four-weeks-worklog-overview';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const jiraLogins = useAtomValue(loginsAtom);
@@ -30,6 +31,17 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
     // Initialize the Jira logins and the worklogs
     void initialize().finally(() => {
       setIsLoading(false);
+
+      // Listen for widget tracking data requests from the native side
+      addNativeEventListener({
+        name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW,
+        callback: () => {
+          const data = get4WeeksWorklogOverview();
+          sendNativeEvent({ name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW, data });
+        },
+      });
+
+      console.log(get4WeeksWorklogOverview());
     });
 
     // Add event listeners for native events

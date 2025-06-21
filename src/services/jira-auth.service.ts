@@ -10,7 +10,7 @@ import { getOAuthToken } from './jira-api-fetch';
  * A hook to handle the OAuth flow.
  */
 export const useAuthRequest = () => {
-  const state = useRef<string>();
+  const state = useRef<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
