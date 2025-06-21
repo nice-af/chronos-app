@@ -22,7 +22,7 @@ cd ..
 
 # Reinstall dependencies
 npm i
-npx pod-install macos
+npm run pod-install:macos
 
 watchman shutdown-server
 watchman watch-del-all

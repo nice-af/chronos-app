@@ -24,7 +24,8 @@
     "macos": "react-native run-macos",
     "build:macos": "xcodebuild -workspace macos/Chronos.xcworkspace -scheme Chronos-macOS-prod -config Release",
     "windows": "react-native run-windows",
-    "release": "release-it"
+    "release": "release-it",
+    "pod-install:macos": "cd macos && pod install && cd .."
   },
   "dependencies": {
     "@atlaskit/editor-markdown-transformer": "^5.16.0",
@@ -32,7 +33,7 @@
     "@react-native-community/hooks": "^3.0.0",
     "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
-    "jira.js": "^5.0.0",
+    "jira.js": "^4.0.0",
     "jotai": "^2.12.3",
     "locale-matcher": "^2.0.0",
     "lodash": "^4.17.21",
