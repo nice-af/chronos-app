@@ -1,0 +1,10 @@
+"tracked_times" = "Erfasste Zeiten";
+"day_mo" = "Mo";
+"day_tu" = "Di";
+"day_we" = "Mi";
+"day_th" = "Do";
+"day_fr" = "Fr";
+"day_sa" = "Sa";
+"day_su" = "So";
+"widget_display_name" = "Chronos Aktivität";
+"widget_description" = "Zeigt Ihre tägliche Zeiterfassung der letzten 4 Wochen an.";

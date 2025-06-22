@@ -1,0 +1,10 @@
+"tracked_times" = "Tracked times";
+"day_mo" = "Mo";
+"day_tu" = "Tu";
+"day_we" = "We";
+"day_th" = "Th";
+"day_fr" = "Fr";
+"day_sa" = "Sa";
+"day_su" = "Su";
+"widget_display_name" = "Chronos Activity";
+"widget_description" = "Shows your daily time tracking activity over the past 4 weeks.";
