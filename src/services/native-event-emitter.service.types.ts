@@ -16,7 +16,7 @@ export enum NativeEvent {
   THEME_CHANGED = 'themeChanged',
   SET_APP__VISIBILITY = 'setAppVisibility',
   REQUEST_4_WEEKS_WORKLOG_OVERVIEW = 'request4WeeksWorklogOverview',
-  SEND_4_WEEKS_WORKLOG_OVERVIEW = 'send4WeeksWorklogOverview',
+  NEW_4_WEEKS_WORKLOG_OVERVIEW = 'new4WeeksWorklogOverview',
 }
 
 export enum StatusBarState {
@@ -97,7 +97,7 @@ export interface SendNativeEventParams_SET_APP__VISIBILITY {
 }
 
 export interface SendNativeEventParams_SEND_4_WEEKS_WORKLOG_OVERVIEW {
-  name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW;
+  name: NativeEvent.NEW_4_WEEKS_WORKLOG_OVERVIEW;
   data: FourWeeksWorklogOverview;
 }
 

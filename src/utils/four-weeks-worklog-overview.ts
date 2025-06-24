@@ -49,5 +49,5 @@ export function get4WeeksWorklogOverview(): FourWeeksWorklogOverview {
 
 export function send4WeeksWorklogOverview() {
   const data = get4WeeksWorklogOverview();
-  sendNativeEvent({ name: NativeEvent.SEND_4_WEEKS_WORKLOG_OVERVIEW, data });
+  sendNativeEvent({ name: NativeEvent.NEW_4_WEEKS_WORKLOG_OVERVIEW, data });
 }

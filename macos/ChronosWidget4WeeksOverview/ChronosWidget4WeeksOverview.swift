@@ -12,14 +12,14 @@ import WidgetKit
 // Types from React Native
 //
 
-struct FourWeeksWorklogDayOverview {
+struct FourWeeksWorklogDayOverview: Codable {
   let date: String  // ISO date string (YYYY-MM-DD)
   let trackedHours: Double
   let workingHours: Double
   let enabled: Bool
 }
 
-struct FourWeeksWorklogOverview {
+struct FourWeeksWorklogOverview: Codable {
   let days: [FourWeeksWorklogDayOverview]  // Ordered oldest to newest (28 days)
 }
 
@@ -29,6 +29,24 @@ struct WorklogEntry: TimelineEntry {
 }
 
 struct WorklogProvider: TimelineProvider {
+  // Helper to load real data from app group
+  func loadWorklogOverviewFromAppGroup() -> FourWeeksWorklogOverview? {
+    let appGroup = "group.chronos"  // <-- Replace with your actual App Group identifier if different
+    if let userDefaults = UserDefaults(suiteName: appGroup),
+      let jsonString = userDefaults.string(forKey: "FourWeeksWorklogOverview"),
+      let jsonData = jsonString.data(using: .utf8)
+    {
+      let decoder = JSONDecoder()
+      do {
+        let overview = try decoder.decode(FourWeeksWorklogOverview.self, from: jsonData)
+        return overview
+      } catch {
+        print("Failed to decode FourWeeksWorklogOverview: \(error)")
+        return nil
+      }
+    }
+    return nil
+  }
 
   // Returns a placeholder entry for widget previews
   func placeholder(in context: Context) -> WorklogEntry {
@@ -37,13 +55,15 @@ struct WorklogProvider: TimelineProvider {
 
   // Returns a snapshot entry for the widget gallery
   func getSnapshot(in context: Context, completion: @escaping (WorklogEntry) -> Void) {
-    let entry = WorklogEntry(date: Date(), worklogData: generatePlaceholderData())
+    let overview = loadWorklogOverviewFromAppGroup() ?? generatePlaceholderData()
+    let entry = WorklogEntry(date: Date(), worklogData: overview)
     completion(entry)
   }
 
   // Returns the timeline for the widget
   func getTimeline(in context: Context, completion: @escaping (Timeline<WorklogEntry>) -> Void) {
-    let entry = WorklogEntry(date: Date(), worklogData: generatePlaceholderData())
+    let overview = loadWorklogOverviewFromAppGroup() ?? generatePlaceholderData()
+    let entry = WorklogEntry(date: Date(), worklogData: overview)
     let timeline = Timeline(entries: [entry], policy: .never)
     completion(timeline)
   }

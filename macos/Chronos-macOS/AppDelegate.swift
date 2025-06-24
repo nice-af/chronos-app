@@ -34,6 +34,9 @@ class AppDelegate: RCTAppDelegate {
     NotificationCenter.default.addObserver(
       self, selector: #selector(setAppVisibility), name: NSNotification.Name("setAppVisibility"),
       object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(handleNew4WeeksWorklogOverview),
+      name: NSNotification.Name("new4WeeksWorklogOverview"), object: nil)
 
     // Enable notifications when the app is focused
     UNUserNotificationCenter.current().delegate = self
@@ -191,6 +194,23 @@ class AppDelegate: RCTAppDelegate {
           if error != nil { print(error?.localizedDescription as Any) }
         }
       }
+    }
+  }
+
+  //
+  // Store 4 weeks worklog overview JSON in app group
+  //
+  @objc func handleNew4WeeksWorklogOverview(notification: NSNotification) {
+    guard let jsonString = notification.object as? String else {
+      print("new4WeeksWorklogOverview object is not a string")
+      return
+    }
+    let appGroup = "group.chronos"  // <-- Replace with your actual App Group identifier if different
+    if let userDefaults = UserDefaults(suiteName: appGroup) {
+      userDefaults.set(jsonString, forKey: "FourWeeksWorklogOverview")
+      userDefaults.synchronize()
+    } else {
+      print("Failed to get UserDefaults for app group: \(appGroup)")
     }
   }
 
