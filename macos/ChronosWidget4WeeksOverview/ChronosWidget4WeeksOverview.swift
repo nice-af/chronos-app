@@ -52,10 +52,14 @@ struct WorklogProvider: TimelineProvider {
   func generatePlaceholderData() -> FourWeeksWorklogOverview {
     let calendar = Calendar.current
     let today = Date()
+    // Find the most recent Monday (weekday = 2)
+    let weekdayToday = calendar.component(.weekday, from: today)
+    let daysSinceMonday = (weekdayToday + 5) % 7  // 0 if Monday, 6 if Sunday
+    let startDate = calendar.date(byAdding: .day, value: -daysSinceMonday - 27, to: today)!
     var days: [FourWeeksWorklogDayOverview] = []
 
     for i in 0..<28 {
-      let date = calendar.date(byAdding: .day, value: -(27 - i), to: today)!
+      let date = calendar.date(byAdding: .day, value: i, to: startDate)!
       let dateFormatter = DateFormatter()
       dateFormatter.dateFormat = "yyyy-MM-dd"
       let dateString = dateFormatter.string(from: date)
@@ -184,11 +188,11 @@ struct ChronosWidget4WeeksOverviewEntryView: View {
     case 0..<0.25:
       return (Color.blue.opacity(0.3), 0.04)
     case 0.25..<0.5:
-      return (Color.blue.opacity(0.5), 0.1)
+      return (Color.blue.opacity(0.5), 0.08)
     case 0.5..<0.75:
-      return (Color.blue.opacity(0.7), 0.12)
+      return (Color.blue.opacity(0.7), 0.1)
     case 0.75..<1.0:
-      return (Color.blue.opacity(0.9), 0.15)
+      return (Color.blue.opacity(0.9), 0.12)
     case 1.0:
       return (Color.blue, 0.22)
     default:
