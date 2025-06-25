@@ -205,7 +205,7 @@ class AppDelegate: RCTAppDelegate {
       print("new4WeeksWorklogOverview object is not a string")
       return
     }
-    let appGroup = "group.chronos"  // <-- Replace with your actual App Group identifier if different
+    let appGroup = "group.adrianfahrbach.chronos"
     if let userDefaults = UserDefaults(suiteName: appGroup) {
       userDefaults.set(jsonString, forKey: "FourWeeksWorklogOverview")
       userDefaults.synchronize()

@@ -31,7 +31,7 @@ struct WorklogEntry: TimelineEntry {
 struct WorklogProvider: TimelineProvider {
   // Helper to load real data from app group
   func loadWorklogOverviewFromAppGroup() -> FourWeeksWorklogOverview? {
-    let appGroup = "group.chronos"  // <-- Replace with your actual App Group identifier if different
+    let appGroup = "group.adrianfahrbach.chronos"
     if let userDefaults = UserDefaults(suiteName: appGroup),
       let jsonString = userDefaults.string(forKey: "FourWeeksWorklogOverview"),
       let jsonData = jsonString.data(using: .utf8)

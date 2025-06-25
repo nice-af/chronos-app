@@ -14,6 +14,7 @@ import {
 } from '../services/native-event-emitter.service.macos';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
 import { send4WeeksWorklogOverview } from '../utils/four-weeks-worklog-overview';
+import ms from 'ms';
 
 export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const jiraLogins = useAtomValue(loginsAtom);
@@ -40,7 +41,8 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
           callback: send4WeeksWorklogOverview,
         });
         send4WeeksWorklogOverview();
-        timeout4WeeksWorklogOverview.current = setTimeout(send4WeeksWorklogOverview, 10000);
+        // Update the 4 weeks worklog overview every 5 minutes
+        timeout4WeeksWorklogOverview.current = setTimeout(send4WeeksWorklogOverview, ms('5m'));
       }
     });
 

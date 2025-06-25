@@ -8,6 +8,7 @@ import { jiraAccountTokensAtom, loginsAtom } from './auth';
 import { selectedDateAtom } from './navigation';
 import { addProgress, resetProgress, setTotalProgress } from './progress';
 import { store } from './store';
+import { send4WeeksWorklogOverview } from '../utils/four-weeks-worklog-overview';
 
 export const currentWorklogToEditAtom = atom<Worklog | null>(null);
 export const worklogsLocalAtom = atom<Worklog[]>([]);
@@ -32,8 +33,6 @@ export const lastActiveWorklogIdAtom = atom<string | null>(null);
 // Unix timestamp where the tracking of the active worklog started
 const activeWorklogTrackingStartedAtom = atom(0);
 
-// TODO @florianmrz we need to run the below logic once upon the app being focussed / opened again
-// TODO @florianmrz this will mark the active worklog as edited when started and stopped within the same minute (minutes displayed in the UI are rounded to full minutes) which might be confusing to the user
 /**
  * Tick every few seconds to update the current duration
  */
@@ -125,6 +124,7 @@ export async function syncWorklogsForCurrentDay() {
 export function addWorklog(worklog: Worklog) {
   store.set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   setWorklogAsActive(worklog.id);
+  send4WeeksWorklogOverview();
 }
 
 /**
@@ -162,6 +162,7 @@ export function updateWorklog(worklog: Worklog) {
   } else {
     store.set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   }
+  send4WeeksWorklogOverview();
 }
 
 /**
@@ -185,6 +186,7 @@ export async function deleteWorklog(worklogId: WorklogId) {
       worklogsLocal.filter(w => w.id !== worklogId)
     );
   }
+  send4WeeksWorklogOverview();
 }
 
 export function addWorklogsToBackups(worklogs: Worklog[]) {
