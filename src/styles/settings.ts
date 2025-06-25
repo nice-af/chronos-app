@@ -29,10 +29,10 @@ export function createSettingsStyles(theme: Theme) {
     headline: {
       ...typo.headline,
       color: theme.textPrimary,
-      marginBottom: 12,
+      marginBottom: 14,
     },
     label: { ...typo.body, color: theme.textPrimary },
-    note: { ...typo.callout, color: theme.textSecondary },
+    note: { ...typo.callout, color: theme.textSecondary, marginTop: 4 },
     hr: {
       width: '100%',
       height: 1,

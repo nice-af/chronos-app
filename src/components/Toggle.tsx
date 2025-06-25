@@ -51,7 +51,7 @@ function createStyles(theme: Theme) {
     infoText: {
       ...typo.callout,
       color: theme.textSecondary,
-      marginTop: 2,
+      marginTop: 4,
     },
     toggleContainer: {
       flexShrink: 0,
