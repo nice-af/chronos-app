@@ -9,18 +9,11 @@ import { CloudId, JiraAccountTokens } from '../types/accounts.types';
 import { GetOauthTokenErrorResponse, GetOauthTokenResponse, JiraResource } from '../types/jira.types';
 import { getModalAccountSelection } from './modal.service';
 
-const handleOAuthError = (res: GetOauthTokenResponse | GetOauthTokenErrorResponse): GetOauthTokenResponse => {
-  if ('error' in res) {
-    throw new Error(res.error_description);
-  }
-  return res;
-};
-
 /**
  * Exchanges the OAuth code for an access token and refresh token
  */
 export async function getOAuthToken(code: string): Promise<GetOauthTokenResponse> {
-  return await fetch('https://auth.atlassian.com/oauth/token', {
+  const res = await fetch('https://auth.atlassian.com/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -30,16 +23,19 @@ export async function getOAuthToken(code: string): Promise<GetOauthTokenResponse
       code: code,
       redirect_uri: APP_OAUTH_REDIRECT_URI,
     }),
-  })
-    .then(response => response.json() as Promise<GetOauthTokenResponse | GetOauthTokenErrorResponse>)
-    .then(handleOAuthError);
+  });
+  const jsonRes = (await res.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+  if ('error' in jsonRes) {
+    throw new Error(jsonRes.error_description);
+  }
+  return jsonRes;
 }
 
 /**
  * Gets a new access and refresh token using a refresh token
  */
 export async function refreshAccessToken(refreshToken: string): Promise<JiraAccountTokens> {
-  return await fetch('https://auth.atlassian.com/oauth/token', {
+  const res = await fetch('https://auth.atlassian.com/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -48,14 +44,16 @@ export async function refreshAccessToken(refreshToken: string): Promise<JiraAcco
       client_secret: JIRA_SECRET,
       refresh_token: refreshToken,
     }),
-  })
-    .then(response => response.json() as Promise<GetOauthTokenResponse | GetOauthTokenErrorResponse>)
-    .then(handleOAuthError)
-    .then(data => ({
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      expiresAt: Date.now() + data.expires_in * 1000,
-    }));
+  });
+  const jsonRes = (await res.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+  if ('error' in jsonRes) {
+    throw new Error(jsonRes.error_description);
+  }
+  return {
+    accessToken: jsonRes.access_token,
+    refreshToken: jsonRes.refresh_token,
+    expiresAt: Date.now() + jsonRes.expires_in * 1000,
+  };
 }
 
 /**
