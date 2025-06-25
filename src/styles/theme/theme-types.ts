@@ -68,6 +68,7 @@ export interface Theme {
   cardsSelectionButtonActive: string | OpaqueColorValue;
   workingDayButtonInputBg: string | OpaqueColorValue;
   workingDayButtonInputBorder: string | OpaqueColorValue;
+  workingDayButtonTextColor: string | OpaqueColorValue;
 
   buttonBorderRadius: number;
 }

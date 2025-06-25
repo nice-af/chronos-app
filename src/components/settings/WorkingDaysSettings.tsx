@@ -74,7 +74,7 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ dayCode, label 
 
   // Label color interpolation with fallback
   const labelColorFrom = getColor(theme.textSecondary);
-  const labelColorTo = getColor(theme.textPrimary);
+  const labelColorTo = getColor(theme.workingDayButtonTextColor);
   const labelColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [labelColorFrom, labelColorTo],
@@ -132,7 +132,7 @@ const WorkingDaysSettingButton: FC<WorkingDaysSettingProps> = ({ dayCode, label 
         style={[styles.pressableInput, isFocused && styles.pressableInputFocused, { opacity: inputOpacity }]}
         pointerEvents={inputPointerEvents}>
         <TextInput
-          style={{ flex: 1, textAlign: 'center', borderWidth: 0 }}
+          style={styles.textInput}
           value={hours}
           onChangeText={handleHoursChange}
           editable={isChecked}
@@ -196,7 +196,7 @@ function createStyles(theme: Theme) {
     },
     label: {
       ...typo.bodyEmphasized,
-      color: theme.textSecondary,
+      color: theme.workingDayButtonTextColor,
       textAlign: 'center',
       width: 40,
       top: 13,
@@ -217,11 +217,16 @@ function createStyles(theme: Theme) {
       textAlign: 'center',
       borderWidth: 1,
       borderColor: theme.workingDayButtonInputBorder,
-      color: theme.textSecondary,
+      color: theme.workingDayButtonTextColor,
     },
     pressableInputFocused: {
-      borderColor: theme.textSecondary,
-      outlineWidth: 0,
+      borderColor: theme.workingDayButtonTextColor,
+    },
+    textInput: {
+      flex: 1,
+      textAlign: 'center',
+      borderWidth: 0,
+      color: theme.workingDayButtonTextColor,
     },
   });
   return styles;

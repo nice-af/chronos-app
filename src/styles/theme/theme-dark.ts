@@ -117,6 +117,7 @@ const buttonColors = {
   cardsSelectionButtonActive: 'rgba(255,255,255,0.08)',
   workingDayButtonInputBg: '#0f69c4',
   workingDayButtonInputBorder: '#125fad',
+  workingDayButtonTextColor: 'rgba(255,255,255,0.85)',
 } satisfies Partial<Theme>;
 
 export const darkTheme: Theme = {
