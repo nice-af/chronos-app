@@ -38,7 +38,6 @@ export function get4WeeksWorklogOverview(): FourWeeksWorklogOverview {
       enabled: !!workingDay?.enabled,
     });
   }
-  console.log(JSON.stringify(days, null, 2));
   return { days };
 }
 
