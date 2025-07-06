@@ -10,6 +10,7 @@ import { typo } from '../../styles/typo';
 import { DayCode, weekDays } from '../../types/global.types';
 import { HorizontalScrollWithFade } from '../HorizontalScrollWithFade';
 import { Toggle } from '../Toggle';
+import { send4WeeksWorklogOverview } from '../../utils/four-weeks-worklog-overview';
 
 interface WorkingDaysSettingProps {
   dayCode: DayCode;
@@ -162,7 +163,12 @@ export const WorkingDaysSetting: FC = () => {
       <Toggle
         label={t('weekDays.hideNonWorkingDays')}
         state={settings.hideNonWorkingDays}
-        setState={newState => setSettings(cur => ({ ...cur, hideNonWorkingDays: newState }))}
+        setState={newState =>
+          setSettings(cur => {
+            send4WeeksWorklogOverview();
+            return { ...cur, hideNonWorkingDays: newState };
+          })
+        }
       />
     </View>
   );

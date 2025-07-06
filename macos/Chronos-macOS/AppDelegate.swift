@@ -3,6 +3,7 @@ import Foundation
 import React_RCTAppDelegate
 import SwiftUI
 import UserNotifications
+import WidgetKit
 
 @NSApplicationMain
 class AppDelegate: RCTAppDelegate {
@@ -209,6 +210,7 @@ class AppDelegate: RCTAppDelegate {
     if let userDefaults = UserDefaults(suiteName: appGroup) {
       userDefaults.set(jsonString, forKey: "FourWeeksWorklogOverview")
       userDefaults.synchronize()
+      WidgetCenter.shared.reloadTimelines(ofKind: "ChronosWidget4WeeksOverview")
     } else {
       print("Failed to get UserDefaults for app group: \(appGroup)")
     }

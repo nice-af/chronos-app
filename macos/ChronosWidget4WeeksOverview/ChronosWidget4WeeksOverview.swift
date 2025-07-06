@@ -98,7 +98,7 @@ struct WorklogProvider: TimelineProvider {
         FourWeeksWorklogDayOverview(
           date: dateString,
           trackedHours: trackedHours,
-          workingHours: workingHours,
+          workingHours: enabled ? workingHours : 0,
           enabled: enabled
         ))
     }
@@ -165,19 +165,20 @@ struct ChronosWidget4WeeksOverviewEntryView: View {
                   let (fillColor, overlayOpacity) = colorForTrackedRatio(
                     ratio, tracked: dayData.trackedHours, working: dayData.workingHours,
                     enabled: dayData.enabled)
+
                   Rectangle()
                     .fill(fillColor)
                     .frame(width: cellSize.width, height: cellSize.height)
                     .cornerRadius(4)
                     .overlay(
-                      dayData.enabled && dayData.trackedHours > 0 && overlayOpacity > 0
+                      overlayOpacity > 0
                         ? RoundedRectangle(cornerRadius: 4)
                           .stroke(Color.white.opacity(overlayOpacity), lineWidth: 1)
                         : nil
                     )
                 } else {
                   Rectangle()
-                    .fill(Color.gray.opacity(0.1))
+                    .fill(Color.gray.opacity(0.2))
                     .frame(width: cellSize.width, height: cellSize.height)
                     .cornerRadius(4)
                 }
@@ -196,27 +197,35 @@ struct ChronosWidget4WeeksOverviewEntryView: View {
   private func colorForTrackedRatio(
     _ ratio: Double, tracked: Double, working: Double, enabled: Bool
   ) -> (Color, Double) {
-    if !enabled || working == 0 {
-      return (Color.gray.opacity(0.2), 0.0)
+    let empty = (Color.gray.opacity(0.2), 0.0)
+    let fill1 = (Color.blue.opacity(0.3), 0.04)
+    let fill2 = (Color.blue.opacity(0.5), 0.08)
+    let fill3 = (Color.blue.opacity(0.7), 0.1)
+    let fill4 = (Color.blue.opacity(0.9), 0.12)
+    let fill5 = (Color.blue, 0.22)
+    let overtracked = (Color.cyan, 0.25)
+
+    if ratio > 1.0 || (!enabled && tracked > 0) {
+      return overtracked
     }
-    if ratio > 1.0 {
-      return (Color.cyan, 0.25)
+    if working == 0 {
+      return empty
     }
     switch ratio {
     case 0:
-      return (Color.gray.opacity(0.2), 0)
+      return empty
     case 0..<0.25:
-      return (Color.blue.opacity(0.3), 0.04)
+      return fill1
     case 0.25..<0.5:
-      return (Color.blue.opacity(0.5), 0.08)
+      return fill2
     case 0.5..<0.75:
-      return (Color.blue.opacity(0.7), 0.1)
+      return fill3
     case 0.75..<1.0:
-      return (Color.blue.opacity(0.9), 0.12)
+      return fill4
     case 1.0:
-      return (Color.blue, 0.22)
+      return fill5
     default:
-      return (Color.gray.opacity(0.2), 0)
+      return empty
     }
   }
 }
