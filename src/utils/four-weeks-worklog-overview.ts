@@ -20,9 +20,9 @@ export function get4WeeksWorklogOverview(): FourWeeksWorklogOverview {
   const workingDaysAndTime = settings.workingDaysAndTime;
 
   // Calculate the start date for 4 full weeks (28 days), starting from the week's first day
-  const today = new Date();
-  const todayDayId = today.getDay() - 1; // We use -1 to set monday as the first day of the week
-  const startDate = subDays(today, todayDayId + 21); // Go back 3 weeks from the start of the current week
+  const now = new Date();
+  const localDayId = (now.getDay() + 6) % 7; // Adjust to make Monday the first day of the week
+  const startDate = subDays(now, localDayId + 21); // Go back 3 weeks from the start of the current week
 
   const days: FourWeeksWorklogDayOverview[] = [];
   for (let i = 0; i < 28; i++) {
@@ -38,6 +38,7 @@ export function get4WeeksWorklogOverview(): FourWeeksWorklogOverview {
       enabled: !!workingDay?.enabled,
     });
   }
+  console.log(JSON.stringify(days, null, 2));
   return { days };
 }
 
