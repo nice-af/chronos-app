@@ -42,13 +42,9 @@ export const useAuthRequest = () => {
       if (state.current !== urlState || !urlCode) {
         throw new Error('An error occured while authenticating. Maybe your session timed out? Please try again.');
       }
-      const {
-        access_token: accessToken,
-        refresh_token: refreshToken,
-        expires_in: expiresIn,
-      } = await getOAuthToken(urlCode);
+      const { accessToken, refreshToken, expiresAt } = await getOAuthToken(urlCode);
       await initializeJiraAccount({
-        jiraAccountTokens: { accessToken, refreshToken, expiresAt: Date.now() + expiresIn * 1000 },
+        jiraAccountTokens: { accessToken, refreshToken, expiresAt },
       });
     } catch (error) {
       Alert.alert('An unexpected error has occurred', (error as Error).message);

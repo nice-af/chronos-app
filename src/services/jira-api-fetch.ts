@@ -2,7 +2,7 @@
  * This file contains functions to interact directly with the Jira API through fetch requests.
  * The reqeusts in here therefore don't use the Jira.js client.
  */
-import { APP_OAUTH_REDIRECT_URI, JIRA_CLIENT_ID, JIRA_SECRET } from '@env';
+import { OAUTH_BASE_URL } from '@env';
 import { Version3Models } from 'jira.js';
 import { Alert } from 'react-native';
 import { CloudId, JiraAccountTokens } from '../types/accounts.types';
@@ -12,43 +12,48 @@ import { getModalAccountSelection } from './modal.service';
 /**
  * Exchanges the OAuth code for an access token and refresh token
  */
-export async function getOAuthToken(code: string): Promise<GetOauthTokenResponse> {
-  const res = await fetch('https://auth.atlassian.com/oauth/token', {
+export async function getOAuthToken(code: string): Promise<JiraAccountTokens> {
+  const response = await fetch(`${OAUTH_BASE_URL}/api/jira-oauth`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       grant_type: 'authorization_code',
-      client_id: JIRA_CLIENT_ID,
-      client_secret: JIRA_SECRET,
-      code: code,
-      redirect_uri: APP_OAUTH_REDIRECT_URI,
+      code,
     }),
   });
-  const jsonRes = (await res.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+
+  const jsonRes = (await response.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+
   if ('error' in jsonRes) {
-    throw new Error(jsonRes.error_description);
+    throw new Error(jsonRes.error_description || 'Failed to fetch OAuth token');
   }
-  return jsonRes;
+
+  return {
+    accessToken: jsonRes.access_token,
+    refreshToken: jsonRes.refresh_token,
+    expiresAt: Date.now() + jsonRes.expires_in * 1000,
+  };
 }
 
 /**
  * Gets a new access and refresh token using a refresh token
  */
 export async function refreshAccessToken(refreshToken: string): Promise<JiraAccountTokens> {
-  const res = await fetch('https://auth.atlassian.com/oauth/token', {
+  const response = await fetch(`${OAUTH_BASE_URL}/api/jira-oauth`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       grant_type: 'refresh_token',
-      client_id: JIRA_CLIENT_ID,
-      client_secret: JIRA_SECRET,
       refresh_token: refreshToken,
     }),
   });
-  const jsonRes = (await res.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+
+  const jsonRes = (await response.json()) as GetOauthTokenResponse | GetOauthTokenErrorResponse;
+
   if ('error' in jsonRes) {
-    throw new Error(jsonRes.error_description);
+    throw new Error(jsonRes.error_description || 'Failed to refresh access token');
   }
+
   return {
     accessToken: jsonRes.access_token,
     refreshToken: jsonRes.refresh_token,
