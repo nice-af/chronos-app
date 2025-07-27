@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1530"
-   version = "2.2">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -15,19 +15,10 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "514201482437B4B30078DB4F"
-               BuildableName = "Chronos.app"
+               BuildableName = "Chronos for Jira.app"
                BlueprintName = "Chronos-macOS"
                ReferencedContainer = "container:Chronos.xcodeproj">
             </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <AutocreatedTestPlanReference>
-            </AutocreatedTestPlanReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
@@ -53,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "Chronos.app"
+            BuildableName = "Chronos for Jira.app"
             BlueprintName = "Chronos-macOS"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
@@ -70,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "Chronos.app"
+            BuildableName = "Chronos for Jira.app"
             BlueprintName = "Chronos-macOS"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
