@@ -9,6 +9,7 @@ brew install node@22
 echo 'export PATH="/usr/local/opt/node@22/bin:$PATH"' >> ~/.zshrc
 export LDFLAGS="-L/usr/local/opt/node@22/lib"
 export CPPFLAGS="-I/usr/local/opt/node@22/include"
+sudo mkdir /usr/local/bin
 ln -s $(which node) /usr/local/bin/node
 
 # Install dependencies
