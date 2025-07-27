@@ -66,6 +66,7 @@
 		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
 		3A5394B72C2308C300980412 /* ReactNativeOAuthLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeOAuthLogin.m; sourceTree = "<group>"; };
 		3A6139672B881A0000ED1E60 /* Chronos-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chronos-macOS.entitlements"; sourceTree = "<group>"; };
+		3AAAF7A22E36BA51000C080D /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
 		3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundViewManager.h; sourceTree = "<group>"; };
@@ -75,7 +76,7 @@
 		3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindowController.swift; sourceTree = "<group>"; };
 		4365127F05FFE21ED96FAF49 /* libPods-Chronos-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chronos-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E37F6D15C601E66A4CD20B0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		514201492437B4B30078DB4F /* Chronos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chronos.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		514201492437B4B30078DB4F /* Chronos for Jira.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chronos for Jira.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		514201512437B4B40078DB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514201542437B4B40078DB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -138,6 +139,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3AAAF7A12E36BA26000C080D /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				3AAAF7A22E36BA51000C080D /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		5142014A2437B4B30078DB4F /* Chronos-macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +185,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3AAAF7A12E36BA26000C080D /* ci_scripts */,
 				5142014A2437B4B30078DB4F /* Chronos-macOS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				3A478D4E2E089DFC00A183D1 /* ChronosWidget4WeeksOverview */,
@@ -191,7 +201,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				514201492437B4B30078DB4F /* Chronos.app */,
+				514201492437B4B30078DB4F /* Chronos for Jira.app */,
 				3A478D492E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex */,
 			);
 			name = Products;
@@ -248,7 +258,7 @@
 			);
 			name = "Chronos-macOS";
 			productName = Chronos;
-			productReference = 514201492437B4B30078DB4F /* Chronos.app */;
+			productReference = 514201492437B4B30078DB4F /* Chronos for Jira.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -547,7 +557,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/RCTTypeSafety/RCTTypeSafety.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/React/React-Core.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/ReactCommon/ReactCommon.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/ReactCodegen/ReactCodegen.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/folly/RCT-Folly.modulemap\" -Xcc -fmodule-map-file=\"${PODS_ROOT}/Headers/Public/yoga/Yoga.modulemap\" -DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = de.adrianfahrbach.chronos;
-				PRODUCT_NAME = Chronos;
+				PRODUCT_NAME = "Chronos for Jira";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";
@@ -584,7 +594,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.adrianfahrbach.chronos;
-				PRODUCT_NAME = Chronos;
+				PRODUCT_NAME = "Chronos for Jira";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PROJECT_NAME)-macOS/$(PROJECT_NAME)-macOS-Bridging-Header.h";

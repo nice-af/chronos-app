@@ -1,4 +1,4 @@
-import { APP_DEEPLINK_BASEURL, APP_OAUTH_REDIRECT_URI, JIRA_CLIENT_ID } from '@env';
+import { APP_DEEPLINK_BASE_URL, APP_OAUTH_REDIRECT_URI, JIRA_CLIENT_ID } from '@env';
 import qs from 'qs';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Linking, NativeEventEmitter, NativeModule, NativeModules, Platform } from 'react-native';
@@ -96,7 +96,7 @@ export const useAuthRequest = () => {
     });
 
     if (Platform.OS === 'macos') {
-      NativeModules.ReactNativeOAuthLogin.startSession(oAuthUrl, APP_DEEPLINK_BASEURL);
+      NativeModules.ReactNativeOAuthLogin.startSession(oAuthUrl, APP_DEEPLINK_BASE_URL);
     } else if (await Linking.canOpenURL(oAuthUrl)) {
       await Linking.openURL(oAuthUrl);
     } else {
