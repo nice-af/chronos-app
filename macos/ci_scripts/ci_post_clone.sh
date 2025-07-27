@@ -6,6 +6,7 @@ brew install cocoapods
 
 echo "Installing Node.js..."
 brew install node@22
+brew link --force --overwrite node@22
 echo "export NODE_BINARY=$(which node)" > ../.xcode.env.local
 
 # Install dependencies
