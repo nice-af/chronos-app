@@ -24,6 +24,15 @@ npm start
 Once your Metro bundler is running, you can start the app by opening the Xcode project (`Chronos.xcworkspace`) in the `macos` directory and starting the app from within Xcode.
 The Xcode project contains two schemes: `Chronos-macOS` for development and `Chronos-macOS-prod` for the production build.
 
+## Safari extension
+
+This app also contains a Safari extension which is built with the `chronos-companion` project using Plasmo.
+To update the extension, first make sure that you built the extension in the `chronos-companion` project. The `chronos-companion` repo should be in the same directory as this repo. Then run the following command to copy and adjust the extension files:
+
+```bash
+npm run copy-safari-extension
+```
+
 ## Common issues
 
 ### React Native Debugger

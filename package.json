@@ -25,7 +25,8 @@
     "build:macos": "xcodebuild -workspace macos/Chronos.xcworkspace -scheme Chronos-macOS-prod -config Release",
     "windows": "react-native run-windows",
     "release": "release-it",
-    "pod-install:macos": "cd macos && pod install && cd .."
+    "pod-install:macos": "cd macos && pod install && cd ..",
+    "copy-safari-extension": "sh ./scripts/copy-extension.sh"
   },
   "dependencies": {
     "@atlaskit/editor-markdown-transformer": "^5.16.0",

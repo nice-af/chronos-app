@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "Chronos for Jira Companion",
+    "description": "Der Anzeigename für die Erweiterung."
+  },
+  "extension_description": {
+    "message": "Dies ist eine Erweiterung für die Chronos App. Sie ermöglicht es dir, deine Timer direkt über einen Button im Jira-Ticket zu starten.",
+    "description": "Beschreibung, was die Erweiterung macht."
+  }
+}

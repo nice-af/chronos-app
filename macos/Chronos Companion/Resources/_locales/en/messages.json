@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "Chronos for Jira Companion",
+    "description": "The display name for the extension."
+  },
+  "extension_description": {
+    "message": "This is a companion extension for the Chronos app. It allows you to start your timers directly from the Jira issue through a custom button.",
+    "description": "Description of what the extension does."
+  }
+}

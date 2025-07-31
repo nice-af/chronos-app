@@ -19,6 +19,7 @@
 		3A4A5BF32C2302BA00A744AA /* ReactNativeOAuthLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A5BF22C2302BA00A744AA /* ReactNativeOAuthLogin.swift */; };
 		3A4F9E502AE58A4C00227EA8 /* app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */; };
 		3A5394B82C2308C300980412 /* ReactNativeOAuthLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5394B72C2308C300980412 /* ReactNativeOAuthLogin.m */; };
+		3A7C39872E3C0132007B51C3 /* Chronos Companion.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */; };
 		3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */; };
 		3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */; };
@@ -36,6 +37,13 @@
 			remoteGlobalIDString = 3A478D482E089DFC00A183D1;
 			remoteInfo = ChronosWidget4WeeksOverviewExtension;
 		};
+		3A7C39852E3C0132007B51C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A7C396D2E3C0132007B51C3;
+			remoteInfo = "Chronos Companion";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +54,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				3A478D592E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex in Embed Foundation Extensions */,
+				3A7C39872E3C0132007B51C3 /* Chronos Companion.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +75,7 @@
 		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
 		3A5394B72C2308C300980412 /* ReactNativeOAuthLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeOAuthLogin.m; sourceTree = "<group>"; };
 		3A6139672B881A0000ED1E60 /* Chronos-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chronos-macOS.entitlements"; sourceTree = "<group>"; };
+		3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Chronos Companion.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAAF7A22E36BA51000C080D /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
@@ -94,6 +104,13 @@
 			);
 			target = 3A478D482E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension */;
 		};
+		3A7C398A2E3C0132007B51C3 /* Exceptions for "Chronos Companion" folder in "Chronos Companion" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3A7C396D2E3C0132007B51C3 /* Chronos Companion */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -105,6 +122,17 @@
 			path = ChronosWidget4WeeksOverview;
 			sourceTree = "<group>";
 		};
+		3A7C396F2E3C0132007B51C3 /* Chronos Companion */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3A7C398A2E3C0132007B51C3 /* Exceptions for "Chronos Companion" folder in "Chronos Companion" target */,
+			);
+			explicitFolders = (
+				Resources/_locales,
+			);
+			path = "Chronos Companion";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +142,13 @@
 			files = (
 				3A478D4D2E089DFC00A183D1 /* SwiftUI.framework in Frameworks */,
 				3A478D4B2E089DFC00A183D1 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A7C396B2E3C0132007B51C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +224,7 @@
 				5142014A2437B4B30078DB4F /* Chronos-macOS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				3A478D4E2E089DFC00A183D1 /* ChronosWidget4WeeksOverview */,
+				3A7C396F2E3C0132007B51C3 /* Chronos Companion */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				AF2DC7B052CAD083535585F1 /* Pods */,
@@ -203,6 +239,7 @@
 			children = (
 				514201492437B4B30078DB4F /* Chronos for Jira.app */,
 				3A478D492E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex */,
+				3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -239,6 +276,28 @@
 			productReference = 3A478D492E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3A7C396D2E3C0132007B51C3 /* Chronos Companion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A7C398B2E3C0132007B51C3 /* Build configuration list for PBXNativeTarget "Chronos Companion" */;
+			buildPhases = (
+				3A7C396A2E3C0132007B51C3 /* Sources */,
+				3A7C396B2E3C0132007B51C3 /* Frameworks */,
+				3A7C396C2E3C0132007B51C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3A7C396F2E3C0132007B51C3 /* Chronos Companion */,
+			);
+			name = "Chronos Companion";
+			packageProductDependencies = (
+			);
+			productName = "Chronos Companion";
+			productReference = 3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		514201482437B4B30078DB4F /* Chronos-macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Chronos-macOS" */;
@@ -255,6 +314,7 @@
 			);
 			dependencies = (
 				3A478D582E089DFC00A183D1 /* PBXTargetDependency */,
+				3A7C39862E3C0132007B51C3 /* PBXTargetDependency */,
 			);
 			name = "Chronos-macOS";
 			productName = Chronos;
@@ -272,6 +332,9 @@
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					3A478D482E089DFC00A183D1 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					3A7C396D2E3C0132007B51C3 = {
 						CreatedOnToolsVersion = 16.4;
 					};
 					514201482437B4B30078DB4F = {
@@ -298,12 +361,20 @@
 			targets = (
 				514201482437B4B30078DB4F /* Chronos-macOS */,
 				3A478D482E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension */,
+				3A7C396D2E3C0132007B51C3 /* Chronos Companion */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3A478D472E089DFC00A183D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A7C396C2E3C0132007B51C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -395,6 +466,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A7C396A2E3C0132007B51C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		514201452437B4B30078DB4F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,6 +498,11 @@
 			isa = PBXTargetDependency;
 			target = 3A478D482E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension */;
 			targetProxy = 3A478D572E089DFC00A183D1 /* PBXContainerItemProxy */;
+		};
+		3A7C39862E3C0132007B51C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A7C396D2E3C0132007B51C3 /* Chronos Companion */;
+			targetProxy = 3A7C39852E3C0132007B51C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -522,6 +605,101 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.adrianfahrbach.chronos.ChronosWidget4WeeksOverview;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3A7C39882E3C0132007B51C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Chronos Companion/Chronos_Companion.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Chronos Companion/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronos Companion";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.adrianfahrbach.chronos.Chronos-Companion";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3A7C39892E3C0132007B51C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Chronos Companion/Chronos_Companion.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = ZZGKAJ7UNQ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Chronos Companion/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Chronos Companion";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.adrianfahrbach.chronos.Chronos-Companion";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -760,6 +938,15 @@
 			buildConfigurations = (
 				3A478D5B2E089DFC00A183D1 /* Debug */,
 				3A478D5C2E089DFC00A183D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A7C398B2E3C0132007B51C3 /* Build configuration list for PBXNativeTarget "Chronos Companion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A7C39882E3C0132007B51C3 /* Debug */,
+				3A7C39892E3C0132007B51C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

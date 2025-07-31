@@ -12,6 +12,7 @@
 !*.eslintrc
 !*.ts
 !*.tsx
+!*.md
 !*.mdx
 
 ## Paths
