@@ -43,6 +43,7 @@ function createStyles(theme: Theme) {
       lineHeight: 15,
       color: theme.black,
       flexGrow: 1,
+      flexBasis: 0,
       opacity: 0.55,
     },
   });
