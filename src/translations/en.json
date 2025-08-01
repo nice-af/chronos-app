@@ -34,7 +34,8 @@
   },
   "login": {
     "buttonLabel": "Login to Jira",
-    "description": "Please click the button below to connect your Jira account with Chronos."
+    "description": "Please click the button below to connect your Jira account with Chronos.",
+    "noConnectionError": "No internet connection detected or our servers may be temporarily unavailable."
   },
   "modals": {
     "accountLogoutHeadline": "You are about to remove an account",

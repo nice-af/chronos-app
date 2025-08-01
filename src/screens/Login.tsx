@@ -1,6 +1,7 @@
 import { useAtomValue } from 'jotai';
-import React, { FC } from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { Animated, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { OAUTH_BASE_URL } from '@env';
 import { loginsAtom, themeAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
 import { ButtonPrimary } from '../components/ButtonPrimary';
@@ -12,6 +13,7 @@ import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
 import { typo } from '../styles/typo';
 import { getPadding } from '../styles/utils';
+import { ErrorMessageToast } from '../components/ErrorMessageToast';
 
 export const Login: FC = () => {
   const { initOAuth, isLoading: isLoadingOAuth } = useAuthRequest();
@@ -19,12 +21,44 @@ export const Login: FC = () => {
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
+  const [showError, setShowError] = useState(false);
+  const [animation] = useState(new Animated.Value(-100)); // Initial position off-screen
+
+  async function pingServer() {
+    try {
+      const response = await fetch(`${OAUTH_BASE_URL}/api/status`);
+      if (!response.ok) {
+        throw new Error('Server is down');
+      }
+      setShowError(false);
+    } catch (_error) {
+      setShowError(true);
+    }
+  }
+
+  // We ping the server every X seconds to check if it's reachable and show an error message if not.
+  useEffect(() => {
+    void pingServer();
+    const interval = setInterval(pingServer, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: showError ? 52 : -100,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  }, [showError]);
 
   return (
     <AnimateScreenContainer isVisible={!jiraAccounts || jiraAccounts.length === 0} offScreenLocation='left'>
       <Layout
         customBackgroundColor={theme.backgroundLogin}
         header={Platform.OS !== 'windows' && { align: 'center', title: 'Login' }}>
+        <Animated.View style={[styles.errorMessageToast, { top: animation }]}>
+          <ErrorMessageToast message={t('login.noConnectionError')} />
+        </Animated.View>
         <View style={styles.bgContainer}>
           <Image style={styles.bgGradient} source={require('../assets/login/bg-gradient.png')} />
           <Image style={styles.bgShine} source={require('../assets/login/bg-shine.png')} />
@@ -57,6 +91,13 @@ export const Login: FC = () => {
 function createStyles(theme: Theme) {
   // This needs to be assigned to `styles` for react-native/no-unused-styles to work
   const styles = StyleSheet.create({
+    errorMessageToast: {
+      position: 'absolute',
+      top: -100,
+      left: 0,
+      width: '100%',
+      zIndex: 3,
+    },
     container: {
       display: 'flex',
       flexGrow: 1,
