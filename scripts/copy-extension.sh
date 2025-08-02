@@ -10,10 +10,11 @@ rsync -av --delete --exclude '_locales/' "$SOURCE_DIR/" "$DEST_DIR/"
 # Adjust manifest.json
 MANIFEST_FILE="$DEST_DIR/manifest.json"
 if [ -f "$MANIFEST_FILE" ]; then
-  # Use sed to replace the name and description entries
-  sed -i '' 's/"name": ".*"/"name": "__MSG_extension_name__"/' "$MANIFEST_FILE"
-  sed -i '' 's/"description": ".*"/"description": "__MSG_extension_description__"/' "$MANIFEST_FILE"
-  echo "Updated manifest.json with translation keys."
+  # Use jq to update name, description, and add default_locale
+  jq '.name = "__MSG_extension_name__" | .description = "__MSG_extension_description__" | .default_locale = "en"' \
+    "$MANIFEST_FILE" > "$MANIFEST_FILE.tmp" && mv "$MANIFEST_FILE.tmp" "$MANIFEST_FILE"
+
+  echo "Updated manifest.json with translation keys and default_locale."
 else
   echo "manifest.json not found in $DEST_DIR."
 fi
