@@ -70,7 +70,7 @@
     "@types/react": "18.3.23",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "consola": "^3.4.2",
-    "eslint": "^9.25.1",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-react-native": "^5.0.0",
     "husky": "^9.1.7",
@@ -88,9 +88,6 @@
   "overrides": {
     "@atlaskit/editor-bitbucket-transformer": {
       "react": "$react"
-    },
-    "eslint-plugin-react-native": {
-      "eslint": "^9.25.1"
     }
   }
 }
