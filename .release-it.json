@@ -1,4 +1,5 @@
 {
+  "$schema": "https://unpkg.com/release-it@latest/schema/release-it.json",
   "git": {
     "commit": true,
     "commitMessage": "release: v${version}"
@@ -11,5 +12,8 @@
   },
   "plugins": {
     "./scripts/release-it/xcode.mjs": {}
+  },
+  "hooks": {
+    "after:version": "npm run copy-safari-extension"
   }
 }
