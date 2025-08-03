@@ -130,7 +130,7 @@
     },
     "worklogsSyncPeriod": {
       "label": "Sync period",
-      "note": "A longer period can significantly increase the sync time, especially for accounts with many issues.",
+      "note": "Sets how far back worklogs from Jira are displayed. A longer period can significantly increase the sync time, especially with many issues.",
       "options": {
         "1w": "One week",
         "2w": "Two weeks",

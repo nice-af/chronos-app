@@ -130,7 +130,7 @@
     },
     "worklogsSyncPeriod": {
       "label": "Synchronisierungszeitraum",
-      "note": "Ein längerer Zeitraum kann die Synchronisationszeit erheblich verlängern, besonders bei Accounts mit vielen Issues.",
+      "note": "Gibt an, wie weit zurück Arbeitszeiten aus Jira angezeigt werden. Ein längerer Zeitraum kann die Synchronisationszeit erheblich verlängern, besonders bei vielen Issues.",
       "options": {
         "1w": "Eine Woche",
         "2w": "Zwei Wochen",
