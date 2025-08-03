@@ -22,7 +22,7 @@ export const GlobalProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [_isFullscreen, setIsFullscreen] = useAtom(isFullscreenAtom);
   const [_currentOverlay, setCurrentOverlay] = useAtom(currentOverlayAtom);
-  const timeout4WeeksWorklogOverview = useRef<NodeJS.Timeout | null>(null);
+  const timeout4WeeksWorklogOverview = useRef<number | null>(null);
 
   useEffect(() => {
     setIsLoading(true);

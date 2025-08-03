@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
-import React, { FC, useEffect, useState } from 'react';
-import { Animated, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { Animated, AppState, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { OAUTH_BASE_URL } from '@env';
 import { loginsAtom, themeAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
@@ -21,6 +21,7 @@ export const Login: FC = () => {
   const theme = useAtomValue(themeAtom);
   const styles = useThemedStyles(createStyles);
   const { t } = useTranslation();
+  const pingInterval = useRef<number | null>(null);
   const [showError, setShowError] = useState(false);
   const [animation] = useState(new Animated.Value(-100)); // Initial position off-screen
 
@@ -36,12 +37,32 @@ export const Login: FC = () => {
     }
   }
 
-  // We ping the server every X seconds to check if it's reachable and show an error message if not.
+  /**
+   * We ping the server every X seconds to check if it's reachable and show an error message if not.
+   * We only do this when the app is active to avoid unnecessary network requests.
+   */
   useEffect(() => {
     void pingServer();
-    const interval = setInterval(pingServer, 10000);
-    return () => clearInterval(interval);
+    pingInterval.current = setInterval(pingServer, 15000);
+    AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active' && !pingInterval.current) {
+        void pingServer();
+        pingInterval.current = setInterval(pingServer, 15000);
+      } else {
+        clearPingInterval();
+      }
+    });
+    return () => {
+      clearPingInterval();
+    };
   }, []);
+
+  function clearPingInterval() {
+    if (pingInterval.current) {
+      clearInterval(pingInterval.current);
+      pingInterval.current = null;
+    }
+  }
 
   useEffect(() => {
     Animated.timing(animation, {
