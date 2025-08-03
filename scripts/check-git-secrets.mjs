@@ -1,6 +1,6 @@
 // @ts-check
 
-import consola from 'consola';
+import { consola } from 'consola';
 import { createHash } from 'crypto';
 import { existsSync, readFileSync } from 'fs';
 import notifier from 'node-notifier';
