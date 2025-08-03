@@ -9,7 +9,7 @@ class XCode extends Plugin {
 
   updateInfoPlist(infoPlistPath, version, buildNumber) {
     let infoPlistFile = fs.readFileSync(infoPlistPath, 'utf8');
-    const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\t<string>(.*)<\/string>/)?.[1];
+    const currentBuildNumber = infoPlistFile.match(/<key>CFBundleVersion<\/key>\n\s+<string>(.*)<\/string>/)?.[1];
 
     let newBuildNumber = buildNumber;
     if (currentBuildNumber === buildNumber) {
@@ -22,28 +22,22 @@ class XCode extends Plugin {
 
     infoPlistFile = infoPlistFile
       .replace(
-        /<key>CFBundleShortVersionString<\/key>\n\t<string>.*<\/string>/,
-        `<key>CFBundleShortVersionString</key>\n\t<string>${version}</string>`
+        /<key>CFBundleShortVersionString<\/key>\n(\s+)<string>.*<\/string>/,
+        `<key>CFBundleShortVersionString</key>\n$1<string>${version}</string>`
       )
       .replace(
-        /<key>CFBundleVersion<\/key>\n\t<string>.*<\/string>/,
-        `<key>CFBundleVersion</key>\n\t<string>${newBuildNumber}</string>`
+        /<key>CFBundleVersion<\/key>\n(\s+)<string>.*<\/string>/,
+        `<key>CFBundleVersion</key>\n$1<string>${newBuildNumber}</string>`
       );
 
     fs.writeFileSync(infoPlistPath, infoPlistFile);
   }
 
-  updateProjectPbxproj(xcodeprojPath, targetName, version, buildNumber) {
+  updateProjectPbxproj(xcodeprojPath, version, buildNumber) {
     let xcodeprojFile = fs.readFileSync(xcodeprojPath, 'utf8');
-
-    const targetRegex = new RegExp(`\b${targetName}\b[\s\S]*?buildSettings = \{([\s\S]*?)\};`, 'g');
-    xcodeprojFile = xcodeprojFile.replace(targetRegex, (match, buildSettings) => {
-      const updatedBuildSettings = buildSettings
-        .replace(/MARKETING_VERSION = [0-9]+\.[0-9]+\.[0-9]+;/, `MARKETING_VERSION = ${version};`)
-        .replace(/CURRENT_PROJECT_VERSION = [0-9]+;/, `CURRENT_PROJECT_VERSION = ${buildNumber};`);
-      return match.replace(buildSettings, updatedBuildSettings);
-    });
-
+    xcodeprojFile = xcodeprojFile
+      .replace(/MARKETING_VERSION = .+;/g, `MARKETING_VERSION = ${version};`)
+      .replace(/CURRENT_PROJECT_VERSION = .+;/g, `CURRENT_PROJECT_VERSION = ${buildNumber};`);
     fs.writeFileSync(xcodeprojPath, xcodeprojFile);
   }
 
@@ -54,34 +48,8 @@ class XCode extends Plugin {
     const month = (today.getMonth() + 1).toString().padStart(2, '0');
     const day = today.getDate().toString().padStart(2, '0');
     const buildNumber = `${year}${month}${day}`;
-
-    const targets = [
-      {
-        name: 'Chronos-macOS',
-        infoPlistPath: './macos/Chronos-macOS/Info.plist',
-      },
-      {
-        name: 'Chronos Companion',
-        xcodeprojTarget: 'Chronos Companion',
-      },
-      {
-        name: 'ChronosWidget4WeeksOverview',
-        xcodeprojTarget: 'ChronosWidget4WeeksOverview',
-      },
-    ];
-
-    targets.forEach(target => {
-      if (target.infoPlistPath) {
-        this.updateInfoPlist(target.infoPlistPath, version, buildNumber);
-      } else if (target.xcodeprojTarget) {
-        this.updateProjectPbxproj(
-          './macos/Chronos.xcodeproj/project.pbxproj',
-          target.xcodeprojTarget,
-          version,
-          buildNumber
-        );
-      }
-    });
+    this.updateInfoPlist('./macos/Chronos-macOS/Info.plist', version, buildNumber);
+    this.updateProjectPbxproj('./macos/Chronos.xcodeproj/project.pbxproj', version, buildNumber);
   }
 }
 
