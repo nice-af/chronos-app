@@ -9,9 +9,6 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/*
 # Clean root folder
 rm -rf node_modules package-lock.json Pods Podfile.lock Gemfile.lock
 
-# Install gems
-bundle install
-
 # Clean macos folder
 cd macos
 rm -rf ./build Podfile.lock
@@ -20,8 +17,13 @@ pod cache clean --all
 pod setup
 cd ..
 
-# Reinstall dependencies
+# Install node modules
 npm i
+
+# Install gems
+bundle install
+
+# Install pods
 npm run pod-install:macos
 
 watchman shutdown-server
