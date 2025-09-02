@@ -41,17 +41,17 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
   const jiraClient = getJiraClientByUUID(uuid);
   const worklogsCompact: Worklog[] = [];
   const jqlQuery = `worklogAuthor = ${accountId} AND worklogDate > -${settings.worklogsSyncPeriod}`;
-  const maxIssuesResults = 40;
-  let totalIssues = 1;
+  const maxIssuesResults = 50;
+  let nextPageToken: string | undefined;
   let issuesFailsafe = 0;
 
-  // Loop through all issues with recent worklogs
-  for (let currentIssue = 0; currentIssue < totalIssues; issuesFailsafe++) {
-    const issuesCall = await jiraClient.issueSearch.searchForIssuesUsingJqlPost({
+  // Loop through all issues with recent worklogs using nextPageToken pagination
+  do {
+    const issuesCall = await jiraClient.issueSearch.searchForIssuesUsingJqlEnhancedSearch({
       jql: jqlQuery,
       fields: ['summary', 'worklog', 'project'],
       maxResults: maxIssuesResults,
-      startAt: currentIssue,
+      nextPageToken,
     });
 
     for (const issue of issuesCall.issues ?? []) {
@@ -90,8 +90,10 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       }
     }
 
-    currentIssue += maxIssuesResults;
-    totalIssues = issuesCall.total ?? 0;
+    // Update nextPageToken for the next iteration
+    nextPageToken = issuesCall.nextPageToken;
+    issuesFailsafe++;
+
     if (issuesFailsafe > 30) {
       // We have fetched issues more then 30 times, so we got 30 * 40 issues with worklogs. Something is wrong
       Alert.alert(
@@ -100,7 +102,7 @@ export async function getRemoteWorklogs(uuid: UUID, accountId: AccountId): Promi
       );
       throw new Error('Too many issues with worklogs in the last month to process');
     }
-  }
+  } while (nextPageToken);
 
   return worklogsCompact;
 }
