@@ -1,9 +1,13 @@
+import { Alert } from 'react-native';
 import { addJiraAccountTokensToStore, addLoginToStore, store, worklogsRemoteAtom } from '../atoms';
 import { colorKeys } from '../styles/theme/theme-types';
 import { AccountId, CloudId, JiraAccountTokens, LoginModel, UUID } from '../types/accounts.types';
 import { getUserInfo, getWorkspaceInfo, refreshAccessToken } from './jira-api-fetch';
 import { createJiraClient } from './jira-client.service';
 import { getRemoteWorklogs } from './jira-worklogs.service';
+import { User } from 'jira.js/out/version3/models';
+import { JiraResource } from '../types/jira.types';
+import { Worklog } from '../types/global.types';
 
 interface InitializeJiraAccountData {
   jiraAccountTokens: JiraAccountTokens;
@@ -27,17 +31,34 @@ interface InitializeJiraAccountData {
  */
 export async function initializeJiraAccount({ jiraAccountTokens, currentLogin, options }: InitializeJiraAccountData) {
   if (jiraAccountTokens.expiresAt < Date.now()) {
-    const newJiraAccountTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
-    jiraAccountTokens = newJiraAccountTokens;
-  }
-  const workspaceInfo = await getWorkspaceInfo(jiraAccountTokens.accessToken, currentLogin?.cloudId);
-  if (options?.onWorkspaceInfoFetched) {
-    options.onWorkspaceInfoFetched();
+    try {
+      const newJiraAccountTokens = await refreshAccessToken(jiraAccountTokens.refreshToken);
+      jiraAccountTokens = newJiraAccountTokens;
+    } catch (error) {
+      Alert.alert('Failed fetching access token', (error as Error).message);
+    }
   }
 
-  const userInfo = await getUserInfo(jiraAccountTokens.accessToken, workspaceInfo.id as CloudId);
-  if (options?.onUserInfoFetched) {
-    options.onUserInfoFetched();
+  let workspaceInfo: JiraResource;
+  try {
+    workspaceInfo = await getWorkspaceInfo(jiraAccountTokens.accessToken, currentLogin?.cloudId);
+    if (options?.onWorkspaceInfoFetched) {
+      options.onWorkspaceInfoFetched();
+    }
+  } catch (error) {
+    Alert.alert('Failed fetching workspace info', (error as Error).message);
+    throw error;
+  }
+
+  let userInfo: User;
+  try {
+    userInfo = await getUserInfo(jiraAccountTokens.accessToken, workspaceInfo.id as CloudId);
+    if (options?.onUserInfoFetched) {
+      options.onUserInfoFetched();
+    }
+  } catch (error) {
+    Alert.alert('Failed fetching user info', (error as Error).message);
+    throw error;
   }
 
   const login: LoginModel = {
@@ -60,7 +81,13 @@ export async function initializeJiraAccount({ jiraAccountTokens, currentLogin, o
   addLoginToStore(login);
   createJiraClient(login.uuid, login.accountId, login.cloudId);
 
-  const newWorklogsRemote = await getRemoteWorklogs(login.uuid, login.accountId);
+  let newWorklogsRemote: Worklog[];
+  try {
+    newWorklogsRemote = await getRemoteWorklogs(login.uuid, login.accountId);
+  } catch (error) {
+    Alert.alert('Failed fetching remote worklogs', (error as Error).message);
+    throw error;
+  }
   if (!(options?.storeRemoteWorklogs === false)) {
     const currentWorklogsRemote = store.get(worklogsRemoteAtom);
     store.set(
