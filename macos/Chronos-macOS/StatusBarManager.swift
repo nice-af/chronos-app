@@ -13,7 +13,7 @@ struct StateChangeData: Codable {
 
 struct JTTStatusItemView: View {
   @ObservedObject var jttData: JTTDataObserver
-  
+
   var body: some View {
     HStack(spacing: -1) {
       Spacer()
@@ -32,7 +32,9 @@ struct JTTStatusItemView: View {
           .frame(width: 18, height: 18)
           .position(x: 10, y: 11)
           .onTapGesture {
-            EventEmitter.sharedInstance.dispatch(name: "playPauseClick", body: self.jttData.state == StatusBarState.PAUSED ? "paused" : "running")
+            EventEmitter.sharedInstance.dispatch(
+              name: "playPauseClick",
+              body: self.jttData.state == StatusBarState.PAUSED ? "paused" : "running")
           }
       }
       ZStack(alignment: .center) {
@@ -50,44 +52,53 @@ struct JTTStatusItemView: View {
 }
 
 class JTTDataObserver: ObservableObject {
-  @Published var time: Int? = nil;
-  @Published var timeString: String = "-:--";
+  @Published var time: Int? = nil
+  @Published var timeString: String = "-:--"
   @Published var state: StatusBarState = StatusBarState.PAUSED
-  var timer = Timer()
-  
+  private var timer: Timer?
+
+  deinit {
+    stopTimer()
+  }
+
   func formatTime(time: Int) -> String {
     let minutes = time / 60 % 60
     let hours = time / 3600
     return String(format: "%d:%02d", hours, minutes)
   }
-  
+
   func startTimer() {
-    self.timer.invalidate()
+    stopTimer()  // Ensure any existing timer is stopped
     var previousTime = (self.time ?? 0)
-    self.timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+
+    self.timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+      guard let self = self else { return }
       let newTime = previousTime + 60
       previousTime = newTime
-      self.time = newTime
-      self.timeString = self.formatTime(time: newTime)
+      DispatchQueue.main.async {
+        self.time = newTime
+        self.timeString = self.formatTime(time: newTime)
+      }
     }
   }
-  
+
   func stopTimer() {
-    self.timer.invalidate()
+    timer?.invalidate()
+    timer = nil
   }
-  
-  public func setTime(newTime: String) -> Void {
-    if (newTime == "null") {
+
+  public func setTime(newTime: String) {
+    if newTime == "null" {
       self.time = nil
       self.timeString = "-:--"
     } else {
-      self.time = (newTime as NSString) .integerValue
+      self.time = (newTime as NSString).integerValue
     }
   }
-  
-  public func setState(newState: StatusBarState) -> Void {
+
+  public func setState(newState: StatusBarState) {
     self.state = newState
-    if (newState == StatusBarState.RUNNING) {
+    if newState == StatusBarState.RUNNING {
       self.startTimer()
       self.timeString = self.formatTime(time: self.time ?? 0)
     } else {
@@ -101,19 +112,23 @@ class StatusBarManager: NSObject {
   var statusItem: NSStatusItem?
   var windowController: CustomWindowController
   var rootView: JTTStatusItemView?
-  
+
   init(newWindowController: CustomWindowController) {
     let newJTTData = JTTDataObserver()
     self.jttData = newJTTData
     self.rootView = JTTStatusItemView(jttData: newJTTData)
     self.windowController = newWindowController
     super.init()
-    
+
     // Setup event listeners
-    NotificationCenter.default.addObserver(self, selector: #selector(setTime), name: NSNotification.Name("statusBarTimeChange"), object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(setState), name: NSNotification.Name("statusBarStateChange"), object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(setTime), name: NSNotification.Name("statusBarTimeChange"),
+      object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(setState), name: NSNotification.Name("statusBarStateChange"),
+      object: nil)
   }
-  
+
   @objc public func toggleWindow(_ sender: AnyObject?) {
     if self.windowController.window!.isKeyWindow {
       self.windowController.window!.close()
@@ -122,8 +137,8 @@ class StatusBarManager: NSObject {
       NSApplication.shared.activate(ignoringOtherApps: true)
     }
   }
-  
-  @objc func setTime(notification: NSNotification) -> Void {
+
+  @objc func setTime(notification: NSNotification) {
     guard let newTime = notification.object as? String else {
       print("Notification object is not a string")
       return
@@ -132,28 +147,39 @@ class StatusBarManager: NSObject {
       self.jttData.setTime(newTime: newTime)
     }
   }
-  
-  @objc func setState(notification: NSNotification) -> Void {
+
+  @objc func setState(notification: NSNotification) {
     guard let jsonString = notification.object as? String else {
       print("Notification object is not a string")
       return
     }
-    let jsonData = jsonString.data(using: .utf8)!
-    let data: StateChangeData = try! JSONDecoder().decode(StateChangeData.self, from: jsonData)
-    
-    if (data.state == "paused") {
-      DispatchQueue.main.async {
-        self.statusItem?.button?.toolTip = nil
-        self.jttData.setState(newState: StatusBarState.PAUSED)
-      }
+
+    guard let jsonData = jsonString.data(using: .utf8) else {
+      print("Failed to convert notification string to data")
+      return
     }
-    if (data.state == "running") {
-      DispatchQueue.main.async {
-        if (data.issueKey != nil && data.issueSummary != nil){
-          self.statusItem?.button?.toolTip = "\((data.issueKey != nil) ? "\(data.issueKey ?? ""):" : "") \(data.issueSummary ?? "")"
+
+    do {
+      let data: StateChangeData = try JSONDecoder().decode(StateChangeData.self, from: jsonData)
+
+      if data.state == "paused" {
+        DispatchQueue.main.async {
+          self.statusItem?.button?.toolTip = nil
+          self.jttData.setState(newState: StatusBarState.PAUSED)
         }
-        self.jttData.setState(newState: StatusBarState.RUNNING)
       }
+      if data.state == "running" {
+        DispatchQueue.main.async {
+          if data.issueKey != nil && data.issueSummary != nil {
+            self.statusItem?.button?.toolTip =
+              "\((data.issueKey != nil) ? "\(data.issueKey ?? ""):" : "") \(data.issueSummary ?? "")"
+          }
+          self.jttData.setState(newState: StatusBarState.RUNNING)
+        }
+      }
+    } catch {
+      print("Failed to decode notification JSON: \(error)")
+      print("JSON string was: \(jsonString)")
     }
   }
 
@@ -165,7 +191,7 @@ class StatusBarManager: NSObject {
       }
     }
   }
-  
+
   func showStatusBar() {
     DispatchQueue.main.async {
       if self.statusItem == nil {
