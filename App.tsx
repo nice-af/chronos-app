@@ -47,7 +47,7 @@ function createStyles(theme: Theme) {
     container: {
       width: '100%',
       height: '100%',
-      backgroundColor: theme.backgroundDark,
+      backgroundColor: theme.background,
     },
   });
   return styles;

@@ -1,7 +1,7 @@
 import { useAppState } from '@react-native-community/hooks';
 import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
-import { Image, ImageSourcePropType, Pressable, StyleSheet, View } from 'react-native';
+import { Image, ImageSourcePropType, NativeModules, Pressable, StyleSheet } from 'react-native';
 import { isFullscreenAtom, themeAtom } from '../atoms';
 
 interface TrafficLightButtonProps {
@@ -10,6 +10,7 @@ interface TrafficLightButtonProps {
   disabledIcon: ImageSourcePropType;
   appIsActive: boolean;
   isHovered: boolean;
+  onPress: () => void;
 }
 
 const TrafficLightButton: FC<TrafficLightButtonProps> = ({
@@ -18,20 +19,21 @@ const TrafficLightButton: FC<TrafficLightButtonProps> = ({
   disabledIcon,
   appIsActive,
   isHovered,
+  onPress,
 }) => {
   return (
-    <View style={styles.button}>
+    <Pressable style={styles.button} onPress={onPress}>
       <Image style={[styles.icon, { opacity: isHovered ? 1 : 0 }]} source={hoverIcon} />
       <Image style={[styles.icon, { opacity: !isHovered && appIsActive ? 1 : 0 }]} source={normalIcon} />
       <Image style={[styles.icon, { opacity: !isHovered && !appIsActive ? 1 : 0 }]} source={disabledIcon} />
-    </View>
+    </Pressable>
   );
 };
 
 /**
- * The original traffic lights on MacOS have a visual bug with wrong hover zones in our button layout.
- * We fix that by using custom traffic light buttons for visuals, but the original ones for functionality.
- * The buttons here are therefore only for visuals and placed underneath the original ones.
+ * Custom traffic light buttons for macOS window control.
+ * These replace the original traffic lights with custom styled buttons that provide
+ * close, minimize, and zoom functionality while maintaining the native macOS look and feel.
  */
 export const TrafficLights: FC = () => {
   const currentAppState = useAppState();
@@ -55,6 +57,18 @@ export const TrafficLights: FC = () => {
     return null;
   }
 
+  function closeWindow() {
+    NativeModules.TrafficLightManager.closeWindow();
+  }
+
+  function minimizeWindow() {
+    NativeModules.TrafficLightManager.minimizeWindow();
+  }
+
+  function toggleFullscreen() {
+    NativeModules.TrafficLightManager.toggleFullscreen();
+  }
+
   return (
     <Pressable style={styles.container} onHoverIn={() => setIsHovered(true)} onHoverOut={() => setIsHovered(false)}>
       <TrafficLightButton
@@ -63,6 +77,7 @@ export const TrafficLights: FC = () => {
         disabledIcon={disabledIcon}
         appIsActive={appIsActive}
         isHovered={isHovered}
+        onPress={closeWindow}
       />
       <TrafficLightButton
         normalIcon={minimizeIconNormal}
@@ -70,6 +85,7 @@ export const TrafficLights: FC = () => {
         disabledIcon={disabledIcon}
         appIsActive={appIsActive}
         isHovered={isHovered}
+        onPress={minimizeWindow}
       />
       <TrafficLightButton
         normalIcon={zoomIconNormal}
@@ -77,6 +93,7 @@ export const TrafficLights: FC = () => {
         disabledIcon={disabledIcon}
         appIsActive={appIsActive}
         isHovered={isHovered}
+        onPress={toggleFullscreen}
       />
     </Pressable>
   );
