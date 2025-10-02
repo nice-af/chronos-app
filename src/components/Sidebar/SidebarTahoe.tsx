@@ -2,20 +2,20 @@ import { useAppState } from '@react-native-community/hooks';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import React, { FC } from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../atoms';
-import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../services/date.service';
-import { useThemedStyles } from '../services/theme.service';
-import { Theme } from '../styles/theme/theme-types';
-import { getPadding } from '../styles/utils';
-import { weekDays } from '../types/global.types';
-import { DayButton } from './DayButton';
-import { NativeView } from './NativeView';
-import { SettingsButton } from './SettingsButton';
-import { WeekPicker } from './WeekPicker';
+import { currentOverlayAtom, isFullscreenAtom, selectedDateAtom } from '../../atoms';
+import { formatDateToYYYYMMDD, parseDateFromYYYYMMDD, setDateToThisWeekday } from '../../services/date.service';
+import { useThemedStyles } from '../../services/theme.service';
+import { Theme } from '../../styles/theme/theme-types';
+import { getPadding } from '../../styles/utils';
+import { weekDays } from '../../types/global.types';
+import { DayButton } from '../DayButton';
+import { NativeView } from '../NativeView';
+import { SettingsButton } from '../SettingsButton';
+import { WeekPicker } from '../WeekPicker';
 
 export const dayPickerHeight = 56;
 
-export const Sidebar: FC = () => {
+export const SidebarTahoe: FC = () => {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const setCurrentOverlay = useSetAtom(currentOverlayAtom);
   const isFullscreen = useAtomValue(isFullscreenAtom);

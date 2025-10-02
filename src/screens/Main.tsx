@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { currentOverlayAtom } from '../atoms';
 import { AnimateScreenContainer } from '../components/AnimateScreenContainer';
-import { Sidebar } from '../components/Sidebar';
+import { Sidebar } from '../components/Sidebar/AutoSidebar';
 import { Overlay, WIDESCREEN_WINDOW_WIDTH } from '../const';
 import { useThemedStyles } from '../services/theme.service';
 import { Theme } from '../styles/theme/theme-types';
