@@ -36,7 +36,7 @@ export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
   const validIssueKey = /^[A-Za-z][A-Za-z0-9_]+-[1-9][0-9]*$/.test(query);
   const reqExact = validIssueKey
     ? jiraClient.issueSearch
-        .searchForIssuesUsingJqlPost({
+        .searchForIssuesUsingJqlEnhancedSearch({
           ...commonOptions,
           jql: `key = "${query.toUpperCase()}" ORDER BY ${orderBy}`,
         })
@@ -44,14 +44,14 @@ export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
         .catch(e => console.error(`Failed to execute search type "exact" on query "${query}"`, e))
     : Promise.resolve([]);
   const reqPersonalized = jiraClient.issueSearch
-    .searchForIssuesUsingJqlPost({
+    .searchForIssuesUsingJqlEnhancedSearch({
       ...commonOptions,
       jql: `text ~ "${query}*" AND issue in issueHistory() ORDER BY ${orderBy}`,
     })
     .then(res => res.issues)
     .catch(e => console.error(`Failed to execute search type "personalized" on query "${query}"`, e));
   const reqGeneral = jiraClient.issueSearch
-    .searchForIssuesUsingJqlPost({
+    .searchForIssuesUsingJqlEnhancedSearch({
       ...commonOptions,
       jql: `text ~ "${query}*" ORDER BY ${orderBy}`,
     })
@@ -80,7 +80,7 @@ export async function getIssuesBySearchQuery(query: string, uuid: UUID) {
 export async function getIssueByKey(issueKey: string, uuid: UUID) {
   const jiraClient = getJiraClientByUUID(uuid);
   return jiraClient.issueSearch
-    .searchForIssuesUsingJqlPost({
+    .searchForIssuesUsingJqlEnhancedSearch({
       jql: `key = "${issueKey.toUpperCase()}"`,
       fields: ['summary', 'id'],
       maxResults: 1,
