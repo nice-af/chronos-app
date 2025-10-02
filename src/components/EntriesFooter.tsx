@@ -21,6 +21,11 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
   const { t } = useTranslation();
   const isVisible = dayHasChanges;
   const containerPosition = useRef(new Animated.Value(isSyncing ? 0 : isVisible ? 28 : 88)).current; // 0 is not visible, 1 is visible
+  const containerOpacity = containerPosition.interpolate({
+    inputRange: [80, 88],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
   const buttonVisibility = useRef(new Animated.Value(0)).current;
   const loadingVisibility = useRef(new Animated.Value(0)).current;
 
@@ -56,7 +61,11 @@ export const EntriesFooter: FC<EntriesFooterProps> = ({ dayHasChanges }) => {
     <Animated.View
       style={[
         styles.container,
-        { pointerEvents: isVisible ? undefined : 'none', transform: [{ translateY: containerPosition }] },
+        {
+          pointerEvents: isVisible ? undefined : 'none',
+          opacity: containerOpacity,
+          transform: [{ translateY: containerPosition }],
+        },
       ]}>
       <Animated.View style={[styles.buttonContainer, { opacity: buttonVisibility }]}>
         <ButtonPrimary label={isSyncing ? 'sync' : t('syncDay')} isDisabled={isSyncing} onPress={startSync} />
