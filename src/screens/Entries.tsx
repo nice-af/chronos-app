@@ -2,11 +2,10 @@ import { format } from 'date-fns';
 import { useAtomValue, useSetAtom } from 'jotai';
 import ms from 'ms';
 import React, { FC } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   activeWorklogAtom,
   currentOverlayAtom,
-  isFullscreenAtom,
   selectedDateAtom,
   settingsAtom,
   themeAtom,
@@ -36,7 +35,6 @@ export const Entries: FC = () => {
   const todayDateString = formatDateToYYYYMMDD(new Date());
   const activeWorklogIsThisDay = activeWorklog?.started === todayDateString;
   const { t, dateFnsLocale, longDateFormat } = useTranslation();
-  const isFullscreen = useAtomValue(isFullscreenAtom);
   const worklogsForSelectedDay = useGetWorklogsForSelectedDay();
 
   const hasChanges =
@@ -96,7 +94,7 @@ export const Entries: FC = () => {
           </Text>
         </View>
       ) : (
-        <ScrollView style={[styles.entriesContainer, isFullscreen && Platform.OS === 'macos' && { marginTop: 53 }]}>
+        <ScrollView style={styles.entriesContainer}>
           {worklogsForSelectedDay.map(worklog => (
             <TrackingListEntry key={worklog.id} worklog={worklog} />
           ))}
@@ -133,13 +131,7 @@ function createStyles(theme: Theme) {
     entriesContainer: {
       flexGrow: 1,
       overflow: 'visible',
-      ...Platform.select({
-        default: {},
-        windows: {
-          marginTop: 52 + 6,
-          marginBottom: 6,
-        },
-      }),
+      marginTop: 53,
     },
     errorMessageContainer: {
       display: 'flex',
