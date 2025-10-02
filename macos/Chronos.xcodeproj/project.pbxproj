@@ -16,15 +16,15 @@
 		3A478D4D2E089DFC00A183D1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A478D4C2E089DFC00A183D1 /* SwiftUI.framework */; };
 		3A478D592E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A478D492E089DFC00A183D1 /* ChronosWidget4WeeksOverviewExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A4A5BF32C2302BA00A744AA /* ReactNativeOAuthLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4A5BF22C2302BA00A744AA /* ReactNativeOAuthLogin.swift */; };
-		3A4F9E502AE58A4C00227EA8 /* app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */; };
+		3A4F9E502AE58A4C00227EA8 /* AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F9E4F2AE58A4C00227EA8 /* AppIcon.png */; };
 		3A5394B82C2308C300980412 /* ReactNativeOAuthLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5394B72C2308C300980412 /* ReactNativeOAuthLogin.m */; };
 		3A7C39872E3C0132007B51C3 /* Chronos Companion.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3AA48D492E8EF65E00F17E30 /* TrafficLightManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA48D482E8EF65E00F17E30 /* TrafficLightManager.swift */; };
 		3AA48D4B2E8EF66F00F17E30 /* TrafficLightManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA48D4A2E8EF66F00F17E30 /* TrafficLightManager.m */; };
+		3AA48D4F2E8F055B00F17E30 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3AA48D4E2E8F055B00F17E30 /* AppIcon.icon */; };
+		3AA48D502E8F055B00F17E30 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3AA48D4E2E8F055B00F17E30 /* AppIcon.icon */; };
 		3AB5BE502AE2D86F0017D6BF /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */; };
 		3AB5BE532AE2D8E10017D6BF /* BackgroundViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */; };
-		3ABD92EC2E882E7400117684 /* app-icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3ABD92EB2E882E7400117684 /* app-icon.icon */; };
-		3ABD92ED2E882E7400117684 /* app-icon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3ABD92EB2E882E7400117684 /* app-icon.icon */; };
 		3AD966472AE3F6A3003C5B78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */; };
 		3AE174CD2AFAE4C100583EDB /* CustomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */; };
 		485ACCC6F3BD5FA26775130B /* libPods-Chronos-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69B0C1A77BDEB2F4D0A5A174 /* libPods-Chronos-macOS.a */; };
@@ -76,18 +76,18 @@
 		3A478D4A2E089DFC00A183D1 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3A478D4C2E089DFC00A183D1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3A4A5BF22C2302BA00A744AA /* ReactNativeOAuthLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativeOAuthLogin.swift; sourceTree = "<group>"; };
-		3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
+		3A4F9E4F2AE58A4C00227EA8 /* AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon.png; sourceTree = "<group>"; };
 		3A5394B72C2308C300980412 /* ReactNativeOAuthLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactNativeOAuthLogin.m; sourceTree = "<group>"; };
 		3A6139672B881A0000ED1E60 /* Chronos-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Chronos-macOS.entitlements"; sourceTree = "<group>"; };
 		3A7C396E2E3C0132007B51C3 /* Chronos Companion.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Chronos Companion.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA48D482E8EF65E00F17E30 /* TrafficLightManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficLightManager.swift; sourceTree = "<group>"; };
 		3AA48D4A2E8EF66F00F17E30 /* TrafficLightManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrafficLightManager.m; sourceTree = "<group>"; };
+		3AA48D4E2E8F055B00F17E30 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		3AAAF7A22E36BA51000C080D /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		3AB5BE4E2AE2D8420017D6BF /* BackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
 		3AB5BE4F2AE2D86F0017D6BF /* BackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
 		3AB5BE512AE2D8BD0017D6BF /* BackgroundViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BackgroundViewManager.h; sourceTree = "<group>"; };
 		3AB5BE522AE2D8E10017D6BF /* BackgroundViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BackgroundViewManager.m; sourceTree = "<group>"; };
-		3ABD92EB2E882E7400117684 /* app-icon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "app-icon.icon"; sourceTree = "<group>"; };
 		3AD966452AE3F686003C5B78 /* Chronos-macOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chronos-macOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		3AD966462AE3F6A3003C5B78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindowController.swift; sourceTree = "<group>"; };
@@ -193,7 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				3A6139672B881A0000ED1E60 /* Chronos-macOS.entitlements */,
-				3A4F9E4F2AE58A4C00227EA8 /* app-icon.png */,
+				3A4F9E4F2AE58A4C00227EA8 /* AppIcon.png */,
 				514201512437B4B40078DB4F /* Assets.xcassets */,
 				514201532437B4B40078DB4F /* Main.storyboard */,
 				514201562437B4B40078DB4F /* Info.plist */,
@@ -237,7 +237,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				AF2DC7B052CAD083535585F1 /* Pods */,
-				3ABD92EB2E882E7400117684 /* app-icon.icon */,
+				3AA48D4E2E8F055B00F17E30 /* AppIcon.icon */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -386,7 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ABD92EC2E882E7400117684 /* app-icon.icon in Resources */,
+				3AA48D4F2E8F055B00F17E30 /* AppIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,8 +396,8 @@
 			files = (
 				514201522437B4B40078DB4F /* Assets.xcassets in Resources */,
 				514201552437B4B40078DB4F /* Main.storyboard in Resources */,
-				3ABD92ED2E882E7400117684 /* app-icon.icon in Resources */,
-				3A4F9E502AE58A4C00227EA8 /* app-icon.png in Resources */,
+				3AA48D502E8F055B00F17E30 /* AppIcon.icon in Resources */,
+				3A4F9E502AE58A4C00227EA8 /* AppIcon.png in Resources */,
 				EF58813514AC580CE9BF87EC /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
