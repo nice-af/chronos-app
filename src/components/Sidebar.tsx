@@ -29,7 +29,7 @@ export const Sidebar: FC = () => {
         contentContainerStyle={[
           styles.container,
           currentAppState === 'inactive' && { opacity: 0.6 },
-          !isFullscreen && Platform.OS === 'macos' && { paddingTop: 0, paddingBottom: 16 },
+          !isFullscreen && Platform.OS === 'macos' && { paddingTop: 24, paddingBottom: 16 },
         ]}>
         <WeekPicker />
         {weekDays.map(dayCode => {
