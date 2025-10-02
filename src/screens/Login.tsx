@@ -33,6 +33,11 @@ export const Login: FC = () => {
       }
       setShowError(false);
     } catch (_error) {
+      console.error('Error fetching api status:', _error);
+      if (OAUTH_BASE_URL.includes('localhost')) {
+        console.error('Are you sure that the website is running locally?');
+      }
+
       setShowError(true);
     }
   }
