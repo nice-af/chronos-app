@@ -17,6 +17,9 @@ export enum NativeEvent {
   SET_APP__VISIBILITY = 'setAppVisibility',
   REQUEST_4_WEEKS_WORKLOG_OVERVIEW = 'request4WeeksWorklogOverview',
   NEW_4_WEEKS_WORKLOG_OVERVIEW = 'new4WeeksWorklogOverview',
+  CLOSE_WINDOW = 'closeWindow',
+  MINIMIZE_WINDOW = 'minimizeWindow',
+  TOGGLE_FULLSCREEN = 'toggleFullscreen',
 }
 
 export enum StatusBarState {
@@ -50,7 +53,8 @@ export type SendNativeEventParams =
   | SendNativeEventParams_THEME_CHANGED
   | SendNativeEventParams_SET_APP__VISIBILITY
   | SendNativeEventParams_SEND_4_WEEKS_WORKLOG_OVERVIEW
-  | SendNativeEventParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
+  | SendNativeEventParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW
+  | SendNativeEventParams_WINDOW_CONTROLS;
 
 export interface SendNativeEventParams_DEFAULT {
   name: NativeEvent.REQUEST_NOTIFICATION_PERMISSION;
@@ -104,6 +108,11 @@ export interface SendNativeEventParams_SEND_4_WEEKS_WORKLOG_OVERVIEW {
 export interface SendNativeEventParams_REQUEST_4_WEEKS_WORKLOG_OVERVIEW {
   name: NativeEvent.REQUEST_4_WEEKS_WORKLOG_OVERVIEW;
   data: null;
+}
+
+export interface SendNativeEventParams_WINDOW_CONTROLS {
+  name: NativeEvent.CLOSE_WINDOW | NativeEvent.MINIMIZE_WINDOW | NativeEvent.TOGGLE_FULLSCREEN;
+  data?: null;
 }
 
 /**

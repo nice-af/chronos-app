@@ -42,6 +42,15 @@ class AppDelegate: RCTAppDelegate {
     NotificationCenter.default.addObserver(
       self, selector: #selector(handleNew4WeeksWorklogOverview),
       name: NSNotification.Name("new4WeeksWorklogOverview"), object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(handleCloseWindow),
+      name: NSNotification.Name("closeWindow"), object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(handleMinimizeWindow),
+      name: NSNotification.Name("minimizeWindow"), object: nil)
+    NotificationCenter.default.addObserver(
+      self, selector: #selector(handleToggleFullscreen),
+      name: NSNotification.Name("toggleFullscreen"), object: nil)
 
     // Enable notifications when the app is focused
     UNUserNotificationCenter.current().delegate = self
@@ -217,6 +226,27 @@ class AppDelegate: RCTAppDelegate {
       WidgetCenter.shared.reloadTimelines(ofKind: "ChronosWidget4WeeksOverview")
     } else {
       print("Failed to get UserDefaults for app group: \(appGroup)")
+    }
+  }
+
+  //
+  // Handle window controls
+  //
+  @objc func handleCloseWindow() {
+    DispatchQueue.main.async {
+      self.windowController.window?.orderOut(nil)
+    }
+  }
+
+  @objc func handleMinimizeWindow() {
+    DispatchQueue.main.async {
+      self.windowController.window?.miniaturize(nil)
+    }
+  }
+
+  @objc func handleToggleFullscreen() {
+    DispatchQueue.main.async {
+      self.windowController.window?.toggleFullScreen(nil)
     }
   }
 

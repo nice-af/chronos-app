@@ -26,7 +26,7 @@
 		3AE174CD2AFAE4C100583EDB /* CustomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE174CC2AFAE4C100583EDB /* CustomWindowController.swift */; };
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
-		60D76724B8AC332E8E5D6448 /* libPods-Chronos-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DDCA19A822C5D57FDC687E3 /* libPods-Chronos-macOS.a */; };
+		E61BAB9965FFF91612130913 /* libPods-Chronos-macOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E7C1BBE7A2FF508061E1B7B /* libPods-Chronos-macOS.a */; };
 		EF58813514AC580CE9BF87EC /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4E37F6D15C601E66A4CD20B0 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +63,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		150A9F683AF2B308EEB650F7 /* Pods-Chronos-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chronos-macOS.debug.xcconfig"; path = "Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		36848EE135144BC027789E7D /* Pods-Chronos-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chronos-macOS.release.xcconfig"; path = "Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		12A38A53675BA404832BFB55 /* Pods-Chronos-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chronos-macOS.release.xcconfig"; path = "Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		2431A38706F506D07F484994 /* Pods-Chronos-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chronos-macOS.debug.xcconfig"; path = "Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		3A31355A2AF708CB00182B14 /* CustomWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWindow.swift; sourceTree = "<group>"; };
 		3A4050112B855D44006B1B2B /* StatusBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarManager.swift; sourceTree = "<group>"; };
 		3A41A1CD2B87AC5500EF67AA /* EventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		514201512437B4B40078DB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		514201542437B4B40078DB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		514201562437B4B40078DB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6DDCA19A822C5D57FDC687E3 /* libPods-Chronos-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chronos-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E7C1BBE7A2FF508061E1B7B /* libPods-Chronos-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Chronos-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -157,7 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60D76724B8AC332E8E5D6448 /* libPods-Chronos-macOS.a in Frameworks */,
+				E61BAB9965FFF91612130913 /* libPods-Chronos-macOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +170,7 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				3A478D4A2E089DFC00A183D1 /* WidgetKit.framework */,
 				3A478D4C2E089DFC00A183D1 /* SwiftUI.framework */,
-				6DDCA19A822C5D57FDC687E3 /* libPods-Chronos-macOS.a */,
+				6E7C1BBE7A2FF508061E1B7B /* libPods-Chronos-macOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -248,8 +248,8 @@
 		AF2DC7B052CAD083535585F1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				150A9F683AF2B308EEB650F7 /* Pods-Chronos-macOS.debug.xcconfig */,
-				36848EE135144BC027789E7D /* Pods-Chronos-macOS.release.xcconfig */,
+				2431A38706F506D07F484994 /* Pods-Chronos-macOS.debug.xcconfig */,
+				12A38A53675BA404832BFB55 /* Pods-Chronos-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -301,13 +301,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5142015A2437B4B40078DB4F /* Build configuration list for PBXNativeTarget "Chronos-macOS" */;
 			buildPhases = (
-				FAD13A1F3B3A663360BC0611 /* [CP] Check Pods Manifest.lock */,
+				12C0DA4446D731821719217A /* [CP] Check Pods Manifest.lock */,
 				514201452437B4B30078DB4F /* Sources */,
 				514201462437B4B30078DB4F /* Frameworks */,
 				514201472437B4B30078DB4F /* Resources */,
 				381D8A6E24576A4E00465D17 /* Bundle React Native code and images */,
 				3A478D5A2E089DFC00A183D1 /* Embed Foundation Extensions */,
-				5F5D068AB2ECD2CE56B6B654 /* [CP] Copy Pods Resources */,
+				F486EC0BB43DA658198F9ACA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -395,46 +395,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		381D8A6E24576A4E00465D17 /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native code and images";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native-macos/scripts/react-native-xcode.sh\n";
-		};
-		5F5D068AB2ECD2CE56B6B654 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FAD13A1F3B3A663360BC0611 /* [CP] Check Pods Manifest.lock */ = {
+		12C0DA4446D731821719217A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -454,6 +415,41 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		381D8A6E24576A4E00465D17 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native-macos/scripts/react-native-xcode.sh\n";
+		};
+		F486EC0BB43DA658198F9ACA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Chronos-macOS/Pods-Chronos-macOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -709,7 +705,7 @@
 		};
 		5142015B2437B4B40078DB4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 150A9F683AF2B308EEB650F7 /* Pods-Chronos-macOS.debug.xcconfig */;
+			baseConfigurationReference = 2431A38706F506D07F484994 /* Pods-Chronos-macOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -757,7 +753,7 @@
 		};
 		5142015C2437B4B40078DB4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36848EE135144BC027789E7D /* Pods-Chronos-macOS.release.xcconfig */;
+			baseConfigurationReference = 12A38A53675BA404832BFB55 /* Pods-Chronos-macOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

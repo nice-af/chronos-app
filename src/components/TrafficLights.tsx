@@ -1,8 +1,10 @@
 import { useAppState } from '@react-native-community/hooks';
 import { useAtomValue } from 'jotai';
 import React, { FC, useState } from 'react';
-import { Image, ImageSourcePropType, NativeModules, Pressable, StyleSheet } from 'react-native';
+import { Image, ImageSourcePropType, Pressable, StyleSheet } from 'react-native';
 import { isFullscreenAtom, themeAtom } from '../atoms';
+import { sendNativeEvent } from '../services/native-event-emitter.service';
+import { NativeEvent } from '../services/native-event-emitter.service.types';
 
 interface TrafficLightButtonProps {
   normalIcon: ImageSourcePropType;
@@ -58,15 +60,15 @@ export const TrafficLights: FC = () => {
   }
 
   function closeWindow() {
-    NativeModules.TrafficLightManager.closeWindow();
+    sendNativeEvent({ name: NativeEvent.CLOSE_WINDOW });
   }
 
   function minimizeWindow() {
-    NativeModules.TrafficLightManager.minimizeWindow();
+    sendNativeEvent({ name: NativeEvent.MINIMIZE_WINDOW });
   }
 
   function toggleFullscreen() {
-    NativeModules.TrafficLightManager.toggleFullscreen();
+    sendNativeEvent({ name: NativeEvent.TOGGLE_FULLSCREEN });
   }
 
   return (

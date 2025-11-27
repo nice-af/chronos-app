@@ -35,6 +35,9 @@ class EventEmitter {
       "setAppVisibility",
       "request4WeeksWorklogOverview",
       "new4WeeksWorklogOverview",
+      "closeWindow",
+      "minimizeWindow",
+      "toggleFullscreen",
     ]
     return allEventNames
   }()
