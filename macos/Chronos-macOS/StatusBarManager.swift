@@ -129,6 +129,16 @@ class StatusBarManager: NSObject {
       object: nil)
   }
 
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+    // Clean up status bar item on main thread if needed
+    if let statusItem = self.statusItem {
+      DispatchQueue.main.async {
+        NSStatusBar.system.removeStatusItem(statusItem)
+      }
+    }
+  }
+
   @objc public func toggleWindow(_ sender: AnyObject?) {
     if self.windowController.window!.isKeyWindow {
       self.windowController.window!.close()

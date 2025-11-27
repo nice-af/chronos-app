@@ -20,6 +20,10 @@ class AppDelegate: RCTAppDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
   override func applicationDidFinishLaunching(_ notification: Notification) {
     // Basically the initialization of the app
     self.automaticallyLoadReactNativeWindow = false
