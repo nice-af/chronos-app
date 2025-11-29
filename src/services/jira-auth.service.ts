@@ -15,7 +15,7 @@ export const useAuthRequest = () => {
 
   useEffect(() => {
     if (Platform.OS === 'macos') {
-      const loginSessionEmitter = new NativeEventEmitter(NativeModules.ReactNativeOAuthLogin as NativeModule);
+      const loginSessionEmitter = new NativeEventEmitter(NativeModules?.ReactNativeOAuthLogin as NativeModule);
       const subscription = loginSessionEmitter.addListener('onOAuthLogin', data => {
         if (data.error) {
           console.error(data.error);
@@ -96,7 +96,7 @@ export const useAuthRequest = () => {
     });
 
     if (Platform.OS === 'macos') {
-      NativeModules.ReactNativeOAuthLogin.startSession(oAuthUrl, APP_DEEPLINK_BASE_URL);
+      NativeModules?.ReactNativeOAuthLogin?.startSession(oAuthUrl, APP_DEEPLINK_BASE_URL);
     } else if (await Linking.canOpenURL(oAuthUrl)) {
       await Linking.openURL(oAuthUrl);
     } else {

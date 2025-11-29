@@ -86,14 +86,14 @@ export function useTranslation() {
 
   const deviceLocale = useMemo<string>(() => {
     if (Platform.OS === 'ios' || Platform.OS === 'macos') {
-      return (NativeModules.SettingsManager.settings.AppleLocale ??
-        NativeModules.SettingsManager.settings.AppleLanguages[0]) as string;
+      return (NativeModules?.SettingsManager?.settings.AppleLocale ??
+        NativeModules?.SettingsManager?.settings.AppleLanguages[0]) as string;
     }
-    return NativeModules.I18nManager.localeIdentifier as string;
+    return NativeModules?.I18nManager?.localeIdentifier as string;
   }, [
-    NativeModules.SettingsManager.settings.AppleLocale,
-    NativeModules.SettingsManager.settings.AppleLanguages,
-    NativeModules.I18nManager.localeIdentifier,
+    NativeModules?.SettingsManager?.settings.AppleLocale,
+    NativeModules?.SettingsManager?.settings.AppleLanguages,
+    NativeModules?.I18nManager?.localeIdentifier,
   ]);
 
   const dateFnsLocale = useMemo(() => getDateFnsLocale(deviceLocale), [deviceLocale]);
