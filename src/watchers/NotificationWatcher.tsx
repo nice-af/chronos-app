@@ -5,10 +5,10 @@ import { settingsAtom, store, worklogsAtom } from '../atoms';
 import { useTranslation } from '../services/i18n.service';
 import { sendNativeEvent } from '../services/native-event-emitter.service';
 import { NativeEvent } from '../services/native-event-emitter.service.types';
-import { DayId, WorklogState } from '../types/global.types';
+import { DayCode, weekDays, WorklogState } from '../types/global.types';
 
 export const NotificationWatcher: FC = () => {
-  const { enableTrackingReminder, trackingReminderTime, workingDays } = useAtomValue(settingsAtom);
+  const { enableTrackingReminder, trackingReminderTime, workingDaysAndTime } = useAtomValue(settingsAtom);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -18,10 +18,13 @@ export const NotificationWatcher: FC = () => {
 
     const intervalId = setInterval(() => {
       const now = new Date();
+      // Convert Date.getDay() (0=Sunday) to DayCode index (0=Monday)
+      const dayIndex = (now.getDay() + 6) % 7;
+      const dayCode: DayCode = weekDays[dayIndex];
+
       if (
         enableTrackingReminder &&
-        // The first day of the week is Sunday with getDay but Monday with the DayId enum
-        workingDays.includes(((now.getDay() + 6) % 7) as DayId) &&
+        workingDaysAndTime[dayCode]?.enabled &&
         now.getHours() === trackingReminderTime.hour &&
         now.getMinutes() === trackingReminderTime.minute
       ) {
@@ -50,7 +53,7 @@ export const NotificationWatcher: FC = () => {
     }, ms('1m'));
 
     return () => clearInterval(intervalId);
-  }, [enableTrackingReminder, trackingReminderTime, workingDays]);
+  }, [enableTrackingReminder, trackingReminderTime, workingDaysAndTime]);
 
   return null;
 };
