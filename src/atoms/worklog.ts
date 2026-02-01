@@ -51,7 +51,7 @@ setInterval(() => {
     diff = Math.floor((now - start) / 1000);
   }
   if (diff > 0) {
-    updateWorklog({ ...activeWorklog, timeSpentSeconds: activeWorklog.timeSpentSeconds + diff });
+    updateWorklogInternal({ ...activeWorklog, timeSpentSeconds: activeWorklog.timeSpentSeconds + diff });
     store.set(activeWorklogTrackingStartedAtom, now);
   }
 }, ms('3s'));
@@ -149,9 +149,9 @@ export function setWorklogAsActive(worklogId: WorklogId | null) {
 }
 
 /**
- * Updates the given worklog and stores it in the local worklogs
+ * Updates the given worklog and stores it in the local worklogs (internal version without widget update)
  */
-export function updateWorklog(worklog: Worklog) {
+function updateWorklogInternal(worklog: Worklog) {
   if (worklog.state !== WorklogState.LOCAL) {
     worklog.state = WorklogState.EDITED;
   }
@@ -162,6 +162,13 @@ export function updateWorklog(worklog: Worklog) {
   } else {
     store.set(worklogsLocalAtom, worklogs => [...worklogs, worklog]);
   }
+}
+
+/**
+ * Updates the given worklog and stores it in the local worklogs
+ */
+export function updateWorklog(worklog: Worklog) {
+  updateWorklogInternal(worklog);
   send4WeeksWorklogOverview();
 }
 
