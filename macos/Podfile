@@ -20,5 +20,20 @@ target 'Chronos-macOS' do
 
   post_install do |installer|
     react_native_post_install(installer)
+
+    # Fix for Apple Clang 21+ (Xcode 26.4+) rejecting fmt's consteval usage.
+    # fmt 11.0.2 only disables FMT_USE_CONSTEVAL for Apple clang < 14, but
+    # Apple Clang 21 is stricter and also rejects it. The proper fix is in
+    # fmt >= 12.1.0, but RCT-Folly pins 11.0.2.
+    # See: https://github.com/fmtlib/fmt/issues/4740
+    fmt_base_h = "#{installer.sandbox.root}/fmt/include/fmt/base.h"
+    if File.exist?(fmt_base_h)
+      content = File.read(fmt_base_h)
+      patched = content.gsub(
+        '#elif defined(__apple_build_version__) && __apple_build_version__ < 14000029L',
+        '#elif defined(__apple_build_version__)'
+      )
+      File.write(fmt_base_h, patched)
+    end
   end
 end
