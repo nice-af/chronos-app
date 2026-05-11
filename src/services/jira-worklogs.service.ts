@@ -26,7 +26,14 @@ function convertWorklogs(worklogs: JiraWorklog[], uuid: UUID, accountId: Account
       timeSpentSeconds: (worklog.timeSpent ?? '')
         .split(' ')
         .reduce((acc: number, curr: string) => acc + parseDurationStringToSeconds(curr), 0),
-      comment: worklog.comment ? convertAdfToMd(worklog.comment) : '',
+      comment: worklog.comment ? (() => {
+        try {
+          return convertAdfToMd(worklog.comment!);
+        } catch (e) {
+          console.error('[convertWorklogs] Failed to convert comment ADF to Markdown. Raw comment:', JSON.stringify(worklog.comment), e);
+          return '';
+        }
+      })() : '',
       state: WorklogState.SYNCED,
       uuid,
     }));

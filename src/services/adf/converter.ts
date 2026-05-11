@@ -13,16 +13,16 @@ type Node = Omit<Document, 'version'>;
 function convert(this: any, node: Node): string {
   switch (node.type) {
     case 'doc':
-      return node.content!.map(subNode => convert(subNode)).join('\n');
+      return (node.content ?? []).map(subNode => convert(subNode)).join('\n');
 
     case 'text':
       return `${convertMarks(node)}`;
 
     case 'paragraph':
-      return node.content!.map(subNode => convert(subNode)).join('');
+      return (node.content ?? []).map(subNode => convert(subNode)).join('');
 
     case 'heading':
-      return `${'#'.repeat(node.attrs.level as number)} ${node.content!.map(subNode => convert(subNode)).join('')}\n`;
+      return `${'#'.repeat(node.attrs.level as number)} ${(node.content ?? []).map(subNode => convert(subNode)).join('')}\n`;
 
     case 'hardBreak':
       return '\n';
@@ -32,15 +32,17 @@ function convert(this: any, node: Node): string {
     case 'embedCard':
       return `[${node.attrs.url}](${node.attrs.url})`;
 
-    case 'blockquote':
-      return `> ${node
-        .content!.map((subNode, i) => `${convert(subNode)}${i !== node.content!.length - 1 ? '\n>' : ''}`)
+    case 'blockquote': {
+      const blockquoteContent = node.content ?? [];
+      return `> ${blockquoteContent
+        .map((subNode, i) => `${convert(subNode)}${i !== blockquoteContent.length - 1 ? '\n>' : ''}`)
         .join('\n> ')}`;
+    }
 
     case 'bulletList':
     case 'orderedList':
-      return `${node
-        .content!.map(subNode => {
+      return `${(node.content ?? [])
+        .map(subNode => {
           const converted = convert.call(node, subNode);
 
           if (node.type === 'orderedList') {
@@ -55,12 +57,12 @@ function convert(this: any, node: Node): string {
     case 'listItem': {
       const order = this.attrs?.order ?? 1;
       const symbol = this.type === 'bulletList' ? '*' : `${order}.`;
-      return `${symbol} ${node.content!.map(subNode => convert(subNode).trimEnd()).join(' ')}`;
+      return `${symbol} ${(node.content ?? []).map(subNode => convert(subNode).trimEnd()).join(' ')}`;
     }
 
     case 'codeBlock': {
       const language = node.attrs.language ? ` ${node.attrs.language}` : '';
-      return `\`\`\`${language}\n${node.content!.map(subNode => convert(subNode)).join('\n')}\n\`\`\``;
+      return `\`\`\`${language}\n${(node.content ?? []).map(subNode => convert(subNode)).join('\n')}\n\`\`\``;
     }
 
     case 'rule':
@@ -70,13 +72,13 @@ function convert(this: any, node: Node): string {
       return node.attrs.shortName as string;
 
     case 'table':
-      return node.content!.map(subNode => convert(subNode)).join('');
+      return (node.content ?? []).map(subNode => convert(subNode)).join('');
 
     case 'tableRow': {
       let output = '|';
       let thCount = 0;
-      output += node
-        .content!.map(subNode => {
+      output += (node.content ?? [])
+        .map(subNode => {
           thCount += subNode.type === 'tableHeader' ? 1 : 0;
           return convert(subNode);
         })
@@ -86,13 +88,13 @@ function convert(this: any, node: Node): string {
     }
 
     case 'tableHeader':
-      return `${node.content!.map(subNode => convert(subNode)).join('')}|`;
+      return `${(node.content ?? []).map(subNode => convert(subNode)).join('')}|`;
 
     case 'tableCell':
-      return `${node.content!.map(subNode => convert(subNode)).join('')}|`;
+      return `${(node.content ?? []).map(subNode => convert(subNode)).join('')}|`;
 
     case 'mediaSingle':
-      return node.content!.map(subNode => convert(subNode)).join('\n');
+      return (node.content ?? []).map(subNode => convert(subNode)).join('\n');
 
     case 'media':
       return `![](${node.attrs.url})`;
