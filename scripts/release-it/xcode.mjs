@@ -2,11 +2,6 @@ import fs from 'fs';
 import { Plugin } from 'release-it';
 
 class XCode extends Plugin {
-  getLatestVersion() {
-    const packageJson = JSON.parse(fs.readFileSync('./package.json'));
-    return packageJson.version;
-  }
-
   updateProjectPbxproj(xcodeprojPath, version, buildNumber) {
     let xcodeprojFile = fs.readFileSync(xcodeprojPath, 'utf8');
     xcodeprojFile = xcodeprojFile
